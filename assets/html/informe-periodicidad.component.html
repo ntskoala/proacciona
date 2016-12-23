@@ -1,0 +1,29 @@
+<h2>Informe de {{'periodicidad' | translate}}</h2>
+<div class="mostrar-informe">
+  <button md-button color="primary" (click)="mostrarInforme()">Calcular informe</button>
+</div>
+<div class="table informe">
+  <div class="header-row">
+    <span class="header-cell">{{'Nombre' | translate}}</span>
+    <span class="header-cell small">{{'Resultado' | translate}}</span>
+  </div>
+  <div class="row" *ngFor="let element of controles">
+    <span class="cell">{{element.nombre}}</span>
+    <span class="cell center" *ngIf="element.resultado">
+      <span class="material-icons green">check</span>
+    </span>
+    <span class="cell center" *ngIf="!element.resultado">
+      <span class="material-icons red">close</span>
+    </span>
+  </div>
+  <div class="row"><hr></div>
+  <div class="row" *ngFor="let element of checklists">
+    <span class="cell">{{element.nombre}}</span>
+    <span class="cell center" *ngIf="element.resultado">
+      <span class="material-icons green">check</span>
+    </span>
+    <span class="cell center" *ngIf="!element.resultado">
+      <span class="material-icons red">close</span>
+    </span>
+  </div>
+</div>

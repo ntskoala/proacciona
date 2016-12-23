@@ -1,0 +1,26 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal()"></modal>
+<div class="login-form">
+  <md-card>
+    <md-card-title>
+      <md-toolbar color="accent">Login</md-toolbar>
+    </md-card-title>
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
+      <md-card-content>
+        <md-input class="full-width" type="text" required [placeholder]="'Usuario' | translate" 
+          [(ngModel)]="usuario.user" name="user"></md-input>
+        <md-input class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
+          [(ngModel)]="usuario.password" name="password"></md-input>
+        <label for="idioma">Seleccionar idioma</label>
+        <select class="white-select" required [(ngModel)]="usuario.idioma" name="idioma">
+          <option value="cat">Català</option>
+          <option value="es">Castellano</option>
+        </select>
+      </md-card-content>
+      <md-card-footer>
+        <button md-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
+          Enviar
+        </button>
+      </md-card-footer>
+    </form>
+  </md-card>
+</div>

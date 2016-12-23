@@ -1,0 +1,7 @@
+<form>
+  <select (change)="selecciona($event.target.value)">
+    <option *ngFor="let empresa of empresas" [value]="empresa.id">
+      {{empresa.nombre}}
+    </option>
+  </select>
+</form>

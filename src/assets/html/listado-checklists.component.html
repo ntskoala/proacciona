@@ -1,0 +1,7 @@
+  <form>
+    <select (change)="seleccionarCCL($event.target.value)" *ngIf="empresaSeleccionada">
+      <option *ngFor="let checklist of checklists" [value]="checklist.id">
+        {{checklist.nombrechecklist}}
+      </option>
+    </select>
+  </form>

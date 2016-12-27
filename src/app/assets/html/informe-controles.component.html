@@ -11,13 +11,16 @@
 <h2>{{'Informe de controles' | translate}}</h2>
 <div class="fechas">
   <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
-    <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio"></ng2-datepicker>
-   <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin"></ng2-datepicker>
+    <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio" (click)="scroll()"></ng2-datepicker>
+   <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin" (click)="scroll()"></ng2-datepicker>
     <!--<md-input type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio"></md-input>
     <md-input type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin"></md-input>-->
     <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
-    </button>                
+    </button>
+    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" (click)="excel(filtrarFechasForm.value)">
+      <span class="material-icons">cloud_download</span>
+    </button>                    
   </form>
 </div>
 
@@ -28,7 +31,8 @@
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna}}</span>
   </div>
   <div class="row" *ngFor="let resultado of tabla">
-    <span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>
+    <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
+    <span class="cell">{{resultado.fecha}}</span>
     <span class="cell center" *ngIf="resultado.foto">
       <span class="foto-link material-icons" (click)="ventanaFoto(resultado.id)">photo_camera</span>
     </span>

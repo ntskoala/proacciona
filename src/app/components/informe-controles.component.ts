@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
+import { EmpresasComponent } from './empresas.component';
 import { URLS } from '../models/urls';
 import { ResultadoControl } from '../models/resultadocontrol';
 
@@ -18,10 +20,11 @@ export class InformeControlesComponent implements OnInit {
   columnas: string[] = [];
   tabla: Object[] = [];
   fecha: Object ={};// = {"inicio":"2016-12-09","fin":"2016-12-12"};
+  //fecha: Object = {"inicio":"2016-11-09","fin":"2016-12-12"};
   modal: boolean = false;
   fotoSrc: string;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent) {}
 
   ngOnInit() {
     // Conseguir controles
@@ -67,7 +70,7 @@ export class InformeControlesComponent implements OnInit {
             if (control.id == element.idcontrol) {
               let resultado = new Object;
               resultado['id'] = element.idr;
-              resultado['fecha'] = element.fecha;
+              resultado['fecha'] = this.formatFecha(element.fecha);
               resultado[control.nombre] = element.resultado;
               if (element.foto == 'true') {
                 resultado['foto'] = true;
@@ -102,5 +105,56 @@ export class InformeControlesComponent implements OnInit {
   cerrarFoto() {
     this.modal = false;
   }
+
+scroll(){
+  console.log("dateclicked");
+  this.empresasComponent.scrolldown();
+}
+excel(fecha){
+  console.log("send to excel");
+var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    //window.open(url,'_blank');
+    a.href = url;
+    
+    a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
+    a.click();
+}
+ConvertToCSV(controles,objArray){
+var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            var str = '';
+            var row = "";
+            row += "Fecha;"
+            for (var i = 0; i < cabecera.length; i++) {
+              row += cabecera[i] + ';';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            str += row + '\r\n';
+ 
+            for (var i = 0; i < array.length; i++) {
+                
+                var line =array[i].fecha + ";";
+
+              for (var x = 0; x < cabecera.length; x++) {
+                let columna = cabecera[x];
+                let resultado = array[i][cabecera[x]];
+              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+            }
+            line = line.slice(0,-1);
+                str += line + '\r\n';
+            }
+            return str;
+}
+formatFecha(fecha: Date):string{
+let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getUTCHours()+2)).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
+console.log(mifecha);
+  return mifecha;
+}
 
 }

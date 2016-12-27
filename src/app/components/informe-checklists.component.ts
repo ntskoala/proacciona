@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
+import { EmpresasComponent } from './empresas.component';
 import { URLS } from '../models/urls';
 import { Checklist } from '../models/checklist';
 import { ControlChecklist } from '../models/controlchecklist';
@@ -29,7 +30,7 @@ export class InformeChecklistsComponent implements OnInit{
   modal: boolean = false;
   fotoSrc: string;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent) {}
 
   ngOnInit() {
     // Conseguir checklists
@@ -98,7 +99,7 @@ export class InformeChecklistsComponent implements OnInit{
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
               this.resultado['id'] = resultado.idr;
-              this.resultado['fecha'] = resultado.fecha;
+              this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
               if (resultado.foto == 'true') this.resultado['foto'] = true;
               if (resultado.resultado == 'true') {
                 this.resultado['id' + resultado.idcontrolchecklist] = true;
@@ -127,5 +128,58 @@ export class InformeChecklistsComponent implements OnInit{
   cerrarFoto() {
     this.modal = false;
   }
+scroll(){
+  console.log("dateclicked");
+  this.empresasComponent.scrolldown();
+}
+
+
+excel(fecha){
+  console.log("send to excel");
+var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    //window.open(url,'_blank');
+    a.href = url;
+    a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
+    a.click();
+}
+ConvertToCSV(controles,objArray){
+var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            var str = '';
+            var row = "";
+            row += "Fecha;"
+            for (var i = 0; i < cabecera.length; i++) {
+              row += cabecera[i].nombre + ';descripcion;';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            str += row + '\r\n';
+ 
+            for (var i = 0; i < array.length; i++) {
+                
+                var line = array[i].fecha + ";";
+
+              for (var x = 0; x < cabecera.length; x++) {
+                let columna = cabecera[x].nombre;
+                let resultado = array[i][cabecera[x]];
+              line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
+              line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
+            }
+            line = line.slice(0,-1);
+                str += line + '\r\n';
+            }
+            return str;
+}
+formatFecha(fecha: Date):string{
+let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getUTCHours()+2)).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
+console.log(mifecha);
+  return mifecha;
+}
+
 
 }

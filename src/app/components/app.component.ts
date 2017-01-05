@@ -11,7 +11,7 @@ import '../assets/i18n/es.json';
 @Component({
   selector: 'app',
   template: `
-   <!--<navigation></navigation>-->
+   <navigation></navigation>
     <div class="container">
       <router-outlet></router-outlet>
     </div>

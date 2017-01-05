@@ -12,6 +12,7 @@ import { NavComponent } from './components/nav.component';
 import { LoginComponent } from './components/login.component';
 import { EmpresaComponent } from './components/empresa.component';
 import { EmpresasComponent } from './components/empresas.component';
+import { OpcionesPremium } from './components/empresasopcionespremium.component';
 import { SeleccionarEmpresaComponent } from './components/seleccionar-empresa.component';
 import { ListadoEmpresasComponent } from './components/listado-empresas.component';
 import { NuevaEmpresaComponent } from './components/nueva-empresa.component';
@@ -54,6 +55,7 @@ import { EmpresasService } from './services/empresas.service';
     LoginComponent,
     EmpresaComponent,
     EmpresasComponent,
+    OpcionesPremium,
     SeleccionarEmpresaComponent,
     ListadoEmpresasComponent,
     NuevaEmpresaComponent,

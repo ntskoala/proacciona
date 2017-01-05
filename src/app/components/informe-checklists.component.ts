@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { EmpresasComponent } from './empresas.component';
+
 import { URLS } from '../models/urls';
 import { Checklist } from '../models/checklist';
 import { ControlChecklist } from '../models/controlchecklist';
@@ -130,7 +131,9 @@ export class InformeChecklistsComponent implements OnInit{
   }
 scroll(){
   console.log("dateclicked");
+
   this.empresasComponent.scrolldown();
+
 }
 
 

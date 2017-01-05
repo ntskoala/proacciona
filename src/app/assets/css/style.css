@@ -183,6 +183,7 @@ seleccionar-empresa {
 
 .inputfile {
   opacity: 0;
+  width: 0px;
 }
 
 .inputlabel {

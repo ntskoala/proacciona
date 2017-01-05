@@ -1,0 +1,17 @@
+<div class="table">
+<div class="header-row">
+    <span class="header-cell">Opción</span>
+    <span class="header-cell">Estado</span>
+  </div>
+        <form class="row" *ngFor="let opcion of opcionespremium"
+        #actualizarCCLf="ngForm" (ngSubmit)="actualizarOpcion(opcion.nombre)">
+          <span class="cell">
+         {{opcion.nombre}}
+        </span>
+        <span class="cell">
+         <md-checkbox [disabled]="!empresasService.administrador"  [checked]="" (change)="actualizarOpcion(opcion.nombre)">
+        </md-checkbox>
+        </span>
+        </form>
+
+</div>

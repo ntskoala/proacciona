@@ -16,7 +16,7 @@ export class ListadoEmpresasComponent implements OnInit {
   @Output() empresaseleccionada: EventEmitter<Empresa>=new EventEmitter<Empresa>();
   subscription: Subscription;
   empresas: Empresa[] = [];
-  empresa: Empresa = new Empresa('Seleccionar empresa', '0', 0);
+  empresa: Empresa = new Empresa('Seleccionar empresa', '0', '0','0',0);
   formdata: FormData = new FormData();
 
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
@@ -35,6 +35,8 @@ export class ListadoEmpresasComponent implements OnInit {
             this.empresas.push(new Empresa(
               element.nombre,
               element.logo,
+              element.exportar_informes,
+              element.fichas_maquinaria,
               element.id
             ))
           }

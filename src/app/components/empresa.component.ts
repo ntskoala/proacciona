@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router'
 
 import { EmpresasService } from '../services/empresas.service';
@@ -15,6 +15,7 @@ import { EmpresasService } from '../services/empresas.service';
   `
 })
 export class EmpresaComponent implements OnInit {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   idEmpresa: number;
   constructor(private router: Router, private route: ActivatedRoute, private empresasService: EmpresasService) {}
   ngOnInit() {
@@ -28,4 +29,11 @@ export class EmpresaComponent implements OnInit {
     }
     this.empresasService.seleccionada = this.idEmpresa;
   }
+
+    scrolldown(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }                 
+    }
+
 }

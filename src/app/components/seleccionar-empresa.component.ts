@@ -19,6 +19,7 @@ export class SeleccionarEmpresaComponent {
   // empresa: Empresa = new Empresa('Seleccionar empresa', '0', 0);
    modal: Modal = new Modal();
   // formdata: FormData = new FormData();
+  public Premium: boolean;
 
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
@@ -69,5 +70,7 @@ export class SeleccionarEmpresaComponent {
       }
     )
   }
-
+premium(){
+  this.Premium = !this.Premium;
+}
 }

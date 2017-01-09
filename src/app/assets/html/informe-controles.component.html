@@ -18,7 +18,7 @@
     <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" (click)="excel(filtrarFechasForm.value)">
+    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="exportar_informes" (click)="excel(filtrarFechasForm.value)">
       <span class="material-icons">cloud_download</span>
     </button>                    
   </form>

@@ -6,7 +6,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { EmpresasService } from '../services/empresas.service';
 import { Servidor } from '../services/servidor.service';
 import { Empresa } from '../models/empresa';
+import { Opciones } from '../models/opciones';
+import { OpcionesEmpresa } from '../models/opcionesempresa';
 import { URLS } from '../models/urls';
+
 
 
 @Component({
@@ -17,7 +20,9 @@ import { URLS } from '../models/urls';
 export class OpcionesPremium implements OnInit {
   private subscription: Subscription;
   idEmpresa: number;
-  public opciones: Object[]=[{}];
+  public opciones: Opciones[]=[];
+  public opcionesempresa: number[] = [];
+
  // public opcionespremium: Object[] = [{"nombre":"Exportar informes","value":this.empresasService.empresa.exportar_informes},{"nombre":"Fichas Maquinaria","value":this.empresasService.empresa.fichas_maquinaria}];
   public estados =[{"Exportar informes":false},{"Fichas Maquinaria":true}];
   constructor(private router: Router, private route: ActivatedRoute, private empresasService: EmpresasService, private servidor: Servidor,) {}
@@ -34,7 +39,10 @@ export class OpcionesPremium implements OnInit {
   }
 
   setEmpresa(emp: Empresa | string){
-    let params = typeof(emp) == "string" ? emp : emp.id
+    this.empresasService.setOpciones(false);
+    this.getOpciones
+    let params = typeof(emp) == "string" ? emp : emp.id;
+    this.idEmpresa = typeof(emp) == "string" ? parseInt(emp): emp.id;
     let parametros = '&idempresa=' + params;
        // let parametros = '&idempresa=' + seleccionada.id; 
         this.servidor.getObjects(URLS.OPCIONES, parametros).subscribe(
@@ -44,22 +52,71 @@ export class OpcionesPremium implements OnInit {
               for (let element of response.data) {
                 this.opciones.push({"id":element.id,"nombre":element.opcion});
                 //this.guardar[element.id] = false;
+                this.getOpciones(parametros);
               }
             }
         });
-
   }
 
-    actualizarOpcion(opcion: string) {
-    // this.guardar[idControlchecklist] = false;
-    // let modControlchecklist = this.controlchecklists.find(controlchecklist => controlchecklist.id == idControlchecklist);
-    // let parametros = '?id=' +  idControlchecklist;
-    // this.servidor.putObject(URLS.CONTROLCHECKLISTS, parametros, modControlchecklist).subscribe(
-    //   response => {
-    //     if (response.success) {
-    //       console.log('Controlchecklist updated');
-    //     }
-    // });
+getOpciones(parametros){
+       // let parametros = '&idempresa=' + seleccionada.id; 
+        this.servidor.getObjects(URLS.OPCIONES_EMPRESA, parametros).subscribe(
+          response => {
+            this.opcionesempresa = [];
+            if (response.success && response.data) {
+              for (let element of response.data) {
+                this.opcionesempresa[element.idopcion] = parseInt(element.id);
+                switch (element.idopcion){
+                  case "1":
+                    this.empresasService.setOpciones(true);
+                    
+                  case "2":
+                    this.empresasService.setOpciones(true);
+                }
+                //this.guardar[element.id] = false;
+              }
+            }
+        },
+        error => {console.log(error)});
+}
+
+
+    actualizarOpcion(opcion: number) {
+      console.log(opcion);
+
+    let parametros = '?id=' + this.opcionesempresa[opcion];
+    if (this.opcionesempresa[opcion]) {
+      console.log('se borrará', opcion)
+      this.opcionesempresa[opcion] = 0;
+      this.servidor.deleteObject(URLS.OPCIONES_EMPRESA, parametros).subscribe(
+        response => {
+          if (response.success) {
+            console.log('opcion deleted')
+                 switch (opcion){
+                  case 1:
+                    this.empresasService.setOpciones(false);
+                  case 2:
+                    this.empresasService.setOpciones(false);
+                }
+          }
+      });
+    }
+    else {
+      console.log("se creará", opcion , this.idEmpresa)
+      let nuevaOpcion = new OpcionesEmpresa(0, opcion, this.idEmpresa);
+      this.servidor.postObject(URLS.OPCIONES_EMPRESA, nuevaOpcion).subscribe(
+        response => {
+          if (response.success) {
+            this.opcionesempresa[opcion] = response.id;
+                 switch (opcion){
+                  case 1:
+                    this.empresasService.setOpciones(true)
+                  case 2:
+                    this.empresasService.setOpciones(true)
+                }
+          }
+      });
+    }
   }
 
 }

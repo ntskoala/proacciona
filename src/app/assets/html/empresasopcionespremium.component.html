@@ -9,7 +9,7 @@
          {{opcion.nombre}}
         </span>
         <span class="cell">
-         <md-checkbox [disabled]="!empresasService.administrador"  [checked]="" (change)="actualizarOpcion(opcion.id)">
+         <md-checkbox [disabled]="!empresasService.administrador"  [checked]="opcionesempresa[opcion.id]" (change)="actualizarOpcion(opcion.id)">
         </md-checkbox>
         </span>
         </form>

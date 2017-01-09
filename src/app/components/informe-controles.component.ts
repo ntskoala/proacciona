@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { EmpresasComponent } from './empresas.component';
@@ -23,6 +22,7 @@ export class InformeControlesComponent implements OnInit {
   //fecha: Object = {"inicio":"2016-11-09","fin":"2016-12-12"};
   modal: boolean = false;
   fotoSrc: string;
+  exportar_informes: boolean =false;
 
   constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent) {}
 
@@ -30,6 +30,8 @@ export class InformeControlesComponent implements OnInit {
     // Conseguir controles
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
+    this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
+
   }
 
   getControles() {

@@ -5,6 +5,8 @@ let base = server + 'api/';
 export const URLS = {
   LOGIN: base + 'actions/login.php',
   EMPRESAS: base + 'empresas.php',
+  OPCIONES: base + 'opciones.php',
+  OPCIONES_EMPRESA: base + 'opcionesempresa.php',
   USUARIOS: base + 'usuarios.php',
   CONTROLES: base + 'controles.php',
   CHECKLISTS: base + 'checklist.php',

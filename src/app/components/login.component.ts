@@ -45,12 +45,16 @@ ngOnInit(){
               break;
             case 'Gerente':
               // Redirecciona a página de empresa
+              console.log("gerente");
               let idEmpresa = response.data[0].idempresa;
               this.empresasService.empresaActiva = idEmpresa;
-//              this.empresasService.empresaSeleccionada =idEmpresa;
-              this.router.navigate(['empresa', idEmpresa]);
+              
+              console.log(idEmpresa);
+//              this.router.navigate(['empresa', idEmpresa]);
+              this.router.navigate(['empresas']);
               break;
             default:
+
               // Se queda en login
               this.modal.titulo = 'Usuario sin permisos';
               this.modal.visible = true;

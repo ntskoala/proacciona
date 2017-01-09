@@ -10,6 +10,7 @@ export class EmpresasService {
   seleccionada: number = 0;
   administrador: boolean = false;
   empresaActiva: number;
+//  empresa: Empresa;
 
   // fuente del observable
   private empresaSeleccionadaFuente = new Subject<Empresa>();
@@ -22,6 +23,7 @@ export class EmpresasService {
   seleccionarEmpresa(empresa: Empresa) {
       console.log("####EMPRESA SELECCIONADA:",empresa);
       this.seleccionada = empresa.id;
+//      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
   }
 

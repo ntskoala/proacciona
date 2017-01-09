@@ -27,6 +27,7 @@ export class SeleccionarEmpresaComponent {
 
   selecciona(empresa: Empresa){
     this.empresasService.seleccionarEmpresa(empresa);
+    //console.log("informes",this.empresasService.empresa.exportar_informes);
   }
 
   checkBorrar() {

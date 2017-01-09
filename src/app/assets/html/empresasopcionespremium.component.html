@@ -3,13 +3,13 @@
     <span class="header-cell">Opción</span>
     <span class="header-cell">Estado</span>
   </div>
-        <form class="row" *ngFor="let opcion of opcionespremium"
-        #actualizarCCLf="ngForm" (ngSubmit)="actualizarOpcion(opcion.nombre)">
+        <form class="row" *ngFor="let opcion of opciones"
+        #actualizarCCLf="ngForm" (ngSubmit)="actualizarOpcion(opcion.id)">
           <span class="cell">
          {{opcion.nombre}}
         </span>
         <span class="cell">
-         <md-checkbox [disabled]="!empresasService.administrador"  [checked]="" (change)="actualizarOpcion(opcion.nombre)">
+         <md-checkbox [disabled]="!empresasService.administrador"  [checked]="" (change)="actualizarOpcion(opcion.id)">
         </md-checkbox>
         </span>
         </form>

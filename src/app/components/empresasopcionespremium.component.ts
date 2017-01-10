@@ -13,7 +13,7 @@ import { URLS } from '../models/urls';
 
 
 @Component({
-  selector: 'opciones-premium',
+  selector: 'tab-opciones',
   templateUrl: '../assets/html/empresasopcionespremium.component.html'
 })
 

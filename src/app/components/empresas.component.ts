@@ -30,8 +30,10 @@ export class EmpresasComponent implements OnInit {
       this.router.navigate(['login']);
     } else if (!this.empresasService.administrador) {
       // Si el usuario activo no es administrador, redirecciona a login
-      // sessionStorage.removeItem('token');
-      // this.router.navigate(['login']);
+      if (this.empresasService.empresaActiva == 0){
+       sessionStorage.removeItem('token');
+       this.router.navigate(['login']);
+      }
       this.empresa = new Empresa ('','','0','0', this.empresasService.empresaActiva);
       this.empresasService.seleccionarEmpresa(this.empresa);
       this.permiso = true;

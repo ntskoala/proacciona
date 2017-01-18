@@ -24,6 +24,7 @@ export class ListadoChecklistsComponent implements OnInit {
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
 ngOnInit(){
+ // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresaSeleccionada) this.loadChecklistList(this.empresaSeleccionada);
 }
 

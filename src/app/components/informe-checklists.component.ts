@@ -30,6 +30,7 @@ export class InformeChecklistsComponent implements OnInit{
   idrs: string[] = [];
   modal: boolean = false;
   fotoSrc: string;
+  exportar_informes: boolean =false;
 
   constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent) {}
 
@@ -37,9 +38,13 @@ export class InformeChecklistsComponent implements OnInit{
     // Conseguir checklists
     this.getChecklists();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getChecklists());
+    this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
   }
 
   getChecklists() {
+    this.tabla = [];
+    this.controlchecklists = [];
+    this.columnas = [];
         let parametros = '&idempresa=' + this.empresasService.seleccionada;
         // llamada al servidor para conseguir las checklists
         this.servidor.getObjects(URLS.CHECKLISTS, parametros).subscribe(
@@ -102,9 +107,10 @@ export class InformeChecklistsComponent implements OnInit{
               this.resultado['id'] = resultado.idr;
               this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
               if (resultado.foto == 'true') this.resultado['foto'] = true;
-              if (resultado.resultado == 'true') {
-                this.resultado['id' + resultado.idcontrolchecklist] = true;
-              }
+//              if (resultado.resultado == 'true') {
+//                this.resultado['id' + resultado.idcontrolchecklist] = true;
+                  this.resultado['id' + resultado.idcontrolchecklist] = resultado.resultado;
+//              }
               if (resultado.descripcion) {
                 this.resultado['id2' + resultado.idcontrolchecklist] = resultado.descripcion;
               }
@@ -170,7 +176,8 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
               for (var x = 0; x < cabecera.length; x++) {
                 let columna = cabecera[x].nombre;
                 let resultado = array[i][cabecera[x]];
-              line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
+              //line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
+              line += array[i][cabecera[x].id] +';';
               line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
             }
             line = line.slice(0,-1);

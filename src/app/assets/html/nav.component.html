@@ -2,7 +2,12 @@
   <div class="logo">
     <img src="../assets/images/logo.jpg" alt="Logo">
   </div>
+
   <div class="logo-empresa">
-    <img src="{{logoEmpresa}}" alt="Logo empresa" *ngIf="logoEmpresa">
+   <button class="profile" md-mini-fab color="accent" >
+        <span class="material-icons">account_circle</span>
+  </button>
+    <img src="{{logoEmpresa}}" alt="Logo empresa" (error)="this.src='./assets/img/pixel.png'" *ngIf="logoEmpresa">
   </div>
+
 </nav>

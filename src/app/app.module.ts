@@ -10,7 +10,6 @@ import { Http } from '@angular/http';
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { LoginComponent } from './components/login.component';
-import { EmpresaComponent } from './components/empresa.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/empresasopcionespremium.component';
 import { SeleccionarEmpresaComponent } from './components/seleccionar-empresa.component';
@@ -54,7 +53,6 @@ import { EmpresasService } from './services/empresas.service';
     AppComponent,
     NavComponent,
     LoginComponent,
-    EmpresaComponent,
     EmpresasComponent,
     OpcionesPremium,
     SeleccionarEmpresaComponent,

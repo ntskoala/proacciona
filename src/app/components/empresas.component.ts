@@ -6,16 +6,7 @@ import { Empresa } from '../models/empresa';
  
 @Component({
   selector: 'empresas',
-  template: `
-  <div #scrollMe style="overflow: scroll; height: xyz;">
-    <div class="empresas" *ngIf="permiso">
-      <seleccionar-empresa *ngIf="empresasService.administrador"></seleccionar-empresa>
-      <nueva-empresa *ngIf="empresasService.administrador"></nueva-empresa>
-      <gestion-tablas></gestion-tablas>
-      <gestion-informes></gestion-informes>
-    </div>
-    </div>
-  `
+  templateUrl: '../assets/html/empresas.component.html'
 })
 export class EmpresasComponent implements OnInit {
 @ViewChild('scrollMe') private myScrollContainer: ElementRef;

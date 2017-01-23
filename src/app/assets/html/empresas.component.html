@@ -1,0 +1,13 @@
+  <div class="panel">
+            <button md-mini-fab color="accent" >
+        <span class="material-icons">business</span>
+      </button>
+  </div>
+  <div #scrollMe style="overflow: scroll; height: xyz;" style="width:95%">
+    <div class="empresas" *ngIf="permiso">
+      <seleccionar-empresa *ngIf="empresasService.administrador"></seleccionar-empresa>
+      <nueva-empresa *ngIf="empresasService.administrador"></nueva-empresa>
+      <gestion-tablas></gestion-tablas>
+      <gestion-informes></gestion-informes>
+    </div>
+    </div>

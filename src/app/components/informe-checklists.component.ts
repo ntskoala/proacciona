@@ -96,7 +96,7 @@ export class InformeChecklistsComponent implements OnInit{
           for (let element of response.data) {
             let fecha = new Date(element.fecha);
               this.resultadoschecklist.push(new ResultadoChecklist(element.idr, element.idcontrolchecklist,
-                element.idchecklist, element.resultado, element.descripcion, new Date(element.fecha), element.foto, element.fotocontrol));
+                element.idchecklist,element.usuario, element.resultado, element.descripcion, new Date(element.fecha), element.foto, element.fotocontrol));
             if (this.idrs.indexOf(element.idr) == -1) this.idrs.push(element.idr);
           }
         }
@@ -105,6 +105,7 @@ export class InformeChecklistsComponent implements OnInit{
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
               this.resultado['id'] = resultado.idr;
+              this.resultado['usuario'] = resultado.usuario;
               this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
               if (resultado.foto == 'true') this.resultado['foto'] = true;
 //              if (resultado.resultado == 'true') {
@@ -161,7 +162,7 @@ var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             var str = '';
             var row = "";
-            row += "Fecha;"
+            row += "Usuario;Fecha;"
             for (var i = 0; i < cabecera.length; i++) {
               row += cabecera[i].nombre + ';descripcion;';
             }
@@ -171,7 +172,7 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
  
             for (var i = 0; i < array.length; i++) {
                 
-                var line = array[i].fecha + ";";
+                var line = array[i].usuario +";"+ array[i].fecha + ";";
 
               for (var x = 0; x < cabecera.length; x++) {
                 let columna = cabecera[x].nombre;

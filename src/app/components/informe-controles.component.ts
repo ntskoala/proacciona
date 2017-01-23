@@ -63,7 +63,7 @@ export class InformeControlesComponent implements OnInit {
         if (response.success && response.data) {
           for (let element of response.data) {
             let fecha = new Date(element.fecha);
-              this.resultadoscontrol.push(new ResultadoControl(element.idr, element.idcontrol,
+              this.resultadoscontrol.push(new ResultadoControl(element.idr, element.idcontrol,element.usuario,
                 parseInt(element.resultado), new Date(element.fecha), element.foto));
           }
         }
@@ -72,6 +72,7 @@ export class InformeControlesComponent implements OnInit {
             if (control.id == element.idcontrol) {
               let resultado = new Object;
               resultado['id'] = element.idr;
+              resultado['usuario'] = element.usuario;
               resultado['fecha'] = this.formatFecha(element.fecha);
               resultado[control.nombre] = element.resultado;
               if (element.foto == 'true') {
@@ -131,7 +132,7 @@ var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             var str = '';
             var row = "";
-            row += "Fecha;"
+            row += "Usuario;Fecha;"
             for (var i = 0; i < cabecera.length; i++) {
               row += cabecera[i] + ';';
             }
@@ -141,7 +142,7 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
  
             for (var i = 0; i < array.length; i++) {
                 
-                var line =array[i].fecha + ";";
+                var line =array[i].usuario+";"+array[i].fecha + ";";
 
               for (var x = 0; x < cabecera.length; x++) {
                 let columna = cabecera[x];

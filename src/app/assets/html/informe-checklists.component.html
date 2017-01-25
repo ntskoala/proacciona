@@ -22,8 +22,8 @@
 
 <div class="fechas">
   <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
-   <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio" (click)="scroll()"></ng2-datepicker>
-   <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin" (click)="scroll()"></ng2-datepicker>
+   <ng2-datepicker  type="date" name="inicio" [(ngModel)]="fecha.inicio" (click)="scroll()"></ng2-datepicker>
+   <ng2-datepicker  type="date" name="fin" [(ngModel)]="fecha.fin" (click)="scroll()"></ng2-datepicker>
     <!--<md-input type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio"></md-input>
     <md-input type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin"></md-input>-->
     <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
@@ -43,7 +43,11 @@
   </div>
   <div class="row" *ngFor="let resultado of tabla; let fila = index">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
-    <span class="cell">{{resultado.fecha}}</span>
+    <span class="cell">
+      <span id="user-link" class="material-icons">perm_identity</span>
+      <div id="usuario"><span>{{resultado.usuario}}</span></div>
+      {{resultado.fecha}}
+      </span>
     <span class="cell center" *ngIf="resultado.foto">
       <span class="foto-link material-icons" (click)="ventanaFoto(resultado.id,'checklist')">photo_camera</span>
     </span>
@@ -57,7 +61,7 @@
         
       <span id="{{fila}}-{{i}}" class="material-icons green" *ngIf="resultado[columna.id]=='true'">check</span>
       <span id="{{fila}}-{{i}}" class="material-icons red" *ngIf="resultado[columna.id]=='false'">close</span>
-      <span id="{{fila}}-{{i}}" class="material-icons" *ngIf="resultado[columna.id]=='na'">indeterminated_check_box</span>
+      <span id="{{fila}}-{{i}}" class="material-icons" *ngIf="resultado[columna.id]=='na'">offline_pin</span>
       <span id="{{fila}}-{{i}}" *ngIf="resultado[columna.id]!='false' && resultado[columna.id]!='true' && resultado[columna.id]!='na'">{{resultado[columna.id]}}</span>
     </span>
   </div>

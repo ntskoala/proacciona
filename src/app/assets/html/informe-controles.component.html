@@ -31,8 +31,12 @@
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna}}</span>
   </div>
   <div class="row" *ngFor="let resultado of tabla">
+
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
-    <span class="cell">{{resultado.fecha}}</span>
+    <span class="cell">
+          <span id="user-link" class="material-icons">perm_identity</span>
+      <div id="usuario"><span>{{resultado.usuario}}</span></div>      
+      {{resultado.fecha}}</span>
     <span class="cell center" *ngIf="resultado.foto">
       <span class="foto-link material-icons" (click)="ventanaFoto(resultado.id)">photo_camera</span>
     </span>

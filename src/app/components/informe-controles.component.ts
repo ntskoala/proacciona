@@ -64,7 +64,7 @@ export class InformeControlesComponent implements OnInit {
           for (let element of response.data) {
             let fecha = new Date(element.fecha);
               this.resultadoscontrol.push(new ResultadoControl(element.idr, element.idcontrol,
-                parseInt(element.resultado), new Date(element.fecha), element.foto));
+                parseFloat(element.resultado), new Date(element.fecha), element.foto));
           }
         }
         for (let element of this.resultadoscontrol) {

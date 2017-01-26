@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
+import { Router } from '@angular/router';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { URLS } from '../models/urls';
@@ -13,7 +13,7 @@ export class NavComponent implements OnInit{
   logoEmpresa: string;
   subscription: Subscription;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(private router: Router,private servidor: Servidor, private empresasService: EmpresasService) {}
 
   ngOnInit() {
 
@@ -28,6 +28,9 @@ export class NavComponent implements OnInit{
 
   }
 
-
+closeSession(){
+         sessionStorage.removeItem('token');
+       this.router.navigate(['login']);
+}
 
 }

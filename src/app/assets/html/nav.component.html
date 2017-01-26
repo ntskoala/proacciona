@@ -4,10 +4,16 @@
   </div>
 
   <div class="logo-empresa">
-   <button class="profile" md-mini-fab color="accent" >
+   <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
         <span class="material-icons">account_circle</span>
   </button>
-    <img src="{{logoEmpresa}}" alt="Logo empresa" (error)="this.src='./assets/img/pixel.png'" *ngIf="logoEmpresa">
+  <!--<md-menu positionX="after" positionY="below" #menu="mdMenu">
+  <button md-menu-item (click)="closeSession()">
+    <md-icon>account_circle</md-icon>
+    <span>Cerrar Session</span>
+  </button>
+</md-menu>-->
+    <img [src]="logoEmpresa" alt="Logo empresa" (error)="logoEmpresa='./assets/images/pixel.png'" *ngIf="logoEmpresa">
   </div>
 
 </nav>

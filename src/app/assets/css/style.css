@@ -168,7 +168,11 @@ select {
   display: flex;
   flex-wrap: wrap;
 }
-
+.homeimg{
+  width: 100%;
+  margin-top: -11px;
+  margin-left: 75px;
+}
 
 /* SeleccionarEmpresaComponent */
 seleccionar-empresa {
@@ -208,7 +212,7 @@ nueva-empresa {
 /* GestionTablasComponent */
 gestion-tablas {
   width: 100%;
-  padding-top: 4%;
+  /*padding-top: 4%;*/
 }
 
 .tab {
@@ -265,7 +269,7 @@ gestion-tablas {
 /* GestionInformesComponent */
 gestion-informes {
   width: 100%;
-  padding-top: 4%;
+  /*padding-top: 4%;*/
 }
 
 /* InformeControlesComponent */

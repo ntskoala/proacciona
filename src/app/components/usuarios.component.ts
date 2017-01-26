@@ -24,6 +24,8 @@ export class UsuariosComponent implements OnInit {
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
   ngOnInit() {
+    console.log (this.empresasService.seleccionada);
+    if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       emp => {
         this.setEmpresa(emp);

@@ -1,13 +1,32 @@
-  <div class="panel">
-            <button md-mini-fab color="accent" >
-        <span class="material-icons">business</span>
-      </button>
-  </div>
-  <div #scrollMe style="overflow: scroll; height: xyz;" style="width:95%">
+  <menu (selectedMenu)="setMenu($event)"></menu>
+  <!--<div #scrollMe style="overflow: scroll; height: xyz;" style="width:95%">-->
+    <div class="homeimg"*ngIf="selectedMenu=='home'">
+      <img  [src]="gallery" (error)="logoEmpresa='./assets/images/pixel.png'">
+      <div class="presentacion">Bienvenido a TFC PROACCIONA</div>
+      
+      <div class="introduccion"><div class="intro">
+        <md-card>
+          <md-card-title>
+            TFC Proacciona
+          </md-card-title>
+          <span  class="material-icons">restaurant</span>TFC es una herramienta de control alimentario, que te permite tener control absoluto sobre los procesos alimentarios en tu empresa.<br>
+          <span  class="material-icons">smartphone</span>Descarga la app tfc y registra digitalmente los valores importantes que debes controlar.<br>
+          <span  class="material-icons">settings</span>Configura usuarios, controles , checklists y permisos de los usuarios.<br>
+          <span  class="material-icons">show_chart</span>Visualiza informes, analiza la progresión, o descarga los datos a excel.<br>
+          <span class="material-icons">settings_applications</span>Lleva el control sobre el mantenimiento y reparaciones de tu maquinária.<br>
+          <span class="material-icons">supervisor_account</span>Lleva el control con facilidad de las fichas de personal, formaciones, etc.<br>
+        </md-card>
+        </div>
+        <div class="qr"><md-card><md-card-title>
+            TFC mobile
+          </md-card-title><img src="./assets/images/qr_tfc_android.jpg" ></md-card></div>
+      </div>
+    </div>
     <div class="empresas" *ngIf="permiso">
-      <seleccionar-empresa *ngIf="empresasService.administrador"></seleccionar-empresa>
-      <nueva-empresa *ngIf="empresasService.administrador"></nueva-empresa>
-      <gestion-tablas></gestion-tablas>
-      <gestion-informes></gestion-informes>
+      <seleccionar-empresa *ngIf="empresasService.administrador && selectedMenu=='empresas'"></seleccionar-empresa>
+      <nueva-empresa *ngIf="empresasService.administrador && selectedMenu=='empresas'"></nueva-empresa>
+    
+      <gestion-tablas *ngIf="selectedMenu=='settings'"></gestion-tablas>
+      <gestion-informes *ngIf="selectedMenu=='informes'"></gestion-informes>
     </div>
-    </div>
+    <!--</div>-->

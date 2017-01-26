@@ -9,6 +9,7 @@ import { Http } from '@angular/http';
 
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
+import { MenuComponent} from './components/menu.component';
 import { LoginComponent } from './components/login.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/empresasopcionespremium.component';
@@ -52,6 +53,7 @@ import { EmpresasService } from './services/empresas.service';
   declarations: [
     AppComponent,
     NavComponent,
+    MenuComponent,
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,

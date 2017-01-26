@@ -12,8 +12,8 @@ import { Modal } from '../models/modal';
   templateUrl: '../assets/html/login.component.html'
 })
 export class LoginComponent implements OnInit {
-  //usuario: Object = {"user":"","password":""};
-  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
+  usuario: Object = {"user":"","password":""};
+  //usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
   modal: Modal = new Modal();
 
   constructor(private servidor: Servidor, private router: Router,
@@ -48,6 +48,7 @@ ngOnInit(){
               console.log("gerente");
               let idEmpresa = response.data[0].idempresa;
               this.empresasService.empresaActiva = idEmpresa;
+              this.empresasService.administrador = false;
               
               console.log(idEmpresa);
 //              this.router.navigate(['empresa', idEmpresa]);

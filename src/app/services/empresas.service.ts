@@ -30,6 +30,7 @@ export class EmpresasService {
       this.seleccionada = empresa.id;
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
+      this.empresaActiva = empresa.id;
   }
 
   empresaCreada(empresa: Empresa) {
@@ -38,6 +39,7 @@ export class EmpresasService {
 
 setOpciones(valor: boolean){
   this.opcionesFuente.next(valor);
+  this.exportar = valor;
 }
 check_Opcion() {
      //   return this.exportar_informes.asObservable();     

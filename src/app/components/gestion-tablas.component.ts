@@ -9,7 +9,7 @@ export class GestionTablasComponent {
 
   constructor(private empresasService: EmpresasService) {}
 
-  tabs = [true, null, null, null]
+  tabs = [true, null, null, null,null]
   tabActivo: number = 0;
   
   cambiarTab(tab: number) {

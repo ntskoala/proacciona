@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-  width: 95%;
+  width: 100%;
   /*max-width: 1100px;
   margin: 40px auto;*/
 }
@@ -171,6 +171,7 @@ select {
 .login-form {
   max-width: 400px;
   margin: auto;
+  margin-top: 100px;
 }
 
 /* EmpresasComponent */
@@ -181,15 +182,34 @@ select {
   /*max-width: 1050px;*/
   left: 75px;
   margin: 25px;
+  width: calc(100% - 120px);
 }
-.panel{
-  position: fixed;
-  margin: 0;
-  float:left;
-  width: 50px;
-  height: 100%;
-  background-color: #999999;
-  z-index: 10;
+.homeimg{
+  width: 100%;
+  margin-top: -11px;
+  margin-left: 75px;
+}
+.homeimg img{
+  width: 100%;
+}
+.presentacion{
+    color: #fff;
+    font-size: 32px;
+    margin-left: 25px;
+    margin-top: -50px;
+}
+.introduccion{
+  margin-top: 100px;
+  margin-left: 10%;
+  width: 900px;
+  display: -webkit-flex;
+}
+.intro{
+  width: 722px;
+}
+.qr{
+  margin-left: 50px;
+  width: 258px;
 }
 
 /* SeleccionarEmpresaComponent */
@@ -229,7 +249,7 @@ nueva-empresa {
 /* GestionTablasComponent */
 gestion-tablas {
   width: 100%;
-  padding-top: 4%;
+ /* padding-top: 4%;*/
 }
 
 .tab {
@@ -286,7 +306,7 @@ gestion-tablas {
 /* GestionInformesComponent */
 gestion-informes {
   width: 100%;
-  padding-top: 4%;
+ /* padding-top: 4%;*/
 }
 
 /* InformeControlesComponent */

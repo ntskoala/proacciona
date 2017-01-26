@@ -25,6 +25,7 @@ export class ControlesComponent implements OnInit {
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
   ngOnInit() {
+    if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       emp => {
         this.setEmpresa(emp);

@@ -31,7 +31,6 @@ export class InformeControlesComponent implements OnInit {
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
-
   }
 
   getControles() {

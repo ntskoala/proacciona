@@ -43,5 +43,20 @@
   ">max": "Major que màxim",
   ">tol": "Major que tolerància",
   ">cri": "Major que crític",
-  "Resultado": "Resultat"
+  "Resultado": "Resultat",
+  "settings": "Configura usuaris, controls , checklists y permisos dels usuaris.",
+  "tfc1": "TFC es una eina de gestió del APPCC que permet millorar el control dels procesos de la empresa",
+  "tfcm1": "Descarrega la app tfc-proacciona i enregistra digitalment els controls dels plans del APPCC",
+  "tfc2": "Rep alertes immediatas dels valors fura de control i corregeix incidències amb eficàcia",
+  "tfc3": "Evalua la progressió i elabora informes de tendències per millorar la gestió de processos",
+  "tfc4": "Elimina els registres de paper de les zones crítiques de l'empresa",
+  "tfc5": "Com mánager, porta la monotorización i control immediato del que succeeix en planta, estiguis on estiguis",
+  "tfc6": "Permet el control de múltiples ubicacions per a franquícies o diversos centres de treball, des d'un sol backoffice",
+  "tfcm2": "Validació de resultats mitjançant foto per a cada registre",
+  "tfcm3": "Cada usuari té un accés únic i restringit als controls assignats",
+  "tfcm4": "Tots els usuaris poden usar un únic dispositiu",
+  "informes": "Visualitza informes, analitza la progressió, o descarrega les dades en excel.",
+  "maquinaria": "Porta el control sobre el manteniment i reparacions de la teva maquinária.",
+  "personal": "Porta el control amb facilitat de les fitxes de personal, formacions, etc.",
+  "bienvenido": "Benvingut a TFC PROACCIONA"
 }

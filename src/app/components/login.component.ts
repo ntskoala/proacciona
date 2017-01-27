@@ -26,6 +26,8 @@ ngOnInit(){
 
   login(usuario) {
     this.empresasService.idioma = usuario.idioma;
+     this.translate.use(usuario.idioma);
+    console.log ("idioma:", usuario.idioma);
     // Parámetros
     let param = '?user=' + usuario.user + '&password=' + usuario.password; 
     this.servidor.login(URLS.LOGIN, param).subscribe(

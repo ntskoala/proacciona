@@ -1,0 +1,26 @@
+  Selecciona maquina<br>
+  <form>
+    <select (change)="seleccionarMaquina($event.target.value)">
+      <option *ngFor="let maquina of maquinas" [value]="maquina.id">
+        {{maquina.nombre}}
+      </option>
+    </select>
+  </form>
+<button *ngIf="empresasService.administrador" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
+
+<!-- Nueva maquina -->
+<div *ngIf="empresasService.administrador" class="nueva-maquina">
+  <h2>{{'Nueva' | translate}} maquina</h2>
+  <div class="table">
+    <form class="row" (ngSubmit)="nuevaMaquina(newMachine.value)" #newMachine="ngForm">
+      <span class="cell">
+        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="novaMaquina.nombre" name="nombremaquina">
+      </span>
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!newMachine.form.valid" type="submit">
+          <span class="material-icons">add</span>
+        </button>
+      </span>
+    </form>
+  </div>
+</div>

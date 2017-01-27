@@ -1,9 +1,12 @@
+  <!--<alertas></alertas>-->
   <menu (selectedMenu)="setMenu($event)"></menu>
   <!--<div #scrollMe style="overflow: scroll; height: xyz;" style="width:95%">-->
     <div class="homeimg"*ngIf="selectedMenu=='home'">
       <img  [src]="gallery" (error)="logoEmpresa='./assets/images/pixel.png'">
       <div class="presentacion">{{'bienvenido' | translate}}</div>
-    
+      <!--<div>
+        <informe-periodicidad></informe-periodicidad>
+      </div>-->
       <div class="introduccion"><div class="intro">
         <md-card>
           <md-card-title>
@@ -43,5 +46,7 @@
     
       <gestion-tablas *ngIf="selectedMenu=='settings'"></gestion-tablas>
       <gestion-informes *ngIf="selectedMenu=='informes'"></gestion-informes>
+      <maquinaria *ngIf="selectedMenu=='maquinaria'"></maquinaria>
+      <!--<fichas-personal *ngIf="selectedMenu=='personal'"></fichas-personal>-->
     </div>
     <!--</div>-->

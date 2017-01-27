@@ -17,6 +17,7 @@ export const URLS = {
   RESULTADOS_CHECKLIST: base + 'resultadoschecklist.php',
   PERIODICIDAD_CONTROL: base + 'periodicidadcontrol.php',
   PERIODICIDAD_CHECKLIST: base + 'periodicidadchecklist.php',
+  MAQUINAS: base +'maquinaria.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',
   FOTOS: server +'controles/',

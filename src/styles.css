@@ -267,6 +267,11 @@ nueva-empresa {
   padding-left: 2%;
 }
 
+/* FichasMaquinariaComponent */
+fichas-maquinaria{
+  width: 100%;
+}
+
 /* GestionTablasComponent */
 gestion-tablas {
   width: 100%;

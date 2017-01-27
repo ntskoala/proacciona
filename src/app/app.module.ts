@@ -10,6 +10,7 @@ import { Http } from '@angular/http';
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
+import { AlertasComponent} from './components/alertas.component';
 import { LoginComponent } from './components/login.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/empresasopcionespremium.component';
@@ -26,6 +27,9 @@ import { PermisosComponent } from './components/permisos.component';
 import { InformeControlesComponent } from './components/informe-controles.component';
 import { InformeChecklistsComponent } from './components/informe-checklists.component';
 import { InformePeriodicidadComponent } from './components/informe-periodicidad.component';
+import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
+import { FichaMaquinaComponent } from './components/maquinaria/ficha-maquina.component';
+import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquinas.component';
 import { ModalComponent } from './components/modal.component';
 import { PageNotFoundComponent } from './components/404.component';
 
@@ -45,7 +49,7 @@ import { EmpresasService } from './services/empresas.service';
     TranslateModule.forRoot({
       provide: TranslateLoader,
       //useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
-       useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+       useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
       deps: [Http]
     }),
     routing
@@ -54,6 +58,7 @@ import { EmpresasService } from './services/empresas.service';
     AppComponent,
     NavComponent,
     MenuComponent,
+    AlertasComponent,
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,
@@ -70,6 +75,9 @@ import { EmpresasService } from './services/empresas.service';
     InformeControlesComponent,
     InformeChecklistsComponent,
     InformePeriodicidadComponent,
+    MaquinariaComponent,
+    FichaMaquinaComponent,
+    ListadoMaquinasComponent,
     ModalComponent,
     PageNotFoundComponent
   ],

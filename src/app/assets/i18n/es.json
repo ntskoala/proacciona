@@ -58,5 +58,10 @@
   "informes": "Visualiza informes, analiza la progresión, o descarga los datos en excel.",
   "maquinaria": "Lleva el control sobre el mantenimiento y reparaciones de tu maquinária.",
   "personal": "Lleva el control con facilidad de las fichas de personal, formaciones, etc.",
-  "bienvenido": "Bienvenido a TFC PROACCIONA"
+  "bienvenido": "Bienvenido a TFC PROACCIONA",
+  "maquinas": {
+    "maquinaria": "Maquinaria",
+    "maquinas": "maquinas",
+    "mantenimiento": "mantenimiento"
+  }
 }

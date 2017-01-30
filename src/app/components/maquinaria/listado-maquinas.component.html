@@ -1,3 +1,4 @@
+<div class="selector">
   Selecciona maquina<br>
   <form>
     <select (change)="seleccionarMaquina($event.target.value)">
@@ -7,7 +8,8 @@
     </select>
   </form>
 <button *ngIf="empresasService.administrador" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
-
+</div>
+<div class="nueva">
 <!-- Nueva maquina -->
 <div *ngIf="empresasService.administrador" class="nueva-maquina">
   <h2>{{'Nueva' | translate}} maquina</h2>
@@ -23,4 +25,5 @@
       </span>
     </form>
   </div>
+</div>
 </div>

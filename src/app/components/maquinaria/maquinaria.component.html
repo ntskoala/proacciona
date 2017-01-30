@@ -30,8 +30,8 @@
     </md-card-title>
  <md-card-subtitle>
    <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)"></listado-maquinas>
-
- </md-card-subtitle>   
+ </md-card-subtitle> 
+ <div class="contenido">
 <md-tab-group>
   <md-tab label="{{'maquinas.maquinaria' | translate}}"><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <md-tab label="{{'calendarios' | translate}}">{{"calendarios" | translate}}</md-tab>
@@ -40,4 +40,5 @@
   <md-tab label="{{'piezas' | translate}}">{{"piezas" | translate}}</md-tab>
 
 </md-tab-group>
+ </div>
   </md-card>

@@ -267,10 +267,7 @@ nueva-empresa {
   padding-left: 2%;
 }
 
-/* FichasMaquinariaComponent */
-fichas-maquinaria{
-  width: 100%;
-}
+
 
 /* GestionTablasComponent */
 gestion-tablas {
@@ -514,4 +511,8 @@ md-input {
 button[md-mini-fab] {
   width: 35px;
   height: 35px;
+}
+
+md-grid-tile-header{
+  background: #ffd740 !important;
 }

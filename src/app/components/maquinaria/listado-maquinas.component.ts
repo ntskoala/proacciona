@@ -11,7 +11,8 @@ import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'listado-maquinas',
-  templateUrl: './listado-maquinas.component.html'
+  templateUrl: './listado-maquinas.component.html',
+  styleUrls:['./listado-maquinas.css']
 })
 export class ListadoMaquinasComponent implements OnInit {
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
@@ -41,7 +42,7 @@ ngOnInit(){
             this.maquinas.push(this.maquina1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa));
+                this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.imgfunciones, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
               }
             }
         });
@@ -60,4 +61,7 @@ ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 
   }
 
+nuevaMaquina(maq){
+console.log(maq)
+}
 }

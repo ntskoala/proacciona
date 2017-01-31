@@ -12,7 +12,7 @@ export class Maquina {
     public potencia?: string, 	
     public medidas?: string, 	
     public funciones?: string, 	
-    public imgfunciones?: string, 	
+    public doc?: string, 	
     public regimen_trabajo?: string, 	
     public ciclo_productivo?: string, 	
     public material?: string, 	

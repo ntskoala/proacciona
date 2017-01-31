@@ -30,6 +30,7 @@ import { InformePeriodicidadComponent } from './components/informe-periodicidad.
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
 import { FichaMaquinaComponent } from './components/maquinaria/ficha-maquina.component';
 import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquinas.component';
+import { MantenimientosComponent } from './components/maquinaria/mantenimientos.component';
 import { ModalComponent } from './components/modal.component';
 import { PageNotFoundComponent } from './components/404.component';
 
@@ -78,6 +79,7 @@ import { EmpresasService } from './services/empresas.service';
     MaquinariaComponent,
     FichaMaquinaComponent,
     ListadoMaquinasComponent,
+    MantenimientosComponent,
     ModalComponent,
     PageNotFoundComponent
   ],

@@ -35,7 +35,7 @@
 <md-tab-group>
   <md-tab label="{{'maquinas.maquinaria' | translate}}"><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <md-tab label="{{'calendarios' | translate}}">{{"calendarios" | translate}}</md-tab>
-  <md-tab label="{{'mantenimientos' | translate}}">{{"mantenimientos" | translate}}</md-tab>
+  <md-tab label="{{'mantenimientos' | translate}}"><mantenimientos  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>
   <md-tab label="{{'calibraciones' | translate}}">{{"calibraciones" | translate}}</md-tab>
   <md-tab label="{{'piezas' | translate}}">{{"piezas" | translate}}</md-tab>
 

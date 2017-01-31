@@ -16,7 +16,7 @@
   <div class="table">
     <form class="row" (ngSubmit)="nuevaMaquina(newMachine.value)" #newMachine="ngForm">
       <span class="cell">
-        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="novaMaquina.nombre" name="nombremaquina">
+        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="novaMaquina.nombre" name="nombre">
       </span>
       <span class="cell">
         <button md-mini-fab color="accent" [disabled]="!newMachine.form.valid" type="submit">

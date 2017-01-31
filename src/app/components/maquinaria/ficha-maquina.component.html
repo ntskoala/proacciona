@@ -1,21 +1,115 @@
-{{maquina.nombre}}
 
-<md-grid-list cols="3">
+<form (ngSubmit)="udateMaquina(myMachine.value)" #myMachine="ngForm">
+<md-grid-list cols="3" rowHeight="65px">
   <md-grid-tile>
-      <md-grid-tile-header>{{maquina.id}}
+      <md-grid-tile-header>{{"nombre" | translate}}
       </md-grid-tile-header>
-      {{maquina.nombre}}<br>
-      {{maquina.nombre}}
+       <input md-input class="campo" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="maquina.nombre" name="nombre">
       </md-grid-tile>
+
   <md-grid-tile>
-      <md-grid-tile-header>{{maquina.nombre}}
+      <md-grid-tile-header>{{"ubicacion" | translate}}
       </md-grid-tile-header>
-      {{maquina.nombre}}<br>
-      {{maquina.nombre}}
+       <input md-input  class="campo" [placeholder]="'ubicacion' | translate" type="text" [(ngModel)]="maquina.ubicacion" name="ubicacion">
       </md-grid-tile>
-  <md-grid-tile>{{maquina.idempresa}}</md-grid-tile>
-<md-grid-tile>{{maquina.id}}</md-grid-tile>
-  <md-grid-tile>{{maquina.nombre}}</md-grid-tile>
-  <md-grid-tile><md-grid-tile-footer>{{maquina.idempresa}}</md-grid-tile-footer></md-grid-tile>
-  
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"fecha" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'fecha' | translate" type="date" [(ngModel)]="maquina.fecha_adquisicion" name="fecha_adquisicion">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"num serie" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'numserie' | translate" type="text" [(ngModel)]="maquina.numserie" name="numserie">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"fabricante" | translate}}
+      </md-grid-tile-header>
+       <input  md-input class="campo" [placeholder]="'fabricante' | translate" type="text" [(ngModel)]="maquina.fabricante" name="fabricante">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"modelo" | translate}}
+      </md-grid-tile-header>
+       <input  md-input class="campo" [placeholder]="'modelo' | translate" type="text" [(ngModel)]="maquina.modelo" name="modelo">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"codigo_interno" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'codigo_interno' | translate" type="text" [(ngModel)]="maquina.codigo_interno" name="codigo_interno">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"potencia" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'potencia' | translate" type="text" [(ngModel)]="maquina.potencia" name="potencia">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"medidas" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'medidas' | translate" type="text" [(ngModel)]="maquina.medidas" name="medidas">
+      </md-grid-tile>
+
+
+   <md-grid-tile [colspan]="3" [rowspan]="2">
+      <md-grid-tile-header>{{"funciones" | translate}}
+      </md-grid-tile-header>
+       <textarea class="campo fullsize" [placeholder]="'funciones' | translate" type="text" [(ngModel)]="maquina.funciones" name="funciones"></textarea>
+            <span class="cell">
+            <label class="inputlabel full-width" for="doc">{{'pdf ->' | translate}}</label>
+      <input id="doc" class="inputfile" type="file" (change)="uploadFunciones($event)"/>
+
+        <button md-mini-fab color="accent" style="margin-top:7px" [disabled]="0==1" (click)="openDoc(maquina.doc)">
+          <span class="material-icons">picture_as_pdf</span>
+        </button>        
+      </span>
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"regimen_trabajo" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'regimen_trabajo' | translate" type="text" [(ngModel)]="maquina.regimen_trabajo" name="regimen_trabajo">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"ciclo_productivo" | translate}}
+      </md-grid-tile-header>
+       <input  md-input class="campo" [placeholder]="'ciclo_productivo' | translate" type="text" [(ngModel)]="maquina.ciclo_productivo" name="ciclo_productivo">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"material" | translate}}
+      </md-grid-tile-header>
+       <input  md-input class="campo" [placeholder]="'material' | translate" type="text" [(ngModel)]="maquina.material" name="material">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"liquido_refrigerante" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'liquido_refrigerante' | translate" type="text" [(ngModel)]="maquina.liquido_refrigerante" name="liquido_refrigerante">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"modo_trabajo" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'modo_trabajo' | translate" type="text" [(ngModel)]="maquina.modo_trabajo" name="modo_trabajo">
+      </md-grid-tile>
+
+  <md-grid-tile>
+      <md-grid-tile-header>{{"lubricacion" | translate}}
+      </md-grid-tile-header>
+       <input md-input  class="campo" [placeholder]="'lubricacion' | translate" type="text" [(ngModel)]="maquina.lubricacion" name="lubricacion">
+      </md-grid-tile>
 </md-grid-list>
+
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!myMachine.form.valid" type="submit">
+          <span class="material-icons">save</span>
+        </button>
+      </span>
+</form>

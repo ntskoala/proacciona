@@ -42,7 +42,7 @@ ngOnInit(){
             this.maquinas.push(this.maquina1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.imgfunciones, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
+                this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.doc, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
               }
             }
         });
@@ -61,7 +61,21 @@ ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 
   }
 
-nuevaMaquina(maq){
-console.log(maq)
+nuevaMaquina(maq: Maquina){
+console.log(maq);
+maq.idempresa = this.empresasService.seleccionada;
+    this.servidor.postObject(URLS.MAQUINAS, maq).subscribe(
+      response => {
+        if (response.success) {
+          maq.id = response.id;
+          this.maquinas.push(maq);
+          this.novaMaquina = new Maquina(0,'',0);;
+        }
+    });
+}
+
+
+eliminaMaquina(){
+  console.log('maquina:')
 }
 }

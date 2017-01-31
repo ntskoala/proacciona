@@ -1,0 +1,28 @@
+
+.campo{
+  background-color: #fff9c4;
+  border: 1px solid #fbc02d;
+  margin-top: 28px;
+}
+.fullsize{
+    width: calc(100% - 20px);
+    height: calc(100% - 50px);
+    margin-top: 25px;
+}
+md-grid-tile-header{
+    height: 25px;
+    color: #000;
+}
+
+#doc{
+    width: 0.1px;
+    opacity: 0;
+}
+
+.inputlabel {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-image: ('./assets/images/keyboard_arrow_down.svg');
+}

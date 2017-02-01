@@ -1,0 +1,67 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<div class="table">
+  <form *ngIf="empresasService.administrador" class="row" #creaForm="ngForm" (ngSubmit)="crearItem()">
+    <input type="hidden" [(ngModel)]="nuevoPieza.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
+    </span>
+
+    <span class="cell">
+      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.cantidad" name="cantidad">
+    </span>
+    <span class="cell">
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">Pieza</span>
+    <span class="header-cell">cantidad</span>
+    <span class="header-cell">Doc</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row" #actualizaForm="ngForm" (ngSubmit)="actualizarItem(actualizaForm.value)" *ngFor="let pieza of piezas">
+    <input type="hidden" [(ngModel)]="pieza.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="pieza.nombre" name="nombre" (keyup)="modificarItem(pieza.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
+    </span>
+    <span class="cell">
+      
+            <label *ngIf="empresasService.administrador" class="inputlabel full-width" for="doc">{{'pdf ->' | translate}}</label>
+      <input *ngIf="empresasService.administrador" id="doc" class="inputfile" type="file" (change)="uploadImg($event, pieza.id)"/>
+
+      <span class="foto-link material-icons" *ngIf="pieza.doc" (click)="ventanaFoto(pieza,'maquina_piezas')">photo_camera</span>
+          <span class="material-icons">picture_as_pdf</span>
+
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>

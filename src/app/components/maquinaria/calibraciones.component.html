@@ -1,0 +1,84 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<div class="table">
+  <form *ngIf="empresasService.administrador" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+    <input type="hidden" [(ngModel)]="nuevoCalibracion.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
+    </span>
+    <span class="cell">
+        <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoCalibracion.periodicidad" name="periodicidad">
+    </span>
+    <span class="cell">
+      <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo_periodo" name="tipo_periodo">
+        <option value="Día">{{'Día' | translate}}</option>
+        <option value="Semana">{{'Semana' | translate}}</option>
+        <option>Mes</option>
+        <option value="Año">{{'Año' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">Mantenimiento</span>
+    <span class="header-cell">tipo</span>
+    <span class="header-cell">periodicidad</span>
+    <span class="header-cell">{{'Periodo' | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value)" *ngFor="let calibracion of calibraciones">
+    <input type="hidden" [(ngModel)]="calibracion.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
+    </span>
+    <span class="cell">
+      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="calibracion.periodicidad" name="periodicidad" (keyup)="modificarMantenimiento(calibracion.id)">
+    </span>
+    <span class="cell">
+      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="calibracion.tipo_periodo" name="tipo_periodo" (change)="modificarMantenimiento(calibracion.id)">
+        <option value="Dia">{{'Día' | translate}}</option>
+        <option value="Semana">{{'Semana' | translate}}</option>
+        <option value="Mes">Mes</option>
+        <option value="Año">{{'Año' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(calibracion.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[calibracion.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>

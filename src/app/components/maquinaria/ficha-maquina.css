@@ -15,14 +15,16 @@ md-grid-tile-header{
 }
 
 #doc{
-    width: 0.1px;
+    width: 0px;
     opacity: 0;
 }
 
 .inputlabel {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
+    margin-top: 10px;
+    margin-left: 5px;
+    display: block;
+    width: 40px;
+    height:40px;
     cursor: pointer;
-    background-image: ('./assets/images/keyboard_arrow_down.svg');
+    background-image: url('./assets/images/upload.png');
 }

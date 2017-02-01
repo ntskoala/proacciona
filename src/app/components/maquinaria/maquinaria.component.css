@@ -4,10 +4,8 @@
   height: 100px;
   background-color: #336699;
 }
-/* FichasMaquinariaComponent */
-maquinaria{
-  width: 100%;
-}
+
+
 .contenido{
   display:block;
   clear:both;
@@ -19,4 +17,10 @@ maquinaria{
 .campo{
   background-color: #fff9c4;
   border: 1px solid #fbc02d;
+}
+
+.space{
+  display:block;
+  height: 30px;
+  width: 100%;
 }

@@ -18,7 +18,10 @@ export const URLS = {
   PERIODICIDAD_CONTROL: base + 'periodicidadcontrol.php',
   PERIODICIDAD_CHECKLIST: base + 'periodicidadchecklist.php',
   MAQUINAS: base +'maquinaria.php',
+  CALENDARIOS: base + 'calendarios.php',
   MANTENIMIENTOS: base + 'mantenimientos.php',
+  CALIBRACIONES: base+ 'calibraciones.php',
+  PIEZAS: base + 'piezas.php',
   UPLOAD_DOCS: base + 'uploads.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',

@@ -28,5 +28,4 @@ export const URLS = {
   FOTOS: server +'controles/',
   LOGOS: server + 'logos/',
   DOCS: server + 'docs/'
-
 }

@@ -24,3 +24,8 @@
   height: 30px;
   width: 100%;
 }
+
+.tabs{
+  min-height: 430px;
+    display: flex;
+}

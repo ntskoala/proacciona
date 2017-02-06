@@ -5,6 +5,11 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { DatePickerModule } from 'ng2-datepicker';
+import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
+import {CalendarModule} from 'primeng/primeng';
+import {ScheduleModule} from 'primeng/primeng';
+import {DialogModule} from 'primeng/primeng';
+import {MomentModule} from 'angular2-moment';
 import { Http } from '@angular/http';
 
 import { AppComponent } from './components/app.component';
@@ -33,8 +38,11 @@ import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquin
 import { CalendariosComponent } from './components/maquinaria/calendarios.component';
 import { MantenimientosComponent } from './components/maquinaria/mantenimientos.component';
 import { CalibracionesComponent } from './components/maquinaria/calibraciones.component';
+import { MantemientosRealizados } from './components/maquinaria/mantenimientos-realizados.component';
+import { CalibracionesRealizadas } from './components/maquinaria/calibraciones-realizadas.component';
 import { PiezasComponent } from './components/maquinaria/piezas.component';
 import { ModalComponent } from './components/modal.component';
+import {PeriodicidadComponent} from './components/programadorfechas/periodicidad.component';
 import { PageNotFoundComponent } from './components/404.component';
 
 import { routing } from './app.routing';
@@ -48,6 +56,10 @@ import { EmpresasService } from './services/empresas.service';
     FormsModule,
     HttpModule,
     JsonpModule,
+    MomentModule,
+    ScheduleModule,
+    CalendarModule,
+    DialogModule,
     MaterialModule.forRoot(),
     DatePickerModule,
     TranslateModule.forRoot({
@@ -60,6 +72,7 @@ import { EmpresasService } from './services/empresas.service';
   ],
   declarations: [
     AppComponent,
+    CalendarComponent,
     NavComponent,
     MenuComponent,
     AlertasComponent,
@@ -87,6 +100,7 @@ import { EmpresasService } from './services/empresas.service';
     CalibracionesComponent,
     PiezasComponent,
     ModalComponent,
+    PeriodicidadComponent,
     PageNotFoundComponent
   ],
   providers: [

@@ -1,14 +1,58 @@
-<md-grid-list cols="4" rowHeight="35px" *ngFor="let mes of meses">
-  <md-grid-tile class="col1"
-      [colspan]="1"
-      [rowspan]="1"
-      [style.background]="grey">
-    {{mes}}
-  </md-grid-tile>
-  <md-grid-tile>
-  </md-grid-tile>
-    <md-grid-tile>
-  </md-grid-tile>
-    <md-grid-tile>
-  </md-grid-tile>
-</md-grid-list>
+
+<p-schedule [events]="events" [header]="headerCalendar"  [locale]="es" [contentHeight]="600" [eventLimit]="4" [editable]="true"
+ dateFormat="dd-mm-yy"
+ (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+
+
+
+
+ <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimiento">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">Title</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.maquina" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">fecha prevista</label></div>
+            <div class="ui-grid-col-8"><input id="start"  [(ngModel)]="mantenimiento.fecha_prevista" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">fecha</label></div>
+            <div class="ui-grid-col-8"><input id="start"  [(ngModel)]="mantenimiento.fecha"  /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">elemento</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.elemento" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">descripcion</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.descripcion" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">causa</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.causa" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">tipo</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.tipo" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">preventivo/correctivo</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.correctivo" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">usuario</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.usuario" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">responsable</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.responsable" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
+            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+        </div>
+    </p-footer>
+</p-dialog>

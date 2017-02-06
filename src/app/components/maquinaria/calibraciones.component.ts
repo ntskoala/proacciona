@@ -7,23 +7,35 @@ import { Empresa } from '../../models/empresa';
 import { CalibracionesMaquina } from '../../models/calibracionesmaquina';
  import { Maquina } from '../../models/maquina';
  import { Modal } from '../../models/modal';
+ import { Usuario } from '../../models/usuario';
 @Component({
   selector: 'calibraciones',
   templateUrl: './calibraciones.component.html'
 })
 export class CalibracionesComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
+public nuevaFecha: Date;
 public calibraciones: CalibracionesMaquina[] =[]; 
-public nuevoCalibracion: CalibracionesMaquina = new CalibracionesMaquina(0,0,'','');
+public nuevoCalibracion: CalibracionesMaquina = new CalibracionesMaquina(0,0,'',this.nuevaFecha);
 public guardar =[];
 public idBorrar;
 public modal2: boolean= false;
+public es:any;
+usuarios: Usuario[] = [];
   modal: Modal = new Modal();
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
+         this.es = {
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+            firstDayOfWeek: 1
+        }; 
     }
 
 ngOnChanges(){
@@ -38,7 +50,7 @@ ngOnChanges(){
             this.calibraciones = [];
             if (response.success && response.data) {
               for (let element of response.data) {
-                this.calibraciones.push(new CalibracionesMaquina(element.id, element.idmaquina, element.nombre, element.tipo, element.periodicidad,
+                this.calibraciones.push(new CalibracionesMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
                   element.tipo_periodo, element.doc));
                 this.guardar[element.id] = false;
               }
@@ -67,7 +79,7 @@ ngOnChanges(){
         if (response.success) {
           this.nuevoCalibracion.id = response.id;
           this.calibraciones.push(this.nuevoCalibracion);
-          this.nuevoCalibracion = new CalibracionesMaquina(0,0,'');
+          this.nuevoCalibracion = new CalibracionesMaquina(0,0,'',this.nuevaFecha);
         }
     });
   }
@@ -96,5 +108,27 @@ ngOnChanges(){
       });
     }
   }
+
+
+
+
+  setUsuarios() {
+    
+    let parametros = '&idempresa=' + this.empresasService.seleccionada;
+    // llamada al servidor para conseguir los usuarios
+    this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
+      response => {
+        this.usuarios = [];
+        if (response.success && response.data) {
+          for (let element of response.data) {
+            this.usuarios.push(new Usuario(element.id, element.usuario, element.password,
+              element.tipouser, element.email, element.idempresa));
+            this.guardar[element.id] = false;
+          }
+        }
+    });
+    
+  }
+
 
 }

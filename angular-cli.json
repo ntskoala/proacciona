@@ -15,9 +15,13 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

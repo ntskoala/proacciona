@@ -16,6 +16,7 @@ import { Modal } from '../../models/modal';
 })
 export class ListadoMaquinasComponent implements OnInit {
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
+  @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   private subscription: Subscription;
   maquinaActiva: number = 0;
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
@@ -44,6 +45,7 @@ ngOnInit(){
               for (let element of response.data) {
                 this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.doc, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
               }
+              this.listaMaquinas.emit(this.maquinas);
             }
         });
    }

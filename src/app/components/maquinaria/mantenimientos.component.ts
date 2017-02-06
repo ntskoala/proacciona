@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -14,6 +15,9 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 })
 export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
+moment: any;
+  date: DateModel[]=[];
+  options: DatePickerOptions;
 public mantenimientos: MantenimientosMaquina[] =[]; 
 public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0,'','');
 public guardar =[];
@@ -28,6 +32,7 @@ public idBorrar;
 
 ngOnChanges(){
     this.setMantenimientos();
+
 }
   setMantenimientos(){
     let params = this.maquina.id;
@@ -36,22 +41,34 @@ ngOnChanges(){
         this.servidor.getObjects(URLS.MANTENIMIENTOS, parametros).subscribe(
           response => {
             this.mantenimientos = [];
+            let i=0;
+            
+            this.moment = Date();
             if (response.success && response.data) {
               for (let element of response.data) {
-                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre, element.tipo, element.periodicidad,
+                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,element.fecha, element.tipo, element.periodicidad,
                   element.tipoperiodo, element.doc));
                 this.guardar[element.id] = false;
+                this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
+                i++;
               }
+            let widz = 430 + (this.mantenimientos.length*50);
+            if ( document.getElementById("testid") !== null)
+            document.getElementById("testid").style.minHeight= widz+"px";
             }
         });
   }
 
-    modificarMantenimiento(idMantenimiento: number) {
-    this.guardar[idMantenimiento] = true;
-  }
- actualizarMantenimiento(mantenimiento: MantenimientosMaquina) {
-    this.guardar[mantenimiento.id] = false;
 
+    modificarMantenimiento(idMantenimiento: number, fecha?: any) {
+    this.guardar[idMantenimiento] = true;
+    //console.log (this.nuevoMantenimiento.fecha);
+  }
+ actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number) {
+    this.guardar[mantenimiento.id] = false;
+    console.log ("actualizar_mantenimiento",mantenimiento);
+    mantenimiento.fecha = this.date[i].formatted;
+    mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
     let parametros = '?id=' + mantenimiento.id;        
     this.servidor.putObject(URLS.MANTENIMIENTOS, parametros, mantenimiento).subscribe(
       response => {
@@ -61,13 +78,16 @@ ngOnChanges(){
     });
   }
   crearMantenimiento() {
+    console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;
+    this.nuevoMantenimiento.fecha = this.nuevoMantenimiento.fecha.formatted;
     this.servidor.postObject(URLS.MANTENIMIENTOS, this.nuevoMantenimiento).subscribe(
       response => {
         if (response.success) {
           this.nuevoMantenimiento.id = response.id;
           this.mantenimientos.push(this.nuevoMantenimiento);
-          this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'');
+          this.date.push({"day":"","month":"","year":"","formatted":this.nuevoMantenimiento.fecha,"momentObj":this.moment});
+          this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'','');
         }
     });
   }
@@ -96,5 +116,16 @@ ngOnChanges(){
       });
     }
   }
+setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
+  if (!idmantenimiento){
+  this.nuevoMantenimiento.periodicidad = periodicidad;
+  console.log(this.nuevoMantenimiento.periodicidad);
 
+  }else{
+    console.log(idmantenimiento,i);
+    this.modificarMantenimiento(idmantenimiento);
+    this.mantenimientos[i].periodicidad = periodicidad;
+
+  }
+}
 }

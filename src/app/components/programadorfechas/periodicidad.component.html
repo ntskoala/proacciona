@@ -1,0 +1,91 @@
+<button md-raised-button (click)="seleccion()">periodicidad</button>
+
+<div *ngIf="period" class="periods">
+    <md-card>
+        <md-card-title>
+            <md-toolbar color="accent">Periodicidad
+            </md-toolbar>
+        </md-card-title>
+    <section class="selector section">
+    <label class="l" for="tipo_periodo">{{'Repeticion' | translate}}</label>
+    <select class="tipos" required [(ngModel)]="periodoactual.repeticion" name="tipo_periodo" (change)="cambio($event.target.value)">
+        <option *ngFor="let opcion of periodos" value="{{opcion}}">{{opcion| translate}}</option>
+      </select>
+    </section>
+
+    <section class="dias section" *ngIf="periodoactual.repeticion == 'diaria' || periodoactual.repeticion == 'semanal'" name="dias">
+        <label class="l" for="dias">{{'Todos los ' | translate}}</label>
+          </section>
+      <section class="section"  *ngIf="periodoactual.repeticion == 'diaria' || periodoactual.repeticion == 'semanal'" >
+        <md-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre}} </md-checkbox>
+    </section>
+    <section class="cadasemana section"  *ngIf="periodoactual.repeticion == 'semanal'">
+    cada 
+        <select class="numlist" required [(ngModel)]="periodoactual.frecuencia" name="cadasemana" (change)="setSemana($event.target.value)">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+      {{writesemana}}
+    </section>
+        <section class="mensual section" *ngIf="periodoactual.repeticion=='anual'" name="mes">
+        En &nbsp;
+        <select  class="tipos pos2" required [(ngModel)]="periodoactual.mes" name="mes">
+        <option *ngFor="let mes of meses;let i = index" value="{{i+1}}">{{mes}}</option>
+      </select>
+        </section>
+    <section class="mensual section" *ngIf="periodoactual.repeticion == 'mensual' || periodoactual.repeticion=='anual'" name="mensual">
+    Por 
+    <select class="tipos pos1" required [(ngModel)]="periodoactual.tipo" name="tipo_periodo">
+        <option value="diames">{{"dia del mes"| translate}}</option>
+        <option value="diasemana">{{"dia de la semana"| translate}}</option>
+      </select>
+
+      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') || (periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
+          El día 
+    <select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
+        <option *ngFor="let i of numdias" value="{{i}}">{{i}}</option>
+      </select> de cada mes.
+      </section>
+
+    <section class="section2" *ngIf="(periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'mensual')  || (periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'anual') ">
+        Los
+    <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
+        <option *ngFor="let dia of dias" value="{{dia.nombre}}">{{dia.nombre}}</option>
+      </select>
+      de la
+          <select class="tipos" required [(ngModel)]="periodoactual.numsemana" name="numsemana">
+        <option value="1">{{"primera"| translate}}</option>
+        <option value="2">{{"segunda"| translate}}</option>
+        <option value="3">{{"tercera"| translate}}</option>
+        <option value="4">{{"cuarta"| translate}}</option>
+        <option value="5">{{"ultima"| translate}}</option>
+      </select> semana de cada mes
+    </section>
+
+      <section class="section2">
+          cada 
+        <select class="numlist pos2" required [(ngModel)]="periodoactual.frecuencia" (change)="setMes($event.target.value)" name="cadames">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+      </select>
+      {{writemes}}
+      </section>
+
+    </section>
+    <hr class="hr">
+    <button md-raised-button (click)="ok()">{{'aceptar' || translate}}</button>
+    <button md-raised-button (click)="notok()">{{'cancelar' || translate}}</button>
+    </md-card>
+</div>

@@ -14,6 +14,10 @@
       <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
     </span>
     <span class="cell">
+      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoCalibracion.fecha"></ng2-datepicker>-->
+      <p-calendar [(ngModel)]="nuevoCalibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
         <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
         <option value="interno">{{'interno' | translate}}</option>
         <option value="externo">{{'externo' | translate}}</option>
@@ -40,9 +44,11 @@
 
   <div class="header-row">
     <span class="header-cell">Mantenimiento</span>
+    <span class="header-cell">próxima fecha</span>
     <span class="header-cell">tipo</span>
     <span class="header-cell">periodicidad</span>
-    <span class="header-cell">{{'Periodo' | translate}}</span>
+    <span class="header-cell">Usuario</span>
+    <span class="header-cell">Responsable</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
@@ -51,6 +57,9 @@
     <input type="hidden" [(ngModel)]="calibracion.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
+    </span>
+    <span class="cell">
+    <p-calendar [disabled]="!empresasService.administrador" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
       <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">

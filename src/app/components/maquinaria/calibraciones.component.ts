@@ -61,9 +61,10 @@ ngOnChanges(){
     modificarMantenimiento(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
   }
- actualizarMantenimiento(mantenimiento: CalibracionesMaquina) {
+ actualizarMantenimiento(mantenimiento: CalibracionesMaquina, i: number) {
     this.guardar[mantenimiento.id] = false;
-
+     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
+     mantenimiento.periodicidad = this.calibraciones[i].periodicidad;
     let parametros = '?id=' + mantenimiento.id;        
     this.servidor.putObject(URLS.CALIBRACIONES, parametros, mantenimiento).subscribe(
       response => {
@@ -74,6 +75,7 @@ ngOnChanges(){
   }
   crearMantenimiento() {
     this.nuevoCalibracion.idmaquina = this.maquina.id;
+     this.nuevoCalibracion.fecha = new Date(Date.UTC(this.nuevoCalibracion.fecha.getFullYear(), this.nuevoCalibracion.fecha.getMonth(), this.nuevoCalibracion.fecha.getDate()))
     this.servidor.postObject(URLS.CALIBRACIONES, this.nuevoCalibracion).subscribe(
       response => {
         if (response.success) {
@@ -110,25 +112,20 @@ ngOnChanges(){
   }
 
 
+setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
+  if (!idmantenimiento){
+  this.nuevoCalibracion.periodicidad = periodicidad;
+  console.log(this.nuevoCalibracion.periodicidad);
 
+  }else{
+    console.log(idmantenimiento,i);
+    this.modificarMantenimiento(idmantenimiento);
+    this.calibraciones[i].periodicidad = periodicidad;
 
-  setUsuarios() {
-    
-    let parametros = '&idempresa=' + this.empresasService.seleccionada;
-    // llamada al servidor para conseguir los usuarios
-    this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
-      response => {
-        this.usuarios = [];
-        if (response.success && response.data) {
-          for (let element of response.data) {
-            this.usuarios.push(new Usuario(element.id, element.usuario, element.password,
-              element.tipouser, element.email, element.idempresa));
-            this.guardar[element.id] = false;
-          }
-        }
-    });
-    
   }
+}
+
+
 
 
 }

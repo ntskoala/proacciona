@@ -1,12 +1,14 @@
-
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="table">
   <form *ngIf="empresasService.administrador" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+  <!--<div  *ngIf="empresasService.administrador"  class="row">-->
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoMantenimiento.nombre" name="nombre">
     </span>
     <span class="cell">
-      <ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>
+      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
         <select class="white-select" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
@@ -18,35 +20,37 @@
       <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoMantenimiento.periodicidad" name="periodicidad">
     </span>-->
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoMantenimiento.fecha"></periodicidad>
+    </span>
+    <span class="cell">
+      <input type="text" [placeholder]="'responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
     </span>
     <span class="cell"></span>
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
+        <!--<button md-mini-fab color="accent" (click)="crearMantenimiento()">-->
         <span class="material-icons">add</span>
       </button>
     </span>
   </form>
-
+  <!--</div>-->
   <div class="header-row">
     <span class="header-cell">Mantenimiento</span>
     <span class="header-cell">próxima fecha</span>
     <span class="header-cell">tipo</span>
     <span class="header-cell">periodicidad</span>
-    <span class="header-cell">Usuario</span>
     <span class="header-cell">Responsable</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
 
-  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i)" *ngFor="let mantenimiento of mantenimientos;let i = index">
+  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i, $event)" *ngFor="let mantenimiento of mantenimientos;let i = index">
     <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="modificarMantenimiento(mantenimiento.id)">
     </span>
     <span class="cell">
-      <!--<input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.fecha" name="fecha" (keyup)="modificarMantenimiento(mantenimiento.id)">-->
-    <ng2-datepicker type="date" name="fecha" [(ngModel)]="date[i]"  (click)="modificarMantenimiento(mantenimiento.id, $event)"></ng2-datepicker>
+      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarMantenimiento(mantenimiento.id,mantenimiento.fecha)" name="fecha"></p-calendar>    
     </span>
     <span class="cell">
       <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="mantenimiento.tipo" name="tipo" (change)="modificarMantenimiento(mantenimiento.id)">
@@ -55,16 +59,12 @@
       </select>
     </span>
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event, mantenimiento.id, i)" [miperiodo]="mantenimiento.periodicidad"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event, mantenimiento.id, i)" [miperiodo]="mantenimiento.periodicidad" [fechaPrevista]="mantenimiento.fecha" name="periodicidad"></periodicidad>
     </span>
     <span class="cell">
-      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="mantenimiento.tipo_periodo" name="tipo_periodo" (change)="modificarMantenimiento(mantenimiento.id)">
-        <option value="Dia">{{'Día' | translate}}</option>
-        <option value="Semana">{{'Semana' | translate}}</option>
-        <option value="Mes">Mes</option>
-        <option value="Año">{{'Año' | translate}}</option>
-      </select>
+      <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="modificarMantenimiento(mantenimiento.id)">
     </span>
+
     <span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="submit">
         <span class="material-icons">close</span>

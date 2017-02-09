@@ -4,6 +4,7 @@ export class PiezasMaquina {
     public idmaquina: number,
     public nombre: string,
     public cantidad?: number,
+    public material?: string,
     public doc?: string
   ) {}
 }

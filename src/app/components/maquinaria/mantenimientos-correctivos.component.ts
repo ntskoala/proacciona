@@ -11,19 +11,24 @@ import { Empresa } from '../../models/empresa';
  import { Periodicidad } from '../../models/periodicidad';
 
 @Component({
-  selector: 'mantenimientos-realizados',
-  templateUrl: './mantenimientos-correctivos.component.html'
+  selector: 'mantenimientos-correctivos',
+  templateUrl: './mantenimientos-correctivos.component.html',
+  styleUrls:['ficha-maquina.css']
 })
 
-export class MantenimientosRealizadosComponent implements OnInit {
-@Input() maquina: Maquina;
+export class MantenimientosCorrectivosComponent implements OnInit {
 
-public mantenimientos :MantenimientoRealizado[] =[];
+@Input() maquina:Maquina;
+
+
+public mantenimientos: MantenimientoRealizado[];
 public es:any;
-public guardar: boolean[];
+public guardar = [];
 public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
 public date = new Date();
-
+public url:string[]=[];
+public verdoc: boolean = false;
+public foto:string;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
 
@@ -31,7 +36,7 @@ public date = new Date();
 
 
   ngOnInit() {
-      this.setMantenimientos();
+    //  this.setMantenimientos();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -41,7 +46,10 @@ public date = new Date();
             firstDayOfWeek: 1
         }; 
   }
-
+  photoURL(i) {
+    this.verdoc=!this.verdoc;
+    this.foto = this.url[i];
+  }
   ngOnChanges(){
     this.setMantenimientos();
 
@@ -51,16 +59,18 @@ public date = new Date();
   setMantenimientos(){
     let params = this.maquina.id;
     let parametros = '&idmaquina=' + params;
-      //let parametros = '&idempresa=' + this.empresasService.seleccionada; 
+    //  let parametros = '&idempresa=' + this.empresasService.seleccionada; 
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {
             this.mantenimientos = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,element.maquina,element.mantenimiento,element.descripcion,element.fecha_prevista,element.fecha,element.tipo,element.elemento,element.causas,element.tipo2,element.doc,element.idusuario,element.responsable,element.id))
+                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,element.idusuario,element.responsable,element.id))
+                   this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' + element.id +'_'+element.doc);
              }
             }
         });
+        console.log("mantenimientos",this.mantenimientos);
   }
 
 
@@ -80,11 +90,11 @@ public date = new Date();
   }
 
 
-    ItemEdited(idMantenimiento: number, fecha?: any) {
+    itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
     //console.log (fecha.toString());
   }
- saveItem(mantenimiento: MantenimientoRealizado, i: number) {
+ saveItem(mantenimiento: MantenimientoRealizado) {
 
    console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
@@ -100,5 +110,23 @@ public date = new Date();
 
   }
 
+checkBorrar(){}
+
+  uploadImg(event, idItem,i) {
+    console.log(event)
+    var target = event.target || event.srcElement; //if target isn't there then take srcElement
+    let files = target.files;
+    //let files = event.srcElement.files;
+    let idEmpresa = this.empresasService.seleccionada.toString();
+    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'mantenimientos_realizados',idItem, this.empresasService.seleccionada.toString()).subscribe(
+      response => {
+        console.log('doc subido correctamente',files[0].name);
+        this.mantenimientos[i].doc = files[0].name;
+        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' +  idItem +'_'+files[0].name;
+        // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
+        // activa.logo = '1';
+      }
+    )
+  }
 
 }

@@ -36,6 +36,9 @@ ngOnInit(){
         this.usuario = {};        
         // Si el usuario es correcto
         if (response.success == 'true') {
+          this.empresasService.userId = response.data.id;
+          this.empresasService.userName = response.data.usuario;
+          this.empresasService.userTipo = response.data.tipouser;
           // Guarda token en sessionStorage
           sessionStorage.setItem('token', response.token);
           // Redirección en función del tipo de usuario

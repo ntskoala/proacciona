@@ -3,10 +3,9 @@
   <!--<div  *ngIf="empresasService.administrador"  class="row">-->
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoMantenimiento.nombre" name="nombre">
+      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoMantenimiento.mantenimiento" name="mantenimiento">
     </span>
     <span class="cell">
-      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
       <p-calendar placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
@@ -22,11 +21,12 @@
       <input type="text" [placeholder]="'descripcion' | translate" [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion">
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'causa' | translate" [(ngModel)]="nuevoMantenimiento.causa" name="causa">
+      <input type="text" [placeholder]="'causa' | translate" [(ngModel)]="nuevoMantenimiento.causas" name="causas">
     </span>
     <span class="cell">
       <input type="text" [placeholder]="'responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
     </span>
+    <span class="cell"></span>
     <span class="cell"></span>
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
@@ -46,15 +46,18 @@
     <span class="header-cell">responsable</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
+    <span class="header-cell"></span>
   </div>
 
-  <form class=" row"#editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value, i, $event)" *ngFor="let mantenimiento of mantenimientos;let i = index">
+
+  <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of mantenimientos;let i = index">
+
     <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.mantenimiento" name="mantenimiento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(mantenimiento.id,mantenimiento.fecha)" name="fecha"></p-calendar>    
+      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>    
     </span>
     <span class="cell">
       <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="mantenimiento.tipo" name="tipo" (change)="itemEdited(mantenimiento.id)">
@@ -76,10 +79,19 @@
       <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
     </span>
 
-    <span class="cell">
+    <!--<span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
+    </span>-->
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" [disabled]="!mantenimiento.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
+        <span class="material-icons">camera</span>
+      </button>
+    </span>
+    <span class="cell mini-fab">
+        <label *ngIf="empresasService.administrador" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, mantenimiento.id,i)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
     </span>
     <span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
@@ -88,4 +100,9 @@
     </span>
   </form>
 
+</div>
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img   class="iframe" [src]="foto">
 </div>

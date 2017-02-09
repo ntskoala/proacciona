@@ -9,7 +9,8 @@ import { PiezasMaquina } from '../../models/piezasmaquina';
  import { Modal } from '../../models/modal';
 @Component({
   selector: 'piezas',
-  templateUrl: './piezas.component.html'
+  templateUrl: './piezas.component.html',
+  styleUrls:['ficha-maquina.css']
 })
 export class PiezasComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
@@ -19,13 +20,21 @@ public guardar =[];
 public idBorrar;
 public fotoSrc: string;
 public modal2: boolean = false;;
+public verdoc: boolean = false;
+public url=[];
+public foto:string;
   modal: Modal = new Modal();
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
  //   this.setMantenimientos();
-    }
+    
+  }
+  photoURL(i) {
+    this.verdoc=!this.verdoc;
+    this.foto = this.url[i];
+  }
 
 ngOnChanges(){
     this.setMantenimientos();
@@ -39,8 +48,9 @@ ngOnChanges(){
             this.piezas = [];
             if (response.success && response.data) {
               for (let element of response.data) {
-                this.piezas.push(new PiezasMaquina(element.id, element.idmaquina, element.nombre, element.cantidad, element.doc));
+                this.piezas.push(new PiezasMaquina(element.id, element.idmaquina, element.nombre, element.cantidad,element.material, element.doc));
                 this.guardar[element.id] = false;
+                this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/maquina_piezas/' + element.id +'_'+element.doc);
               }
             }
         });
@@ -103,14 +113,17 @@ ngOnChanges(){
     this.modal2 = true;
   }
 
-  uploadImg(event, idItem) {
+  uploadImg(event, idItem,i) {
+    console.log(event)
     var target = event.target || event.srcElement; //if target isn't there then take srcElement
     let files = target.files;
     //let files = event.srcElement.files;
     let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquina_piezas', this.maquina.id.toString(), this.empresasService.seleccionada.toString()).subscribe(
+    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquina_piezas',idItem, this.empresasService.seleccionada.toString()).subscribe(
       response => {
-        console.log('doc subido correctamente');
+        console.log('doc subido correctamente',files[0].name);
+        this.piezas[i].doc = files[0].name;
+        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/maquina_piezas/' +  idItem +'_'+files[0].name;
         // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
         // activa.logo = '1';
       }

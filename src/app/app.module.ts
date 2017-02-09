@@ -9,6 +9,7 @@ import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
 import {CalendarModule} from 'primeng/primeng';
 import {ScheduleModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
+import {LightboxModule} from 'primeng/primeng';
 import {MomentModule} from 'angular2-moment';
 import { Http } from '@angular/http';
 
@@ -38,7 +39,8 @@ import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquin
 import { CalendariosComponent } from './components/maquinaria/calendarios.component';
 import { MantenimientosComponent } from './components/maquinaria/mantenimientos.component';
 import { CalibracionesComponent } from './components/maquinaria/calibraciones.component';
-import { MantemientosRealizados } from './components/maquinaria/mantenimientos-realizados.component';
+import { MantenimientosRealizadosComponent } from './components/maquinaria/mantenimientos-realizados.component';
+import { MantenimientosCorrectivosComponent } from './components/maquinaria/mantenimientos-correctivos.component';
 import { CalibracionesRealizadas } from './components/maquinaria/calibraciones-realizadas.component';
 import { PiezasComponent } from './components/maquinaria/piezas.component';
 import { ModalComponent } from './components/modal.component';
@@ -60,6 +62,7 @@ import { EmpresasService } from './services/empresas.service';
     ScheduleModule,
     CalendarModule,
     DialogModule,
+    LightboxModule,
     MaterialModule.forRoot(),
     DatePickerModule,
     TranslateModule.forRoot({
@@ -97,6 +100,8 @@ import { EmpresasService } from './services/empresas.service';
     ListadoMaquinasComponent,
     CalendariosComponent,
     MantenimientosComponent,
+    MantenimientosCorrectivosComponent,
+    MantenimientosRealizadosComponent,
     CalibracionesComponent,
     PiezasComponent,
     ModalComponent,

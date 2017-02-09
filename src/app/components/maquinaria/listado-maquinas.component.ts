@@ -45,6 +45,7 @@ ngOnInit(){
               for (let element of response.data) {
                 this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.doc, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
               }
+              console.log(this.maquinas);
               this.listaMaquinas.emit(this.maquinas);
             }
         });
@@ -54,7 +55,8 @@ ngOnInit(){
 
 
 seleccionarMaquina(valor: any){
-  console.log("changelist",this.maquinas[valor]);
+//  console.log("changelist",valor,event);
+//this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.maquinaSeleccionada.emit(this.maquinas[valor]);
 }
 

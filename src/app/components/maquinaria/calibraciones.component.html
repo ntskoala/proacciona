@@ -24,15 +24,10 @@
       </select>
     </span>
     <span class="cell">
-      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoCalibracion.periodicidad" name="periodicidad">
+      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false"></periodicidad>
     </span>
     <span class="cell">
-      <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo_periodo" name="tipo_periodo">
-        <option value="Día">{{'Día' | translate}}</option>
-        <option value="Semana">{{'Semana' | translate}}</option>
-        <option>Mes</option>
-        <option value="Año">{{'Año' | translate}}</option>
-      </select>
+      <input type="text" [placeholder]="'responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
     </span>
     <span class="cell"></span>
     <span class="cell">
@@ -43,17 +38,16 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">Mantenimiento</span>
+    <span class="header-cell">Calibracion</span>
     <span class="header-cell">próxima fecha</span>
     <span class="header-cell">tipo</span>
     <span class="header-cell">periodicidad</span>
-    <span class="header-cell">Usuario</span>
     <span class="header-cell">Responsable</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
 
-  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value)" *ngFor="let calibracion of calibraciones">
+  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i)" *ngFor="let calibracion of calibraciones; let i=index">
     <input type="hidden" [(ngModel)]="calibracion.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
@@ -68,15 +62,10 @@
       </select>
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="calibracion.periodicidad" name="periodicidad" (keyup)="modificarMantenimiento(calibracion.id)">
+      <periodicidad (periodo)="setPeriodicidad($event, calibracion.id, i)" [miperiodo]="calibracion.periodicidad" name="periodicidad"></periodicidad>
     </span>
     <span class="cell">
-      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="calibracion.tipo_periodo" name="tipo_periodo" (change)="modificarMantenimiento(calibracion.id)">
-        <option value="Dia">{{'Día' | translate}}</option>
-        <option value="Semana">{{'Semana' | translate}}</option>
-        <option value="Mes">Mes</option>
-        <option value="Año">{{'Año' | translate}}</option>
-      </select>
+      <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="calibracion.responsable" name="responsable" (keyup)="modificarMantenimiento(calibracion.id)">
     </span>
     <span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(calibracion.id)" type="submit">

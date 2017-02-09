@@ -12,7 +12,7 @@ export class MantenimientoRealizado {
     public causas?: string,
     public tipo2?:string,
     public doc?: string,
-    public usuario?:number,
+    public idusuario?:number,
     public responsable?: string,
     public id?:number
   ) {}

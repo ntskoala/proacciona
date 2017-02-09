@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { DatePickerOptions, DateModel } from 'ng2-datepicker';
+//import {Moment} from 'moment';
+import * as moment from 'moment/moment';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -18,6 +20,8 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 export class PeriodicidadComponent implements OnInit {
 @Output() periodo:EventEmitter<string>= new EventEmitter<string>();
 @Input() miperiodo: string;
+@Input() fechaPrevista: Date;
+private fecha:String;
 private periodoactual: Periodicidad;
 private repeticion:String;
 private tipomes : string="diames";
@@ -29,17 +33,25 @@ private writesemana:String="semana";
 private cadames:number = 1;
 private cadasemana:number =1;
 private mes: number;
+private alert:boolean=false;
 private periodos: String[] = ['diaria', 'semanal','mensual','anual'];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','diciembre'];
 public numdias = [];
 public dias = [{'nombre':'lunes','checked':true},{'nombre':'martes','checked':true},{'nombre':'miercoles','checked':true},{'nombre':'jueves','checked':true},{'nombre':'viernes','checked':true},{'nombre':'sabados','checked':false},{'nombre':'domingos','checked':false}];
 private period: boolean=false;
+//public moment: Moment;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
+if (this.fechaPrevista){
+  this.fecha = moment(this.fechaPrevista).format('DD-MM-YYYY');
+  this.diasemana = this.dias[moment(this.fechaPrevista).isoWeekday()-1].nombre;
+  this.diames = moment(this.fechaPrevista).date();
+}
   if (!this.miperiodo){
+      this.alert=true;
   this.periodoactual = new Periodicidad("diaria",this.dias,1,"diames",1,"lunes",1,"")
   }else{
       this.periodoactual = JSON.parse(this.miperiodo);
@@ -51,7 +63,11 @@ private period: boolean=false;
     }
 
 ngOnChanges(){
-    
+    if (this.fechaPrevista){
+  this.fecha = moment(this.fechaPrevista).format('DD-MM-YYYY');
+  this.diasemana = this.dias[moment(this.fechaPrevista).isoWeekday()-1].nombre;
+  this.diames = moment(this.fechaPrevista).date();
+}
 }
 seleccion(){
     this.period = !this.period
@@ -77,9 +93,11 @@ ok(){
   //  console.log(this.periodoactual);
   //  console.log(JSON.stringify(this.periodoactual));
   this.periodo.emit(JSON.stringify(this.periodoactual));
+  return false;
 }
 notok(){
     this.period = false;
+    return false;
 }
 setSemana(valor){
     console.log(valor);

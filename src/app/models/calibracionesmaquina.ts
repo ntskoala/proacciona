@@ -5,7 +5,7 @@ export class CalibracionesMaquina {
     public nombre: string,
     public fecha: any,
     public tipo?: string,
-    public periodicidad?: number,
+    public periodicidad?: string,
     public tipo_periodo?: string,
     public doc?: string,
     public usuario?:number,

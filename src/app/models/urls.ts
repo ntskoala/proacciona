@@ -21,6 +21,8 @@ export const URLS = {
   CALENDARIOS: base + 'calendarios.php',
   MANTENIMIENTOS: base + 'mantenimientos.php',
   CALIBRACIONES: base+ 'calibraciones.php',
+  MANTENIMIENTOS_REALIZADOS: base + 'mantenimientosrealizados.php',
+  LUBRICANTES: base + 'lubricantes.php',
   PIEZAS: base + 'piezas.php',
   UPLOAD_DOCS: base + 'uploads.php',
 

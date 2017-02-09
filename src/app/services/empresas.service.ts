@@ -10,6 +10,9 @@ export class EmpresasService {
   idioma: string = 'cat';
   seleccionada: number = 0;
   administrador: boolean = false;
+  userId: number =0;
+  userName: string="";
+  userTipo: string="";
   empresaActiva: number =0;
   exportar: boolean;
   //fichas_maquinaria: boolean;

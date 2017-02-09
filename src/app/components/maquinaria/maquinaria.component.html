@@ -5,7 +5,7 @@
  <md-card-subtitle>
    <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>
    <div class="calendarios">
-  <button md-button (click)="calendarios()">Calendarios</button>
+  <button md-raised-button (click)="calendarios()">Calendarios</button>
   </div>
  </md-card-subtitle>
  <div class="contenido">
@@ -16,8 +16,8 @@
   <md-tab label="{{'mantenimientos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>
   <md-tab label="{{'calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></md-tab>
   <md-tab label="{{'piezas moviles' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>
-  <md-tab label="{{'mantenimientos correctivos' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>
-
+  <md-tab label="{{'mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></md-tab>
+<!--<md-tab label="{{'mantenimientos realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-realizados></md-tab>-->
 </md-tab-group>
  </div>
   </md-card>

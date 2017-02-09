@@ -4,7 +4,7 @@ export class CalendarioMantenimiento {
     public ubicacion: string,
     public nombre: string,
     public tipo?: string,
-    public periodicidad?: number,
+    public periodicidad?: string,
     public tipo_periodo?: string,
   ) {}
 }

@@ -22,12 +22,21 @@ public mantenimientos: MantenimientosMaquina[] =[];
 public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0,'','');
 public guardar =[];
 public idBorrar;
+public es:any;
   modal: Modal = new Modal();
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
+           this.es = {
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+            firstDayOfWeek: 1
+        }; 
     }
 
 ngOnChanges(){
@@ -46,7 +55,7 @@ ngOnChanges(){
             this.moment = Date();
             if (response.success && response.data) {
               for (let element of response.data) {
-                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,element.fecha, element.tipo, element.periodicidad,
+                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
                   element.tipoperiodo, element.doc));
                 this.guardar[element.id] = false;
                 this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
@@ -62,12 +71,14 @@ ngOnChanges(){
 
     modificarMantenimiento(idMantenimiento: number, fecha?: any) {
     this.guardar[idMantenimiento] = true;
-    //console.log (this.nuevoMantenimiento.fecha);
+    //console.log (fecha.toString());
   }
  actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number) {
+
+   console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento);
-    mantenimiento.fecha = this.date[i].formatted;
+    mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
     mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
     let parametros = '?id=' + mantenimiento.id;        
     this.servidor.putObject(URLS.MANTENIMIENTOS, parametros, mantenimiento).subscribe(
@@ -76,11 +87,12 @@ ngOnChanges(){
           console.log('Mantenimiento updated');
         }
     });
+
   }
   crearMantenimiento() {
     console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;
-    this.nuevoMantenimiento.fecha = this.nuevoMantenimiento.fecha.formatted;
+    this.nuevoMantenimiento.fecha = new Date(Date.UTC(this.nuevoMantenimiento.fecha.getFullYear(), this.nuevoMantenimiento.fecha.getMonth(), this.nuevoMantenimiento.fecha.getDate()))
     this.servidor.postObject(URLS.MANTENIMIENTOS, this.nuevoMantenimiento).subscribe(
       response => {
         if (response.success) {

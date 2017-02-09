@@ -1,11 +1,12 @@
-<button md-raised-button (click)="seleccion()">periodicidad</button>
+<button [disabled]="!fechaPrevista" type="button" [ngClass]="{'alert': alert }" md-raised-button (click)="seleccion()">periodicidad</button>
 
 <div *ngIf="period" class="periods">
     <md-card>
         <md-card-title>
-            <md-toolbar color="accent">Periodicidad
+            <md-toolbar color="accent">Periodicidad - Fecha prevista actual {{diasemana}} - {{diames}} - {{fecha}}
             </md-toolbar>
         </md-card-title>
+        <div class="form_period">
     <section class="selector section">
     <label class="l" for="tipo_periodo">{{'Repeticion' | translate}}</label>
     <select class="tipos" required [(ngModel)]="periodoactual.repeticion" name="tipo_periodo" (change)="cambio($event.target.value)">
@@ -13,12 +14,18 @@
       </select>
     </section>
 
-    <section class="dias section" *ngIf="periodoactual.repeticion == 'diaria' || periodoactual.repeticion == 'semanal'" name="dias">
+    <section class="dias section" *ngIf="periodoactual.repeticion == 'diaria'" name="dias">
         <label class="l" for="dias">{{'Todos los ' | translate}}</label>
           </section>
-      <section class="section"  *ngIf="periodoactual.repeticion == 'diaria' || periodoactual.repeticion == 'semanal'" >
+      <section class="section"  *ngIf="periodoactual.repeticion == 'diaria'" >
         <md-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre}} </md-checkbox>
     </section>
+        <section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
+        Los {{diasemana}}
+    <!--<select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
+        <option *ngFor="let dia of dias; let i = index" value="{{i}}">{{dia.nombre}}</option>
+      </select>-->
+        </section>
     <section class="cadasemana section"  *ngIf="periodoactual.repeticion == 'semanal'">
     cada 
         <select class="numlist" required [(ngModel)]="periodoactual.frecuencia" name="cadasemana" (change)="setSemana($event.target.value)">
@@ -43,25 +50,24 @@
       </select>
 
       <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') || (periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
-          El día 
-    <select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
+          El día {{diames}}
+    <!--<select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
         <option *ngFor="let i of numdias" value="{{i}}">{{i}}</option>
-      </select> de cada mes.
+      </select> -->
       </section>
 
     <section class="section2" *ngIf="(periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'mensual')  || (periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'anual') ">
-        Los
-    <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
-        <option *ngFor="let dia of dias" value="{{dia.nombre}}">{{dia.nombre}}</option>
+        El 
+              <select class="tipos" required [(ngModel)]="periodoactual.numsemana" name="numsemana">
+        <option value="1">{{"primer"| translate}}</option>
+        <option value="2">{{"segundo"| translate}}</option>
+        <option value="3">{{"tercer"| translate}}</option>
+        <option value="4">{{"cuarto"| translate}}</option>
+        <option value="5">{{"ultimo"| translate}}</option>
       </select>
-      de la
-          <select class="tipos" required [(ngModel)]="periodoactual.numsemana" name="numsemana">
-        <option value="1">{{"primera"| translate}}</option>
-        <option value="2">{{"segunda"| translate}}</option>
-        <option value="3">{{"tercera"| translate}}</option>
-        <option value="4">{{"cuarta"| translate}}</option>
-        <option value="5">{{"ultima"| translate}}</option>
-      </select> semana de cada mes
+    <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
+        <option *ngFor="let dia of dias; let i =index" value="{{i+1}}">{{dia.nombre}}</option>
+      </select>
     </section>
 
       <section class="section2">
@@ -85,7 +91,8 @@
 
     </section>
     <hr class="hr">
-    <button md-raised-button (click)="ok()">{{'aceptar' || translate}}</button>
-    <button md-raised-button (click)="notok()">{{'cancelar' || translate}}</button>
+    <button type="button" md-raised-button (click)="ok()">{{'aceptar' || translate}}</button>
+    <button type="button" md-raised-button (click)="notok()">{{'cancelar' || translate}}</button>
+        </div>
     </md-card>
 </div>

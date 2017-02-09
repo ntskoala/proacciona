@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import { DomSanitizer } from '@angular/platform-browser'
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -13,13 +13,18 @@ import { Empresa } from '../../models/empresa';
 })
 export class FichaMaquinaComponent implements OnInit {
 @Input() maquina:Maquina;
-public camposArray: string[] =[]; 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+public camposArray: string[] =[];
+public url; 
+public verdoc:boolean=false;
+  constructor(private servidor: Servidor,private empresasService: EmpresasService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.campos2Array()
+    this.campos2Array();
+    this.url = URLS.DOCS + this.empresasService.seleccionada + '/maquinaria/' + this.maquina.id +'_'+this.maquina.doc;
   }
-
+  photoURL() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+  }
 campos2Array(){
   for (let key in this.maquina){
     this.camposArray.push(key);

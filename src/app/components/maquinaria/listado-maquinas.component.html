@@ -1,8 +1,8 @@
 <div class="selector">
   Selecciona maquina<br>
   <form>
-    <select (change)="seleccionarMaquina($event.target.value)">
-      <option *ngFor="let maquina of maquinas" [value]="maquina.id">
+    <select (change)="seleccionarMaquina($event.target.value, $event)">
+      <option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
       </option>
     </select>

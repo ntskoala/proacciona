@@ -9,6 +9,8 @@ import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
  import { CalendarioMantenimiento } from '../../models/calendariomantenimiento';
  import { MantenimientoRealizado } from '../../models/mantenimientorealizado';
+  import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
+  import { CalibracionesMaquina } from '../../models/calibracionesmaquina';
  import { Periodicidad } from '../../models/periodicidad';
 
 @Component({
@@ -29,10 +31,14 @@ public headerCalendar: any;
 public es:any;
 public buttonText:any;
 public dialogVisible: boolean = false;
-public mantenimiento: MantenimientoRealizado;
-public date = new Date();
+public mantenimientorealizado: MantenimientoRealizado;
+public newdate = new Date();
 public periodicidad: Periodicidad;
 public moment: Moment;
+public mantenimientos: MantenimientosMaquina[]=[];
+public calibraciones: CalibracionesMaquina[]=[];
+public tipoevento:string[]=[];
+public event:any;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
 
@@ -65,7 +71,9 @@ public moment: Moment;
                 this.calendario.push(new CalendarioMantenimiento(element.maquina, element.ubicacion, element.nombre, element.tipo, element.periodicidad,
                   element.tipoperiodo));
                   let color = this.setColor(element.tipo_m,element.fecha)
-                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.maquina + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color});   
+                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.maquina + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color,"tipoevento":element.tipo_m});  
+                   this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
+                  element.tipoperiodo, element.doc,element.usuario,element.responsable));
               }
             }
         });
@@ -76,9 +84,11 @@ setColor(tipo:string,fecha){
   let fecha_event = Date.parse(fecha); 
   switch (tipo){
     case "mantenimiento":
+    this.tipoevento.push("mantenimientos");
       color="#F67E1F";
       break;
     case "calibracion":
+    this.tipoevento.push("calibraciones");
       color="#673AB7";
       break;
   }
@@ -93,43 +103,34 @@ list(cal){
 }
 
 handleEventClick(event){
-  
-        this.mantenimiento = new MantenimientoRealizado(event.calEvent.idmantenimiento,event.calEvent.idmaquina,event.calEvent.title,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,'','',event.calEvent.tipo2,'',this.empresasService.userId,event.calEvent.responsable);
-        //this.event.title = e.calEvent.title;
-        this.periodicidad = JSON.parse(event.calEvent.periodicidad);
-        // let start = e.calEvent.start;
-        // let end = e.calEvent.end;
-        // if(e.view.name === 'month') {
-        //     start.stripTime();
-        // }
-        
-        // if(end) {
-        //     end.stripTime();
-        //     this.event.end = end.format();
-        // }
+      // console.log(event);
+       this.event = event.calEvent;
+      // let start = event.calEvent.start;
+      // start.stripTime();
+      // console.log(start.stripTime());
+       //this.event.start = new Date("2017-02-14");
+      // console.log(start.format());
 
-        // this.event.id = e.calEvent.id;
-        // this.event.start = start.format();
-        // this.event.allDay = e.calEvent.allDay;
+        this.mantenimientorealizado = new MantenimientoRealizado(event.calEvent.idmantenimiento,event.calEvent.idmaquina,event.calEvent.title,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,'','',event.calEvent.tipo2,'',this.empresasService.userId,event.calEvent.responsable,0,event.calEvent.tipoevento);
+        this.periodicidad = JSON.parse(event.calEvent.periodicidad);
         this.dialogVisible = true;
+
+
+        //this.events[2].start = moment(this.events[2].start).add(1,"d");
+//        console.log(this.events);
+//         this.events[2] = this.event;
+
 }
 
     saveEvent() {
         //update
-        this.nuevaFecha();
+        //this.nuevaFecha();
+        let index = this.events.findIndex((event)=> (event.idmantenimiento == this.mantenimientorealizado.idmantenimiento) && (event.tipoevento == this.mantenimientorealizado.tipo_evento));
 
+        this.mantenimientos[index].fecha = this.nuevaFecha();
+        this.actualizarMantenimiento(this.mantenimientos[index],index);
+        this.newMantenimientoRealizado();
         this.dialogVisible = false;
-
-    // this.servidor.postObject(URLS.MANTENIMIENTOS_REALIZADOS, this.mantenimiento).subscribe(
-    //   response => {
-    //     if (response.success) {
-    //         let index= this.events.findIndex((elem)=> elem.idmantenimiento == this.mantenimiento.idmantenimiento);
-    //         this.events.splice(index,1);
-    //     }
-    // });
-
-
-
     }
     cancelEvent() {
       this.dialogVisible = false;
@@ -141,29 +142,39 @@ handleEventClick(event){
       switch (this.periodicidad.repeticion){
         case "diaria":
         proximaFecha = this.nextWeekDay();
-        console.log("diario",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
+        //console.log("diario",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
         break;
         case "semanal":
         //console.log('semanal',this.nextWeekDay());
         //let semanas = this.periodicidad.frecuencia *7;
-        proximaFecha = moment(this.mantenimiento.fecha_prevista).add(this.periodicidad.frecuencia,"w").toDate();
-        console.log("semanal",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
+        proximaFecha = moment(this.mantenimientorealizado.fecha_prevista).add(this.periodicidad.frecuencia,"w");
+        //console.log("semanal",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
         break;
         case "mensual":
         if (this.periodicidad.tipo == "diames"){
-            proximaFecha = moment(this.mantenimiento.fecha_prevista).add(this.periodicidad.frecuencia,"M").calendar();
-            console.log("mensual dia mes",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
+            proximaFecha = moment(this.mantenimientorealizado.fecha_prevista).add(this.periodicidad.frecuencia,"M");
+           // console.log("mensual dia mes",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
         } else{
           proximaFecha = this.nextMonthDay();
         }
 
         break;
         case "anual":
-         this.periodicidad.tipo == "diames" ? proximaFecha = moment(this.mantenimiento.fecha_prevista).add(this.periodicidad.frecuencia,"y").toDate(): proximaFecha = this.nextYearDay();
-        console.log("anual dia mes",proximaFecha, this.dias[moment(proximaFecha).isoWeekday()-1])
+        if (this.periodicidad.tipo == "diames"){
+          let año = moment(this.mantenimientorealizado.fecha_prevista).get('year') + this.periodicidad.frecuencia;
+        proximaFecha = moment().set({"year":año,"month":parseInt(this.periodicidad.mes)-1,"date":this.periodicidad.numdia});
+        //console.log("anual dia mes",proximaFecha)
+        } else{
+          proximaFecha = this.nextYearDay();
+        }
         break;
       }
-    }
+
+      this.newdate = moment(proximaFecha).toDate();
+      return this.newdate = new Date(Date.UTC(this.newdate.getFullYear(), this.newdate.getMonth(), this.newdate.getDate()))
+      
+  
+}
 
 
 
@@ -188,31 +199,77 @@ nextWeekDay(fecha?:Date) {
   }
 }
 if(proximoDia >7) proximoDia =proximoDia-7;
-nextFecha = moment().add(proximoDia,"days").toDate();
+nextFecha = moment().add(proximoDia,"days");
 return nextFecha;
 }
 
 nextMonthDay(){
-  let fecha_prevista = new Date(this.mantenimiento.fecha_prevista);
+  let  proximafecha;
+  let fecha_prevista = new Date(this.mantenimientorealizado.fecha_prevista);
   let mes = fecha_prevista.getMonth() +1 + this.periodicidad.frecuencia;
  // let week = 
 console.log(this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').isoWeekday()-1]);
 console.log("ultimo día sem",this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').isoWeekday()-1]);
 if (this.periodicidad.numsemana ==5){
  let ultimodia =  moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').isoWeekday() - this.periodicidad.nomdia;
- console.log("next fecha prevista",moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').subtract(ultimodia,"days").calendar());
+  proximafecha = moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').subtract(ultimodia,"days");
 }else{
 let primerdia = 7 - ((moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').isoWeekday()) - this.periodicidad.nomdia)
 if (primerdia >6) primerdia= primerdia-7;
-console.log("next fecha prevista",moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').add(primerdia,"days").add(this.periodicidad.numsemana-1,"w").calendar());
+ proximafecha = moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').add(primerdia,"days").add(this.periodicidad.numsemana-1,"w");
 }
-
+return  proximafecha;
 }
 nextYearDay(){
+  let proximafecha;
+  let fecha_prevista = new Date(this.mantenimientorealizado.fecha_prevista);
+  let mes = parseInt(this.periodicidad.mes) -1;
+  fecha_prevista = moment(fecha_prevista).month(mes).add(this.periodicidad.frecuencia,'y').toDate();
+  console.log("test",fecha_prevista);
 
+if (this.periodicidad.numsemana ==5){
+ let ultimodia =  moment(fecha_prevista).endOf('month').isoWeekday() - this.periodicidad.nomdia;
+ proximafecha = moment(fecha_prevista).endOf('month').subtract(ultimodia,"days");
+}else{
+let primerdia = 7 - ((moment(fecha_prevista).startOf('month').isoWeekday()) - this.periodicidad.nomdia)
+if (primerdia >6) primerdia= primerdia-7;
+ proximafecha = moment(fecha_prevista).startOf('month').add(primerdia,"days").add(this.periodicidad.numsemana-1,"w");
+}
+return proximafecha;
 }
 
-weekOfMonth(){
+ actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number) {
+let url;
+console.log (this.tipoevento[i])
+if (this.tipoevento[i] == "mantenimientos"){
+url = URLS.MANTENIMIENTOS;
+}else{
+url = URLS.CALIBRACIONES;
+}
+    console.log ("actualizar:",url," ##",mantenimiento);
+    //mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
+    let parametros = '?id=' + mantenimiento.id;  
+    this.servidor.putObject(url, parametros, mantenimiento).subscribe(
+      response => {
+        if (response.success) {
+          console.log("move...",this.events[i].start , this.mantenimientos[i].fecha,i);
+          this.event.start = new Date(this.mantenimientos[i].fecha);
+          this.events[i] = this.event; 
+          console.log(this.events[i].start);
+        }
+    });
+
+  }
+
+newMantenimientoRealizado(){
+    let hoy = new Date();
+    this.mantenimientorealizado.fecha = new Date(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()))
+    this.servidor.postObject(URLS.MANTENIMIENTOS_REALIZADOS, this.mantenimientorealizado).subscribe(
+      response => {
+        if (response.success) {
+          console.log('Mantenimiento updated');
+        }
+    });
 
 }
 

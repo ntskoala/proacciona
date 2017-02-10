@@ -35,7 +35,7 @@ public gallery: string;
       // Todo ok, adelante
       this.permiso = true;
       console.log('Seleccion automática de empresa, empresas component');
-this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
+//this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
     }
     console.log("empresas",this.empresasService.administrador,this.permiso)
   }

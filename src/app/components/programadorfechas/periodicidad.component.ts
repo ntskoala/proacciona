@@ -47,12 +47,12 @@ private period: boolean=false;
   //  this.setMantenimientos();
 if (this.fechaPrevista){
   this.fecha = moment(this.fechaPrevista).format('DD-MM-YYYY');
-  this.diasemana = this.dias[moment(this.fechaPrevista).isoWeekday()-1].nombre;
+  this.diasemana = moment(this.fechaPrevista).isoWeekday().toString();
   this.diames = moment(this.fechaPrevista).date();
 }
   if (!this.miperiodo){
       this.alert=true;
-  this.periodoactual = new Periodicidad("diaria",this.dias,1,"diames",1,"lunes",1,"")
+  this.periodoactual = new Periodicidad("diaria",this.dias,1,"diames",this.diames,"1",1,"")
   }else{
       this.periodoactual = JSON.parse(this.miperiodo);
   }
@@ -65,7 +65,7 @@ if (this.fechaPrevista){
 ngOnChanges(){
     if (this.fechaPrevista){
   this.fecha = moment(this.fechaPrevista).format('DD-MM-YYYY');
-  this.diasemana = this.dias[moment(this.fechaPrevista).isoWeekday()-1].nombre;
+  this.diasemana = moment(this.fechaPrevista).isoWeekday().toString();
   this.diames = moment(this.fechaPrevista).date();
 }
 }

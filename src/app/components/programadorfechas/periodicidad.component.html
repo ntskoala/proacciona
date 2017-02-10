@@ -20,12 +20,12 @@
       <section class="section"  *ngIf="periodoactual.repeticion == 'diaria'" >
         <md-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre}} </md-checkbox>
     </section>
-        <section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
-        Los {{diasemana}}
-    <!--<select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
+        <!--<section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
+        Los  {{dias[diasemana-1].nombre}}
+    <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
         <option *ngFor="let dia of dias; let i = index" value="{{i}}">{{dia.nombre}}</option>
-      </select>-->
-        </section>
+      </select>
+        </section>-->
     <section class="cadasemana section"  *ngIf="periodoactual.repeticion == 'semanal'">
     cada 
         <select class="numlist" required [(ngModel)]="periodoactual.frecuencia" name="cadasemana" (change)="setSemana($event.target.value)">
@@ -48,12 +48,14 @@
         <option value="diames">{{"dia del mes"| translate}}</option>
         <option value="diasemana">{{"dia de la semana"| translate}}</option>
       </select>
-
-      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') || (periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
+      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') ">
           El día {{diames}}
-    <!--<select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
+      </section>
+      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
+          El día 
+    <select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
         <option *ngFor="let i of numdias" value="{{i}}">{{i}}</option>
-      </select> -->
+      </select> 
       </section>
 
     <section class="section2" *ngIf="(periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'mensual')  || (periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'anual') ">

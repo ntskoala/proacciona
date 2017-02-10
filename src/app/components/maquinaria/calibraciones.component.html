@@ -24,7 +24,7 @@
       </select>
     </span>
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event)" [fechaPrevista]="nuevoCalibracion.fecha" [miperiodo]="false"></periodicidad>
     </span>
     <span class="cell">
       <input type="text" [placeholder]="'responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
@@ -62,7 +62,7 @@
       </select>
     </span>
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event, calibracion.id, i)" [miperiodo]="calibracion.periodicidad" name="periodicidad"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event, calibracion.id, i)" [fechaPrevista]="calibracion.fecha" [miperiodo]="calibracion.periodicidad" name="periodicidad"></periodicidad>
     </span>
     <span class="cell">
       <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="calibracion.responsable" name="responsable" (keyup)="modificarMantenimiento(calibracion.id)">

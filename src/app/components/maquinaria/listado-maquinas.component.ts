@@ -22,6 +22,7 @@ export class ListadoMaquinasComponent implements OnInit {
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
   maquinas: Maquina[] = [];
   novaMaquina: Maquina = new Maquina(0,'',0);
+  modal: Modal = new Modal();
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -58,6 +59,7 @@ seleccionarMaquina(valor: any){
 //  console.log("changelist",valor,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.maquinaSeleccionada.emit(this.maquinas[valor]);
+  this.maquinaActiva = this.maquinas[valor].id;
 }
 
 
@@ -79,7 +81,26 @@ maq.idempresa = this.empresasService.seleccionada;
 }
 
 
+
+  cerrarModal(event: boolean) {
+    this.modal.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.maquinaActiva;
+      this.servidor.deleteObject(URLS.MAQUINAS, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let indice = this.maquinas.findIndex((mantenimiento) => mantenimiento.id == this.maquinaActiva);
+           // let indice = this.mantenimientos.indexOf(controlBorrar);
+            this.maquinas.splice(indice, 1);
+          }
+      });
+    }
+  }
 eliminaMaquina(){
-  console.log('maquina:')
+  console.log('maquina:', this.maquinaActiva);
+      this.modal.titulo = 'borrarControlT';
+    this.modal.subtitulo = 'borrarControlST';
+    this.modal.eliminar = true;
+    this.modal.visible = true;
 }
 }

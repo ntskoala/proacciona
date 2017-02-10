@@ -1,3 +1,4 @@
+
 <form (ngSubmit)="udateMaquina(myMachine.value)" #myMachine="ngForm">
     <md-grid-list cols="3" rowHeight="65px">
         <md-grid-tile>
@@ -124,25 +125,20 @@
     </span>
     <span  class="but but2">
         <label *ngIf="empresasService.administrador" class="inputlabel" for="doc">{{'subir documento' | translate}}</label>
-        <input *ngIf="empresasService.administrador" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+        <input *ngIf="empresasService.administrador" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event)" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
     <span  class="but">
-        <button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="0==1" (click)="verdoc=!verdoc">
+        <button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="0==1" (click)="verFoto('ficha')">
         {{'ver documento' | translate}}
         </button>     
-        <!--<button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="0==1" (click)="openDoc(maquina.doc)">
-        {{'ver documento' | translate}}
-        </button>-->
-<!--<p-lightbox type="content">
-
-    <a class="inputlablel" href="#">
-        Watch Video
-    </a>
-    
-</p-lightbox>-->
     </span>
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador" class="inputlabel" for="doc2">{{'subir foto' | translate}}</label>
+        <input *ngIf="empresasService.administrador" id="doc2" class="inputfile" type="file" (change)="uploadFunciones($event,'fotomaquina')" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+    <img [src]="image" width="100" (error)="image='./assets/img/pixel.png'" (click)="verFoto('maquina')" />
     </div>
 </form>
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-<iframe   class="iframe" width="800" height="485" [src]="photoURL()" frameborder="2" allowfullscreen></iframe>
+<img   class="iframe" [src]="foto">
 </div>

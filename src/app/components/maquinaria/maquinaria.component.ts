@@ -13,6 +13,7 @@ import { Empresa } from '../../models/empresa';
 export class MaquinariaComponent implements OnInit {
 public maquina: Maquina;
 public calendario: boolean = false;
+public lubricante: boolean = false;
 public maquinas: Maquina[];
   constructor(private empresasService: EmpresasService) {}
 
@@ -31,6 +32,11 @@ this.maquinas = $event;
 }
 
 calendarios(){
+  this.lubricante = false;
   this.calendario = !this.calendario;
+}
+lubricantes(){
+  this.calendario = false;
+  this.lubricante = !this.lubricante;
 }
 }

@@ -18,7 +18,7 @@
       <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.cantidad" name="cantidad">
     </span>
     <span class="cell">
-      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.material" name="material">
+      <input type="text" placeholder="material" required [(ngModel)]="nuevoPieza.material" name="material">
     </span>
     <span class="cell">
     </span>
@@ -33,6 +33,7 @@
   <div class="header-row">
     <span class="header-cell">Pieza</span>
     <span class="header-cell">cantidad</span>
+    <span class="header-cell">Material</span>
     <span class="header-cell">Doc</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
@@ -47,16 +48,16 @@
       <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
     </span>
   <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
+      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
     </span>
     <span class="cell">
           <span  class="but but2">
-        <label *ngIf="empresasService.administrador" class="inputlabel" attr.for="{{'doc'+i}}">{{'subir documento' | translate}}</label>                
+        <label *ngIf="empresasService.administrador" class="inputlabel" attr.for="{{'doc'+i}}">{{'subir imagen' | translate}}</label>                
         <input *ngIf="empresasService.administrador" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
     </span>
     <span  class="but">
         <button type="button" [disabled]="!pieza.doc" md-raised-button *ngIf="maquina.doc" color="accent" (click)="photoURL(i)">
-        {{'ver documento' | translate}}
+        {{'ver imagen' | translate}}
         </button>     
     </span>
       <!--<span class="foto-link material-icons" *ngIf="pieza.doc" (click)="ventanaFoto(pieza,'maquina_piezas')">photo_camera</span>-->

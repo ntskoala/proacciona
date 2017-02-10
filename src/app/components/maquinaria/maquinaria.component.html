@@ -6,10 +6,12 @@
    <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>
    <div class="calendarios">
   <button md-raised-button (click)="calendarios()">Calendarios</button>
+  <button md-raised-button (click)="lubricantes()">Lubricantes</button>
   </div>
  </md-card-subtitle>
  <div class="contenido">
    <calendarios *ngIf="calendario" [maquinas]="maquinas"></calendarios>
+   <lubricantes *ngIf="lubricante"></lubricantes>
 <md-tab-group *ngIf="maquina" [dynamicHeight]="true">
   <md-tab label="{{'maquinas.maquinaria' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <!--<md-tab label="{{'calendarios' | translate}}"><calendarios></calendarios></md-tab>-->

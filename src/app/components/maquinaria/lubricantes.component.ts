@@ -1,45 +1,38 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
-import { Empresa } from '../../models/empresa';
- import { Maquina } from '../../models/maquina';
- import { CalendarioMantenimiento } from '../../models/calendariomantenimiento';
- import { Lubricante } from '../../models/lubricante';
- import { Periodicidad } from '../../models/periodicidad';
+import { Lubricante } from '../../models/lubricante';
+import { Modal } from '../../models/modal';
 
 @Component({
-  selector: 'mantenimientos-correctivos',
-  templateUrl: './mantenimientos-correctivos.component.html',
+  selector: 'lubricantes',
+  templateUrl: './lubricantes.component.html',
   styleUrls:['ficha-maquina.css']
 })
 
-export class MantenimientosCorrectivosComponent implements OnInit {
+export class LubricantesComponent implements OnInit {
 
-public nuevoItem: Lubricante = new Lubricante(0);
+public nuevoItem: Lubricante = new Lubricante(0,this.empresasService.seleccionada);
 public items: Lubricante[];
 public guardar = [];
-public url:string[]=[];
+public idBorrar;
+public url=[];
 public verdoc: boolean = false;
 public foto:string;
+public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/lubricantes/';
+modal: Modal = new Modal();
 
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
-
-
-
-
 
   ngOnInit() {
       this.setItems();
   }
-  photoURL(i) {
+  photoURL(i,tipo) {
     this.verdoc=!this.verdoc;
-    this.foto = this.url[i];
+    this.foto = this.url[i][tipo];
   }
-
-
 
   setItems(){
   //  let params = this.maquina.id;
@@ -50,12 +43,13 @@ public foto:string;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.items.push(new Lubricante(element.id,element.nombre,element.marca,element.tipo,element.imgficha,element.imgcertificado));
-                   this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/lubricantes/' + element.id +'_'+element.imgficha);
+                  this.items.push(new Lubricante(element.id,element.idempresa,element.nombre,element.marca,element.tipo,element.imgficha,element.imgcertificado));
+                   this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
+             console.log("mantenimientos",this.items);
         });
-        console.log("mantenimientos",this.items);
+       
   }
 
 
@@ -67,7 +61,7 @@ public foto:string;
         if (response.success) {
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
-          this.nuevoItem = new Lubricante(0);
+          this.nuevoItem = new Lubricante(0,this.empresasService.seleccionada);
         }
     });
   }
@@ -91,13 +85,13 @@ public foto:string;
 
 checkBorrar(){}
 
-  uploadImg(event, idItem,i) {
+  uploadImg(event, idItem,i,field) {
     console.log(event)
     var target = event.target || event.srcElement; //if target isn't there then take srcElement
     let files = target.files;
     //let files = event.srcElement.files;
     let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'lubricantes',idItem, this.empresasService.seleccionada.toString()).subscribe(
+    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'lubricantes',idItem, this.empresasService.seleccionada.toString(),field).subscribe(
       response => {
         console.log('doc subido correctamente',files[0].name);
         this.items[i].imgficha = files[0].name;

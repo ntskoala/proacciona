@@ -7,42 +7,42 @@
 
 
  <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
-    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimiento">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimientorealizado">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">Title</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimiento.maquina" /></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimientorealizado.maquina" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">fecha prevista</label></div>
-            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="mantenimiento.fecha_prevista" format="dd-mm-yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="mantenimientorealizado.fecha_prevista" format="dd-mm-yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">fecha real</label></div>
-            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="mantenimiento.fecha" format="dd-mm-yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="mantenimientorealizado.fecha" format="dd-mm-yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">elemento</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimiento.elemento" /></div>
+            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.elemento" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">descripcion</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimiento.descripcion" /></div>
+            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.descripcion" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">causa</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimiento.causas" /></div>
+            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.causas" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">tipo</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimiento.tipo" /></div>
+            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.tipo" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">preventivo/correctivo</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimiento.tipo2" /></div>
+            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.tipo2" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">responsable</label></div>
-            <div class="ui-grid-col-8"><input id="title" [(ngModel)]="mantenimiento.responsable" /></div>
+            <div class="ui-grid-col-8"><input id="title" [(ngModel)]="mantenimientorealizado.responsable" /></div>
         </div>
     </div>
     <p-footer>

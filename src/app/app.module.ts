@@ -37,6 +37,7 @@ import { MaquinariaComponent } from './components/maquinaria/maquinaria.componen
 import { FichaMaquinaComponent } from './components/maquinaria/ficha-maquina.component';
 import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquinas.component';
 import { CalendariosComponent } from './components/maquinaria/calendarios.component';
+import { LubricantesComponent } from './components/maquinaria/lubricantes.component';
 import { MantenimientosComponent } from './components/maquinaria/mantenimientos.component';
 import { CalibracionesComponent } from './components/maquinaria/calibraciones.component';
 import { MantenimientosRealizadosComponent } from './components/maquinaria/mantenimientos-realizados.component';
@@ -99,6 +100,7 @@ import { EmpresasService } from './services/empresas.service';
     FichaMaquinaComponent,
     ListadoMaquinasComponent,
     CalendariosComponent,
+    LubricantesComponent,
     MantenimientosComponent,
     MantenimientosCorrectivosComponent,
     MantenimientosRealizadosComponent,

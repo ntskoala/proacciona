@@ -46,9 +46,9 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
   }
 
-  postDoc(url: string, files: File[], entidad:string, idEntidad: string, idEmpresa: string) {
+  postDoc(url: string, files: File[], entidad:string, idEntidad: string, idEmpresa: string, field?: string) {
     let formData: FormData = new FormData();
-    let parametros = '?token=' + sessionStorage.getItem('token') + '&idEntidad=' + idEntidad +'&entidad=' + entidad+'&idEmpresa=' + idEmpresa;
+    let parametros = '?token=' + sessionStorage.getItem('token') + '&idEntidad=' + idEntidad +'&entidad=' + entidad+'&idEmpresa=' + idEmpresa+'&field=' + field;
     formData.append('doc', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 
 import { EmpresasService } from '../services/empresas.service';
+import { PermisosService } from '../services/permisos.service';
 import { Servidor } from '../services/servidor.service';
 import { Empresa } from '../models/empresa';
 import { Opciones } from '../models/opciones';
@@ -25,7 +26,7 @@ export class OpcionesPremium implements OnInit {
 
  // public opcionespremium: Object[] = [{"nombre":"Exportar informes","value":this.empresasService.empresa.exportar_informes},{"nombre":"Fichas Maquinaria","value":this.empresasService.empresa.fichas_maquinaria}];
   public estados =[{"Exportar informes":false},{"Fichas Maquinaria":true}];
-  constructor(private router: Router, private route: ActivatedRoute, private empresasService: EmpresasService, private servidor: Servidor,) {}
+  constructor(private router: Router, private route: ActivatedRoute, private empresasService: EmpresasService, private servidor: Servidor, private permisos: PermisosService) {}
   
   
   ngOnInit() {
@@ -53,8 +54,8 @@ export class OpcionesPremium implements OnInit {
               for (let element of response.data) {
                 this.opciones.push({"id":element.id,"nombre":element.opcion});
                 //this.guardar[element.id] = false;
-                this.getOpciones(parametros);
               }
+              this.getOpciones(parametros);
             }
         });
   }
@@ -70,9 +71,10 @@ getOpciones(parametros){
                 switch (element.idopcion){
                   case "1":
                     this.empresasService.setOpciones(true);
-                    
+                    break;
                   case "2":
-                    this.empresasService.setOpciones(true);
+                    this.permisos.setOpciones(true,'fichas_maquinaria');
+                    break;
                 }
                 //this.guardar[element.id] = false;
               }
@@ -82,7 +84,7 @@ getOpciones(parametros){
 }
 
 
-    actualizarOpcion(opcion: number) {
+    actualizarOpcion(opcion: any) {
       console.log(opcion);
 
     let parametros = '?id=' + this.opcionesempresa[opcion];
@@ -92,12 +94,16 @@ getOpciones(parametros){
       this.servidor.deleteObject(URLS.OPCIONES_EMPRESA, parametros).subscribe(
         response => {
           if (response.success) {
-            console.log('opcion deleted')
-                 switch (opcion){
+            console.log('opcion deleted',opcion)
+                 switch (parseInt(opcion)){
                   case 1:
                     this.empresasService.setOpciones(false);
+                    console.log('se borrará export', opcion)
+                    break;
                   case 2:
-                    this.empresasService.setOpciones(false);
+                     this.permisos.setOpciones(false,'fichas_maquinaria');
+                     console.log('se borrará fichas', opcion)
+                     break;
                 }
           }
       });
@@ -109,11 +115,16 @@ getOpciones(parametros){
         response => {
           if (response.success) {
             this.opcionesempresa[opcion] = response.id;
-                 switch (opcion){
+                console.log("aqui1",opcion, typeof(opcion));
+                 switch (parseInt(opcion)){
                   case 1:
-                    this.empresasService.setOpciones(true)
+                  console.log("se creará export", opcion , this.idEmpresa)
+                    this.empresasService.setOpciones(true);
+                    break;
                   case 2:
-                    this.empresasService.setOpciones(true)
+                  console.log("se creará fichas", opcion , this.idEmpresa)
+                     this.permisos.setOpciones(true,'fichas_maquinaria');
+                     break;
                 }
           }
       });

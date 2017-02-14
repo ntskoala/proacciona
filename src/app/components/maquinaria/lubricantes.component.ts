@@ -83,7 +83,30 @@ modal: Modal = new Modal();
 
   }
 
-checkBorrar(){}
+
+checkBorrar(idBorrar: number) {
+    // Guardar el id del control a borrar
+    this.idBorrar = idBorrar;
+    // Crea el modal
+    this.modal.titulo = 'borrarControlT';
+    this.modal.subtitulo = 'borrarControlST';
+    this.modal.eliminar = true;
+    this.modal.visible = true;
+}
+  cerrarModal(event: boolean) {
+    this.modal.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.idBorrar;
+      this.servidor.deleteObject(URLS.LUBRICANTES, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
+            let indice = this.items.indexOf(controlBorrar);
+            this.items.splice(indice, 1);
+          }
+      });
+    }
+  }
 
   uploadImg(event, idItem,i,field) {
     console.log(event)

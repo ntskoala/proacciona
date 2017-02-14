@@ -11,7 +11,7 @@
   <form *ngIf="empresasService.administrador" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
     <input type="hidden" [(ngModel)]="nuevoCalibracion.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
+      <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
     </span>
     <span class="cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoCalibracion.fecha"></ng2-datepicker>-->
@@ -19,15 +19,15 @@
     </span>
     <span class="cell">
         <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
-        <option value="interno">{{'interno' | translate}}</option>
-        <option value="externo">{{'externo' | translate}}</option>
+        <option value="interno">{{'maquinas.interno' | translate}}</option>
+        <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
     <span class="cell">
       <periodicidad (periodo)="setPeriodicidad($event)" [fechaPrevista]="nuevoCalibracion.fecha" [miperiodo]="false"></periodicidad>
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
+      <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
     </span>
     <span class="cell"></span>
     <span class="cell">
@@ -38,11 +38,11 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">Calibracion</span>
-    <span class="header-cell">próxima fecha</span>
-    <span class="header-cell">tipo</span>
-    <span class="header-cell">periodicidad</span>
-    <span class="header-cell">Responsable</span>
+    <span class="header-cell">{{"maquinas.calibracion" | translate}}</span>
+    <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
+    <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+    <span class="header-cell">{{"maquinas.periodicidad" | translate}}</span>
+    <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>

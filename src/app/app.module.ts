@@ -51,7 +51,7 @@ import { PageNotFoundComponent } from './components/404.component';
 import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
-
+import { PermisosService } from './services/permisos.service';
 
 @NgModule({
   imports: [
@@ -112,7 +112,8 @@ import { EmpresasService } from './services/empresas.service';
   ],
   providers: [
     Servidor,
-    EmpresasService
+    EmpresasService,
+    PermisosService
   ],
   bootstrap: [AppComponent],
 })

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Servidor } from '../services/servidor.service';
+import { PermisosService } from '../services/permisos.service';
 import { EmpresasService } from '../services/empresas.service';
 import { TranslateService } from 'ng2-translate';
 import { URLS } from '../models/urls';
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   modal: Modal = new Modal();
 
   constructor(private servidor: Servidor, private router: Router,
-    private empresasService: EmpresasService, private translate: TranslateService) {}
+    private empresasService: EmpresasService, private translate: TranslateService, private permisos: PermisosService) {}
 
 ngOnInit(){
       this.translate.setDefaultLang('cat');
@@ -54,7 +55,7 @@ ngOnInit(){
               let idEmpresa = response.data[0].idempresa;
               this.empresasService.empresaActiva = idEmpresa;
               this.empresasService.administrador = false;
-              
+              this.setPermisos(idEmpresa);
               console.log(idEmpresa);
 //              this.router.navigate(['empresa', idEmpresa]);
               this.router.navigate(['empresas']);
@@ -78,6 +79,30 @@ ngOnInit(){
   cerrarModal() {
     this.modal.visible = false;
   }
+
+
+setPermisos(idempresa){
+        let parametros = '&idempresa=' + idempresa; 
+        this.servidor.getObjects(URLS.OPCIONES_EMPRESA, parametros).subscribe(
+          response => {
+            
+            if (response.success && response.data) {
+              for (let element of response.data) {
+                console.log(element.idopcion, typeof(element.idopcion))
+                switch (element.idopcion){
+                  case "1":
+                    this.empresasService.setOpciones(true);
+                    break;
+                  case "2":
+                    this.permisos.setOpciones(true,'fichas_maquinaria');
+                    break;
+                }
+                //this.guardar[element.id] = false;
+              }
+            }
+        },
+        error => {console.log(error)});
+}
 
 test(){
   return 5;

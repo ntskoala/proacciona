@@ -58,14 +58,14 @@ public foto:string;
 
   setMantenimientos(){
     let params = this.maquina.id;
-    let parametros = '&idmaquina=' + params;
+    let parametros = '&tipomantenimiento=correctivo&idmaquina=' + params;
     //  let parametros = '&idempresa=' + this.empresasService.seleccionada; 
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {
             this.mantenimientos = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,element.idusuario,element.responsable,element.id))
+                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,element.idusuario,element.responsable,element.id,element.tipo_evento,element.idempresa))
                    this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' + element.id +'_'+element.doc);
              }
             }
@@ -79,6 +79,8 @@ public foto:string;
     console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;
     this.nuevoMantenimiento.fecha = new Date(Date.UTC(this.nuevoMantenimiento.fecha.getFullYear(), this.nuevoMantenimiento.fecha.getMonth(), this.nuevoMantenimiento.fecha.getDate()))
+    this.nuevoMantenimiento.tipo2 = "correctivo";
+    this.nuevoMantenimiento.idempresa = this.empresasService.seleccionada;
     this.servidor.postObject(URLS.MANTENIMIENTOS_REALIZADOS, this.nuevoMantenimiento).subscribe(
       response => {
         if (response.success) {

@@ -1,48 +1,48 @@
 
-<p-schedule [events]="events" [header]="headerCalendar"  [locale]="es" [contentHeight]="600" [eventLimit]="4" [editable]="true"
+<p-schedule [events]="events" [header]="headerCalendar"  [locale]="es" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"
  (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 
-
+<md-card>leyenda</md-card>
 
 
  <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimientorealizado">
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">Title</label></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.titulo' | translate}}</label></div>
             <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimientorealizado.maquina" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="start">fecha prevista</label></div>
+            <div class="ui-grid-col-4"><label for="start">{{'maquinas.fecha_prevista' | translate}}</label></div>
             <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="mantenimientorealizado.fecha_prevista" format="dd-mm-yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="start">fecha real</label></div>
+            <div class="ui-grid-col-4"><label for="start">{{'maquinas.fecha_real' | translate}}</label></div>
             <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="mantenimientorealizado.fecha" format="dd-mm-yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">elemento</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.elemento" /></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.elemento' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="elem" [(ngModel)]="mantenimientorealizado.elemento" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">descripcion</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.descripcion" /></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.descripcion' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="mantenimientorealizado.descripcion" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">causa</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.causas" /></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.causa' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="casusa" [(ngModel)]="mantenimientorealizado.causas" /></div>
         </div>
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">tipo</label></div>
-            <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.tipo" /></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.tipo' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="tipo" [(ngModel)]="mantenimientorealizado.tipo" /></div>
         </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">preventivo/correctivo</label></div>
+        <!--<div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.preventivo/correctivo' | translate}}</label></div>
             <div class="ui-grid-col-8"><input  id="title" [(ngModel)]="mantenimientorealizado.tipo2" /></div>
-        </div>
+        </div>-->
         <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="vin">responsable</label></div>
-            <div class="ui-grid-col-8"><input id="title" [(ngModel)]="mantenimientorealizado.responsable" /></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'maquinas.responsable' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="mantenimientorealizado.responsable" /></div>
         </div>
     </div>
     <p-footer>

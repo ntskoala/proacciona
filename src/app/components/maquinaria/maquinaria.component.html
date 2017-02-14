@@ -5,21 +5,21 @@
  <md-card-subtitle>
    <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>
    <div class="calendarios">
-  <button md-raised-button (click)="calendarios()">Calendarios</button>
-  <button md-raised-button (click)="lubricantes()">Lubricantes</button>
+  <button md-raised-button (click)="calendarios()">{{'maquinas.calendarios' | translate}}</button>
+  <button md-raised-button (click)="lubricantes()">{{'maquinas.lubricantes' | translate}}</button>
   </div>
  </md-card-subtitle>
  <div class="contenido">
    <calendarios *ngIf="calendario" [maquinas]="maquinas"></calendarios>
    <lubricantes *ngIf="lubricante"></lubricantes>
-<md-tab-group *ngIf="maquina" [dynamicHeight]="true">
-  <md-tab label="{{'maquinas.maquinaria' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
+<md-tab-group *ngIf="maquina && maquina.id > 0" [dynamicHeight]="false">
+  <md-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <!--<md-tab label="{{'calendarios' | translate}}"><calendarios></calendarios></md-tab>-->
-  <md-tab label="{{'mantenimientos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>
-  <md-tab label="{{'calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></md-tab>
-  <md-tab label="{{'piezas moviles' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>
-  <md-tab label="{{'mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></md-tab>
-<!--<md-tab label="{{'mantenimientos realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-realizados></md-tab>-->
+  <md-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>
+  <md-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></md-tab>
+<md-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-realizados></md-tab>  
+  <md-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>
+  <md-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></md-tab>
 </md-tab-group>
  </div>
   </md-card>

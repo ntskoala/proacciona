@@ -15,6 +15,7 @@ export class MantenimientoRealizado {
     public idusuario?:number,
     public responsable?: string,
     public id?:number,
-    public tipo_evento?:string
+    public tipo_evento?:string,
+    public idempresa?:number
   ) {}
 }

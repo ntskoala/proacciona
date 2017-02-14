@@ -27,8 +27,11 @@ public dias = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo
 public cols:number = 7;
 //public events = [{"title": "All Day Event","start": "2017-02-04","color":"#fbc02d"}];
 public events :any[] =[];
+public events_realizados :any[] =[];
+public eventsSoucers:any;
 public headerCalendar: any;
 public es:any;
+public cat:any;
 public buttonText:any;
 public dialogVisible: boolean = false;
 public mantenimientorealizado: MantenimientoRealizado;
@@ -57,7 +60,19 @@ public event:any;
             allDayText: "Todo el día",
             columnFormat: "dddd",
             firstDay: 1
-        };   
+        }; 
+        if (this.empresasService.idioma == "cat"){
+       this.es = {
+            monthNames: ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol',
+                'Agost', 'Septembre', 'Octubre', 'Novembre', 'Decembre'],
+            dayNames: ['diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Disabte'],
+            buttonText: {today:'avui',month:'mes',week:'setmana',day:'dia',list:'llista',listMonth:"llista mensual",listYear:"llista anual"},
+            dayNamesShort: ['Diu', 'Dil', 'Dim', 'Dim', 'Dij', 'Div', 'Dis'],
+            allDayText: "Tot el día",
+            columnFormat: "dddd",
+            firstDay: 1
+        };
+        }
 }
   setEventsMantenimientos(){
     //let params = this.maquina.id;
@@ -71,13 +86,38 @@ public event:any;
                 this.calendario.push(new CalendarioMantenimiento(element.maquina, element.ubicacion, element.nombre, element.tipo, element.periodicidad,
                   element.tipoperiodo));
                   let color = this.setColor(element.tipo_m,element.fecha)
-                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.maquina + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color,"tipoevento":element.tipo_m});  
+                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.maquina + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color,"tipoevento":element.tipo_m,"estado":"pendiente"});  
                    this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
                   element.tipoperiodo, element.doc,element.usuario,element.responsable));
               }
             }
-        });
+        },
+        (error) => console.log(error),
+        ()=> this.loadRealizados());
   }
+loadRealizados(){
+///****** INSEERT MANTENIMIENTOS REALIZADOS */
+///****** INSEERT MANTENIMIENTOS REALIZADOS */
+    let params = this.empresasService.seleccionada;
+    let parametros2 = '&tipomantenimiento=preventivo&idempresa=' + params;
+    //  let parametros = '&idempresa=' + this.empresasService.seleccionada; 
+        this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros2).subscribe(
+          response => {
+            this.events_realizados = [];
+            if (response.success && response.data) {
+              for (let element of response.data) {  
+                  let color2 = this.setColor2(element.tipo_evento);
+                  this.events.push({"idmantenimiento":element.idmantenimiento,"idmaquina":element.idmaquina,"title":element.maquina,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"causas":element.causas,"tipo2":element.tipo2,"usuario":element.idusuario,"responsable":element.responsable,"color":color2,"tipoevento":element.tipo_evento,"estado":"realizado"});
+             }
+             console.log("realizadost",this.events_realizados);
+             this.events.concat(this.events_realizados);
+             console.log("events",this.events);
+            }
+        });
+
+}
+
+
 setColor(tipo:string,fecha){
   let color: string;
   let hoy = Date.now();
@@ -86,16 +126,30 @@ setColor(tipo:string,fecha){
     case "mantenimiento":
     this.tipoevento.push("mantenimientos");
       color="#F67E1F";
+      if (fecha_event < hoy) color= "#E65A58";
       break;
     case "calibracion":
     this.tipoevento.push("calibraciones");
       color="#673AB7";
+      if (fecha_event < hoy) color= "red";
       break;
   }
-  if (fecha_event < hoy) color= "red";
   return color;
 }
-
+setColor2(tipo:string){
+  let color: string;
+  switch (tipo){
+    case "mantenimiento":
+    //this.tipoevento.push("mantenimientos");
+      color="#33cc33";
+      break;
+    case "calibracion":
+    //this.tipoevento.push("calibraciones");
+      color="#88ee88";
+      break;
+  }
+  return color;
+}
 list(cal){
   console.log('list');
   console.log(cal);
@@ -110,10 +164,13 @@ handleEventClick(event){
       // console.log(start.stripTime());
        //this.event.start = new Date("2017-02-14");
       // console.log(start.format());
-
+      if (event.calEvent.estado == 'pendiente'){
         this.mantenimientorealizado = new MantenimientoRealizado(event.calEvent.idmantenimiento,event.calEvent.idmaquina,event.calEvent.title,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,'','',event.calEvent.tipo2,'',this.empresasService.userId,event.calEvent.responsable,0,event.calEvent.tipoevento);
         this.periodicidad = JSON.parse(event.calEvent.periodicidad);
         this.dialogVisible = true;
+      }else{
+        console.log('realizado',event.calEvent);
+      }
 
 
         //this.events[2].start = moment(this.events[2].start).add(1,"d");
@@ -126,7 +183,7 @@ handleEventClick(event){
         //update
         //this.nuevaFecha();
         let index = this.events.findIndex((event)=> (event.idmantenimiento == this.mantenimientorealizado.idmantenimiento) && (event.tipoevento == this.mantenimientorealizado.tipo_evento));
-
+        console.log (index, this.mantenimientos[index],this.mantenimientorealizado)
         this.mantenimientos[index].fecha = this.nuevaFecha();
         this.actualizarMantenimiento(this.mantenimientos[index],index);
         this.newMantenimientoRealizado();
@@ -243,8 +300,10 @@ let url;
 console.log (this.tipoevento[i])
 if (this.tipoevento[i] == "mantenimientos"){
 url = URLS.MANTENIMIENTOS;
+this.event.color = "#F67E1F";
 }else{
 url = URLS.CALIBRACIONES;
+this.event.color = "#673AB7";
 }
     console.log ("actualizar:",url," ##",mantenimiento);
     //mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
@@ -263,7 +322,8 @@ url = URLS.CALIBRACIONES;
 
 newMantenimientoRealizado(){
     let hoy = new Date();
-    this.mantenimientorealizado.fecha = new Date(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()))
+    this.mantenimientorealizado.fecha = new Date(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()));
+    this.mantenimientorealizado.idempresa = this.empresasService.seleccionada;
     this.servidor.postObject(URLS.MANTENIMIENTOS_REALIZADOS, this.mantenimientorealizado).subscribe(
       response => {
         if (response.success) {

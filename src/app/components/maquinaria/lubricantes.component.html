@@ -11,14 +11,14 @@
   <form *ngIf="empresasService.administrador" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+      <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
     </span>
 
     <span class="cell">
-      <input type="text" placeholder="marca" required [(ngModel)]="nuevoItem.marca" name="marca">
+      <input type="text" [placeholder]="'maquinas.marca' | translate" required [(ngModel)]="nuevoItem.marca" name="marca">
     </span>
     <span class="cell">
-      <input class="small" type="text" placeholder="tipo" required [(ngModel)]="nuevoItem.tipo" name="tipo">
+      <input class="small" type="text" [placeholder]="'maquinas.tipo' | translate" required [(ngModel)]="nuevoItem.tipo" name="tipo">
     </span>
     <span class="cell">
     </span>
@@ -35,12 +35,12 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">Nombre</span>
-    <span class="header-cell">Marca</span>
-    <span class="header-cell">Tipo</span>
-    <span class="header-cell">Imagen Lubricante</span>
+    <span class="header-cell">{{"maquinas.nombre" | translate}}</span>
+    <span class="header-cell">{{"maquinas.marca" | translate}}</span>
+    <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+    <span class="header-cell">{{"maquinas.imagen_lubricante" | translate}}</span>
     <span class="header-cell"></span>
-    <span class="header-cell">Imagen Certificado</span>  
+    <span class="header-cell">{{"maquinas.imagen_certificado" | translate}}</span>  
     <span class="header-cell"></span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
@@ -60,7 +60,7 @@
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
       <button *ngIf="empresasService.administrador" [disabled]="!item.imgficha" md-mini-fab color="accent" (click)="photoURL(i,'imgficha')" type="button">
-        <span class="material-icons">camera</span>
+        <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">
@@ -71,7 +71,7 @@
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
       <button  *ngIf="empresasService.administrador" [disabled]="!item.imgcertificado" md-mini-fab color="accent" (click)="photoURL(i,'imgcertificado')" type="button">
-        <span class="material-icons">camera</span>
+        <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">

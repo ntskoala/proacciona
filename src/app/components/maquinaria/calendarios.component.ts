@@ -42,6 +42,7 @@ public mantenimientos: MantenimientosMaquina[]=[];
 public calibraciones: CalibracionesMaquina[]=[];
 public tipoevento:string[]=[];
 public event:any;
+public estado;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
 
@@ -165,11 +166,15 @@ handleEventClick(event){
        //this.event.start = new Date("2017-02-14");
       // console.log(start.format());
       if (event.calEvent.estado == 'pendiente'){
+        this.estado="pendiente";
         this.mantenimientorealizado = new MantenimientoRealizado(event.calEvent.idmantenimiento,event.calEvent.idmaquina,event.calEvent.title,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,'','',event.calEvent.tipo2,'',this.empresasService.userId,event.calEvent.responsable,0,event.calEvent.tipoevento);
         this.periodicidad = JSON.parse(event.calEvent.periodicidad);
         this.dialogVisible = true;
       }else{
-        console.log('realizado',event.calEvent);
+        this.estado="realizado";
+                this.mantenimientorealizado = new MantenimientoRealizado(event.calEvent.idmantenimiento,event.calEvent.idmaquina,event.calEvent.title,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,event.calEvent.elemento,event.calEvent.causas,event.calEvent.tipo2,'',this.empresasService.userId,event.calEvent.responsable,0,event.calEvent.tipoevento);
+        //this.periodicidad = JSON.parse(event.calEvent.periodicidad);
+        this.dialogVisible = true;
       }
 
 

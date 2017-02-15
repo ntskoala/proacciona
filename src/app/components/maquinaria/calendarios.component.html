@@ -1,9 +1,31 @@
 
 <p-schedule [events]="events" [header]="headerCalendar"  [locale]="es" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"
- (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
-
-<md-card>leyenda</md-card>
+  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+<!--(onDayClick)="handleDayClick($event)"-->
+<md-card>leyenda
+    <div class="leyenda">
+        Mantenimientos
+        <md-chip-list>
+            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip  color="#33cc33" selected="true">realizados</md-chip>
+            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#F67E1F" selected="true">próximos</md-chip>
+            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="accent" selected="true">vencidos</md-chip>
+        </md-chip-list>
+        <br>
+        Calibraciones
+        <md-chip-list>
+            <figure style="display: block;background: #88ee88;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip  color="red" selected="true">realizadas</md-chip>
+            <figure style="display: block;background: #673AB7;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#673AB7" selected="true">próximas</md-chip>
+            <figure style="display: block;background: red;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#88ee88" selected="true">vencidas</md-chip>
+        </md-chip-list>
+    </div>
+</md-card>
 
 
  <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
@@ -48,7 +70,7 @@
     <p-footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
             <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
-            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+            <button *ngIf="estado=='pendiente'" type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
         </div>
     </p-footer>
 </p-dialog>

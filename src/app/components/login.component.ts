@@ -37,9 +37,9 @@ ngOnInit(){
         this.usuario = {};        
         // Si el usuario es correcto
         if (response.success == 'true') {
-          this.empresasService.userId = response.data.id;
-          this.empresasService.userName = response.data.usuario;
-          this.empresasService.userTipo = response.data.tipouser;
+          this.empresasService.userId = response.data[0].id;
+          this.empresasService.userName = response.data[0].usuario;
+          this.empresasService.userTipo = response.data[0].tipouser;
           // Guarda token en sessionStorage
           sessionStorage.setItem('token', response.token);
           // Redirección en función del tipo de usuario
@@ -88,7 +88,7 @@ setPermisos(idempresa){
             
             if (response.success && response.data) {
               for (let element of response.data) {
-                console.log(element.idopcion, typeof(element.idopcion))
+//                console.log(element.idopcion, typeof(element.idopcion))
                 switch (element.idopcion){
                   case "1":
                     this.empresasService.setOpciones(true);

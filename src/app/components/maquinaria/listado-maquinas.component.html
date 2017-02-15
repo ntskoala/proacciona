@@ -12,7 +12,7 @@
 </div>
 <div class="nueva">
 <!-- Nueva maquina -->
-<div *ngIf="empresasService.administrador" class="nueva-maquina">
+<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-maquina">
   <h2>{{'Nueva' | translate}} maquina</h2>
   <div class="table">
     <form class="row" (ngSubmit)="nuevaMaquina(newMachine.value)" #newMachine="ngForm">

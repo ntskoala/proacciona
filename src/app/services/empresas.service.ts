@@ -29,7 +29,7 @@ export class EmpresasService {
   //exportar_informes = this.exportar_informesFuente.asObservable();
 
   seleccionarEmpresa(empresa: Empresa) {
-      console.log("####EMPRESA SELECCIONADA:",empresa);
+ //     console.log("####EMPRESA SELECCIONADA:",empresa);
       this.seleccionada = empresa.id;
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);

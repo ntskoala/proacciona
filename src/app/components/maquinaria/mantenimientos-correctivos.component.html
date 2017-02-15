@@ -1,5 +1,5 @@
 <div class="table">
-  <form *ngIf="empresasService.administrador" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
   <!--<div  *ngIf="empresasService.administrador"  class="row">-->
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
@@ -54,29 +54,29 @@
 
     <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.mantenimiento" name="mantenimiento" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="mantenimiento.mantenimiento" name="mantenimiento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
       <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>    
     </span>
     <span class="cell">
-      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="mantenimiento.tipo" name="tipo" (change)="itemEdited(mantenimiento.id)">
+      <select [disabled]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" class="white-select" [(ngModel)]="mantenimiento.tipo" name="tipo" (change)="itemEdited(mantenimiento.id)">
         <option value="interno">{{'interno' | translate}}</option>
         <option value="externo">{{'externo' | translate}}</option>
       </select>
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'elemento' | translate" type="text" [(ngModel)]="mantenimiento.elemento" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [placeholder]="'elemento' | translate" type="text" [(ngModel)]="mantenimiento.elemento" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'causas' | translate" type="text" [(ngModel)]="mantenimiento.causas" name="causas" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [placeholder]="'causas' | translate" type="text" [(ngModel)]="mantenimiento.causas" name="causas" (keyup)="itemEdited(mantenimiento.id)">
     </span>
 
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
     </span>
 
     <!--<span class="cell">
@@ -85,16 +85,16 @@
       </button>
     </span>-->
     <span class="cell">
-      <button *ngIf="empresasService.administrador" [disabled]="!mantenimiento.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!mantenimiento.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">
-        <label *ngIf="empresasService.administrador" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
-        <input *ngIf="empresasService.administrador" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, mantenimiento.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, mantenimiento.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

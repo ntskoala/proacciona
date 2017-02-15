@@ -11,14 +11,14 @@ import { Empresa } from '../models/empresa';
 export class EmpresasComponent implements OnInit {
 @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 public selectedMenu:string='home';
-public gallery: string;
+
   permiso: boolean = false;
   token = sessionStorage.getItem('token');
   empresa: Empresa;
   constructor(private router: Router, private empresasService: EmpresasService) {}
 
   ngOnInit() {
-    this.gallery = "https://source.unsplash.com/1200x200/?food";
+   
     // Si no exite el token, redirecciona a login
     if (!this.token) {
       this.router.navigate(['login']);
@@ -31,6 +31,7 @@ public gallery: string;
       this.empresa = new Empresa ('','','0','0', this.empresasService.empresaActiva);
       this.empresasService.seleccionarEmpresa(this.empresa);
       this.permiso = true;
+      this.selectedMenu ="informes";
     } else {
       // Todo ok, adelante
       this.permiso = true;

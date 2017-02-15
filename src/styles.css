@@ -174,9 +174,21 @@ select {
 
 /* LoginComponent */
 .login-form {
-  max-width: 400px;
+  max-width: 200px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 0px;
+      position: fixed;
+    float: right;
+    top: 0px;
+    right: 0px;
+    z-index: 10;
+    height: 100%;
+}
+.logintitle {
+  max-height: 60px;
+}
+.logintitle2 {
+  max-height: 60px;
 }
 /* NavComponent*/
 .userlogged{
@@ -224,7 +236,7 @@ top: 0px;
 .introduccion{
   margin-top: 50px;
   margin-left: 50px;
-  width: calc(100% - 175px);
+  width: calc(100% - 275px);
   display: -webkit-flex;
 }
 .intro{

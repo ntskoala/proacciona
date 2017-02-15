@@ -16,7 +16,6 @@ export class NavComponent implements OnInit{
   constructor(private router: Router,private servidor: Servidor, private empresasService: EmpresasService) {}
 
   ngOnInit() {
-
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       empresa => {
         this.logoEmpresa = URLS.LOGOS + empresa.id + '/logo.jpg';

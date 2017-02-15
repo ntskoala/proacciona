@@ -16,11 +16,12 @@ export class LoginComponent implements OnInit {
   usuario: Object = {"user":"","password":""};
 //  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
   modal: Modal = new Modal();
-
+public gallery: string;
   constructor(private servidor: Servidor, private router: Router,
     private empresasService: EmpresasService, private translate: TranslateService, private permisos: PermisosService) {}
 
 ngOnInit(){
+   this.gallery = "https://source.unsplash.com/1200x200/?food";
       this.translate.setDefaultLang('cat');
       this.translate.use('cat');
 }

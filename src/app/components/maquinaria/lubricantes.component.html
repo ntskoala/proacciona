@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="table">
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
@@ -49,43 +49,43 @@
   <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index">
     <input type="hidden" [(ngModel)]="item.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="item.marca" name="marca" (keyup)="itemEdited(item.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.marca" name="marca" (keyup)="itemEdited(item.id)">
     </span>
   <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" class="small" type="text" [(ngModel)]="item.tipo" name="tipo" (keyup)="itemEdited(item.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="item.tipo" name="tipo" (keyup)="itemEdited(item.id)">
     </span>
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!item.imgficha" md-mini-fab color="accent" (click)="photoURL(i,'imgficha')" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgficha" md-mini-fab color="accent" (click)="photoURL(i,'imgficha')" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'imgficha'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imgficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgficha')" accept=".gif,.jpg,.jpeg,.png"/>
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'imgficha'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'imgficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgficha')" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
 <!--****** FIN ********************-->
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
-      <button  *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!item.imgcertificado" md-mini-fab color="accent" (click)="photoURL(i,'imgcertificado')" type="button">
+      <button  *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgcertificado" md-mini-fab color="accent" (click)="photoURL(i,'imgcertificado')" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'imgcertificado'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imgcertificado'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgcertificado')" accept=".gif,.jpg,.jpeg,.png"/>
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'imgcertificado'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'imgcertificado'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgcertificado')" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
 <!--****** FIN ********************-->
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

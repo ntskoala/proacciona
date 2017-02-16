@@ -28,6 +28,7 @@ public foto;
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/maquinaria/';
     this.url = this.baseurl + this.maquina.id +'_'+this.maquina.doc;
     this.image= this.baseurl + this.maquina.id+"_"+this.maquina.id+".jpg";
+    console.log("#"+this.empresasService.userTipo+"#");
   }
 
   ngOnChanges(){

@@ -50,6 +50,8 @@ ngOnInit(){
               this.router.navigate(['empresas']);
               this.empresasService.administrador = true;
               break;
+            case "Mantenimiento":
+            
             case 'Gerente':
               // Redirecciona a página de empresa
               console.log("gerente");

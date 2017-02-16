@@ -18,27 +18,41 @@ public selectedMenu:string='home';
   constructor(private router: Router, private empresasService: EmpresasService) {}
 
   ngOnInit() {
-   
+
     // Si no exite el token, redirecciona a login
     if (!this.token) {
       this.router.navigate(['login']);
-    } else if (!this.empresasService.administrador) {
-      // Si el usuario activo no es administrador, redirecciona a login
-      if (this.empresasService.empresaActiva == 0){
-       sessionStorage.removeItem('token');
-       this.router.navigate(['login']);
-      }
-      this.empresa = new Empresa ('','','0','0', this.empresasService.empresaActiva);
-      this.empresasService.seleccionarEmpresa(this.empresa);
-      this.permiso = true;
-      this.selectedMenu ="informes";
-    } else {
-      // Todo ok, adelante
-      this.permiso = true;
-      console.log('Seleccion automática de empresa, empresas component');
-//this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
     }
-//    console.log("empresas",this.empresasService.administrador,this.permiso)
+    switch (this.empresasService.userTipo) {
+      case 'Administrador':
+        this.permiso = true;
+        console.log('Seleccion automática de empresa, empresas component');
+        //this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
+        break;
+      case "Mantenimiento":
+        if (this.empresasService.empresaActiva == 0) {
+          sessionStorage.removeItem('token');
+          this.router.navigate(['login']);
+        }
+        this.empresa = new Empresa('', '', '0', '0', this.empresasService.empresaActiva);
+        this.empresasService.seleccionarEmpresa(this.empresa);
+        this.permiso = true;
+        this.selectedMenu = "maquinaria";
+        break;
+      case 'Gerente':
+        if (this.empresasService.empresaActiva == 0) {
+          sessionStorage.removeItem('token');
+          this.router.navigate(['login']);
+        }
+        this.empresa = new Empresa('', '', '0', '0', this.empresasService.empresaActiva);
+        this.empresasService.seleccionarEmpresa(this.empresa);
+        this.permiso = true;
+        this.selectedMenu = "informes";
+        break;
+      default:
+        // USUARIO SIN PERMISOS, COMO HA LLEGADO HASTA AQUI???
+        this.router.navigate(['login']);
+    }
   }
 
     scrolldown(): void {

@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="table">
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
     <input type="hidden" [(ngModel)]="nuevoCalibracion.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
@@ -50,13 +50,13 @@
   <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i)" *ngFor="let calibracion of calibraciones; let i=index">
     <input type="hidden" [(ngModel)]="calibracion.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
     </span>
     <span class="cell">
-    <p-calendar [disabled]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
-      <select [disabled]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">
+      <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">
         <option value="interno">{{'interno' | translate}}</option>
         <option value="externo">{{'externo' | translate}}</option>
       </select>
@@ -65,15 +65,15 @@
       <periodicidad (periodo)="setPeriodicidad($event, calibracion.id, i)" [fechaPrevista]="calibracion.fecha" [miperiodo]="calibracion.periodicidad" name="periodicidad"></periodicidad>
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="calibracion.responsable" name="responsable" (keyup)="modificarMantenimiento(calibracion.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="calibracion.responsable" name="responsable" (keyup)="modificarMantenimiento(calibracion.id)">
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(calibracion.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(calibracion.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[calibracion.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[calibracion.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

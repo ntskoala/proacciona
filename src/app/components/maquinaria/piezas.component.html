@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="table">
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #creaForm="ngForm" (ngSubmit)="crearItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #creaForm="ngForm" (ngSubmit)="crearItem()">
     <input type="hidden" [(ngModel)]="nuevoPieza.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
@@ -42,13 +42,13 @@
   <form class=" row" #actualizaForm="ngForm" (ngSubmit)="actualizarItem(actualizaForm.value)" *ngFor="let pieza of piezas; let i = index">
     <input type="hidden" [(ngModel)]="pieza.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="pieza.nombre" name="nombre" (keyup)="modificarItem(pieza.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.nombre" name="nombre" (keyup)="modificarItem(pieza.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
     </span>
   <span class="cell">
-      <input [readonly]="!empresasService.administrador && !empresasService.userTipo == 'Gerente'" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
     </span>
     <span class="cell">
           <!--<span  class="but but2">
@@ -61,22 +61,22 @@
         </button>     
     </span>-->
      <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!pieza.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!pieza.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
     <span class="cell mini-fab">
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
     </span>    
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

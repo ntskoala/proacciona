@@ -5,24 +5,24 @@
 <!--(onDayClick)="handleDayClick($event)"-->
 <md-card>leyenda
     <div class="leyenda">
-        Mantenimientos
+       {{'maquinas.mantenimientos' | translate}}
         <md-chip-list>
             <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip  color="#33cc33" selected="true">realizados</md-chip>
+            <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
             <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#F67E1F" selected="true">próximos</md-chip>
+            <md-chip color="#F67E1F" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="accent" selected="true">vencidos</md-chip>
+            <md-chip color="accent" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
         <br>
-        Calibraciones
+        {{'maquinas.calibraciones' | translate}}
         <md-chip-list>
             <figure style="display: block;background: #88ee88;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip  color="red" selected="true">realizadas</md-chip>
+            <md-chip  color="red" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
             <figure style="display: block;background: #673AB7;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#673AB7" selected="true">próximas</md-chip>
+            <md-chip color="#673AB7" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
             <figure style="display: block;background: red;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#88ee88" selected="true">vencidas</md-chip>
+            <md-chip color="#88ee88" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
     </div>
 </md-card>

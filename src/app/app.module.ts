@@ -13,6 +13,8 @@ import {LightboxModule} from 'primeng/primeng';
 import {MomentModule} from 'angular2-moment';
 import { Http } from '@angular/http';
 
+
+//**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
@@ -33,6 +35,12 @@ import { PermisosComponent } from './components/permisos.component';
 import { InformeControlesComponent } from './components/informe-controles.component';
 import { InformeChecklistsComponent } from './components/informe-checklists.component';
 import { InformePeriodicidadComponent } from './components/informe-periodicidad.component';
+
+import { ModalComponent } from './components/modal.component';
+import {PeriodicidadComponent} from './components/programadorfechas/periodicidad.component';
+import { PageNotFoundComponent } from './components/404.component';
+
+/********    MAQUINARIA COMPONENTS */
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
 import { FichaMaquinaComponent } from './components/maquinaria/ficha-maquina.component';
 import { ListadoMaquinasComponent } from './components/maquinaria/listado-maquinas.component';
@@ -44,10 +52,15 @@ import { MantenimientosRealizadosComponent } from './components/maquinaria/mante
 import { MantenimientosCorrectivosComponent } from './components/maquinaria/mantenimientos-correctivos.component';
 import { CalibracionesRealizadas } from './components/maquinaria/calibraciones-realizadas.component';
 import { PiezasComponent } from './components/maquinaria/piezas.component';
-import { ModalComponent } from './components/modal.component';
-import {PeriodicidadComponent} from './components/programadorfechas/periodicidad.component';
-import { PageNotFoundComponent } from './components/404.component';
 
+/********    LIMPIEZA COMPONENTS */
+import { LimpiezaComponent } from './components/limpieza/limpieza.component';
+import { ListadoLimpiezasComponent } from './components/limpieza/listado-limpieza.component';
+import { ProductosLimpiezaComponent } from './components/limpieza/productos-limpieza.component';
+import { ElementosLimpiezaComponent } from './components/limpieza/elementos-limpieza.component';
+import { LimpiezasRealizadasComponent } from './components/limpieza/limpiezas-realizadas.component';
+import { CalendariosLimpiezaComponent } from './components/limpieza/calendarios-limpieza.component';
+/********     SERVICIOS          */
 import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
@@ -96,6 +109,7 @@ import { PermisosService } from './services/permisos.service';
     InformeControlesComponent,
     InformeChecklistsComponent,
     InformePeriodicidadComponent,
+//******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,
     ListadoMaquinasComponent,
@@ -106,6 +120,14 @@ import { PermisosService } from './services/permisos.service';
     MantenimientosRealizadosComponent,
     CalibracionesComponent,
     PiezasComponent,
+//******LIMPIEZAS */
+    LimpiezaComponent,
+    ListadoLimpiezasComponent,
+    ProductosLimpiezaComponent,
+    ElementosLimpiezaComponent,
+    LimpiezasRealizadasComponent,
+    CalendariosLimpiezaComponent,
+//*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,
     PageNotFoundComponent

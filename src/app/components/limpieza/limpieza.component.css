@@ -1,4 +1,19 @@
 
+.contenido{
+  display:block;
+  clear:both;
+}
+.space{
+  display:block;
+  height: 30px;
+  width: 100%;
+}
+
+.tabs{
+  min-height: 430px;
+    display: flex;
+}
+
 .campo{
   background-color: #fff9c4;
   border: 1px solid #fbc02d;
@@ -18,10 +33,12 @@ md-grid-tile-header{
     width: 0px;
     opacity: 0;
 }
+
 .inputfile{
     width: 0px;
     opacity: 0;
 }
+
 .inputlabel {
     margin-top: 0px;
     display: block;
@@ -36,12 +53,19 @@ md-grid-tile-header{
     border-bottom-width: 2px;
     border-bottom-style: solid;
 }
+.medium{
+  max-width: 100px;
+}
+.camera{
+  float:left;
+}
 .inputlabelRound {
-    margin-top: 20px;
+    margin-top: 0px;
     margin-left: 5px;
     display: block;
     width: 40px;
     height:40px;
+    float:left;
     cursor: pointer;
     background-image: url('./assets/images/upload.png');
 }

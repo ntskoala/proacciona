@@ -1,0 +1,13 @@
+export class LimpiezaElemento {
+  constructor(
+    public id: number,
+    public idlimpiezazona: number,
+    public nombre: string,
+    public fecha: any,
+    public tipo?: string,
+    public periodicidad?: string,
+    public protocolo?: string,
+    public usuario?: string,
+    public responsable?: string
+  ) {}
+}

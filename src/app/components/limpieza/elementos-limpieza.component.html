@@ -1,0 +1,100 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'limpiezas.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+    </span>
+    <span class="cell">
+      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell small">
+        <select class="white-select small" required [(ngModel)]="nuevoItem.tipo" name="tipo">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha"></periodicidad>
+    </span>
+    <span class="cell">
+      <input type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
+    </span>
+    <span class="cell medium"></span><!--protocolo-->
+    <span class="cell small"></span><!--Borrar-->
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
+    <span class="header-cell">{{"limpieza.fecha" | translate}}</span>
+    <span class="header-cell">{{"limpieza.tipo" | translate}}</span>
+    <span class="header-cell">{{"limpieza.periodicidad" | translate}}</span>
+    <span class="header-cell">{{"limpieza.responsable" | translate}}</span>
+    <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
+    <span class="header-cell"></span><!--Borrar-->
+    <span class="header-cell"></span><!--Guardar-->
+  </div>
+
+  <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)" *ngFor="let item of items; let i = index">
+    <input type="hidden" [(ngModel)]="item.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
+    </span>
+    <span class="cell">
+      <p-calendar [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
+    </span>
+    <span class="cell small">
+      <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.tipo" name="tipo" (change)="itemEdited(item.id)">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" name="periodicidad"></periodicidad>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
+    </span>
+<!--*****  subir/ver FOTO  *********-->
+    <span class="cell medium">
+      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.protocolo" md-mini-fab color="accent" (click)="photoURL(i,'protocolo')" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'protocolo'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'protocolo'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'protocolo')" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+<!--****** FIN ********************-->
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img class="iframe" [src]="foto">
+</div>

@@ -14,6 +14,9 @@
         <button  [disabled]="!empresasService.empresaActiva || !permisos.fichas_maquinaria" (click)="setSeleccion('maquinaria')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">build</span>
       </button>
+        <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('limpieza')" class="opcion" md-mini-fab color="accent" >
+        <span class="material-icons">invert_colors</span>
+      </button>
         <button  [disabled]="!empresasService.empresaActiva || !permisos.personal || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('personal')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">supervisor_account</span>
       </button>

@@ -1,0 +1,37 @@
+<div class="table">
+  <!--</div>-->
+  <div class="header-row">
+    <span class="header-cell">{{"limpieza.limpieza" | translate}}</span>
+    <span class="header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
+    <span class="header-cell">{{"limpieza.fecha" | translate}}</span>
+    <span class="header-cell">{{"limpieza.tipo" | translate}}</span>
+    <span class="header-cell">{{"limpieza.descripcion" | translate}}</span>
+    <span class="header-cell">{{"limpieza.responsable" | translate}}</span>
+  </div>
+
+
+  <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
+
+    <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
+    <span class="cell">
+      <input [readonly]="true" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" >
+    </span>
+    <span class="cell small">
+      <p-calendar class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fechaprevista"></p-calendar>    
+    </span>
+    <span class="cell">
+      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>    
+    </span>
+    <span class="cell">
+     <input class="small" [readonly]="true" [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="elemento" >
+    </span>
+    <span class="cell">
+      <input [readonly]="true" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" >
+    </span>
+    <span class="cell">
+      <input [readonly]="true" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" >
+    </span>
+  </form>
+
+</div>
+

@@ -60,6 +60,7 @@ import { ProductosLimpiezaComponent } from './components/limpieza/productos-limp
 import { ElementosLimpiezaComponent } from './components/limpieza/elementos-limpieza.component';
 import { LimpiezasRealizadasComponent } from './components/limpieza/limpiezas-realizadas.component';
 import { CalendariosLimpiezaComponent } from './components/limpieza/calendarios-limpieza.component';
+import { ProtocoloComponent } from './components/limpieza/protocolo.component';
 /********     SERVICIOS          */
 import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
@@ -127,6 +128,7 @@ import { PermisosService } from './services/permisos.service';
     ElementosLimpiezaComponent,
     LimpiezasRealizadasComponent,
     CalendariosLimpiezaComponent,
+    ProtocoloComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,

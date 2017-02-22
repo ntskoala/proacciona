@@ -28,7 +28,7 @@ seleccionZona($event){
 }
 
 loadZonas($event){
-this.limpieza = $event;
+this.limpiezas = $event;
 }
 
 calendarios(){

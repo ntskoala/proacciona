@@ -11,7 +11,7 @@
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'limpiezas.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+      <input type="text" [placeholder]="'limpieza.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
     </span>
     <span class="cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
@@ -29,15 +29,43 @@
     <span class="cell">
       <input type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
     </span>
-    <span class="cell medium"></span><!--protocolo-->
-    <span class="cell small"></span><!--Borrar-->
+    <span class="cell medium">
+             <button md-mini-fab class="camera" (click)="verProtocolo(-1)" type="button">
+        <span class="material-icons">list</span>
+      </button>    
+      </span><!--protocolo-->
+    <span class="cell small">num.
+      <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+      </select>
+      </span><!--Borrar-->
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>
   </form>
-
+  <div class="protocol">
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+ <protocolo class="cell" (protocolEmitter)="setProtocol($event,-1,0)" [parentProtocol]="" *ngIf="newItemprotocolo"></protocolo>
+ <span class="cell"></span>
+ <span class="cell"></span>
+  </div>
   <div class="header-row">
     <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
     <span class="header-cell">{{"limpieza.fecha" | translate}}</span>
@@ -48,8 +76,8 @@
     <span class="header-cell"></span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
-
-  <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)" *ngFor="let item of items; let i = index">
+  <div class="divrow"  *ngFor="let item of items; let i = index">
+  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
     <input type="hidden" [(ngModel)]="item.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
@@ -69,14 +97,22 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
+    <!--<span class="cell small">
+           <button md-mini-fab color="primary" (click)="verProtocolo(i)" type="submit">
+        <span class="material-icons">list</span>
+      </button>
+    </span>-->
 <!--*****  subir/ver FOTO  *********-->
-    <span class="cell medium">
-      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.protocolo" md-mini-fab color="accent" (click)="photoURL(i,'protocolo')" type="button">
+    <span class="cell">
+       <button md-mini-fab class="camera" (click)="verProtocolo(i)" type="button">
+        <span class="material-icons">list</span>
+      </button>    
+      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.protocolo" md-mini-fab color="color" (click)="photoURL(i,'protocolo')" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
 
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'protocolo'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'protocolo'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'protocolo')" accept=".gif,.jpg,.jpeg,.png"/>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'protocolo'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'protocolo')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
     </span>
 <!--****** FIN ********************-->
 
@@ -90,8 +126,19 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
+   
   </form>
-
+  <div class="protocol">
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+ <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol" *ngIf="protocolo[i]"></protocolo>
+ <span class="cell"></span>
+ <span class="cell"></span>
+  </div>
+ </div>
 </div>
 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">

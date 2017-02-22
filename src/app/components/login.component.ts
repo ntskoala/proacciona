@@ -54,7 +54,7 @@ ngOnInit(){
             
             case 'Gerente':
               // Redirecciona a página de empresa
-              console.log("gerente");
+              console.log("gerente o mantenimiento");
               let idEmpresa = response.data[0].idempresa;
               this.empresasService.empresaActiva = idEmpresa;
               this.empresasService.administrador = false;
@@ -91,16 +91,7 @@ setPermisos(idempresa){
             
             if (response.success && response.data) {
               for (let element of response.data) {
-//                console.log(element.idopcion, typeof(element.idopcion))
-                switch (element.idopcion){
-                  case "1":
-                    this.empresasService.setOpciones(true);
-                    break;
-                  case "2":
-                    this.permisos.setOpciones(true,'fichas_maquinaria');
-                    break;
-                }
-                //this.guardar[element.id] = false;
+                this.permisos.setOpciones(true,element.opcion);
               }
             }
         },

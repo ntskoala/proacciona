@@ -10,6 +10,7 @@
   "aceptar": "Aceptar",
   "cancelar": "Cancelar",
   "Importar": "Importar",
+  "modificar":"Modificar",
   "borrarEmpresaT": "¿Estás seguro de querer eliminar la empresa?",
   "borrarEmpresaST": "Se borrarán todos sus usuarios, controles, checklists asociados y los resultados de los mismos.",
   "Tablas": "Configuración",
@@ -153,11 +154,14 @@
     "guardar":"guardar",
     "tipo":"tipo",
     "marca":"marca",
+    "desinfectante":"desinfectante",
     "interno":"interno",
     "externo":"externo",
     "realizadas":"realizadas",
     "proximas":"proximas",
-    "vencidas":"vencidas"
+    "vencidas":"vencidas",
+    "dosificacion":"dosificación",
+    "ficha":"ficha"
   },
   "lunes":"lunes",
   "martes":"martes",

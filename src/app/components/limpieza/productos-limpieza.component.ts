@@ -29,9 +29,9 @@ entidad:string="&entidad=limpieza_producto";
   ngOnInit() {
       this.setItems();
   }
-  photoURL(i,tipo) {
+  photoURL(i,tipo,file) {
     this.verdoc=!this.verdoc;
-    this.foto = this.baseurl+this.items[i].id+"_"+this.items[i].doc;
+    this.foto = this.baseurl+this.items[i].id+"_"+file;
   }
 
   setItems(){
@@ -43,7 +43,7 @@ entidad:string="&entidad=limpieza_producto";
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.items.push(new LimpiezaProducto(element.id,element.idempresa,element.nombre,element.marca,element.tipo,element.doc));
+                  this.items.push(new LimpiezaProducto(element.id,element.idempresa,element.nombre,element.marca,element.desinfectante,element.dosificacion, element.doc, element.ficha));
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
@@ -118,7 +118,7 @@ checkBorrar(idBorrar: number) {
     this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'limpieza_producto',idItem, this.empresasService.seleccionada.toString(),field).subscribe(
       response => {
         console.log('doc subido correctamente',files[0].name);
-        this.items[i].doc = files[0].name;
+        this.items[i][field] = field+"_"+files[0].name;
  //       this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/limpieza_producto/' +  idItem +'_'+files[0].name;
         // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
         // activa.logo = '1';

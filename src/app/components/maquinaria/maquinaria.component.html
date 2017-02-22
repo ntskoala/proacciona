@@ -3,15 +3,20 @@
       <md-toolbar color="accent">{{'maquinas.mantenimientos' | translate}}</md-toolbar>
     </md-card-title>
  <md-card-subtitle>
+   <div class="w80">
    <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>
+   </div>
+   <div class="w20">
    <div class="calendarios">
   <button md-raised-button (click)="calendarios()">{{'maquinas.calendarios' | translate}}</button>
   <button md-raised-button (click)="lubricantes()">{{'maquinas.lubricantes' | translate}}</button>
   </div>
+   </div>
  </md-card-subtitle>
  <div class="contenido">
    <calendarios *ngIf="calendario" [maquinas]="maquinas"></calendarios>
    <lubricantes *ngIf="lubricante"></lubricantes>
+    <h2 class="center" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2>
 <md-tab-group *ngIf="maquina && maquina.id > 0" [dynamicHeight]="false">
   <md-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <!--<md-tab label="{{'calendarios' | translate}}"><calendarios></calendarios></md-tab>-->

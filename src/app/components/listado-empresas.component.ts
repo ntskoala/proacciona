@@ -60,15 +60,7 @@ setPermisos(idempresa){
             
             if (response.success && response.data) {
               for (let element of response.data) {
-                console.log(element.idopcion, typeof(element.idopcion))
-                switch (element.idopcion){
-                  case "1":
-                    this.empresasService.setOpciones(true);
-                    break;
-                  case "2":
-                    this.permisos.setOpciones(true,'fichas_maquinaria');
-                    break;
-                }
+                  this.permisos.setOpciones(true,element.opcion);
                 //this.guardar[element.id] = false;
               }
             }

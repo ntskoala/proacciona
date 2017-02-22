@@ -22,11 +22,16 @@ public idBorrar;
 public url=[];
 public verdoc: boolean = false;
 public foto:string;
+public protocolo:boolean[];
+public newItemprotocolo:boolean;
+public color:string="accent";
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_elemento/';
 modal: Modal = new Modal();
 entidad:string="&entidad=limpieza_elemento";
 field:string="&field=idlimpiezazona&idItem=";
-es
+es;
+public cantidad:number=1;
+
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -45,8 +50,16 @@ es
   }
 
   photoURL(i,tipo) {
+    let extension = this.items[i].protocolo.substr(this.items[i].protocolo.length-3);
+    let url = this.baseurl+this.items[i].id +"_"+this.items[i].protocolo;
+    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
     this.verdoc=!this.verdoc;
-    this.foto = this.baseurl+this.items[i].id +"_"+this.items[i].protocolo;
+    this.foto = url
+    }else{
+      window.open(url,'_blank');
+
+    }
+
   }
 
   setItems(){
@@ -56,33 +69,42 @@ es
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
+            this.protocolo =[];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.protocolo,element.usuario,element.responsable));
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.protocol,element.protocolo,element.usuario,element.responsable));
+                  this.protocolo.push(false);
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
-             console.log("elementos_limpieza",this.items);
         });
-       
   }
 
 
 
   newItem() {
-    console.log (this.nuevoItem);
+    console.log (this.nuevoItem, this.cantidad);
     let param = this.entidad+this.field+this.limpieza.id;
     this.nuevoItem.idlimpiezazona = this.limpieza.id;
     this.nuevoItem.fecha = new Date(Date.UTC(this.nuevoItem.fecha.getFullYear(), this.nuevoItem.fecha.getMonth(), this.nuevoItem.fecha.getDate()))
     //this.nuevoItem.periodicidad = this.mantenimientos[i].periodicidad;
+    for (let x=0;x<this.cantidad;x++){
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
         if (response.success) {
-          this.nuevoItem.id = response.id;
+          //this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
-          this.nuevoItem = new LimpiezaElemento(0,0,'','');
+          this.items[this.items.length-1].id= response.id;
+          //console.log(this.items, this.nuevoItem);
+          //this.nuevoItem.id = 0;
         }
-    });
+    },
+    error =>console.log(error),
+    () =>this.setItems()   
+    //this.nuevoItem = new LimpiezaElemento(0,0,'','');
+    );
+    }
+   // this.nuevoItem = new LimpiezaElemento(0,0,'','');
   }
 
 
@@ -95,7 +117,9 @@ es
     let parametros = '?id=' + item.id+this.entidad;    
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
-    item.periodicidad = this.items[i].periodicidad;  
+    item.periodicidad = this.items[i].periodicidad; 
+    item.protocol = this.items[i].protocol;
+    console.log(item);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
@@ -158,8 +182,24 @@ setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
     this.items[i].periodicidad = periodicidad;
     console.log(this.items[i]);
   }
-
-
+}
+setProtocol(protocol:string,i:number,itemId:number){
+ if (i<0){
+this.nuevoItem.protocol = protocol;
+this.newItemprotocolo = false;
+ }else{
+  this.items[i].protocol = protocol;
+  this.protocolo[i] = false;
+  this.itemEdited(itemId);
+ }
+}
+verProtocolo(i){
+  if (i<0){
+    this.newItemprotocolo = !this.newItemprotocolo;
+  }else{
+  this.protocolo[i] = !this.protocolo[i];
+  this.protocolo[i]? this.color='primary':this.color='accent';
+}
 }
 
 }

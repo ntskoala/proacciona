@@ -53,7 +53,7 @@ es
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
-             console.log("limpiezas resalizadas",this.items);
+
         });
        
   }

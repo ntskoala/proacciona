@@ -9,6 +9,7 @@
     </select>
   </form>
 <button *ngIf="empresasService.administrador" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
+<!--<button *ngIf="empresasService.administrador" md-button color="primary" (click)="modificarMaquina()" type="button">Modificar</button>-->
 </div>
 <div class="nueva">
 <!-- Nueva maquina -->
@@ -28,3 +29,19 @@
   </div>
 </div>
 </div>
+
+<!--
+<div class="modal" *ngIf="modificaMaquina">
+  <div class="modal-window modificar">
+  
+          <h2 class="center">{{ 'modificar' | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarMaquina()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>-->

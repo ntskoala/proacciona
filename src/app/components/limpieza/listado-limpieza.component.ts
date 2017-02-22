@@ -22,6 +22,8 @@ export class ListadoLimpiezasComponent implements OnInit {
   limpiezas: LimpiezaZona[] = [];
   novaLimpieza: LimpiezaZona = new LimpiezaZona(0,0,'');
   modal: Modal = new Modal();
+  modificaZona: boolean;
+  nuevoNombre:string;
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -73,6 +75,22 @@ let param = "&entidad=limpieza_zona";
     });
 }
 
+modificar(){
+  let zona = new LimpiezaZona(this.limpiezaActiva,this.empresasService.seleccionada,this.nuevoNombre,'');
+let param = "&entidad=limpieza_zona";
+let parametros = '?id=' + this.limpiezaActiva+param;     
+    this.servidor.putObject(URLS.STD_ITEM,parametros, zona).subscribe(
+      response => {
+        if (response.success) {
+          console.log("updated");
+          let index = this.limpiezas.findIndex((elem) =>elem.id == this.limpiezaActiva);
+          this.limpiezas[index].nombre = this.nuevoNombre;
+          this.listaZonas.emit(this.limpiezas);
+          this.modificaZona = false;
+        }
+    });
+}
+
 
 
   cerrarModal(event: boolean) {
@@ -95,4 +113,9 @@ eliminaZona(){
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
+
+modificarZona(){
+this.modificaZona = !this.modificaZona;
+}
+
 }

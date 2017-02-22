@@ -68,14 +68,7 @@ getOpciones(parametros){
             if (response.success && response.data) {
               for (let element of response.data) {
                 this.opcionesempresa[element.idopcion] = parseInt(element.id);
-                switch (element.idopcion){
-                  case "1":
-                    this.empresasService.setOpciones(true);
-                    break;
-                  case "2":
-                    this.permisos.setOpciones(true,'fichas_maquinaria');
-                    break;
-                }
+                this.permisos.setOpciones(true,element.opcion);
                 //this.guardar[element.id] = false;
               }
             }
@@ -84,48 +77,29 @@ getOpciones(parametros){
 }
 
 
-    actualizarOpcion(opcion: any) {
-      console.log(opcion);
-
+    actualizarOpcion(opcion: any,i) {
+      
     let parametros = '?id=' + this.opcionesempresa[opcion];
     if (this.opcionesempresa[opcion]) {
-      console.log('se borrará', opcion)
+     
       this.opcionesempresa[opcion] = 0;
       this.servidor.deleteObject(URLS.OPCIONES_EMPRESA, parametros).subscribe(
         response => {
           if (response.success) {
-            console.log('opcion deleted',opcion)
-                 switch (parseInt(opcion)){
-                  case 1:
-                    this.empresasService.setOpciones(false);
-                    console.log('se borrará export', opcion)
-                    break;
-                  case 2:
-                     this.permisos.setOpciones(false,'fichas_maquinaria');
-                     console.log('se borrará fichas', opcion)
-                     break;
-                }
+            this.permisos.setOpciones(false,this.opciones[i]);
+            console.log("quita",this.opciones[i].nombre)
           }
       });
     }
     else {
-      console.log("se creará", opcion , this.idEmpresa)
+      
       let nuevaOpcion = new OpcionesEmpresa(0, opcion, this.idEmpresa);
       this.servidor.postObject(URLS.OPCIONES_EMPRESA, nuevaOpcion).subscribe(
         response => {
           if (response.success) {
             this.opcionesempresa[opcion] = response.id;
-                console.log("aqui1",opcion, typeof(opcion));
-                 switch (parseInt(opcion)){
-                  case 1:
-                  console.log("se creará export", opcion , this.idEmpresa)
-                    this.empresasService.setOpciones(true);
-                    break;
-                  case 2:
-                  console.log("se creará fichas", opcion , this.idEmpresa)
-                     this.permisos.setOpciones(true,'fichas_maquinaria');
-                     break;
-                }
+            this.permisos.setOpciones(true,this.opciones[i]);
+            console.log("pon",this.opciones[i].nombre)
           }
       });
     }

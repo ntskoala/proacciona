@@ -19,8 +19,12 @@ export class Servidor {
   }
 
   postObject(url: string, object: Object, param?: string) {
-    let payload = JSON.stringify(object);        
-    let parametros = '?token=' + sessionStorage.getItem('token') +param;
+    let payload = JSON.stringify(object);
+    let paramopcional = '';
+    if (param !== undefined){
+      paramopcional = param;
+    }       
+    let parametros = '?token=' + sessionStorage.getItem('token') +paramopcional;
     return this.llamada.post(url + parametros, payload)
       .map((res: Response) => JSON.parse(res.json()));
   }

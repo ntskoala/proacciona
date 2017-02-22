@@ -4,7 +4,9 @@ export class LimpiezaProducto {
     public idempresa: number,
     public nombre: string,
     public marca?: string,
-    public tipo?:string,
-    public doc?:string
+    public desinfectante?:string,
+    public dosificacion?: string,
+    public doc?:string,
+    public ficha?:string
   ) {}
 }

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../services/empresas.service';
 import { Servidor } from '../services/servidor.service';
+import { PermisosService } from '../services/permisos.service';
 import { URLS } from '../models/urls';
 import { Control } from '../models/control';
 
@@ -17,7 +18,7 @@ export class InformePeriodicidadComponent {
   checklists: any[] = [];
   fecha: Object = {inicio: '2016-10-01'};
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(private servidor: Servidor, private empresasService: EmpresasService, private permisos: PermisosService) {}
 
   mostrarInforme() {
     let parametros = '&idempresa=' + this.empresasService.seleccionada;

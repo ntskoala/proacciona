@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
+import { PermisosService } from '../services/permisos.service';
 import { EmpresasComponent } from './empresas.component';
 
 import { URLS } from '../models/urls';
@@ -32,7 +33,7 @@ export class InformeChecklistsComponent implements OnInit{
   fotoSrc: string;
   exportar_informes: boolean =false;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent) {}
+  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent, private permisos: PermisosService) {}
 
   ngOnInit() {
     // Conseguir checklists

@@ -6,6 +6,7 @@ export class LimpiezaElemento {
     public fecha: any,
     public tipo?: string,
     public periodicidad?: string,
+    public protocol?: string,
     public protocolo?: string,
     public usuario?: string,
     public responsable?: string

@@ -1,4 +1,5 @@
-
+<md-card>
+<h2 class="center">Calendario General Maquinaria</h2>
 <p-schedule [events]="events" [header]="headerCalendar"  [locale]="es" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"
   (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
@@ -26,7 +27,7 @@
         </md-chip-list>
     </div>
 </md-card>
-
+</md-card>
 
  <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimientorealizado">

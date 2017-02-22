@@ -23,6 +23,8 @@ export class ListadoMaquinasComponent implements OnInit {
   maquinas: Maquina[] = [];
   novaMaquina: Maquina = new Maquina(0,'',0);
   modal: Modal = new Modal();
+  //   modificaMaquina: boolean;
+  // nuevoNombre:string;
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -78,6 +80,18 @@ maq.idempresa = this.empresasService.seleccionada;
     });
 }
 
+// modificar(){
+//   let maquina = new Maquina(this.maquinaActiva,this.nuevoNombre,this.empresasService.seleccionada);
+// let param = "&entidad=limpieza_zona";
+// let parametros = '?id=' + this.maquinaActiva+param;     
+//     this.servidor.putObject(URLS.MAQUINAS,parametros, maquina).subscribe(
+//       response => {
+//         if (response.success) {
+//           console.log("updated");
+//         }
+//     });
+// }
+
 
 
   cerrarModal(event: boolean) {
@@ -100,4 +114,8 @@ eliminaMaquina(){
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
+
+// modificarMaquina(){
+// this.modificaMaquina = !this.modificaMaquina;
+// }
 }

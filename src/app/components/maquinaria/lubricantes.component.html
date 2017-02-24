@@ -7,6 +7,7 @@
       </div>
   </div>
 </div>
+<h2 class="center">{{'maquinas.lubricantes' | translate}}</h2>
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">

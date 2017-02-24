@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-
+import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -31,11 +31,14 @@ entidad:string="&entidad=limpieza_elemento";
 field:string="&field=idlimpiezazona&idItem=";
 es;
 public cantidad:number=1;
-
+public productosSeleccionadosItem:Object[]=[];
+public productosSeleccionados: string[]=[];
+public productos:SelectItem[]=[];
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-      this.setItems();
+     // this.setItems();
+      this.setProductos();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -61,23 +64,47 @@ public cantidad:number=1;
     }
 
   }
+  setProductos(){
+          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=limpieza_producto"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.items = [];
+            if (response.success && response.data) {
+              for (let element of response.data) {  
+                  this.productos.push(element.nombre);
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{
+          console.log('completd products');
+          this.setItems();
+        }
+        );
+
+  }
 
   setItems(){
-  //  let params = this.maquina.id;
-  //  let parametros = '&idmaquina=' + params;
+      console.log('setting items...')
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
             this.protocolo =[];
             if (response.success && response.data) {
-              for (let element of response.data) {  
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.protocol,element.protocolo,element.usuario,element.responsable));
+              for (let element of response.data) { 
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable));
                   this.protocolo.push(false);
-                  // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
-        });
+        },
+        error=>console.log(error),
+        ()=>{
+          //if(this.nuevoItem.id != 0) this.nuevoItem.id =0;
+          console.log("elementos de limpieza:",this.items)
+          console.log('Fin elemento de limpieza');
+          }
+        );
   }
 
 
@@ -87,6 +114,7 @@ public cantidad:number=1;
     let param = this.entidad+this.field+this.limpieza.id;
     this.nuevoItem.idlimpiezazona = this.limpieza.id;
     this.nuevoItem.fecha = new Date(Date.UTC(this.nuevoItem.fecha.getFullYear(), this.nuevoItem.fecha.getMonth(), this.nuevoItem.fecha.getDate()))
+    //this.nuevoItem.productos = JSON.stringify(this.productosSeleccionados);
     //this.nuevoItem.periodicidad = this.mantenimientos[i].periodicidad;
     for (let x=0;x<this.cantidad;x++){
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
@@ -95,6 +123,7 @@ public cantidad:number=1;
           //this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
+          this.productosSeleccionados=[];
           //console.log(this.items, this.nuevoItem);
           //this.nuevoItem.id = 0;
         }
@@ -118,6 +147,7 @@ public cantidad:number=1;
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
     item.periodicidad = this.items[i].periodicidad; 
+    item.productos = this.items[i].productos;
     item.protocol = this.items[i].protocol;
     console.log(item);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
@@ -200,6 +230,17 @@ verProtocolo(i){
   this.protocolo[i] = !this.protocolo[i];
   this.protocolo[i]? this.color='primary':this.color='accent';
 }
+}
+
+setProducts(productos:string,i?: number, itemId?:number){
+  console.log(productos,i,itemId)
+if (i >=0){
+  this.items[i].productos = productos;
+  this.itemEdited(itemId);
+}else{
+  this.nuevoItem.productos = productos;
+}
+
 }
 
 }

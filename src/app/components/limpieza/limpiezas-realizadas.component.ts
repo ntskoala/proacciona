@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -13,9 +13,9 @@ import { Modal } from '../../models/modal';
   styleUrls:['limpieza.component.css']
 })
 
-export class LimpiezasRealizadasComponent implements OnInit {
+export class LimpiezasRealizadasComponent implements OnInit, OnChanges {
 @Input() limpieza: LimpiezaZona;
-
+@Input() nueva: number;
 public items: LimpiezaRealizada[];
 modal: Modal = new Modal();
 entidad:string="&entidad=limpieza_realizada";
@@ -35,21 +35,23 @@ es
             firstDayOfWeek: 1
         }; 
   }
+
   ngOnChanges(){
       this.setItems();
+      console.log('paso3',this.nueva);
   }
 
 
   setItems(){
   //  let params = this.maquina.id;
   //  let parametros = '&idmaquina=' + params;
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id+"&order=fecha DESC"; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.items.push(new LimpiezaRealizada(element.idelemento,element.idlimpiezazona,element.nombre,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha_prevista),element.tipo,element.usuario,element.responsable,element.id,element.idempresa));
+                  this.items.push(new LimpiezaRealizada(element.idelemento,element.idlimpiezazona,element.nombre,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.usuario,element.responsable,element.id,element.idempresa));
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }

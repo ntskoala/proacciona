@@ -15,7 +15,9 @@
         <span class="material-icons">build</span>
       </button>
         <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.limpieza" (click)="setSeleccion('limpieza')" class="opcion" md-mini-fab color="accent" >
-        <span class="material-icons">invert_colors</span>
+ 
+        <span class="material-icons">brush</span>
+ 
       </button>
         <button  [disabled]="!empresasService.empresaActiva || !permisos.personal || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('personal')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">supervisor_account</span>

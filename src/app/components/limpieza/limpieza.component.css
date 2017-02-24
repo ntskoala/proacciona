@@ -117,8 +117,25 @@ md-grid-tile-header{
 }
 
 .protocol{
+    position: absolute;
+    right: 100px;
+    z-index: 10;    
     background-color: gainsboro;
     display: table-row;
+    border-radius: 5px;
+    padding: 10px;
+}
+.selproducts{
+    position: absolute;
+    z-index: 10;
+    padding: 10px;
+    background-color: gainsboro;
+    border-radius: 5px;
+}
+
+.itemproducto:hover{
+    cursor: pointer;
+    background-color: #ccc !important;
 }
 
 .w80{

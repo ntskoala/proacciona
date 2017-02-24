@@ -151,6 +151,12 @@ select {
 .green {
   color: green;
 }
+.yellow{
+  background-color: #ffd740;
+}
+.grey{
+  background-color: #eee;
+}
 
 .right {
   text-align: right;
@@ -165,6 +171,10 @@ select {
 
 .hide {
   display: none !important;
+}
+
+.round{
+  border-radius: 5px;
 }
 
 /*

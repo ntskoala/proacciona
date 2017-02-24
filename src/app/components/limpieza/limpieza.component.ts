@@ -15,6 +15,7 @@ public limpieza: LimpiezaZona;
 public calendario: boolean = false;
 public productosLimpieza: boolean = false;
 public limpiezas: LimpiezaZona[];
+public nuevaLimpiezaR: number;
   constructor(private empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -38,5 +39,11 @@ calendarios(){
 verProductosLimpieza(){
   this.calendario = false;
   this.productosLimpieza = !this.productosLimpieza;
+}
+
+nuevaLimpiezaRealizada(event){
+  console.log('paso2');
+  this.nuevaLimpiezaR = event;
+
 }
 }

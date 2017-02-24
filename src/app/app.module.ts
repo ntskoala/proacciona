@@ -2,16 +2,23 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { Http } from '@angular/http';
+
 import { MaterialModule } from '@angular/material';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+//**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
 import { DatePickerModule } from 'ng2-datepicker';
+//**********REQUIRED FOR CALENDAR */
 import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
+import {MomentModule} from 'angular2-moment';
+//**********PRIME NG MODULES */
 import {CalendarModule} from 'primeng/primeng';
 import {ScheduleModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import {LightboxModule} from 'primeng/primeng';
-import {MomentModule} from 'angular2-moment';
-import { Http } from '@angular/http';
+// import {MultiSelectModule} from 'primeng/primeng';
+
+
 
 
 //**********MY COMPONENTS */
@@ -61,6 +68,7 @@ import { ElementosLimpiezaComponent } from './components/limpieza/elementos-limp
 import { LimpiezasRealizadasComponent } from './components/limpieza/limpiezas-realizadas.component';
 import { CalendariosLimpiezaComponent } from './components/limpieza/calendarios-limpieza.component';
 import { ProtocoloComponent } from './components/limpieza/protocolo.component';
+import { SelectProductosComponent } from './components/limpieza/select-productos.component';
 /********     SERVICIOS          */
 import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
@@ -78,6 +86,7 @@ import { PermisosService } from './services/permisos.service';
     CalendarModule,
     DialogModule,
     LightboxModule,
+    // MultiSelectModule,
     MaterialModule.forRoot(),
     DatePickerModule,
     TranslateModule.forRoot({
@@ -129,6 +138,7 @@ import { PermisosService } from './services/permisos.service';
     LimpiezasRealizadasComponent,
     CalendariosLimpiezaComponent,
     ProtocoloComponent,
+    SelectProductosComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,

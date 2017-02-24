@@ -16,13 +16,22 @@ import { Modal } from '../../models/modal';
 export class ProtocoloComponent implements OnInit, OnChanges{
 @Input() parentProtocol:string;
 @Output() protocolEmitter:EventEmitter<string>=new EventEmitter<string>();
-protocolo:Object[]=[];
+private protocolo:Object[]=[];
 nuevoProcedimiento:string='';
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-      if(this.parentProtocol) this.protocolo = JSON.parse(this.parentProtocol);
-  }
+      if(this.parentProtocol && Array.isArray(this.parentProtocol)) {
+          try{
+          this.protocolo = JSON.parse(this.parentProtocol);
+          }
+          catch (e){
+              console.log (e);
+          }
+          console.log(this.protocolo);
+      }
+
+}
   ngOnChanges(){     
   }
 addProcedimiento(){

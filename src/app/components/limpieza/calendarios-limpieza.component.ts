@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
 import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 
@@ -22,6 +22,7 @@ import { Empresa } from '../../models/empresa';
 export class CalendariosLimpiezaComponent implements OnInit {
 public maquina: Maquina;
 @Input() maquinas: Maquina[];
+@Output() newLimpiezaRealizada:EventEmitter<number>= new EventEmitter<number>();
 public calendario: CalendarioLimpieza[];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','diciembre'];
 public dias = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
@@ -90,7 +91,7 @@ entidad:string="&entidad=limpieza_realizada";
                   let color = this.setColor(element.fecha)
                   this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.zona + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"periodicidad":element.periodicidad,"color":color,"estado":"pendiente"});  
                    this.mantenimientos.push(new LimpiezaElemento(element.id, element.idlimpiezazona, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
-                  element.protocolo,element.usuario,element.responsable));
+                  element.productos,element.protocol,element.protocolo,element.usuario,element.responsable));
               }
             }
         },
@@ -109,11 +110,11 @@ loadRealizados(){
             if (response.success && response.data) {
               for (let element of response.data) {  
                   
-                  this.events.push({"idlimpiezaelemento":element.id,"idlimpiezazona":element.limpiezazona,"title":element.nombre,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"usuario":element.idusuario,"responsable":element.responsable,"color":"#33cc33","estado":"realizado"});
+                  this.events.push({"idlimpiezaelemento":element.id,"idlimpiezazona":element.limpiezazona,"title":element.nombre,"descripcion":element.descripcion,"start":element.fecha,"prevista":element.fecha_prevista,"tipo":element.tipo,"elemento":element.elemento,"usuario":element.idusuario,"responsable":element.responsable,"color":"#33cc33","estado":"realizado"});
              }
-             console.log("realizadost",this.events_realizados);
+            //  console.log("realizadost",this.events_realizados);
              this.events.concat(this.events_realizados);
-             console.log("events",this.events);
+            //  console.log("events",this.events);
             }
         });
 
@@ -131,24 +132,29 @@ setColor(fecha){
 
 
 list(cal){
-  console.log('list');
-  console.log(cal);
+  // console.log('list');
+  // console.log(cal);
   cal.changeView('listMonth')
 }
 
 handleEventClick(event){
-       console.log(event);
+      //  console.log(event);
        this.event = event.calEvent;
 
       if (event.calEvent.estado == 'pendiente'){
         this.estado="pendiente";
         this.limpiezarealizada = new LimpiezaRealizada(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,this.empresasService.userId,event.calEvent.responsable,0,this.empresasService.seleccionada);
+        try{
         this.periodicidad = JSON.parse(event.calEvent.periodicidad);
+        }
+        catch (e){
+          //console.log(e)
+        }
         this.dialogVisible = true;
       }
       else{
         this.estado="realizado";
-                this.limpiezarealizada = new LimpiezaRealizada(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),event.calEvent.tipo,this.empresasService.userId,event.calEvent.responsable,0,this.empresasService.seleccionada);
+                this.limpiezarealizada = new LimpiezaRealizada(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,event.calEvent.descripcion,new Date(event.calEvent.prevista),new Date(event.calEvent.start),event.calEvent.tipo,this.empresasService.userId,event.calEvent.responsable,0,this.empresasService.seleccionada);
         this.dialogVisible = true;
       }
 }
@@ -156,7 +162,7 @@ handleEventClick(event){
     saveEvent() {
 
         let index = this.events.findIndex((event)=> event.idelemento == this.limpiezarealizada.idelemento);
-        console.log (index, this.mantenimientos[index],this.limpiezarealizada)
+        // console.log (index, this.mantenimientos[index],this.limpiezarealizada)
         this.mantenimientos[index].fecha = this.nuevaFecha();
         this.actualizarMantenimiento(this.mantenimientos[index],index);
         this.newMantenimientoRealizado();
@@ -238,8 +244,8 @@ nextMonthDay(){
   let fecha_prevista = new Date(this.limpiezarealizada.fecha_prevista);
   let mes = fecha_prevista.getMonth() +1 + this.periodicidad.frecuencia;
  // let week = 
-console.log(this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').isoWeekday()-1]);
-console.log("ultimo día sem",this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').isoWeekday()-1]);
+// console.log(this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").startOf('month').isoWeekday()-1]);
+// console.log("ultimo día sem",this.dias[moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').isoWeekday()-1]);
 if (this.periodicidad.numsemana ==5){
  let ultimodia =  moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').isoWeekday() - this.periodicidad.nomdia;
   proximafecha = moment(fecha_prevista).add(this.periodicidad.frecuencia,"M").endOf('month').subtract(ultimodia,"days");
@@ -255,7 +261,7 @@ nextYearDay(){
   let fecha_prevista = new Date(this.limpiezarealizada.fecha_prevista);
   let mes = parseInt(this.periodicidad.mes) -1;
   fecha_prevista = moment(fecha_prevista).month(mes).add(this.periodicidad.frecuencia,'y').toDate();
-  console.log("test",fecha_prevista);
+  // console.log("test",fecha_prevista);
 
 if (this.periodicidad.numsemana ==5){
  let ultimodia =  moment(fecha_prevista).endOf('month').isoWeekday() - this.periodicidad.nomdia;
@@ -270,23 +276,22 @@ return proximafecha;
 
  actualizarMantenimiento(mantenimiento: LimpiezaElemento, i: number) {
 
-console.log (this.tipoevento[i])
+// console.log (this.tipoevento[i])
 
 this.event.color = "#F67E1F";
 
-    console.log ("actualizar:##",mantenimiento);
+    // console.log ("actualizar:##",mantenimiento);
     //mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
     let parametros = '?id=' + mantenimiento.id+"&entidad=limpieza_elemento";  
     this.servidor.putObject(URLS.STD_SUBITEM, parametros, mantenimiento).subscribe(
       response => {
         if (response.success) {
-          console.log("move...",this.events[i].start , this.mantenimientos[i].fecha,i);
+          // console.log("move...",this.events[i].start , this.mantenimientos[i].fecha,i);
           this.event.start = new Date(this.mantenimientos[i].fecha);
           this.events[i] = this.event; 
-          console.log(this.events[i].start);
+          // console.log(this.events[i].start);
         }
     });
-
   }
 
 newMantenimientoRealizado(){
@@ -297,10 +302,18 @@ newMantenimientoRealizado(){
     this.servidor.postObject(URLS.STD_ITEM, this.limpiezarealizada,param).subscribe(
       response => {
         if (response.success) {
-          console.log('Mantenimiento updated');
-        }
-    });
-
+          // console.log('Mantenimiento updated');
+          this.events.push({"idlimpiezaelemento":response.id,"idlimpiezazona":this.limpiezarealizada.nombre,"title":this.limpiezarealizada.nombre,"descripcion":this.limpiezarealizada.descripcion,"start":this.limpiezarealizada.fecha,"prevista":this.limpiezarealizada.fecha_prevista,"tipo":this.limpiezarealizada.tipo,"usuario":this.limpiezarealizada.idusuario,"responsable":this.limpiezarealizada.responsable,"color":"#33cc33","estado":"realizado"});
+        this.newLimpiezaRealizada.emit(response.id);
+        console.log('paso1',this.limpiezarealizada.nombre);
+      }
+    },
+    error=>console.log(error),
+    ()=>{
+      
+      
+      }
+    );
 }
 
 }

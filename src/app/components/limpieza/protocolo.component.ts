@@ -21,7 +21,7 @@ nuevoProcedimiento:string='';
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-      if(this.parentProtocol && Array.isArray(this.parentProtocol)) {
+      if(this.parentProtocol) {
           try{
           this.protocolo = JSON.parse(this.parentProtocol);
           }

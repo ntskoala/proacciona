@@ -92,7 +92,7 @@
     </span>
     <span class="cell mini-fab">
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'ficha'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'ficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'ficha')" accept=".gif,.jpg,.jpeg,.png"/>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'ficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'ficha')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
     </span>
 <!--****** FIN ********************-->
     <span class="cell">

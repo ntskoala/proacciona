@@ -30,8 +30,20 @@ entidad:string="&entidad=limpieza_producto";
       this.setItems();
   }
   photoURL(i,tipo,file) {
+  //  this.verdoc=!this.verdoc;
+  //  this.foto = this.baseurl+this.items[i].id+"_"+file;
+
+    let extension = file.substr(file.length-3);
+    let url = this.baseurl+this.items[i].id+"_"+file;
+    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
     this.verdoc=!this.verdoc;
-    this.foto = this.baseurl+this.items[i].id+"_"+file;
+    this.foto = url
+    }else{
+      window.open(url,'_blank');
+
+    }
+
+
   }
 
   setItems(){

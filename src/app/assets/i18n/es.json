@@ -63,10 +63,11 @@
   "personal": "Lleva el control con facilidad de las fichas de personal, formaciones, etc.",
   "bienvenido": "Bienvenido a TFC PROACCIONA",
   "maquinas": {
-    "nueva": "Nueva maquina",
+    "nueva": "Nueva Máquina",
     "maquinaria": "mantenimiento",
     "maquinas": "maquinas",
     "mantenimientos": "Mantenimientos",
+    "planmantenimiento": "Plan de Mantenimiento",
     "mantenimientos_preventivos":"Mantenimientos Preventivos",
     "mantenimientos_realizados":"Mantenimientos realizados",
     "calendarios": "Calendario",
@@ -133,9 +134,10 @@
     "vencidos":"vencidos"
   },
   "limpieza": {
-    "nueva": "Nueva area limpieza",
+    "nueva": "Nueva Area Limpieza",
     "areadelimpieza": "Area de limpieza",
     "limpieza": "limpieza",
+    "planlimpieza": "Plan de Limpieza",
     "areas": "areas",
     "limpiezas": "Limpiezas",
     "limpiezas_realizadas":"Limpiezas Realizados",

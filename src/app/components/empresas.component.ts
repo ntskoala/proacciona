@@ -26,8 +26,9 @@ public selectedMenu:string='home';
     switch (this.empresasService.userTipo) {
       case 'Administrador':
         this.permiso = true;
-        console.log('Seleccion automática de empresa, empresas component');
+//        console.log('Seleccion automática de empresa, empresas component');
 //        this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
+//        this.selectedMenu = "limpieza";
         break;
       case "Mantenimiento":
         if (this.empresasService.empresaActiva == 0) {

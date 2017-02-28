@@ -326,8 +326,8 @@ this.event.color = "#673AB7";
   }
 
 newMantenimientoRealizado(){
-    let hoy = new Date();
-    this.mantenimientorealizado.fecha = new Date(Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()));
+    //let hoy = new Date();
+    this.mantenimientorealizado.fecha = new Date(Date.UTC(this.mantenimientorealizado.fecha.getFullYear(), this.mantenimientorealizado.fecha.getMonth(), this.mantenimientorealizado.fecha.getDate()));
     this.mantenimientorealizado.idempresa = this.empresasService.seleccionada;
     this.servidor.postObject(URLS.MANTENIMIENTOS_REALIZADOS, this.mantenimientorealizado).subscribe(
       response => {

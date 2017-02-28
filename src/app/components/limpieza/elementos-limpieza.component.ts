@@ -1,11 +1,19 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import {SelectItem} from 'primeng/primeng';
+//import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { LimpiezaElemento } from '../../models/limpiezaelemento';
 import { LimpiezaZona } from '../../models/limpiezazona';
 import { Modal } from '../../models/modal';
+import { myprods } from '../../models/limpiezamyprods';
+
+export class prods{
+  constructor(
+    public id:number,
+    public nombre:string
+  ){}
+}
 
 @Component({
   selector: 'elementos-limpieza',
@@ -16,6 +24,7 @@ import { Modal } from '../../models/modal';
 export class ElementosLimpiezaComponent implements OnInit, OnChanges{
 @Input() limpieza: LimpiezaZona;
 public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
+public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
 public items: LimpiezaElemento[];
 public guardar = [];
 public idBorrar;
@@ -33,12 +42,13 @@ es;
 public cantidad:number=1;
 public productosSeleccionadosItem:Object[]=[];
 public productosSeleccionados: string[]=[];
-public productos:SelectItem[]=[];
+public producto:myprods;
+public productos: prods[]=[];
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
      // this.setItems();
-      this.setProductos();
+     // this.setProductos();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -64,28 +74,12 @@ public productos:SelectItem[]=[];
     }
 
   }
-  setProductos(){
-          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=limpieza_producto"; 
-        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
-          response => {
-            this.items = [];
-            if (response.success && response.data) {
-              for (let element of response.data) {  
-                  this.productos.push(element.nombre);
-             }
-            }
-        },
-        error=>console.log(error),
-        ()=>{
-          console.log('completd products');
-          this.setItems();
-        }
-        );
 
-  }
+
+
 
   setItems(){
-      console.log('setting items...')
+      //console.log('setting items...')
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
@@ -100,9 +94,7 @@ public productos:SelectItem[]=[];
         },
         error=>console.log(error),
         ()=>{
-          //if(this.nuevoItem.id != 0) this.nuevoItem.id =0;
-          console.log("elementos de limpieza:",this.items)
-          console.log('Fin elemento de limpieza');
+          if(this.addnewItem.id != 0) this.addnewItem.id =0;
           }
         );
   }
@@ -116,26 +108,34 @@ public productos:SelectItem[]=[];
     this.nuevoItem.fecha = new Date(Date.UTC(this.nuevoItem.fecha.getFullYear(), this.nuevoItem.fecha.getMonth(), this.nuevoItem.fecha.getDate()))
     //this.nuevoItem.productos = JSON.stringify(this.productosSeleccionados);
     //this.nuevoItem.periodicidad = this.mantenimientos[i].periodicidad;
+    this.addnewItem = this.nuevoItem;
     for (let x=0;x<this.cantidad;x++){
-    this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
+    this.servidor.postObject(URLS.STD_ITEM, this.addnewItem,param).subscribe(
       response => {
         if (response.success) {
-          //this.nuevoItem.id = response.id;
-          this.items.push(this.nuevoItem);
+          this.items.push(this.addnewItem);
           this.items[this.items.length-1].id= response.id;
-          this.productosSeleccionados=[];
-          //console.log(this.items, this.nuevoItem);
-          //this.nuevoItem.id = 0;
+          this.setProdsElemtento(response.id);
         }
     },
     error =>console.log(error),
     () =>this.setItems()   
-    //this.nuevoItem = new LimpiezaElemento(0,0,'','');
     );
     }
-   // this.nuevoItem = new LimpiezaElemento(0,0,'','');
+   this.nuevoItem = new LimpiezaElemento(0,0,'','');
   }
 
+setProdsElemtento(idElemento){
+    let parametros = "&entidad=limpieza_productos_elemento";
+    for (let x=0;x<=this.productosSeleccionados.length-1;x++){
+    this.producto = new myprods(0,this.empresasService.seleccionada,parseInt(this.productosSeleccionados[x]),idElemento);
+      this.servidor.postObject(URLS.STD_ITEM, this.producto, parametros).subscribe(
+        response => {
+          if (response.success) {
+          }
+      });
+      }
+}
 
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
@@ -232,15 +232,54 @@ verProtocolo(i){
 }
 }
 
-setProducts(productos:string,i?: number, itemId?:number){
-  console.log(productos,i,itemId)
-if (i >=0){
-  this.items[i].productos = productos;
-  this.itemEdited(itemId);
-}else{
-  this.nuevoItem.productos = productos;
+setProducts(productos:string[]){
+  this.productosSeleccionados = productos;
 }
 
-}
+//**********************TEMP */
+//   setProductos(){
+//           let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=limpieza_producto"; 
+//         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+//           response => {
+//             this.productos = [];
+//             if (response.success && response.data) {
+//               for (let element of response.data) {  
+//                   this.productos.push(new prods(element.id,element.nombre));
+//              }
+//             }
+//         },
+//         error=>console.log(error),
+//         ()=>{
+//           console.log('completd products');
+//          // this.setItems();
+//         }
+//         );
+//   }
+
+// SETPROCESO(){
+// console.log("procesando")
+// this.items.forEach((element) => {
+//   console.log("procesando",element)
+// if (element.productos){
+//   let tempprods=[];
+//   this.productosSeleccionados =[];
+// tempprods = JSON.parse(element.productos);
+// tempprods.forEach((prod) => {
+//                               console.log("procesando producto", prod)
+//                               let i = this.productos.findIndex((elem) => this.busca(elem,prod));
+//                               console.log("añadir prod", this.productos[i],i);
+//                               this.productosSeleccionados.push(this.productos[i].id.toString());
+//                             })
+// this.setProdsElemtento(element.id)
+// }
+
+// });
+// }
+// busca(elem,prod){
+// if (elem.nombre == prod) {
+//   return true
+// }else{return false}
+// }
+
 
 }

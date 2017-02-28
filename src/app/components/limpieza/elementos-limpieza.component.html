@@ -7,6 +7,9 @@
       </div>
   </div>
 </div>
+
+
+
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
@@ -28,7 +31,7 @@
     </span>
      <span class="cell">
     <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionados" name="productos"></p-multiSelect>-->
-    <select-productos name="productos" [productos]="productos" [selectedProducts]="''" (selectedProductsChange)="setProducts($event)"></select-productos>
+    <select-productos name="productos" [elementoLimpieza]="0" (selectedProductsChange)="setProducts($event)"></select-productos>
  </span>
     <span class="cell">
       <input type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
@@ -71,7 +74,9 @@
     <span class="header-cell">{{"limpieza.productos" | translate}}</span>
     <span class="header-cell">{{"limpieza.responsable" | translate}}</span>
     <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
-    <span class="header-cell"></span><!--Borrar-->
+    <span class="header-cell">
+      <!--<button md-button (click)="SETPROCESO()">proceso</button>-->
+      </span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
   <div class="divrow"  *ngFor="let item of items; let i = index">
@@ -95,7 +100,7 @@
 
  <span class="cell">
     <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionadosItem[i]" name="productos"></p-multiSelect>-->
-    <select-productos name="productos" [productos]="productos" [selectedProducts]="item.productos" (selectedProductsChange)="setProducts($event,i,item.id)"></select-productos>
+    <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos>
  </span>
 
     <span class="cell">
@@ -138,7 +143,10 @@
  </div>
 </div>
 
+
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
   <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
 <img class="iframe" [src]="foto">
 </div>
+
+

@@ -13,14 +13,14 @@
       </option>
     </select>
   </form>
-  <button *ngIf="empresasService.administrador" md-button color="warn" (click)="checkBorrarCL()" type="submit">Eliminar</button>
-  <button *ngIf="empresasService.administrador" md-button color="primary" (click)="modificarCL()" type="submit">Modificar</button>
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-button color="warn" (click)="checkBorrarCL()" type="submit">Eliminar</button>
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-button color="primary" (click)="modificarCL()" type="submit">Modificar</button>
   <button *ngIf="empresasService.administrador" md-button color="primary" (click)="import()" type="submit">Importar</button>
   
 </div>
 
 <!-- Nueva checklist -->
-<div *ngIf="empresasService.administrador" class="nueva-checklist">
+<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-checklist">
   <h2>{{'Nueva' | translate}} checklist</h2>
   <div class="table">
     <form class="row" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
@@ -57,7 +57,7 @@
   <div *ngIf="checklistActiva != 0">
     <h2>Control checklists</h2>
     <div class="table">
-      <form *ngIf="empresasService.administrador"  class="row" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
+      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  class="row" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
         <span class="cell">
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="ccl.nombre" name="nombre">
         </span>
@@ -76,15 +76,15 @@
       <form class="row" *ngFor="let controlchecklist of controlchecklists"
         #actualizarCCLf="ngForm" (ngSubmit)="actualizarCCL(controlchecklist.id)">
         <span class="cell">
-          <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
+          <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
         </span>
         <span class="cell">
-          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
             <span class="material-icons">close</span>
           </button>
         </span>
         <span class="cell">
-          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
             <span class="material-icons">check</span>
           </button>                
         </span>

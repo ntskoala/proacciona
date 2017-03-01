@@ -1,7 +1,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="table">
 
-  <form *ngIf="empresasService.administrador" class="row" #crearUsuarioForm="ngForm" (ngSubmit)="crearUsuario(crearUsuarioForm.value)">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearUsuarioForm="ngForm" (ngSubmit)="crearUsuario(crearUsuarioForm.value)">
 
     <span class="cell">
       <input type="text" [placeholder]="'Usuario' | translate" required [(ngModel)]="nuevoUsuario.usuario" name="usuario">
@@ -18,7 +18,7 @@
       </select>
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'email' | translate" [(ngModel)]="nuevoUsuario.usuario" name="email">
+      <input type="text" [placeholder]="'email' | translate" [(ngModel)]="nuevoUsuario.email" name="email">
     </span>
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!crearUsuarioForm.form.valid" type="submit">
@@ -37,13 +37,13 @@
   <form class="row" #actualizarUsuarioForm="ngForm" (ngSubmit)="actualizarUsuario(usuario.id)" *ngFor="let usuario of usuarios">
     <span class="cell">
 
-      <input type="text" [readonly]="!empresasService.administrador" [(ngModel)]="usuario.usuario" name="modUsuario" (keyup)="modificarUsuario(usuario.id)">
+      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.usuario" name="modUsuario" (keyup)="modificarUsuario(usuario.id)">
     </span>
     <span class="cell">
-      <input type="text" [readonly]="!empresasService.administrador" [(ngModel)]="usuario.password" name="modPassword" (keyup)="modificarUsuario(usuario.id)">
+      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.password" name="modPassword" (keyup)="modificarUsuario(usuario.id)">
     </span>
     <span class="cell">
-      <select class="white-select" [disabled]="!empresasService.administrador" [(ngModel)]="usuario.tipouser" name="modTipo" (change)="modificarUsuario(usuario.id)">
+      <select class="white-select" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.tipouser" name="modTipo" (change)="modificarUsuario(usuario.id)">
 
         <option value="Operario">{{'Operario' | translate}}</option>
         <option value="Gerente">{{'Gerente' | translate}}</option>
@@ -53,18 +53,18 @@
     </span>
         <span class="cell">
 
-      <input type="text" [readonly]="!empresasService.administrador" [(ngModel)]="usuario.email" name="modEmail" (keyup)="modificarUsuario(usuario.id)">
+      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.email" name="modEmail" (keyup)="modificarUsuario(usuario.id)">
     </span>
     <span class="cell">
 
-      <button md-mini-fab *ngIf="empresasService.administrador" color="primary" (click)="checkBorrar(usuario.id)" type="submit">
+      <button md-mini-fab *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" color="primary" (click)="checkBorrar(usuario.id)" type="submit">
 
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
 
-      <button md-mini-fab *ngIf="empresasService.administrador" color="primary" [disabled]="!guardar[usuario.id]" type="submit">
+      <button md-mini-fab *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" color="primary" [disabled]="!guardar[usuario.id]" type="submit">
 
         <span class="material-icons">check</span>
       </button>                

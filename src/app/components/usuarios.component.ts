@@ -58,9 +58,12 @@ export class UsuariosComponent implements OnInit {
       usuario.tipouser, usuario.email, this.empresasService.seleccionada);
     this.servidor.postObject(URLS.USUARIOS, usuarioCrear).subscribe(
       response => {
-        if (response.success) {
+        if (response.success == "true") {
           usuarioCrear.id = response.id;
           this.usuarios.push(usuarioCrear);
+        }
+        else{
+          alert(response.error);
         }
     });
     // limpiar form
@@ -102,8 +105,10 @@ export class UsuariosComponent implements OnInit {
     let parametros = '?id=' + idUsuario;        
     this.servidor.putObject(URLS.USUARIOS, parametros, modUsuario).subscribe(
       response => {
-        if (response.success) {
+        if (response.success =="true") {
           console.log('User updated');
+        }else{
+          alert(response.error);
         }
     });
   }

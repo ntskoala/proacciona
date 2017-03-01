@@ -1,6 +1,6 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="table">
-  <form *ngIf="empresasService.administrador" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
     <input type="hidden" [(ngModel)]="nuevoControl.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'Nombre' | translate" required [(ngModel)]="nuevoControl.nombre" name="nombre">
@@ -57,31 +57,31 @@
   <form class=" row"#actControlF="ngForm" (ngSubmit)="actualizarControl(actControlF.value)" *ngFor="let control of controles">
     <input type="hidden" [(ngModel)]="control.id" name="id">
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="control.nombre" name="nombre" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="control.nombre" name="nombre" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="control.pla" name="pla" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="control.pla" name="pla" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.valorminimo" name="valorminimo" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.valorminimo" name="valorminimo" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.valormaximo" name="valormaximo" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.valormaximo" name="valormaximo" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.objetivo" name="objetivo" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.objetivo" name="objetivo" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.tolerancia" name="tolerancia" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.tolerancia" name="tolerancia" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.critico" name="critico" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.critico" name="critico" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" class="small" type="text" [(ngModel)]="control.periodicidad" name="periodicidad" (keyup)="modificarControl(control.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.periodicidad" name="periodicidad" (keyup)="modificarControl(control.id)">
     </span>
     <span class="cell">
-      <select [disabled]="!empresasService.administrador" class="white-select" [(ngModel)]="control.tipoperiodo" name="tipoPeriodo" (change)="modificarControl(control.id)">
+      <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="white-select" [(ngModel)]="control.tipoperiodo" name="tipoPeriodo" (change)="modificarControl(control.id)">
         <option value="Día">{{'Día' | translate}}</option>
         <option value="Semana">{{'Semana' | translate}}</option>
         <option>Mes</option>
@@ -89,12 +89,12 @@
       </select>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

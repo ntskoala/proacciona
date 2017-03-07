@@ -27,6 +27,7 @@ public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
 public productos: Object[]=[];
+public medidas: string[]=['Kg.','g.','l.','ml.','bolsa','caja','sacos','palet'];
 public guardar = [];
 public idBorrar;
 public url=[];

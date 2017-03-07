@@ -21,17 +21,21 @@
     </select>
     </span>    
     <span class="cell medium">
-      <input class="medium" type="text" [placeholder]="'proveedores.numlote' | translate" required [(ngModel)]="nuevoItem.numlote" name="nombre">
+      <input class="medium" type="text" [placeholder]="'proveedores.numlote' | translate" required [(ngModel)]="nuevoItem.numlote" name="numlote">
     </span>
     <span class="cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
-      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha_entrada" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha_entrada" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_entrada"></p-calendar>
     </span>
     <span class="cell medium">
       <input class="medium" type="text" [placeholder]="'proveedores.cantidad' | translate" required [(ngModel)]="nuevoItem.cantidad_inicial" name="cantidad_inicial">
     </span>
-     <span class="cell">
-    <input type="text" [placeholder]="'proveedores.medida' | translate" required [(ngModel)]="nuevoItem.tipo_medida" name="tipo_medida">
+         <span class="cell">
+       <select class="smallselect" [(ngModel)]="nuevoItem.tipo_medida" name="tipo_medida">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
  </span>
     <span class="cell medium">  
       <input class="medium" type="text" [placeholder]="'proveedores.remanente' | translate" required [(ngModel)]="nuevoItem.cantidad_remanente" name="cantidad_remanente"> 
@@ -68,7 +72,7 @@
     </select>
     </span>
     <span class="cell medium">
-      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="nombre" (keyup)="itemEdited(item.id)">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="numlote" (keyup)="itemEdited(item.id)">
     </span>
     <span class="cell">
       <p-calendar [(ngModel)]="item.fecha_entrada"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha_entrada)" name="fecha_entrada"></p-calendar>    
@@ -78,7 +82,11 @@
     </span>
 
      <span class="cell">
-   <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.tipo_medida" name="tipo_medida" (keyup)="itemEdited(item.id)">
+       <select class="smallselect" [(ngModel)]="item.tipo_medida" name="tipo_medida" (change)="itemEdited(item.id)">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
  </span>
      <span class="cell medium">
    <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad_remanente" name="cantidad_remanente" (keyup)="itemEdited(item.id)">

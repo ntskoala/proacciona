@@ -1,10 +1,13 @@
   <div class="panel">
-        <button (click)="setSeleccion('home')" class="opcion" md-mini-fab color="accent" >
+        <!--<button (click)="setSeleccion('home')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">home</span>
-      </button>
+      </button>-->
         <button [disabled]="!empresasService.administrador" (click)="setSeleccion('empresas')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">business</span>
       </button>
+        <button [disabled]="" (click)="setSeleccion('proveedores')" class="opcion" md-mini-fab color="accent" >
+        <span class="material-icons">work</span>
+      </button>      
         <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('settings')" class="opcion" md-mini-fab color="accent" >
         <span  class="material-icons">settings</span>
       </button>

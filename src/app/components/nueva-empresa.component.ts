@@ -14,7 +14,7 @@ export class NuevaEmpresaComponent {
 
   constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
   
-  empresa: Empresa = {nombre: '', logo: '', exportar_informes: '',fichas_maquinaria:''};
+  empresa: Empresa = {nombre: '', logo: ''};
   
   nuevaEmpresa(empresa: Empresa) {
     this.servidor.postObject(URLS.EMPRESAS, empresa).subscribe(
@@ -23,11 +23,9 @@ export class NuevaEmpresaComponent {
         if (response.success) {
           empresa.id = response.id;
           empresa.logo = '0';
-          empresa.exportar_informes = '0';
-          empresa.fichas_maquinaria = '0';
           this.empresasService.empresaCreada(empresa);
           // limpiar form
-          this.empresa = {nombre: '', logo: '', exportar_informes: '',fichas_maquinaria:''};
+          this.empresa = {nombre: '', logo: ''};
         }
         // usuario erróneo
         else {

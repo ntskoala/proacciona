@@ -26,16 +26,16 @@ public selectedMenu:string='home';
     switch (this.empresasService.userTipo) {
       case 'Administrador':
         this.permiso = true;
-//        console.log('Seleccion automática de empresa, empresas component');
-//        this.empresasService.seleccionarEmpresa(new Empresa('','','','',2));
-//        this.selectedMenu = "limpieza";
+        console.log('Seleccion automática de empresa, empresas component');
+        this.empresasService.seleccionarEmpresa(new Empresa('','',2));
+        this.selectedMenu = "proveedores";
         break;
       case "Mantenimiento":
         if (this.empresasService.empresaActiva == 0) {
           sessionStorage.removeItem('token');
           this.router.navigate(['login']);
         }
-        this.empresa = new Empresa('', '', '0', '0', this.empresasService.empresaActiva);
+        this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
         this.empresasService.seleccionarEmpresa(this.empresa);
         this.permiso = true;
         this.selectedMenu = "maquinaria";
@@ -45,7 +45,7 @@ public selectedMenu:string='home';
           sessionStorage.removeItem('token');
           this.router.navigate(['login']);
         }
-        this.empresa = new Empresa('', '', '0', '0', this.empresasService.empresaActiva);
+        this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
         this.empresasService.seleccionarEmpresa(this.empresa);
         this.permiso = true;
         this.selectedMenu = "informes";

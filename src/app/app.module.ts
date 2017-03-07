@@ -69,11 +69,21 @@ import { LimpiezasRealizadasComponent } from './components/limpieza/limpiezas-re
 import { CalendariosLimpiezaComponent } from './components/limpieza/calendarios-limpieza.component';
 import { ProtocoloComponent } from './components/limpieza/protocolo.component';
 import { SelectProductosComponent } from './components/limpieza/select-productos.component';
+/********     PROVEEDORES          */
+import { ProveedoresComponent } from './components/proveedores/proveedores.component';
+import { ListadoProveedoresComponent } from './components/proveedores/listado-proveedores.component';
+import { ProductosProveedorComponent } from './components/proveedores/productos-proveedor.component';
+import { EntradaProductosComponent } from './components/proveedores/entrada-productos.component';
+
+import { AlergenosComponent } from './components/alergenos/alergenos.component';
 /********     SERVICIOS          */
 import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
 import { PermisosService } from './services/permisos.service';
+
+
+
 
 @NgModule({
   imports: [
@@ -139,6 +149,12 @@ import { PermisosService } from './services/permisos.service';
     CalendariosLimpiezaComponent,
     ProtocoloComponent,
     SelectProductosComponent,
+//******PROVEEDORES */
+    ProveedoresComponent,
+    ListadoProveedoresComponent,
+    ProductosProveedorComponent,
+    EntradaProductosComponent,
+    AlergenosComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,

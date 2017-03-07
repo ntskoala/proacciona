@@ -1,0 +1,45 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="selector">
+  {{'proveedores.proveedores' | translate}}<br>
+  <form>
+    <select (change)="seleccionarItem($event.target.value)">
+      <option *ngFor="let item of items; let i = index" [value]="i">
+        {{item.nombre}}
+      </option>
+    </select>
+  </form>
+<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
+<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>
+</div>
+<div class="nueva">
+<!-- Nueva maquina -->
+<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="nueva-maquina">
+  <h2>{{'proveedores.nuevo proveedor' | translate}}</h2>
+  <div class="table">
+    <form class="row" (ngSubmit)="crearItem(newItem.value)" #newItem="ngForm">
+      <span class="cell">
+        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+      </span>
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!newItem.form.valid" type="submit">
+          <span class="material-icons">add</span>
+        </button>
+      </span>
+    </form>
+  </div>
+</div>
+</div>
+<div class="modal" *ngIf="modificaItem">
+  <div class="modal-window modificar">
+  
+          <h2 class="center">{{ 'modificar' | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>

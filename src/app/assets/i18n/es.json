@@ -166,6 +166,18 @@
     "ficha":"ficha",
     "productoslimpieza":"Productos limpieza"
   },
+  "proveedores":{
+    "proveedores":"Proveedores",
+    "areaproveedores": "Área de Proveedores",
+    "nombre":"Nombre",
+    "descripcion":"Descripción",
+    "nuevo proveedor": "Nuevo Proveedor",
+    "borrarProveedorT": "Eliminar Proveedor",
+    "borrarProveedorST": "Alerta!, Se eliminará el proveedor seleccionado y todos sus productos",
+    "borrarProductoT": "Eliminar Producto",
+    "borrarProductoST": "Se eliminará el producto seleccionado"    
+  },
+  "alergenos":"alérgenos",
   "lunes":"lunes",
   "martes":"martes",
   "miercoles":"miercoles",

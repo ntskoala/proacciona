@@ -1,0 +1,23 @@
+  <md-card>
+    <md-card-title>
+      <md-toolbar color="accent">{{'proveedores.areaproveedores' | translate}}</md-toolbar>
+    </md-card-title>
+ <md-card-subtitle>
+   <div class="w80">
+   <listado-proveedores (itemSeleccionado)="seleccionProveedor($event)"></listado-proveedores>
+   </div>
+   <div class="w20">
+   </div>
+
+ </md-card-subtitle>
+
+ <div class="contenido">
+   <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
+   <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>-->
+   <h2 class="center" *ngIf="proveedor && proveedor.id >0">{{proveedor.nombre}}</h2>
+<md-tab-group *ngIf="proveedor && proveedor.id > 0" [dynamicHeight]="false">
+  <md-tab label="{{'proveedores.productos' | translate}}"><span class="space"></span><productos-proveedor id="testid" class="tabs"  [proveedor]="proveedor" *ngIf="proveedor"></productos-proveedor></md-tab>
+<md-tab label="{{'proveedores.entradaproductos' | translate}}"><span class="space"></span><entrada-productos class="tabs" [proveedor]="proveedor" *ngIf="proveedor"></entrada-productos></md-tab>  
+</md-tab-group>
+ </div>
+  </md-card>

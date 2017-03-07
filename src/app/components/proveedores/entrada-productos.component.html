@@ -1,0 +1,123 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+
+
+
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+    <span class="cell">
+    <select [(ngModel)]="nuevoItem.idproducto" name="idproducto">
+      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+        {{prod.nombre}}
+      </option>
+    </select>
+    </span>    
+    <span class="cell">
+      <input type="text" [placeholder]="'proveedores.numlote' | translate" required [(ngModel)]="nuevoItem.numlote" name="nombre">
+    </span>
+    <span class="cell">
+      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha_entrada" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
+      <input type="text" [placeholder]="'proveedores.cantidad' | translate" required [(ngModel)]="nuevoItem.cantidad_inicial" name="cantidad_inicial">
+    </span>
+     <span class="cell">
+    <input type="text" [placeholder]="'proveedores.medida' | translate" required [(ngModel)]="nuevoItem.tipo_medida" name="tipo_medida">
+ </span>
+    <span class="cell medium">  
+      <input type="text" [placeholder]="'proveedores.remanente' | translate" required [(ngModel)]="nuevoItem.cantidad_remanente" name="cantidad_remanente"> 
+      </span>
+      <span class="header-cell">
+      </span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"proveedores.producto" | translate}}</span>
+    <span class="header-cell">{{"proveedores.numlote" | translate}}</span>
+    <span class="header-cell">{{"proveedores.fecha_entrada" | translate}}</span>
+    <span class="header-cell">{{"proveedores.cantidad" | translate}}</span>
+    <span class="header-cell">{{"proveedores.tipo medida" | translate}}</span>
+    <span class="header-cell">{{"proveedores.tipo remanente" | translate}}</span>
+    <span class="header-cell">{{"proveedores.Foto" | translate}}</span>
+    <span class="header-cell">
+      </span><!--Borrar-->
+    <span class="header-cell"></span><!--Guardar-->
+  </div>
+  <div class="divrow"  *ngFor="let item of items; let i = index">
+  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
+    <input type="hidden" [(ngModel)]="item.id" name="id">
+    <span class="cell">
+    <select [(ngModel)]="item.idproducto" name="idproducto">
+      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+        {{prod.nombre}}
+      </option>
+    </select>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="nombre" (keyup)="itemEdited(item.id)">
+    </span>
+    <span class="cell">
+      <p-calendar [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad_inicial" name="cantidad_inicial" (keyup)="itemEdited(item.id)">
+    </span>
+
+     <span class="cell">
+   <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.tipo_medida" name="tipo_medida" (keyup)="itemEdited(item.id)">
+ </span>
+     <span class="cell">
+   <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad_remanente" name="cantidad_remanente" (keyup)="itemEdited(item.id)">
+ </span>
+
+
+<!--*****  subir/ver FOTO  *********-->
+    <span class="cell"> 
+      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!item.doc" md-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
+    </span>
+<!--****** FIN ********************-->
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+   
+  </form>
+  <!--<div class="protocol"  *ngIf="protocolo[i]">
+ <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol"></protocolo>
+  </div>-->
+ </div>
+</div>
+
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img class="iframe" [src]="foto">
+</div>
+
+

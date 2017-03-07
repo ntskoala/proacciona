@@ -55,7 +55,7 @@ es;
   }
   ngOnChanges(){
     console.log("onChange");
-      this.setItems();
+      //this.setItems();
       this.getProductos();
   }
 
@@ -96,7 +96,7 @@ getProductos(){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.proveedor.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
-            this.items = [];
+            this.productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.productos.push({"id":element.id,"nombre":element.nombre});
@@ -104,7 +104,7 @@ getProductos(){
             }
         },
         error=>console.log(error),
-        ()=>{}
+        ()=>{this.setItems()}
         ); 
 }
 

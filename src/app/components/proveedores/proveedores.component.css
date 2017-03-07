@@ -160,6 +160,6 @@ md-grid-tile-header{
 }
 
 .smallselect{
-        min-width: 45px !important;
-    background-color: #fff;
+        min-width: 200px !important;
+    background-color: #fff9c4;
 }

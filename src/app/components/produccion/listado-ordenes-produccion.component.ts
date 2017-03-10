@@ -3,22 +3,22 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
-import { Proveedor } from '../../models/proveedor';
+import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
 
 @Component({
-  selector: 'listado-proveedores',
-  templateUrl: './listado-proveedores.component.html',
-  styleUrls:['./proveedores.component.css']
+  selector: 'listado-ordenes-produccion',
+  templateUrl: './listado-ordenes-produccion.component.html',
+  styleUrls:['./produccion.css']
 })
-export class ListadoProveedoresComponent implements OnInit {
+export class ListadoOrdenesProduccionComponent implements OnInit {
 //*** STANDARD VAR
-@Output() itemSeleccionado: EventEmitter<Proveedor> = new EventEmitter<Proveedor>();
+@Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 public itemActivo: number;
-public items: Proveedor[]=[];//Array de Items para el desplegable;
-public  nuevoItem: Proveedor = new Proveedor('',0);
-public item1:Proveedor = new Proveedor('Selecciona',0);
+public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
+public  nuevoItem: ProduccionOrden = new ProduccionOrden(0,0,'',new Date(),new Date());
+public item1:ProduccionOrden = new ProduccionOrden(0,0,'Selecciona',new Date(),new Date());
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
 public  nuevoNombre:string;
@@ -34,7 +34,7 @@ cambiarTab(){}
 
 loadItems(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=proveedores";
+    let parametros = '&idempresa=' + params+"&entidad=produccion_orden";
 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
@@ -44,7 +44,7 @@ loadItems(emp: Empresa | string) {
             this.items.push(this.item1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.items.push(new Proveedor(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.alert_contacto,element.alert_telf,element.alert_email,element.id));
+                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.nombre,element.familia,element.estado));
               }
              // this.listaZonas.emit(this.limpiezas);
             }
@@ -56,15 +56,16 @@ seleccionarItem(valor: number){
   this.itemActivo = this.items[valor].id;
 }
 
-crearItem(proveedor: Proveedor){
-proveedor.idEmpresa = this.empresasService.seleccionada;
-let param = "&entidad=proveedores";
-    this.servidor.postObject(URLS.STD_ITEM, proveedor,param).subscribe(
+crearItem(){
+this.nuevoItem.idempresa = this.empresasService.seleccionada;
+this.nuevoItem.nombre = this.nuevoItem.numlote;
+let param = "&entidad=produccion_orden";
+    this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
         if (response.success) {
-          proveedor.id = response.id;
-          this.items.push(proveedor);
-          this.nuevoItem = new Proveedor('',0);
+          this.nuevoItem.id = response.id;
+          this.items.push(this.nuevoItem);
+          this.nuevoItem = new ProduccionOrden(0,0,'',new Date(),new Date());
         }
     });
 }
@@ -75,7 +76,7 @@ modificar(){
  let index = this.items.findIndex((prov) => prov.id == this.itemActivo);
 let prov = this.items[index];
 prov.nombre=this.nuevoNombre;
-let param = "&entidad=proveedores";
+let param = "&entidad=produccion_orden";
 let parametros = '?id=' + this.itemActivo+param;     
     this.servidor.putObject(URLS.STD_ITEM,parametros, prov).subscribe(
       response => {
@@ -92,7 +93,7 @@ let parametros = '?id=' + this.itemActivo+param;
   cerrarModal(event: boolean) {
     this.modal.visible = false;
     if (event) {
-      let parametros = '?id=' + this.itemActivo+'&entidad=proveedores';
+      let parametros = '?id=' + this.itemActivo+'&entidad=produccion_orden';
       this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
         response => {
           if (response.success) {
@@ -104,8 +105,8 @@ let parametros = '?id=' + this.itemActivo+param;
     }
   }
 eliminarItem(){
-      this.modal.titulo = 'proveedores.borrarProveedorT';
-    this.modal.subtitulo = 'proveedores.borrarProveedorST';
+      this.modal.titulo = 'produccion.borrarOrdenT';
+    this.modal.subtitulo = 'produccion.borrarOrdenST';
     this.modal.eliminar = true;
     this.modal.visible = true;
 }

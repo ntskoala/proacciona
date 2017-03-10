@@ -5,6 +5,8 @@ import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
+import { ProduccionOrden } from '../../models/produccionorden';
+import { ProduccionDetalle } from '../../models/producciondetalle';
 import { Modal } from '../../models/modal';
 
 
@@ -16,17 +18,19 @@ export class alerg{
 }
 
 @Component({
-  selector: 'entrada-productos',
-  templateUrl: './entrada-productos.component.html',
-  styleUrls:['proveedores.component.css']
+  selector: 'materias-primas',
+  templateUrl: './materias-primas.component.html',
+  styleUrls:['produccion.css']
 })
 
-export class EntradaProductosComponent implements OnInit, OnChanges{
-@Input() proveedor: Proveedor;
-public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+export class MateriasPrimasComponent implements OnInit, OnChanges{
+@Input() orden: ProduccionOrden;
+public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
-public items: ProveedorLoteProducto[];
-public productos: Object[]=[];
+public items: ProduccionDetalle[];
+public productos: any[]=[];
+public proveedores: any[]=[];
+public entrada_productos: any[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','bolsa','caja','sacos','palet'];
 public guardar = [];
 public idBorrar;
@@ -36,14 +40,14 @@ public foto:string;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/';
 modal: Modal = new Modal();
-entidad:string="&entidad=proveedores_entradas_producto";
-field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
+entidad:string="&entidad=produccion_detalle";
+field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 es;
 
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-     // this.setItems();
+      this.getProveedores();
       
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -56,35 +60,24 @@ es;
   }
   ngOnChanges(){
     console.log("onChange");
-      //this.setItems();
-      this.getProductos();
+      this.setItems();
+     // this.getProductos();
   }
 
-  photoURL(i,tipo) {
-    let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
-    let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
-    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
-    this.verdoc=!this.verdoc;
-    this.foto = url
-    }else{
-      window.open(url,'_blank');
 
-    }
-
-  }
 
 
 
 
   setItems(){
      console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.orden.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
+                  this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote_proveedor,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida));
              }
             }
         },
@@ -93,8 +86,8 @@ es;
         );
   }
 
-getProductos(){
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.proveedor.id; 
+getProductos(idProveedor:number){
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+idProveedor; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.productos = [];
@@ -109,11 +102,49 @@ getProductos(){
         ); 
 }
 
+getEntradasProducto(idProducto: number){
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto; 
+        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+          response => {
+            this.entrada_productos = [];
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote});
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{this.setItems()}
+        ); 
+}
+
+getProveedores(){
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.proveedores = [];
+            this.proveedores.push({"id":0,"nombre":"Interno"})
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                  this.proveedores.push({"id":element.id,"nombre":element.nombre});
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{this.setItems()}
+        ); 
+}
+
+
   newItem() {
-    
-    let param = this.entidad+this.field+this.proveedor.id;
-    this.nuevoItem.idproveedor = this.proveedor.id;
-    this.nuevoItem.idempresa = this.empresasService.seleccionada;
+    console.log (this.proveedores.findIndex((prov)=>prov.id==parseInt(this.nuevoItem.proveedor)))
+    let param = this.entidad+this.field+this.orden.id;
+    this.nuevoItem.id =0;
+    this.nuevoItem.idorden = this.orden.id;
+    this.nuevoItem.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==parseInt(this.nuevoItem.proveedor))].nombre;
+    this.nuevoItem.producto = this.productos[this.productos.findIndex((prod)=>prod.id==parseInt(this.nuevoItem.producto))].nombre;
+    this.nuevoItem.numlote_proveedor = this.entrada_productos[this.entrada_productos.findIndex((lot)=>lot.id==this.nuevoItem.idmateriaprima)].lote;
+    //this.nuevoItem.idempresa = this.empresasService.seleccionada;
     //this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
@@ -126,7 +157,7 @@ getProductos(){
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+   this.nuevoItem =  new ProduccionDetalle(0,0,'','','',0,0,0,'');
   }
 
 
@@ -151,8 +182,8 @@ checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'proveedores.borrarEntradaProductoT';
-    this.modal.subtitulo = 'proveedores.borrarEntradaProductoST';
+    this.modal.titulo = 'proveedores.borrarProduccionDetalleT';
+    this.modal.subtitulo = 'proveedores.borrarProduccionDetalleST';
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
@@ -171,22 +202,7 @@ checkBorrar(idBorrar: number) {
     }
   }
 
-  uploadImg(event, idItem,i,field) {
-    console.log(event)
-    var target = event.target || event.srcElement; //if target isn't there then take srcElement
-    let files = target.files;
-    //let files = event.srcElement.files;
-    let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'proveedores_entradas_producto',idItem, this.empresasService.seleccionada.toString(),field).subscribe(
-      response => {
-        console.log('doc subido correctamente',files[0].name);
-        this.items[i].doc = files[0].name;
-        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/' +  idItem +'_'+files[0].name;
-        // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
-        // activa.logo = '1';
-      }
-    )
-  }
+
 
 
 

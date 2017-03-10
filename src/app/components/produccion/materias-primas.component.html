@@ -1,0 +1,123 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+
+
+
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+ 
+    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+
+    <span class="cell">
+    <select class="smallselect" [(ngModel)]="nuevoItem.proveedor" name="proveedor" (change)="getProductos($event.target.value)">
+      <option *ngFor="let prov of proveedores; let i = index" [value]="prov.id">
+        {{prov.nombre}}
+      </option>
+    </select>
+    </span>    
+
+    <span class="cell">
+    <select class="smallselect" [(ngModel)]="nuevoItem.producto" name="producto" (change)="getEntradasProducto($event.target.value)">
+      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+        {{prod.nombre}}
+      </option>
+    </select>
+    </span>    
+
+     <span class="cell">
+    <select class="smallselect"  [(ngModel)]="nuevoItem.idmateriaprima" name="idmateriaprima">
+      <option *ngFor="let lote of entrada_productos; let i = index" [value]="lote.id">
+        {{lote.lote}}
+      </option>
+    </select>
+    </span>      
+
+    <span class="cell medium">
+      <input class="medium" type="text" [placeholder]="'proveedores.cantidad' | translate" required [(ngModel)]="nuevoItem.cantidad" name="cantidad">
+    </span>
+         <span class="cell">
+       <select class="smallselect" [(ngModel)]="nuevoItem.tipo_medida" name="tipo_medida">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+
+      <span class="header-cell">
+      </span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"proveedores.proveedor" | translate}}</span>
+    <span class="header-cell">{{"proveedores.producto" | translate}}</span>
+    <span class="header-cell">{{"proveedores.lote" | translate}}</span>
+    <span class="header-cell medium">{{"proveedores.cantidad" | translate}}</span>
+    <span class="header-cell">{{"proveedores.tipo medida" | translate}}</span>
+    <!--<span class="header-cell">{{"proveedores.Foto" | translate}}</span>-->
+    <span class="header-cell">
+      </span><!--Borrar-->
+    <span class="header-cell"></span><!--Guardar-->
+  </div>
+  <div class="divrow"  *ngFor="let item of items; let i = index">
+  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
+    <input type="hidden" [(ngModel)]="item.id" name="id">
+
+
+    <span class="cell">
+        {{item.proveedor}}
+    </span>
+    <span class="cell">
+        {{item.producto}}
+    </span>
+    <span class="cell">
+        {{item.numlote}}
+    </span>
+
+    <span class="cell medium">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad" name="cantidad" (keyup)="itemEdited(item.id)">
+    </span>
+
+     <span class="cell">
+       <select class="smallselect" [(ngModel)]="item.tipo_medida" name="tipo_medida" (change)="itemEdited(item.id)">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+
+
+
+
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+   
+  </form>
+
+ </div>
+</div>
+
+
+
+
+

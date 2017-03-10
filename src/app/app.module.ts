@@ -16,6 +16,7 @@ import {CalendarModule} from 'primeng/primeng';
 import {ScheduleModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import {LightboxModule} from 'primeng/primeng';
+import {TreeModule,TreeNode} from 'primeng/primeng';
 // import {MultiSelectModule} from 'primeng/primeng';
 
 
@@ -71,10 +72,17 @@ import { ProtocoloComponent } from './components/limpieza/protocolo.component';
 import { SelectProductosComponent } from './components/limpieza/select-productos.component';
 /********     PROVEEDORES          */
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
+import { FichaProveedorComponent } from './components/proveedores/ficha-proveedor.component';
 import { ListadoProveedoresComponent } from './components/proveedores/listado-proveedores.component';
 import { ProductosProveedorComponent } from './components/proveedores/productos-proveedor.component';
 import { EntradaProductosComponent } from './components/proveedores/entrada-productos.component';
+/********     PRODUCCION          */
+import { ProduccionComponent } from './components/produccion/produccion.component';
+import { ListadoOrdenesProduccionComponent } from './components/produccion/listado-ordenes-produccion.component';
+import { FichaProduccionComponent } from './components/produccion/ficha-produccion.component';
+import { MateriasPrimasComponent } from './components/produccion/materias-primas.component';
 
+import { TrazabilidadComponent } from './components/trazabilidad/trazabilidad.component';
 import { AlergenosComponent } from './components/alergenos/alergenos.component';
 /********     SERVICIOS          */
 import { routing } from './app.routing';
@@ -96,6 +104,7 @@ import { PermisosService } from './services/permisos.service';
     CalendarModule,
     DialogModule,
     LightboxModule,
+    TreeModule,
     // MultiSelectModule,
     MaterialModule.forRoot(),
     DatePickerModule,
@@ -151,9 +160,17 @@ import { PermisosService } from './services/permisos.service';
     SelectProductosComponent,
 //******PROVEEDORES */
     ProveedoresComponent,
+    FichaProveedorComponent,
     ListadoProveedoresComponent,
     ProductosProveedorComponent,
     EntradaProductosComponent,
+//******PRODUCCION */
+    ProduccionComponent,
+    ListadoOrdenesProduccionComponent,
+    FichaProduccionComponent,
+    MateriasPrimasComponent,
+
+    TrazabilidadComponent,
     AlergenosComponent,
 //*******COMUNES     */
     ModalComponent,

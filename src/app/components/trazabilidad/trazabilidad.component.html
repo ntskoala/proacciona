@@ -1,0 +1,2 @@
+<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedFile3" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+<div style="margin-top:8px">Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}</div>

@@ -1,6 +1,6 @@
 export class ProveedorLoteProducto {
   constructor(
-    public numlote: string,
+    public numlote_proveedor: string,
     public fecha_entrada: Date,
     public cantidad_inicial: number,
     public tipo_medida:string,

@@ -28,6 +28,8 @@ export const URLS = {
   UPLOAD_DOCS: base + 'uploads.php',
   STD_ITEM: base + 'std_item.php',
   STD_SUBITEM: base + 'std_subitem.php',
+  //**********TRAZABILIDAD */
+  TRAZA_ORDENES:  base + 'traza_ordenes.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',
   FOTOS: server +'controles/',

@@ -21,7 +21,7 @@
     </select>
     </span>    
     <span class="cell medium">
-      <input class="medium" type="text" [placeholder]="'proveedores.numlote' | translate" required [(ngModel)]="nuevoItem.numlote" name="numlote">
+      <input class="medium" type="text" [placeholder]="'proveedores.numlote' | translate" required [(ngModel)]="nuevoItem.numlote_proveedor" name="numlote_proveedor">
     </span>
     <span class="cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
@@ -72,7 +72,7 @@
     </select>
     </span>
     <span class="cell medium">
-      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="numlote" (keyup)="itemEdited(item.id)">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote_proveedor" name="numlote_proveedor" (keyup)="itemEdited(item.id)">
     </span>
     <span class="cell">
       <p-calendar [(ngModel)]="item.fecha_entrada"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha_entrada)" name="fecha_entrada"></p-calendar>    

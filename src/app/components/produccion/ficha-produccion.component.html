@@ -1,0 +1,84 @@
+
+<form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
+    <md-grid-list cols="3" rowHeight="65px">
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.nombre" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.Nombre' | translate" type="text"
+                required [(ngModel)]="orden.numlote" name="nombre">
+        </md-grid-tile>
+
+
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.fecha_inicio" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
+                [(ngModel)]="orden.fecha_inicio" name="contacto">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.fecha_fin" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
+                [(ngModel)]="orden.fecha_fin" name="telf">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.fecha_caducidad" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
+                [(ngModel)]="orden.fecha_caducidad" name="email">
+        </md-grid-tile>
+
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.responsable" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
+                [(ngModel)]="orden.responsable" name="alert_contacto">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.familia" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
+                [(ngModel)]="orden.familia" name="alert_telf">
+        </md-grid-tile>
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.nombre" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
+                [(ngModel)]="orden.nombre" name="alert_telf">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"proveedores.estado" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
+                [(ngModel)]="orden.estado" name="alert_email">
+        </md-grid-tile>
+    </md-grid-list>
+
+
+    <div  class="botones">
+    <span class="but">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" [disabled]="!myItem.form.valid" type="submit">
+          <!--<span class="material-icons">save</span>-->{{'maquinas.guardar' | translate}}
+    </button>
+    </span>
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" (click)="trazabilidadAtras()" type="button">
+          <span class="material-icons">restore</span>
+    </button>
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" (click)="trazabilidadAdelante()" type="button">
+          <span class="material-icons">backup</span>
+    </button>
+
+
+
+
+    </div>
+</form>
+<div class="traza">
+<trazabilidad [orden]="orden" *ngIf="trazabilidad"></trazabilidad>
+</div>

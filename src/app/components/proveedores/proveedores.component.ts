@@ -13,7 +13,7 @@ export class ProveedoresComponent implements OnInit {
 public proveedor: Proveedor;
 public calendario: boolean = false;
 public proveedores: Proveedor[];
-
+public familias:boolean = false;
   constructor(private empresasService: EmpresasService) {}
 
   ngOnInit() {

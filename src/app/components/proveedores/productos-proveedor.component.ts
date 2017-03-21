@@ -6,7 +6,8 @@ import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorProducto } from '../../models/proveedorproductos';
 import { Proveedor } from '../../models/proveedor';
 import { Modal } from '../../models/modal';
-import { myprods } from '../../models/limpiezamyprods';
+//import { myprods } from '../../models/limpiezamyprods';
+import { FamiliasProducto } from '../../models/proveedorfamilias';
 
 export class alerg{
   constructor(
@@ -26,6 +27,7 @@ export class ProductosProveedorComponent implements OnInit, OnChanges{
 public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);
 public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);;
 public items: ProveedorProducto[];
+public familias: FamiliasProducto[];
 public guardar = [];
 public idBorrar;
 public url=[];
@@ -38,11 +40,12 @@ entidad:string="&entidad=proveedores_productos";
 field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
 es;
 
+
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
      // this.setItems();
-     // this.setProductos();
+      this.getFamilias();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -70,7 +73,18 @@ es;
 
   }
 
-
+getFamilias(){
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_familia"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.familias = [];
+            if (response.success && response.data) {
+              for (let element of response.data) {  
+                  this.familias.push(new FamiliasProducto (element.nombre,element.idempresa,element.id));   
+             }
+            }
+        });
+}
 
 
   setItems(){

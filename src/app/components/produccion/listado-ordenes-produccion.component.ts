@@ -22,19 +22,19 @@ public item1:ProduccionOrden = new ProduccionOrden(0,0,'Selecciona',new Date(),n
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
 public  nuevoNombre:string;
-
+public estado:string='abierto';
 //*** ESPECIFIC VAR */
 
   constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
 
   ngOnInit() {
-    this.loadItems(this.empresasService.seleccionada.toString());
+    this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
   }
 cambiarTab(){}
 
-loadItems(emp: Empresa | string) {
+loadItems(emp: Empresa | string, estat) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=produccion_orden";
+    let parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+"";
 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
@@ -59,6 +59,7 @@ seleccionarItem(valor: number){
 crearItem(){
 this.nuevoItem.idempresa = this.empresasService.seleccionada;
 this.nuevoItem.nombre = this.nuevoItem.numlote;
+this.nuevoItem.estado = 'abierto';
 let param = "&entidad=produccion_orden";
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
@@ -113,6 +114,12 @@ eliminarItem(){
 
 modificarItem(){
 this.modificaItem = !this.modificaItem;
+}
+
+changeEstado(){
+  console.log('cambiando');
+  this.estado == "abierto"? this.estado="cerrado":this.estado="abierto";
+  this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
 }
 
 }

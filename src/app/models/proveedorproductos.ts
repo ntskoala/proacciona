@@ -5,6 +5,7 @@ export class ProveedorProducto {
     public alergenos: string,
     public doc: string,
     public idproveedor: number,
-    public id?: number
+    public id?: number,
+    public idfamilia?: number
   ) {}
 }

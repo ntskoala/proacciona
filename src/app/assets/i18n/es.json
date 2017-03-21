@@ -186,6 +186,15 @@
     "tipo medida":"tipo medida",
     "remanente":"remanente"    
   },
+  "produccion":{
+    "produccion":"Producción",
+    "area_produccion": "Area de Producción",
+    "nuevo_lote":"Nuevo Lote de Producción",
+    "lotes_activos":"Lotes activos",
+    "lotes_cerrados":"Lotes finalizados",
+    "ficha":"Ficha Producción",
+    "materias_primas":"Materias Primas"
+  },
   "alergenos":"alérgenos",
   "lunes":"lunes",
   "martes":"martes",

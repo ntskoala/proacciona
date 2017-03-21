@@ -1,6 +1,6 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="selector">
-  {{'proveedores.proveedores' | translate}}<br>
+  <md-slide-toggle (change)="changeEstado()">{{'produccion.lotes_activos' | translate}}</md-slide-toggle><br>
   <form>
     <select (change)="seleccionarItem($event.target.value)">
       <option *ngFor="let item of items; let i = index" [value]="i">
@@ -14,7 +14,7 @@
 <div class="nueva">
 <!-- Nueva maquina -->
 <div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="nueva-maquina">
-  <h2>{{'proveedores.nuevo proveedor' | translate}}</h2>
+  <h2>{{'produccion.nuevo_lote' | translate}}</h2>
   <div class="table">
     <form class="row" (ngSubmit)="crearItem()" #newItem="ngForm">
       <span class="cell">

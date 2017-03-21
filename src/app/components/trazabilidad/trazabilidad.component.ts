@@ -30,7 +30,9 @@ export class TrazabilidadComponent implements OnInit, OnChanges{
 expandingTree: Tree;
 tree: TreeNode[];
 msgs: any[];
-selectedFile3: TreeNode;
+message:string;
+selectedNode: TreeNode;
+selectedNodes: TreeNode[];
 selectedFile2: TreeNode;
 @Input() orden: ProduccionOrden;
 public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
@@ -39,7 +41,7 @@ public items: ProduccionDetalle[];
 public productos: any[]=[];
 public proveedores: any[]=[];
 public entrada_productos: any[]=[];
-public medidas: string[]=['Kg.','g.','l.','ml.','bolsa','caja','sacos','palet'];
+public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
 public idBorrar;
 public url=[];
@@ -56,14 +58,16 @@ es;
 
   ngOnInit() {
      // this.getProveedores();
-     this.tree = [];
-     this.tree.push({"label": "inicio","data": "inicio","expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+
     // this.setItems();
   }
 
   ngOnChanges(){
     console.log("onChange");
-      this.setItems();
+     this.tree = [];
+     this.tree.push({"label": "inicio","data": "inicio","expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+     this.tree[0].children=[];
+      this.setItems(this.tree[0]);
      // this.getProductos();
   }
 
@@ -72,52 +76,72 @@ es;
 
 
 
-  setItems(){
-     console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.orden.id; 
+  setItems(tree:any,idOrden?:number){
+      if (!idOrden) idOrden= this.orden.id;
+     console.log('setting items...',tree, idOrden)
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+idOrden; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
-            this.tree[0].children=[];
+            //this.tree[0].children=[];
             if (response.success && response.data) {
               for (let element of response.data) { 
                   //let node = ({"label" :element.numlote})
-                   this.tree[0].children.push({"label": element.producto,
-            "data": {"idmateriaprima":element.idmateriaprima,"proveedor":element.proveedor},
-            //"children":[],
-            "expandedIcon": "fa-folder-open",
-                   "collapsedIcon": "fa-folder"})
+                  if (element.idmateriaprima >0){
+                   //this.tree[0].children.push({
+                       tree.children.push({
+                       "label": element.producto,
+                       //"parent": tree,
+                        "data": {"tipo":"materiaprima","idmateriaprima":element.idmateriaprima,"proveedor":element.proveedor,"numlote_proveedor":element.numlote_proveedor,"level":1},
+                        "expandedIcon": "fa-folder-open",
+                        "collapsedIcon": "fa-folder"})
+                        
                   //this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida));
-             }
+                }else{
+                this.setItems(tree,element.idloteinterno)
+                }
             }
+            }
+
         },
         error=>console.log(error),
-        ()=>{this.getOrdenes()}
+        ()=>{//this.getOrdenes()
+            }
         );
   }
 
-getOrdenes(){
-    let i=0;
-    this.tree[0].children.forEach((child)=> {
-        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+child.data.idmateriaprima; 
+getOrdenes(nodo: any,id:number, tipo:string){
+//    let i=0;
+//    this.tree[0].children.forEach((child)=> {
+//        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+child.data.idmateriaprima; 
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&"+tipo+"="+id; 
         console.log(parametros);
-        child.children=[];
+//        child.children=[];
+       // this.tree[0].children[nodo].children=[];
+       nodo.children=[];
         this.servidor.getObjects(URLS.TRAZA_ORDENES, parametros).subscribe(
           response => {
-            //this.proveedores = [];
-            //this.proveedores.push({"id":0,"nombre":"Interno"})
+
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.tree[0].children[i].children.push({"label":element.numlote,"data":{"idlote":element.id,"numlote_proveedor":element.numlote_proveedor}});
+                  //this.tree[0].children[nodo].children.push({
+                      nodo.children.push({
+                      "label":element.numlote,
+                      "parent":nodo,
+                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor}
+                    });
              }
-             i++;
+//             i++;
             }
         },
         error=>console.log(error),
         ()=>{}
         ); 
-    });
+//    });
 }
 
+getParent(idOrden){
+
+}
 
 
 
@@ -128,12 +152,32 @@ getOrdenes(){
     nodeSelect(event) {
         this.msgs = [];
         this.msgs.push({severity: 'info', data: event.node.data, summary:'Node Selected', detail: event.node.label});
+        this.message="";
+        
         console.log(this.msgs);
+        switch(event.node.data.tipo){
+            case "materiaprima":
+            this.message="label:"+event.node.label+" idMateriaPrima:"+ event.node.data.idmateriaprima+" proveedor:"+ event.node.data.proveedor+" numlote proveedor:"+ event.node.data.numlote_proveedor;
+            console.log("parent",event.node.parent);
+            let index = this.tree[0].children.findIndex((item) => item.data.idmateriaprima == event.node.data.idmateriaprima);
+            this.getOrdenes(event.node,event.node.data.idmateriaprima,"idmateriaprima");
+            break;
+            case "orden":
+            this.message="label:"+event.node.label+" idOrden:"+ event.node.data.idOrden+" Fecha Inicio Orden:"+ event.node.data.fecha_inicio_orden+" idDetalleOrden:"+ event.node.data.idDetalleOrden+" numlote_proveedor:"+ event.node.data.numlote_proveedor;
+            console.log("parent",event.node.parent);
+            let indice = this.tree[0].children.findIndex((item) => item.data.idOrden == event.node.data.idOrden);
+            this.getOrdenes(event.node,event.node.data.idOrden,"idorden");
+            break;
+            case "materiainterna":
+
+            break;
+        }
     }
     
     nodeUnselect(event) {
         this.msgs = [];
         this.msgs.push({severity: 'info', summary: 'Node Unselected', detail: event.node.label});
+        this.message = "";
         console.log(this.msgs);
     }
 

@@ -30,6 +30,7 @@ export const URLS = {
   STD_SUBITEM: base + 'std_subitem.php',
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
+  UPDATE_REMANENTE: base+ 'update_remanente.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',
   FOTOS: server +'controles/',

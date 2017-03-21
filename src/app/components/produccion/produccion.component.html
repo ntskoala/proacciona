@@ -7,17 +7,22 @@
    <listado-ordenes-produccion (itemSeleccionado)="seleccionOrden($event)"></listado-ordenes-produccion>
    </div>
    <div class="w20">
+       
    </div>
 
  </md-card-subtitle>
 
+
+
  <div class="contenido">
+   <div class="space"></div>
+   <movimiento-produccion *ngIf="empresasService.seleccionada == 77"></movimiento-produccion>
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
    <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>-->
-   <h2 class="center" *ngIf="proveedor && proveedor.id >0">{{proveedor.nombre}}</h2>
+   <h2 class="center" *ngIf="orden && orden.id >0">{{orden.nombre}}</h2>
 <md-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
   <md-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></md-tab>
-<md-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></md-tab>  
+<md-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></md-tab>
 </md-tab-group>
  </div>
   </md-card>

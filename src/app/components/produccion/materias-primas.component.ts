@@ -26,12 +26,13 @@ export class alerg{
 export class MateriasPrimasComponent implements OnInit, OnChanges{
 @Input() orden: ProduccionOrden;
 public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
+public passItem: ProduccionDetalle;
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProduccionDetalle[];
 public productos: any[]=[];
 public proveedores: any[]=[];
 public entrada_productos: any[]=[];
-public medidas: string[]=['Kg.','g.','l.','ml.','bolsa','caja','sacos','palet'];
+public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
 public idBorrar;
 public url=[];
@@ -48,16 +49,8 @@ es;
 
   ngOnInit() {
       this.getProveedores();
-      
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
   }
+
   ngOnChanges(){
     console.log("onChange");
       this.setItems();
@@ -87,6 +80,7 @@ es;
   }
 
 getProductos(idProveedor:number){
+  if (idProveedor > 0){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+idProveedor; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
@@ -98,24 +92,44 @@ getProductos(idProveedor:number){
             }
         },
         error=>console.log(error),
-        ()=>{this.setItems()}
+        ()=>{}
         ); 
+  }else{
+    this.productos =[];
+    this.productos.push({"id":0,"nombre":"lote interno"});
+  }
 }
 
-getEntradasProducto(idProducto: number){
+getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
+  if (idProducto > 0){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor"});
              }
             }
         },
         error=>console.log(error),
-        ()=>{this.setItems()}
+        ()=>{}
         ); 
+  }else{
+           let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.entrada_productos = [];
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno"});
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{}
+        ); 
+  }
 }
 
 getProveedores(){
@@ -131,7 +145,7 @@ getProveedores(){
             }
         },
         error=>console.log(error),
-        ()=>{this.setItems()}
+        ()=>{}
         ); 
 }
 
@@ -143,7 +157,13 @@ getProveedores(){
     this.nuevoItem.idorden = this.orden.id;
     this.nuevoItem.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==parseInt(this.nuevoItem.proveedor))].nombre;
     this.nuevoItem.producto = this.productos[this.productos.findIndex((prod)=>prod.id==parseInt(this.nuevoItem.producto))].nombre;
-    this.nuevoItem.numlote_proveedor = this.entrada_productos[this.entrada_productos.findIndex((lot)=>lot.id==this.nuevoItem.idmateriaprima)].lote;
+    let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==this.nuevoItem.idmateriaprima);
+    this.nuevoItem.numlote_proveedor = this.entrada_productos[index_entrada_productos].lote;
+    if (this.entrada_productos[index_entrada_productos].tipo == "lote_interno"){
+     this.nuevoItem.idloteinterno = this.nuevoItem.idmateriaprima;
+    this.nuevoItem.idmateriaprima = 0;
+    }
+    this.passItem = this.nuevoItem
     //this.nuevoItem.idempresa = this.empresasService.seleccionada;
     //this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
@@ -151,6 +171,8 @@ getProveedores(){
         if (response.success) {
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
+          this.passItem.id = response.id
+          this.setRemanente(this.passItem);
         }
     },
     error =>console.log(error),
@@ -160,7 +182,24 @@ getProveedores(){
    this.nuevoItem =  new ProduccionDetalle(0,0,'','','',0,0,0,'');
   }
 
+setRemanente(detalleProduccion: ProduccionDetalle){
+  console.log("setRemanente",detalleProduccion)
+  if (detalleProduccion.idmateriaprima >0){
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
+        this.servidor.getObjects(URLS.UPDATE_REMANENTE, parametros).subscribe(
+          response => {
+            this.entrada_productos = [];
+            if (response.success && response.data) {
+              console.log('updated');
+             }
+        },
+        error=>console.log(error),
+        ()=>{}
+        ); 
+  }else{
 
+  }
+}
 
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;

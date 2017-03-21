@@ -6,7 +6,7 @@ float:left;
 width: 50%;
 float:right;
 margin-right: 50px;
-margin-top: -20px;
+margin-top: 20px;
 }
 
 .modificar{
@@ -166,6 +166,37 @@ md-grid-tile-header{
 
 .traza{
     display: block;
-    position: absolute;
-    top: 300px;
+    position: fixed;
+    top: 50px;
+    left: 50px;
+    z-index:999;
+}
+#select_proveedor{
+    margin-top: -30px;
+}
+
+#origen{
+    display:block;
+    float:left;
+    width:300px;
+    margin-top: 50px;
+}
+#destino{
+    display:block;
+    float:right;
+    width:300px;
+    margin-top: 50px;
+}
+#traspaso{
+    display:block;
+    float:left;
+    margin-left:30px;
+    margin-top: 50px;
+    width:200px;
+}
+#traspasoComponent{
+    display:block;
+    width:900px;
+    height:300px;
+    min-height: 300px;
 }

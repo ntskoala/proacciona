@@ -7,13 +7,14 @@
    <listado-proveedores (itemSeleccionado)="seleccionProveedor($event)"></listado-proveedores>
    </div>
    <div class="w20">
+     <button md-raised-button (click)="familias = !familias">Familias</button>
    </div>
 
  </md-card-subtitle>
 
  <div class="contenido">
-   <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
-   <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>-->
+   <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
+   <familias-producto *ngIf="familias"></familias-producto>
  <md-toolbar color="accent" *ngIf="proveedor && proveedor.id >0"><h2 class="center" >{{proveedor.nombre}}</h2></md-toolbar>
 <md-tab-group *ngIf="proveedor && proveedor.id > 0" [dynamicHeight]="false">
   <md-tab label="{{'proveedores.proveedor' | translate}}"><span class="space"></span><ficha-proveedor class="tabs"  [proveedor]="proveedor" *ngIf="proveedor"></ficha-proveedor></md-tab>  

@@ -1,0 +1,90 @@
+<button md-raised-button (click)="traspaso = !traspaso">{{'produccion.traspaso' | translate}}</button>
+
+<div *ngIf="traspaso">
+<md-toolbar color="accent">{{'produccion.traspaso' | translate}}</md-toolbar>
+<div id="traspasoComponent">
+<div id="origen">
+
+   <!--<md-slide-toggle [(ngModel)]="proveedor" (change)="cambioOrigen()">proveedor</md-slide-toggle>-->
+<div id="select_proveedor">
+    <select class="smallselect"  name="proveedor" (change)="getProductos($event.target.value)">
+      <option *ngFor="let prov of proveedores; let i = index" [value]="prov.id">
+        {{prov.nombre}}
+      </option>
+    </select>
+</div>
+
+  <form *ngIf="!proveedor">
+     Tanque Origen
+    <select (change)="seleccionarOrigen('interno',$event.target.value)">
+      <option *ngFor="let almacenOrigen of almacenesOrigen; let i = index" [value]="i">
+        {{almacenOrigen.nombre}}
+      </option>
+    </select>
+  </form>
+<!--********************** ^POR PROVEEDOR  ***************-->
+    <div id="porProveedor"  *ngIf="proveedor">
+
+
+    <select class="smallselect"  name="producto" (change)="getEntradasProducto($event.target.value)">
+      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+        {{prod.nombre}}
+      </option>
+    </select>
+    <BR>    
+
+
+    <select class="smallselect"  name="idmateriaprima" (change)="seleccionarOrigen('proveedor',$event.target.value)">
+      <option *ngFor="let lote of entrada_productos; let i = index" [value]="i">
+        {{lote.numlote_proveedor}}
+      </option>
+    </select>
+    </div>     
+<!--********************** FIN POR PROVEEDOR  ***************-->
+
+
+
+  <md-card *ngIf="almacenOrigenSelected">
+      <md-card-header>
+          Tanque Origen: {{almacenOrigenSelected.nombre}}
+      </md-card-header>
+        Capacidad: {{almacenOrigenSelected.capacidad}}<br>
+        Uso: {{almacenOrigenSelected.estado}}<br>
+        Lote actual: {{almacenOrigenSelected.idproduccionordenactual}}<br>
+  </md-card>
+  <md-card *ngIf="loteSelected">
+      <md-card-header>
+          Num lote: {{loteSelected.numlote_proveedor}}
+      </md-card-header>
+        Cantidad Inicial: {{loteSelected.cantidad_inicial}}<br>
+        Cantidad Disponible: {{loteSelected.cantidad_remanente}}<br>
+  </md-card>
+
+</div>
+<div id="traspaso">
+<md-input-container>
+  <input type="number" md-input mdInput placeholder="cantidad traspaso" [(ngModel)]="cantidadTraspaso">
+</md-input-container>
+<button md-raised-button (click)="traspasar()">traspasar</button>
+</div>
+
+<div id="destino">
+  <form>
+      Destino
+    <select (change)="seleccionarDestino($event.target.value)">
+      <option *ngFor="let almacenDestino of almacenesDestino; let i = index" [value]="i">
+        {{almacenDestino.nombre}}
+      </option>
+    </select>
+  </form>
+  <md-card *ngIf="almacenDestinoSelected">
+      <md-card-header>
+          Tanque Destino: {{almacenDestinoSelected.nombre}}
+      </md-card-header>
+        Capacidad: {{almacenDestinoSelected.capacidad}}<br>
+        Disponible: {{almacenDestinoSelected.capacidad - almacenDestinoSelected.estado}}<br>
+        Lote actual: {{almacenDestinoSelected.idproduccionordenactual}}<br>
+  </md-card>
+</div>
+</div>
+</div>

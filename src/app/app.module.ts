@@ -76,11 +76,13 @@ import { FichaProveedorComponent } from './components/proveedores/ficha-proveedo
 import { ListadoProveedoresComponent } from './components/proveedores/listado-proveedores.component';
 import { ProductosProveedorComponent } from './components/proveedores/productos-proveedor.component';
 import { EntradaProductosComponent } from './components/proveedores/entrada-productos.component';
+import { FamiliasComponent } from './components/proveedores/familias-producto';
 /********     PRODUCCION          */
 import { ProduccionComponent } from './components/produccion/produccion.component';
 import { ListadoOrdenesProduccionComponent } from './components/produccion/listado-ordenes-produccion.component';
 import { FichaProduccionComponent } from './components/produccion/ficha-produccion.component';
 import { MateriasPrimasComponent } from './components/produccion/materias-primas.component';
+import { MovimientoComponent } from './components/produccion/movimiento.component';
 
 import { TrazabilidadComponent } from './components/trazabilidad/trazabilidad.component';
 import { AlergenosComponent } from './components/alergenos/alergenos.component';
@@ -164,11 +166,13 @@ import { PermisosService } from './services/permisos.service';
     ListadoProveedoresComponent,
     ProductosProveedorComponent,
     EntradaProductosComponent,
+    FamiliasComponent,
 //******PRODUCCION */
     ProduccionComponent,
     ListadoOrdenesProduccionComponent,
     FichaProduccionComponent,
     MateriasPrimasComponent,
+    MovimientoComponent,
 
     TrazabilidadComponent,
     AlergenosComponent,

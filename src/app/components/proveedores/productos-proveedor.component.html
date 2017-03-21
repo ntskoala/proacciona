@@ -19,9 +19,17 @@
     <span class="cell">
       <input type="text" [placeholder]="'proveedores.descripcion' | translate" required [(ngModel)]="nuevoItem.descripcion" name="descripcion">
     </span>
+    <span class="cell">
+          <select [(ngModel)]="nuevoItem.idfamilia" PlaceHolder="Familia" name="idfamilia">
+      <option *ngFor="let familia of familias; let i = index" [value]="familia.id">
+        {{familia.nombre}}
+      </option>
+    </select>
+    </span>
      <span class="cell">
     <select-alergenos name="alergenos" [parentAlergenos]="" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
  </span>
+
     <span class="cell medium">   
       </span>
       <span class="header-cell">
@@ -36,6 +44,7 @@
   <div class="header-row">
     <span class="header-cell">{{"proveedores.nombre" | translate}}</span>
     <span class="header-cell">{{"proveedores.descripcion" | translate}}</span>
+    <span class="header-cell">{{"proveedores.familia" | translate}}</span>
     <span class="header-cell">{{"alergenos" | translate}}</span>
     <span class="header-cell">{{"proveedores.foto" | translate}}</span>
     <span class="header-cell">
@@ -51,7 +60,14 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)">
     </span>
-
+    <span class="cell">
+     <select [(ngModel)]="item.idfamilia" PlaceHolder="Familia" name="idfamilia" (change)="itemEdited(item.id)">
+      <option *ngFor="let familia of familias; let i = index" [value]="familia.id">
+        {{familia.nombre}}
+      </option>
+    </select>
+ 
+    </span>
      <span class="cell">
     <select-alergenos name="alergenos" [parentAlergenos]="item.alergenos" (selectedAlergenosChange)="setAlergenos($event,item.id,i)"></select-alergenos>
  </span>
@@ -68,6 +84,7 @@
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
     </span>
 <!--****** FIN ********************-->
+
 
     <span class="cell">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">

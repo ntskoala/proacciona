@@ -27,7 +27,7 @@ public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
 public productos: Object[]=[];
-public medidas: string[]=['Kg.','g.','l.','ml.','bolsa','caja','sacos','palet'];
+public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
 public idBorrar;
 public url=[];
@@ -59,6 +59,8 @@ es;
       //this.setItems();
       this.getProductos();
   }
+
+
 
   photoURL(i,tipo) {
     let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
@@ -114,6 +116,7 @@ getProductos(){
     let param = this.entidad+this.field+this.proveedor.id;
     this.nuevoItem.idproveedor = this.proveedor.id;
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
+    this.nuevoItem.id = 0;
     //this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {

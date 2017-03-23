@@ -66,6 +66,7 @@
   <input type="number" md-input mdInput placeholder="cantidad traspaso" [(ngModel)]="cantidadTraspaso">
 </md-input-container>
 <button md-raised-button (click)="traspasar()">traspasar</button>
+<div *ngIf="message" class="alert"><ul>{{message}}</ul></div>
 </div>
 
 <div id="destino">

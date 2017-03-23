@@ -1,5 +1,5 @@
 <!--<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
-<p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+<p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
 
 <div class="info" style="margin-top:8px" *ngIf="selectedNode">
     <md-card>

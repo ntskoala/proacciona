@@ -38,6 +38,7 @@ public idBorrar;
 public url=[];
 public verdoc: boolean = false;
 public foto:string;
+public maxCantidad:number=0;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/';
 modal: Modal = new Modal();
@@ -102,13 +103,13 @@ getProductos(idProveedor:number){
 
 getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
   if (idProducto > 0){
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto; 
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto+"&where=cantidad_remanente>0"; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor"});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente});
              }
             }
         },
@@ -122,7 +123,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno"});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.cantidad_remanente});
              }
             }
         },
@@ -241,7 +242,13 @@ checkBorrar(idBorrar: number) {
     }
   }
 
-
+setMaxCantidad(idLote:number){
+  
+  let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==idLote);
+    this.nuevoItem.cantidad = this.entrada_productos[index_entrada_productos].cantidad;
+  this.maxCantidad = this.entrada_productos[index_entrada_productos].cantidad;
+console.log(idLote,index_entrada_productos,this.entrada_productos[index_entrada_productos].cantidad);
+}
 
 
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {MdDialog} from '@angular/material';
+import {MdSnackBar} from '@angular/material';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -45,7 +47,8 @@ public idProductoActual:number;
 public loteSelected:ProveedorLoteProducto;
 public max_cantidad:number=70;
 public contador:number;
-  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
+public message:string='';
+  constructor(private empresasService: EmpresasService, private servidor: Servidor,public dialog: MdDialog ,public snackBar: MdSnackBar) {}
 
   ngOnInit() {
       this.getAlmacenes();
@@ -367,8 +370,14 @@ cambioOrigen(){
 }
 
 controlarOrigen(){
+     if (!this.almacenOrigenSelected && !this.loteSelected){
+         this.message += '<li>No se ha seleccionado un tanque o lote de origen';
+     }
     if (isNaN(this.cantidadTraspaso) || this.cantidadTraspaso < 1){
-        alert('Cantidad tiene que ser un número mayor de cero');
+       // alert('Cantidad tiene que ser un número mayor de cero');
+       // this.dialog.open('Cantidad tiene que ser un número mayor de cero');
+        this.snackBar.open('Cantidad tiene que ser un número mayor de cero', "Cerrar",{duration: 5000});
+        this.message += '<li>Cantidad tiene que ser un número mayor de cero';
         return false;
     }
 
@@ -376,19 +385,21 @@ controlarOrigen(){
        console.log (this.cantidadTraspaso,+this.loteSelected.cantidad_remanente,typeof this.cantidadTraspaso, typeof +this.loteSelected.cantidad_remanente, +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente);
        return ( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente);
 
-    }else{
+    }else if (this.almacenOrigenSelected){
         console.log( this.cantidadTraspaso <= this.almacenOrigenSelected.estado);
         return ( +this.cantidadTraspaso <= +this.almacenOrigenSelected.estado);
     }
 }
 controlarDestino(){
-    if (this.almacenDestinoSelected){
+    if (this.almacenDestinoSelected && this.almacenDestinoSelected.id > 0){
         console.log ((this.almacenDestinoSelected.capacidad - this.almacenDestinoSelected.estado) >= this.cantidadTraspaso);
     return ((+this.almacenDestinoSelected.capacidad - +this.almacenDestinoSelected.estado) >= +this.cantidadTraspaso);
     }else{
-        alert ('No ha seleccionado Tanque destino');
+        this.message += '<li>No ha seleccionado Tanque destino';
         return false;
     }
 }
-
+cierraMessage(){
+    this.message='';
+}
 }

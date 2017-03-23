@@ -95,7 +95,7 @@ getFamilias(){
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id));
+                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia));
              }
             }
         },

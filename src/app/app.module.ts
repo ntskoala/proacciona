@@ -77,6 +77,11 @@ import { ListadoProveedoresComponent } from './components/proveedores/listado-pr
 import { ProductosProveedorComponent } from './components/proveedores/productos-proveedor.component';
 import { EntradaProductosComponent } from './components/proveedores/entrada-productos.component';
 import { FamiliasComponent } from './components/proveedores/familias-producto';
+/********     CLIENTES          */
+import { ClientesComponent } from './components/clientes/clientes.component';
+import { FichaClienteComponent } from './components/clientes/ficha-cliente.component';
+import { ListadoClientesComponent } from './components/clientes/listado-clientes.component';
+import { EntregaProductosComponent } from './components/clientes/entrega-productos.component';
 /********     PRODUCCION          */
 import { ProduccionComponent } from './components/produccion/produccion.component';
 import { ListadoOrdenesProduccionComponent } from './components/produccion/listado-ordenes-produccion.component';
@@ -167,6 +172,11 @@ import { PermisosService } from './services/permisos.service';
     ProductosProveedorComponent,
     EntradaProductosComponent,
     FamiliasComponent,
+//******CLIENTES */
+    ClientesComponent,
+    FichaClienteComponent,
+    ListadoClientesComponent,
+    EntregaProductosComponent,
 //******PRODUCCION */
     ProduccionComponent,
     ListadoOrdenesProduccionComponent,

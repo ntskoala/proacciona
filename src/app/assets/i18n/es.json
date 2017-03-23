@@ -203,7 +203,13 @@
     "lotes_activos":"Lotes activos",
     "lotes_cerrados":"Lotes finalizados",
     "ficha":"Ficha Producción",
-    "materias_primas":"Materias Primas"
+    "materias_primas":"Materias Primas",
+    "alert1":"",
+    "alert2":"",
+    "alert3":"",
+    "alert4":"",
+    "alert5":"",
+    "alert6":""
   },
   "alergenos":"alérgenos",
   "lunes":"lunes",

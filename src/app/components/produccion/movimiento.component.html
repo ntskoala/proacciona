@@ -66,7 +66,14 @@
   <input type="number" md-input mdInput placeholder="cantidad traspaso" [(ngModel)]="cantidadTraspaso">
 </md-input-container>
 <button md-raised-button (click)="traspasar()">traspasar</button>
-<div *ngIf="message" class="alert"><ul>{{message}}</ul></div>
+<div *ngIf="alerts.length >0" class="modal">
+  <div class="modal-window">
+<md-list>
+  <md-list-item *ngFor="let alert of alerts">{{alert}}</md-list-item>
+</md-list>
+<button md-raised-button (click)="cierraMessage()">{{'entendido' | translate}}</button>
+  </div>
+  </div>
 </div>
 
 <div id="destino">

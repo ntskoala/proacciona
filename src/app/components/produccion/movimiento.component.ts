@@ -47,7 +47,7 @@ public idProductoActual:number;
 public loteSelected:ProveedorLoteProducto;
 public max_cantidad:number=70;
 public contador:number;
-public message:string='';
+public alerts:string[]=[];
   constructor(private empresasService: EmpresasService, private servidor: Servidor,public dialog: MdDialog ,public snackBar: MdSnackBar) {}
 
   ngOnInit() {
@@ -371,35 +371,50 @@ cambioOrigen(){
 
 controlarOrigen(){
      if (!this.almacenOrigenSelected && !this.loteSelected){
-         this.message += '<li>No se ha seleccionado un tanque o lote de origen';
+         this.alerts.push('No se ha seleccionado un tanque o lote de origen');
      }
     if (isNaN(this.cantidadTraspaso) || this.cantidadTraspaso < 1){
        // alert('Cantidad tiene que ser un número mayor de cero');
        // this.dialog.open('Cantidad tiene que ser un número mayor de cero');
-        this.snackBar.open('Cantidad tiene que ser un número mayor de cero', "Cerrar",{duration: 5000});
-        this.message += '<li>Cantidad tiene que ser un número mayor de cero';
+       // this.snackBar.open('Cantidad tiene que ser un número mayor de cero', "Cerrar",{duration: 5000});
+        this.alerts.push('Cantidad tiene que ser un número mayor de cero');
         return false;
     }
 
     if (this.proveedor){
        console.log (this.cantidadTraspaso,+this.loteSelected.cantidad_remanente,typeof this.cantidadTraspaso, typeof +this.loteSelected.cantidad_remanente, +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente);
-       return ( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente);
+       if( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente){
+           return true;
+       }else{
+           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en origen');
+           return false;
+       }
 
     }else if (this.almacenOrigenSelected){
         console.log( this.cantidadTraspaso <= this.almacenOrigenSelected.estado);
-        return ( +this.cantidadTraspaso <= +this.almacenOrigenSelected.estado);
+        if ( +this.cantidadTraspaso <= +this.almacenOrigenSelected.estado){
+            return true;
+        }else{
+           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en origen');
+           return false;
+        }
     }
 }
 controlarDestino(){
     if (this.almacenDestinoSelected && this.almacenDestinoSelected.id > 0){
         console.log ((this.almacenDestinoSelected.capacidad - this.almacenDestinoSelected.estado) >= this.cantidadTraspaso);
-    return ((+this.almacenDestinoSelected.capacidad - +this.almacenDestinoSelected.estado) >= +this.cantidadTraspaso);
+        if((+this.almacenDestinoSelected.capacidad - +this.almacenDestinoSelected.estado) >= +this.cantidadTraspaso){
+            return true;
+        }else{
+           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en destino');
+           return false;
+        }
     }else{
-        this.message += '<li>No ha seleccionado Tanque destino';
+        this.alerts.push('No ha seleccionado Tanque destino');
         return false;
     }
 }
 cierraMessage(){
-    this.message='';
+    this.alerts=[];
 }
 }

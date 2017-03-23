@@ -4,7 +4,7 @@ import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
-import { Proveedor } from '../../models/proveedor';
+import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 
 
@@ -22,7 +22,7 @@ export class alerg{
 })
 
 export class EntregaProductosComponent implements OnInit, OnChanges{
-@Input() proveedor: Proveedor;
+@Input() cliente: Cliente;
 public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
@@ -43,8 +43,7 @@ es;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-     // this.setItems();
-      
+
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -57,30 +56,19 @@ es;
   ngOnChanges(){
     console.log("onChange");
       //this.setItems();
-      this.getProductos();
+      //this.getProductos();
   }
 
 
 
-  photoURL(i,tipo) {
-    let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
-    let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
-    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
-    this.verdoc=!this.verdoc;
-    this.foto = url
-    }else{
-      window.open(url,'_blank');
 
-    }
-
-  }
 
 
 
 
   setItems(){
      console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
@@ -96,7 +84,7 @@ es;
   }
 
 getProductos(){
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.proveedor.id; 
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.cliente.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.productos = [];
@@ -113,8 +101,8 @@ getProductos(){
 
   newItem() {
     
-    let param = this.entidad+this.field+this.proveedor.id;
-    this.nuevoItem.idproveedor = this.proveedor.id;
+    let param = this.entidad+this.field+this.cliente.id;
+    this.nuevoItem.idproveedor = this.cliente.id;
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
     this.nuevoItem.id = 0;
     //this.addnewItem = this.nuevoItem;

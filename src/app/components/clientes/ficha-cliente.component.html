@@ -2,61 +2,35 @@
 <form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
     <md-grid-list cols="3" rowHeight="65px">
         <md-grid-tile [colspan]="3">
-            <md-grid-tile-header>{{"proveedores.nombre" | translate}}
+            <md-grid-tile-header>{{"clientes.nombre" | translate}}
             </md-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.Nombre' | translate" type="text"
-                required [(ngModel)]="proveedor.nombre" name="nombre">
+                required [(ngModel)]="cliente.nombre" name="nombre">
         </md-grid-tile>
 
 
 
         <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.contacto" | translate}}
+            <md-grid-tile-header>{{"clientes.contacto" | translate}}
             </md-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
-                [(ngModel)]="proveedor.contacto" name="contacto">
+                [(ngModel)]="cliente.contacto" name="contacto">
         </md-grid-tile>
 
         <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.telf" | translate}}
+            <md-grid-tile-header>{{"clientes.telf" | translate}}
             </md-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
-                [(ngModel)]="proveedor.telf" name="telf">
+                [(ngModel)]="cliente.telf" name="telf">
         </md-grid-tile>
 
         <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.email" | translate}}
+            <md-grid-tile-header>{{"clientes.email" | translate}}
             </md-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
-                [(ngModel)]="proveedor.email" name="email">
+                [(ngModel)]="cliente.email" name="email">
         </md-grid-tile>
 
-        <md-grid-tile [colspan]="3" [style.background]="purple" [style.color]="red">
-           {{'alertas alimentarias' | translate}}
-        </md-grid-tile>
-
-
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_contacto" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
-                [(ngModel)]="proveedor.alert_contacto" name="alert_contacto">
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_telf" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
-                [(ngModel)]="proveedor.alert_telf" name="alert_telf">
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_email" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
-                [(ngModel)]="proveedor.alert_email" name="alert_email">
-        </md-grid-tile>
     </md-grid-list>
 
 

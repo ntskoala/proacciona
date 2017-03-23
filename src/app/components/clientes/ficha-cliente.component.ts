@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
-import { Proveedor } from '../../models/proveedor';
+import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
 
@@ -14,12 +14,12 @@ import { URLS } from '../../models/urls';
 })
 export class FichaClienteComponent implements OnInit {
 //*** STANDARD VAR
-@Input() proveedor: Proveedor;
-@Output() itemSeleccionado: EventEmitter<Proveedor> = new EventEmitter<Proveedor>();
+@Input() cliente: Cliente;
+@Output() itemSeleccionado: EventEmitter<Cliente> = new EventEmitter<Cliente>();
 public itemActivo: number;
-public items: Proveedor[]=[];//Array de Items para el desplegable;
-public  nuevoItem: Proveedor = new Proveedor('',0);
-public item1:Proveedor = new Proveedor('Selecciona',0);
+public items: Cliente[]=[];//Array de Items para el desplegable;
+public  nuevoItem: Cliente = new Cliente('',0);
+public item1:Cliente = new Cliente('Selecciona',0);
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
 public  nuevoNombre:string;
@@ -33,12 +33,12 @@ public  nuevoNombre:string;
   }
 cambiarTab(){}
 
-updateItem(proveedor: Proveedor){
- proveedor.id =this.proveedor.id;
- proveedor.idEmpresa = this.empresasService.seleccionada;
-let param = "&entidad=proveedores";
-let parametros = '?id=' + proveedor.id+param;     
-    this.servidor.putObject(URLS.STD_ITEM,parametros, proveedor).subscribe(
+updateItem(cliente: Cliente){
+ cliente.id =this.cliente.id;
+ cliente.idEmpresa = this.empresasService.seleccionada;
+let param = "&entidad=clientes";
+let parametros = '?id=' + cliente.id+param;     
+    this.servidor.putObject(URLS.STD_ITEM,parametros, cliente).subscribe(
       response => {
         if (response.success) {
           console.log("updated");

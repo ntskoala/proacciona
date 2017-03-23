@@ -17,7 +17,7 @@ export class ListadoClientesComponent implements OnInit {
 @Output() itemSeleccionado: EventEmitter<Cliente> = new EventEmitter<Cliente>();
 public itemActivo: number;
 public items: Cliente[]=[];//Array de Items para el desplegable;
-public  nuevoItem: Cliente = new Cliente('',0);
+public  nuevoItem: Cliente;// = new Cliente('',0);
 public item1:Cliente = new Cliente('Selecciona',0);
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
@@ -58,6 +58,8 @@ seleccionarItem(valor: number){
 
 crearItem(cliente: Cliente){
 cliente.idEmpresa = this.empresasService.seleccionada;
+cliente.nombre = this.nuevoNombre;
+
 let param = "&entidad=clientes";
     this.servidor.postObject(URLS.STD_ITEM, cliente,param).subscribe(
       response => {
@@ -110,7 +112,12 @@ eliminarItem(){
 }
 
 modificarItem(){
-this.modificaItem = !this.modificaItem;
+(this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
+
 }
 
+addItem(){
+  this.modificaItem=false;
+  this.nuevoItem = new Cliente('',0);
+}
 }

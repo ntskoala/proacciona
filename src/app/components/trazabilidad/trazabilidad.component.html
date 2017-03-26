@@ -1,10 +1,17 @@
 <!--<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
+<div class="arbol">
+    <md-card>
+                <md-card-title>
+            {{'Arbol' | translate}}
+    <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
+        </md-card-title>
 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-
+    </md-card>
+</div>
 <div class="info" style="margin-top:8px" *ngIf="selectedNode">
     <md-card>
         <md-card-title>
-            {{ selectedNode.label }}
+            {{'ficha' | translate}} {{ selectedNode.label }}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </md-card-title>
         

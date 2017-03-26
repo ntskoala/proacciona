@@ -14,18 +14,14 @@
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
-    <select class="medium" [(ngModel)]="nuevoItem.idproductopropio" name="idproductopropio" (change)="getLotesProducto($event.target.value)">
-      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
-        {{prod.nombre}}
+    <select class="medium" [(ngModel)]="nuevoItem.idcliente" name="idcliente">
+      <option *ngFor="let cliente of clientes; let i = index" [value]="cliente.id">
+        {{cliente.nombre}}
       </option>
     </select>
     </span>
     <span class="cell">
-    <select class="medium" [(ngModel)]="nuevoItem.idordenproduccion" name="idordenproduccion" (change)="setCaducidad($event.target.value)">
-      <option *ngFor="let lote of ordenes; let i = index" [value]="lote.id">
-        {{lote.numlote}}
-      </option>
-    </select>
+    <input type="text" disabled [(ngModel)]="nuevoItem.numlote" name="numlote">
     </span> 
     <span class="cell">
       <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
@@ -56,7 +52,7 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">{{"proveedores.producto" | translate}}</span>
+    <span class="header-cell">{{"proveedores.cliente" | translate}}</span>
     <span class="header-cell medium">{{"proveedores.numlote" | translate}}</span>
     <span class="header-cell">{{"proveedores.fecha" | translate}}</span>
     <span class="header-cell">{{"proveedores.fecha_caducidad" | translate}}</span>
@@ -68,18 +64,16 @@
       </span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
-
   <div class="divrow"  *ngFor="let item of items; let i = index">
   <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
     <input type="hidden" [(ngModel)]="item.id" name="id">
     <span class="cell">
-    <select class="medium" [(ngModel)]="item.idproductopropio" name="idproductopropio">
-      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
-        {{prod.nombre}}
+    <select class="smallselect" [(ngModel)]="item.idcliente" name="idcliente">
+      <option *ngFor="let cliente of clientes; let i = index" [value]="cliente.id">
+        {{cliente.nombre}}
       </option>
     </select>
     </span>
-
     <span class="cell medium">
       <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="numlote" (keyup)="itemEdited(item.id)">
     </span>
@@ -89,7 +83,6 @@
     <span class="cell">
       <p-calendar placeholder="fecha_caducidad" [(ngModel)]="item.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
     </span>
-
     <span class="cell medium">
       <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad" name="cantidad" (keyup)="itemEdited(item.id)">
     </span>
@@ -106,6 +99,16 @@
  </span>
 
 
+<!--*****  subir/ver FOTO  *********-->
+    <!--<span class="cell"> 
+      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!item.doc" md-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
+    </span>-->
+<!--****** FIN ********************-->
 
     <span class="cell">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
@@ -123,8 +126,6 @@
  <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol"></protocolo>
   </div>-->
  </div>
-
-
 </div>
 
 

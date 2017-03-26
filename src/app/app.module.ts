@@ -88,6 +88,9 @@ import { ListadoOrdenesProduccionComponent } from './components/produccion/lista
 import { FichaProduccionComponent } from './components/produccion/ficha-produccion.component';
 import { MateriasPrimasComponent } from './components/produccion/materias-primas.component';
 import { MovimientoComponent } from './components/produccion/movimiento.component';
+import { ProductosPropiosComponent } from './components/produccion/productos-propios.component';
+import { DistribucionComponent } from './components/produccion/distribucion.component';
+import { AlmacenesComponent } from './components/produccion/almacenes.component';
 
 import { TrazabilidadComponent } from './components/trazabilidad/trazabilidad.component';
 import { AlergenosComponent } from './components/alergenos/alergenos.component';
@@ -183,6 +186,9 @@ import { PermisosService } from './services/permisos.service';
     FichaProduccionComponent,
     MateriasPrimasComponent,
     MovimientoComponent,
+    ProductosPropiosComponent,
+    DistribucionComponent,  
+    AlmacenesComponent,
 
     TrazabilidadComponent,
     AlergenosComponent,

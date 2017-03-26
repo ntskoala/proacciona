@@ -4,7 +4,10 @@ import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
-import { Proveedor } from '../../models/proveedor';
+import { ProduccionOrden } from '../../models/produccionorden';
+import { ProductoPropio } from '../../models/productopropio';
+import { Distribucion } from '../../models/distribucion';
+import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 
 
@@ -16,17 +19,19 @@ export class alerg{
 }
 
 @Component({
-  selector: 'entrada-productos',
-  templateUrl: './entrada-productos.component.html',
-  styleUrls:['proveedores.component.css']
+  selector: 'distribucion',
+  templateUrl: './distribucion.component.html',
+  styleUrls:['produccion.css']
 })
 
-export class EntradaProductosComponent implements OnInit, OnChanges{
-@Input() proveedor: Proveedor;
-public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+export class DistribucionComponent implements OnInit, OnChanges{
+@Input() orden: ProduccionOrden;
+//@Input() cliente: Cliente;
+public nuevoItem: Distribucion = new Distribucion(0,0,0,0,0,'',new Date(),new Date(),'',0,'','');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
-public items: ProveedorLoteProducto[];
-public productos: Object[]=[];
+public items: Distribucion[];
+public productos: ProductoPropio[]=[];
+public clientes: Cliente[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
 public idBorrar;
@@ -34,17 +39,18 @@ public url=[];
 public verdoc: boolean = false;
 public foto:string;
 
-public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/';
+public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/clientes_distribucion/';
 modal: Modal = new Modal();
-entidad:string="&entidad=proveedores_entradas_producto";
-field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
+entidad:string="&entidad=clientes_distribucion";
+field:string="&field=idordenproduccion&idItem=";//campo de relación con tabla padre
 es;
 
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
-     // this.setItems();
-      
+      this.getClientes();
+      this.getProductos();
+      this.setItems();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -57,36 +63,23 @@ es;
   ngOnChanges(){
     console.log("onChange");
       //this.setItems();
-      this.getProductos();
+      this.nuevoItem.numlote = this.orden.numlote;
+      if (this.orden.fecha_caducidad.toString() != 'Invalid Date') this.nuevoItem.fecha_caducidad = this.orden.fecha_caducidad;
   }
 
-
-
-  photoURL(i,tipo) {
-    let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
-    let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
-    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
-    this.verdoc=!this.verdoc;
-    this.foto = url
-    }else{
-      window.open(url,'_blank');
-
-    }
-
-  }
 
 
 
 
   setItems(){
      console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.orden.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
+                  this.items.push(new Distribucion(element.id,element.idempresa,element.idcliente,element.idproductopropio,element.idordenProduccion,element.numlote,new Date(element.fecha),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.alergenos));
              }
             }
         },
@@ -96,13 +89,34 @@ es;
   }
 
 getProductos(){
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.proveedor.id; 
-        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=productos"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.productos.push({"id":element.id,"nombre":element.nombre});
+                  this.productos.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa));
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{this.getProd(); }
+        ); 
+}
+getProd(){
+  if (this.orden.idproductopropio){
+  let i= this.productos.findIndex((prod)=> prod.id==this.orden.idproductopropio);
+  this.nuevoItem.alergenos = this.productos[i].alergenos;
+  }
+}
+getClientes(){
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.clientes = [];
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                  this.clientes.push(new Cliente(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.id));
              }
             }
         },
@@ -110,27 +124,28 @@ getProductos(){
         ()=>{this.setItems()}
         ); 
 }
-
   newItem() {
     
-    let param = this.entidad+this.field+this.proveedor.id;
-    this.nuevoItem.idproveedor = this.proveedor.id;
+    let param = this.entidad+this.field+this.orden.id;
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
-    this.nuevoItem.cantidad_remanente = this.nuevoItem.cantidad_inicial;
+    this.nuevoItem.idordenproduccion = this.orden.id;
+    this.nuevoItem.idproductopropio = this.orden.idproductopropio;
     this.nuevoItem.id = 0;
+     this.orden.remanente -= this.nuevoItem.cantidad;
     //this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
         if (response.success) {
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
+          this.saveRemanente();
         }
     },
     error =>console.log(error),
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+   this.nuevoItem =  new Distribucion(0,0,0,0,0,'',new Date(),new Date(),'',0,'','');
   }
 
 
@@ -139,6 +154,7 @@ getProductos(){
     this.guardar[idItem] = true;
     //console.log (fecha.toString());
   }
+
  saveItem(item: ProveedorLoteProducto,i: number) {
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
@@ -147,16 +163,24 @@ getProductos(){
         if (response.success) {
         }
     });
-
   }
 
+saveRemanente(){
+  let item: ProduccionOrden = this.orden;
+    let parametros = '?id=' + item.id+"&entidad=produccion_orden";    
+    this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
+      response => {
+        if (response.success) {
+        }
+    });
+}
 
 checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'proveedores.borrarEntradaProductoT';
-    this.modal.subtitulo = 'proveedores.borrarEntradaProductoST';
+    this.modal.titulo = 'proveedores.borrarEntregaProductoT';
+    this.modal.subtitulo = 'proveedores.borrarEntregaProductoST';
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
@@ -175,22 +199,18 @@ checkBorrar(idBorrar: number) {
     }
   }
 
-  uploadImg(event, idItem,i,field) {
-    console.log(event)
-    var target = event.target || event.srcElement; //if target isn't there then take srcElement
-    let files = target.files;
-    //let files = event.srcElement.files;
-    let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'proveedores_entradas_producto',idItem, this.empresasService.seleccionada.toString(),field).subscribe(
-      response => {
-        console.log('doc subido correctamente',files[0].name);
-        this.items[i].doc = files[0].name;
-        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/' +  idItem +'_'+files[0].name;
-        // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
-        // activa.logo = '1';
-      }
-    )
+
+
+setAlergenos(alergens: string, idItem?: number, i?: number){
+  console.log(alergens,idItem,i);
+  if (!idItem){
+  this.nuevoItem.alergenos = alergens;
+  }else{
+    this.itemEdited(idItem);
+    this.items[i].alergenos = alergens;
+    console.log(this.items[i]);
   }
+}
 
 
 

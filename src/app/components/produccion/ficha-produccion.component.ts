@@ -7,6 +7,7 @@ import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
+import { ProductoPropio } from '../../models/productopropio';
 
 @Component({
   selector: 'ficha-produccion',
@@ -25,10 +26,12 @@ export class FichaProduccionComponent implements OnInit {
 private es:any;
 private trazabilidad: boolean;
 private almacenesDestino: Almacen[];
+public productos: ProductoPropio[]=[];
 
   constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
 
   ngOnInit() {
+    this.getProductos();
     this.getAlmacenes();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -76,6 +79,23 @@ getAlmacenes() {
             }
         });
    }
+
+getProductos(){
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=productos"; 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.productos = [];
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                  this.productos.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa));
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{}
+        ); 
+}
+
 seleccionarDestino(valor){
   this.orden.idalmacen = this.almacenesDestino[valor].id;
 }

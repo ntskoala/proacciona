@@ -13,6 +13,9 @@ export class ProduccionComponent implements OnInit {
 public orden: ProduccionOrden;
 public calendario: boolean = false;
 public ordenes: ProduccionOrden[];
+public traspaso: boolean;
+public productos: boolean;
+public almacenes: boolean;
 
   constructor(private empresasService: EmpresasService) {}
 
@@ -24,5 +27,13 @@ seleccionOrden($event){
   console.log('##',$event);
   this.orden = $event;
 }
-
+traspasar(){
+this.traspaso = !this.traspaso;
+}
+editProductos(){
+this.productos = !this.productos;
+}
+editAlmacenes(){
+this.almacenes = !this.almacenes;
+}
 }

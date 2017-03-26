@@ -565,3 +565,11 @@ md-grid-tile-header{
 .cabeceraItems button{
   margin-left:10px;
 }
+.cabecerabuttons{
+  display:block;
+  position: relative;
+}
+.left{
+  float:left;
+  margin-left: 30px;
+}

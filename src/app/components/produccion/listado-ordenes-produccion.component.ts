@@ -17,7 +17,7 @@ export class ListadoOrdenesProduccionComponent implements OnInit {
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 public itemActivo: number;
 public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
-public  nuevoItem: ProduccionOrden = new ProduccionOrden(0,0,'',new Date(),new Date());
+public  nuevoItem: ProduccionOrden;
 public item1:ProduccionOrden = new ProduccionOrden(0,0,'Selecciona',new Date(),new Date());
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
@@ -46,7 +46,7 @@ loadItems(emp: Empresa | string, estat) {
               for (let element of response.data) {
                 this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.nombre,element.familia,element.estado));
               }
-             // this.listaZonas.emit(this.limpiezas);
+             console.log(this.items);
             }
         });
    }
@@ -57,8 +57,9 @@ seleccionarItem(valor: number){
 }
 
 crearItem(){
+this.nuevoItem.numlote = this.nuevoNombre;
 this.nuevoItem.idempresa = this.empresasService.seleccionada;
-this.nuevoItem.nombre = this.nuevoItem.numlote;
+//this.nuevoItem.nombre = this.nuevoItem.numlote;
 this.nuevoItem.estado = 'abierto';
 let param = "&entidad=produccion_orden";
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
@@ -66,7 +67,7 @@ let param = "&entidad=produccion_orden";
         if (response.success) {
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
-          this.nuevoItem = new ProduccionOrden(0,0,'',new Date(),new Date());
+          this.nuevoItem = null;
         }
     });
 }
@@ -113,13 +114,22 @@ eliminarItem(){
 }
 
 modificarItem(){
-this.modificaItem = !this.modificaItem;
+(this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
+
 }
 
-changeEstado(){
-  console.log('cambiando');
-  this.estado == "abierto"? this.estado="cerrado":this.estado="abierto";
-  this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
+addItem(){
+  this.modificaItem=false;
+  this.nuevoItem= new ProduccionOrden(0,0,'',new Date(),new Date());
 }
 
+// changeEstado(){
+//   console.log('cambiando');
+//   this.estado == "abierto"? this.estado="cerrado":this.estado="abierto";
+//   this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
+// }
+changeEstado(estado: string){
+  console.log('cambio estado',estado)
+  this.loadItems(this.empresasService.seleccionada.toString(), estado);
+}
 }

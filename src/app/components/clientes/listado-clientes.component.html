@@ -41,7 +41,8 @@
 <div class="modal" *ngIf="modificaItem || nuevoItem">
   <div class="modal-window modificar">
   
-          <h2 class="center">{{ 'modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="modificaItem">{{ 'clientes.modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="nuevoItem">{{ 'clientes.crear' | translate }}</h2>
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
           <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">

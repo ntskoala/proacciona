@@ -10,9 +10,11 @@ export class ProduccionOrden {
     public cantidad?: number,
     public remanente?: number,
     public tipo_medida?: string,
+    public idproductopropio?: number,
     public nombre?: string,
     public familia?: string,
     public estado?: string,
-    public idalmacen?: number
+    public idalmacen?: number,
+    public idcliente?: number
 ){}
 }

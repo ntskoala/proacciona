@@ -1,14 +1,19 @@
   <md-card>
     <md-card-title>
-      <md-toolbar color="accent">{{'produccion.areaproduccion' | translate}}</md-toolbar>
+      <md-toolbar color="accent">{{'produccion.areaproduccion' | translate}}
+
+   <listado-ordenes-produccion (itemSeleccionado)="seleccionOrden($event)"></listado-ordenes-produccion>
+  
+      </md-toolbar>
     </md-card-title>
  <md-card-subtitle>
-   <div class="w80">
-   <listado-ordenes-produccion (itemSeleccionado)="seleccionOrden($event)"></listado-ordenes-produccion>
-   </div>
-   <div class="w20">
-       
-   </div>
+
+   <div class="cabecerabuttons">
+ <button md-raised-button (click)="traspasar()" *ngIf="empresasService.seleccionada == 77">{{'produccion.traspasos' | translate}}</button>
+  <button md-raised-button (click)="editProductos()">{{'produccion.productos' | translate}}</button>
+  <button md-raised-button (click)="editAlmacenes()">{{'produccion.almacenes' | translate}}</button>
+   </div>  
+
 
  </md-card-subtitle>
 
@@ -16,13 +21,15 @@
 
  <div class="contenido">
    <div class="space"></div>
-   <movimiento-produccion *ngIf="empresasService.seleccionada == 77"></movimiento-produccion>
-   <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
-   <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>-->
+ <movimiento-produccion *ngIf="traspaso"></movimiento-produccion>
+   <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
+   <productos-propios *ngIf="productos"></productos-propios>
+   <almacenes *ngIf="almacenes"></almacenes>
    <h2 class="center" *ngIf="orden && orden.id >0">{{orden.nombre}}</h2>
 <md-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
   <md-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></md-tab>
 <md-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></md-tab>
+<md-tab label="{{'produccion.distribucion' | translate}}"><span class="space"></span><distribucion class="tabs" [orden]="orden" *ngIf="orden"></distribucion></md-tab>
 </md-tab-group>
  </div>
   </md-card>

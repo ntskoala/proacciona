@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {MdDialog} from '@angular/material';
-import {MdSnackBar} from '@angular/material';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { ProduccionDetalle } from '../../models/producciondetalle';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
+import { Cliente } from '../../models/clientes';
 import { URLS } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
 
@@ -40,6 +41,8 @@ private idAlmacenDestino: number;
 private cantidadTraspaso: number;
 public productos: any[]=[];
 public proveedores: any[]=[];
+public clientes: Cliente[]=[];
+public clienteSelected:Cliente;
 public entrada_productos: any[]=[];
 public proveedor:boolean=false;
 public idProveedorActual:number;
@@ -48,11 +51,12 @@ public loteSelected:ProveedorLoteProducto;
 public max_cantidad:number=70;
 public contador:number;
 public alerts:string[]=[];
-  constructor(private empresasService: EmpresasService, private servidor: Servidor,public dialog: MdDialog ,public snackBar: MdSnackBar) {}
+  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
 
   ngOnInit() {
       this.getAlmacenes();
       this.getProveedores();
+      this.getClientes();
   //  this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
   }
 
@@ -96,6 +100,23 @@ getAlmacenes() {
             }
         });
    }
+
+   getClientes() {
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes";
+
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.clientes = [];
+            this.clientes.push(new Cliente("Tanque",0,'','','',0));
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                this.clientes.push(new Cliente(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.id));
+              }
+             // this.listaZonas.emit(this.limpiezas);
+            }
+        });
+   }
+
 getProveedores(){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores"; 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
@@ -162,6 +183,8 @@ seleccionarOrigen(origen: string,valor: number){
   this.almacenOrigenSelected = this.almacenesOrigen[valor];
         if (this.almacenOrigenSelected.idproduccionordenactual > 0){
         this.getOrden(this.almacenOrigenSelected.idproduccionordenactual,"origen")
+        }else{
+            this.ordenOrigen = null;
         }
     }else{
         let indiceProducto = this.productos.findIndex((prod) => prod.id == this.idProductoActual);
@@ -185,6 +208,8 @@ seleccionarDestino(valor:number){
     if (this.almacenDestinoSelected.idproduccionordenactual > 0){
     this.getOrden(this.almacenDestinoSelected.idproduccionordenactual,"destino");
     console.log(this.ordenDestino)
+    }else{
+        this.ordenDestino = null;
     }
     
 }
@@ -215,13 +240,28 @@ traspasar(){
 //si almacenOrigenSelected --> Orden del almacenOrigenSelected
 setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
     this.contador= 0;
+    let contadorF=0;
+    if (this.almacenDestinoSelected){
+        this.nuevaOrden.cantidad=this.almacenDestinoSelected.estado + this.cantidadTraspaso;
+        this.nuevaOrden.idalmacen = this.almacenDestinoSelected.id;
+        if (this.almacenDestinoSelected.level > 1){
+            if (this.almacenOrigenSelected.level<=1){
+                this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
+            }else{
+                this.nuevaOrden.fecha_caducidad = this.ordenOrigen.fecha_caducidad;
+            }
+
+        }
+    }else{
+        this.nuevaOrden.cantidad= this.cantidadTraspaso;
+        this.nuevaOrden.idalmacen = 0;
+        this.nuevaOrden.idcliente = this.clienteSelected.id;
+    }
 this.nuevaOrden.idempresa = this.empresasService.seleccionada;
 let fecha= new Date();
 this.nuevaOrden.fecha_inicio = fecha;
 this.nuevaOrden.fecha_fin = fecha;
-this.nuevaOrden.cantidad = this.almacenDestinoSelected.estado + this.cantidadTraspaso;
 this.nuevaOrden.responsable = this.empresasService.userName;
-this.nuevaOrden.idalmacen = this.almacenDestinoSelected.id;
 this.nuevaOrden.remanente = this.nuevaOrden.cantidad;
 this.nuevaOrden.estado = 'cerrado';
 
@@ -232,13 +272,22 @@ this.nuevaOrden.estado = 'cerrado';
           response => {
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
+                  if (element.numlote.substr(0,1)=='F'){
+                      contadorF++;
+                  }else{
                   this.contador++;
+                  }
                 }
             }
         },
         (error)=>console.log(error),
         ()=>{
-this.nuevaOrden.numlote = fecha.getDate() + "/"+ fecha.getMonth()+1+"/"+fecha.getFullYear()+"-"+this.contador;
+            if (this.clienteSelected){
+            this.nuevaOrden.numlote = "F"+fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+contadorF;
+            }else{
+            this.nuevaOrden.numlote = fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+this.contador;
+            }
+
 this.nuevaOrden.nombre = this.nuevaOrden.numlote;
 let param = "&entidad=produccion_orden";
     this.servidor.postObject(URLS.STD_ITEM, this.nuevaOrden,param).subscribe(
@@ -274,7 +323,8 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     }
     console.log('origen');
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Origen,'origen');
-    console.log(+this.almacenDestinoSelected.idproduccionordenactual,typeof +this.almacenDestinoSelected.idproduccionordenactual,+this.almacenDestinoSelected.idproduccionordenactual > 0)
+    
+    if (this.almacenDestinoSelected){
     if (+this.almacenDestinoSelected.idproduccionordenactual > 0){
         console.log('destino',+this.almacenDestinoSelected.idproduccionordenactual);
     this.nuevoDetalleOrden_Destino.id =0;
@@ -285,7 +335,7 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Destino.idmateriaprima = 0;
     this.nuevoDetalleOrden_Destino.cantidad = this.almacenDestinoSelected.estado;
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Destino,'destino');
-    }
+    }}
  this.prepareAlmacenes(idOrden);
 }
 setNewOrdenProduccionDetalle(idOrden:number, detalleOrden: ProduccionDetalle,fuente:string){
@@ -311,15 +361,19 @@ setNewOrdenProduccionDetalle(idOrden:number, detalleOrden: ProduccionDetalle,fue
 
 
 prepareAlmacenes(newOrden: number){
+    if (!this.clienteSelected){
     this.almacenDestinoSelected.estado = +this.almacenDestinoSelected.estado + +this.cantidadTraspaso;
     this.almacenDestinoSelected.idproduccionordenactual = newOrden;
     this.setAlmacen(this.almacenDestinoSelected);
+    this.getOrden(newOrden,"destino");
+    }
     if(this.almacenOrigenSelected){
     this.almacenOrigenSelected.estado = +this.almacenOrigenSelected.estado - +this.cantidadTraspaso;
     if (this.almacenOrigenSelected.estado == 0){
         this.almacenOrigenSelected.idproduccionordenactual = 0;
     }
     this.setAlmacen(this.almacenOrigenSelected);
+    this.ordenOrigen = null;
     }else{ 
         //Origen = entrada Proveedor, actualizamos md-card desde this.loteSelected
         this.loteSelected.cantidad_remanente = this.loteSelected.cantidad_remanente -this.cantidadTraspaso;
@@ -401,6 +455,10 @@ controlarOrigen(){
     }
 }
 controlarDestino(){
+    if (this.clienteSelected){
+        return true;
+    }
+        else{
     if (this.almacenDestinoSelected && this.almacenDestinoSelected.id > 0){
         console.log ((this.almacenDestinoSelected.capacidad - this.almacenDestinoSelected.estado) >= this.cantidadTraspaso);
         if((+this.almacenDestinoSelected.capacidad - +this.almacenDestinoSelected.estado) >= +this.cantidadTraspaso){
@@ -413,8 +471,18 @@ controlarDestino(){
         this.alerts.push('No ha seleccionado Tanque destino');
         return false;
     }
+        }
 }
 cierraMessage(){
     this.alerts=[];
 }
+
+setCliente(id:number){
+//si es 0 es Tanque, si es mayor es el id de cliente seleccionado
+if (id>0){
+    let i = this.clientes.findIndex((cli)=>cli.id==id);
+    this.clienteSelected = this.clientes[i];
+}
+}
+
 }

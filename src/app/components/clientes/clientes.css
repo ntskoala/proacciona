@@ -1,0 +1,13 @@
+.medium{
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.contenido{
+    min-height: 450px;
+}
+
+.tabs{
+  min-height: 430px;
+    display: flex;
+}

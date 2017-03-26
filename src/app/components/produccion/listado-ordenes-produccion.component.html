@@ -1,18 +1,36 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div class="selector">
-  <md-slide-toggle (change)="changeEstado()">{{'produccion.lotes_activos' | translate}}</md-slide-toggle><br>
+  
+<div class="cabeceraItems left">
+  <!--{{'clientes.clientes' | translate}}<br>-->
+
+  <!--<md-slide-toggle (change)="changeEstado()">{{'produccion.lotes_cerrados' | translate}}</md-slide-toggle>-->
   <form>
-    <select (change)="seleccionarItem($event.target.value)">
+    <select class="medium" (change)="changeEstado($event.target.value)">
+      <option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</option>
+      <option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</option>
+    </select>
+  </form>
+  <form>
+    <select class="medium" (change)="seleccionarItem($event.target.value)">
       <option *ngFor="let item of items; let i = index" [value]="i">
         {{item.numlote}}
       </option>
     </select>
   </form>
-<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
-<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>
+<!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
+<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
+        <button md-mini-fab color="primary" (click)="addItem()" type="button">
+          <span class="material-icons">add</span>
+        </button>
+        <button md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
+          <span class="material-icons">edit</span>
+        </button>
+        <button md-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
+          <span class="material-icons">delete_forever</span>
+        </button>
 </div>
-<div class="nueva">
-<!-- Nueva maquina -->
+<!--<div class="nueva">
+
 <div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="nueva-maquina">
   <h2>{{'produccion.nuevo_lote' | translate}}</h2>
   <div class="table">
@@ -28,15 +46,19 @@
     </form>
   </div>
 </div>
-</div>
-<div class="modal" *ngIf="modificaItem">
+</div>-->
+<div class="modal" *ngIf="modificaItem || nuevoItem">
   <div class="modal-window modificar">
   
-          <h2 class="center">{{ 'modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="modificaItem">{{ 'produccion.modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="nuevoItem">{{ 'produccion.crear' | translate }}</h2>
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()">
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
           <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
+          <span class="material-icons">add</span>
         </button>
           <button md-mini-fab color="accent" (click)="modificarItem()">
           <span class="material-icons">close</span>

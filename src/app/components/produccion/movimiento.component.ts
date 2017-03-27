@@ -10,6 +10,7 @@ import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Cliente } from '../../models/clientes';
 import { URLS } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
+import { Distribucion } from '../../models/distribucion';
 
 @Component({
   selector: 'movimiento-produccion',
@@ -43,6 +44,7 @@ public productos: any[]=[];
 public proveedores: any[]=[];
 public clientes: Cliente[]=[];
 public clienteSelected:Cliente;
+public distribucion:Distribucion;
 public entrada_productos: any[]=[];
 public proveedor:boolean=false;
 public idProveedorActual:number;
@@ -284,6 +286,9 @@ this.nuevaOrden.estado = 'cerrado';
         ()=>{
             if (this.clienteSelected){
             this.nuevaOrden.numlote = "F"+fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+contadorF;
+            this.nuevaOrden.fecha_caducidad = this.ordenOrigen.fecha_caducidad;
+              this.distribucion = new Distribucion(0,this.empresasService.seleccionada,this.clienteSelected.id,0,0,this.nuevaOrden.numlote,new Date(),this.nuevaOrden.fecha_caducidad,this.empresasService.userName,this.nuevaOrden.cantidad,'L','alergenos');
+//            this.setNewClienteDistribucion(this.distribucion);
             }else{
             this.nuevaOrden.numlote = fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+this.contador;
             }
@@ -366,6 +371,11 @@ prepareAlmacenes(newOrden: number){
     this.almacenDestinoSelected.idproduccionordenactual = newOrden;
     this.setAlmacen(this.almacenDestinoSelected);
     this.getOrden(newOrden,"destino");
+    }else{
+        this.distribucion.idordenproduccion = newOrden;
+//        this.distribucion.idproductopropio =
+        this.setNewClienteDistribucion(this.distribucion);
+        this.getOrden(newOrden,"destino");
     }
     if(this.almacenOrigenSelected){
     this.almacenOrigenSelected.estado = +this.almacenOrigenSelected.estado - +this.cantidadTraspaso;
@@ -412,6 +422,19 @@ setRemanente(detalleProduccion: ProduccionDetalle){
   }else{
 
   }
+}
+
+setNewClienteDistribucion(distribucion: Distribucion ){
+
+    let param = "&entidad=clientes_distribucion";
+    this.servidor.postObject(URLS.STD_ITEM, distribucion,param).subscribe(
+      response => {
+        if (response.success) {
+        }
+    },
+    error =>console.log(error),
+    () =>{}   
+    );
 }
 
 cambioOrigen(){
@@ -482,6 +505,7 @@ setCliente(id:number){
 if (id>0){
     let i = this.clientes.findIndex((cli)=>cli.id==id);
     this.clienteSelected = this.clientes[i];
+    this.almacenDestinoSelected = null;
 }
 }
 

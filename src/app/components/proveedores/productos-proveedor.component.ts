@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -24,6 +24,7 @@ export class alerg{
 
 export class ProductosProveedorComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
+@Output() nuevoProducto: EventEmitter<boolean> = new EventEmitter<boolean>();
 public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);
 public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);;
 public items: ProveedorProducto[];
@@ -125,6 +126,7 @@ getFamilias(){
     );
 
    this.nuevoItem = new ProveedorProducto('','','','',0,0);
+   this.nuevoProducto.emit(true);
   }
 
 
@@ -141,6 +143,7 @@ getFamilias(){
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          this.nuevoProducto.emit(true);
         }
     });
 
@@ -166,6 +169,7 @@ checkBorrar(idBorrar: number) {
             let controlBorrar = this.items.find(prod => prod.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.nuevoProducto.emit(true);
           }
       });
     }

@@ -112,7 +112,7 @@ getProductos(){
             }
         },
         error=>console.log(error),
-        ()=>{//this.setItems()
+        ()=>{this.setItems()
           }
         ); 
 }

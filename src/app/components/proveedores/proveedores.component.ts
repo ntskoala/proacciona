@@ -14,6 +14,7 @@ public proveedor: Proveedor;
 public calendario: boolean = false;
 public proveedores: Proveedor[];
 public familias:boolean = false;
+public cambioProds:boolean;
   constructor(private empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -26,7 +27,9 @@ seleccionProveedor($event){
   this.proveedor = $event;
 }
 
-
+cambioEnProductos(eventFired:boolean){
+this.cambioProds = !this.cambioProds;
+}
 
 
 }

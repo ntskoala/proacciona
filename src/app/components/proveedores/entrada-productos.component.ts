@@ -23,6 +23,7 @@ export class alerg{
 
 export class EntradaProductosComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
+@Input() cambioProductos: boolean;
 public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];

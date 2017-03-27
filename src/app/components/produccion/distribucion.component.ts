@@ -62,7 +62,7 @@ es;
   }
   ngOnChanges(){
     console.log("onChange");
-      //this.setItems();
+      this.setItems();
       this.nuevoItem.numlote = this.orden.numlote;
       if (this.orden.fecha_caducidad.toString() != 'Invalid Date') this.nuevoItem.fecha_caducidad = this.orden.fecha_caducidad;
   }

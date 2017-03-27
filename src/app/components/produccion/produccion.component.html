@@ -25,7 +25,7 @@
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <productos-propios *ngIf="productos"></productos-propios>
    <almacenes *ngIf="almacenes"></almacenes>
-   <h2 class="center" *ngIf="orden && orden.id >0">{{orden.nombre}}</h2>
+   <h2 class="center" *ngIf="orden && orden.id >0">{{orden.numlote}}</h2>
 <md-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
   <md-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></md-tab>
 <md-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></md-tab>

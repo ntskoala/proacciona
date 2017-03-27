@@ -35,7 +35,7 @@ margin-top: 20px;
 .campo{
   background-color: #fff9c4;
   border: 1px solid #fbc02d;
-  margin-top: 28px;
+  /*margin-top: 28px;*/
 }
 .fullsize{
     width: calc(100% - 0px);
@@ -45,6 +45,13 @@ margin-top: 20px;
 md-grid-tile-header{
     height: 25px;
     color: #000;
+    z-index:2;
+}
+md-grid-tile{
+    z-index:1;
+}
+md-grid-list{
+    z-index: 1;
 }
 
 #doc{

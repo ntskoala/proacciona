@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef } from '@angular/core';
 import {Tree,TreeNode } from 'primeng/primeng';
-
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -9,8 +8,11 @@ import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { ProduccionDetalle } from '../../models/producciondetalle';
+import { Almacen } from '../../models/almacenes';
+import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 
+declare let jsPDF;
 
 export class alerg{
   constructor(
@@ -27,9 +29,10 @@ export class alerg{
 
 export class TrazabilidadComponent implements OnInit, OnChanges{
 @ViewChild('expandingTree')
+@ViewChild('toPDF') el: ElementRef;
 expandingTree: Tree;
 tree: TreeNode[];
-msgs: any[];
+msgs: any[]=[];
 message:string;
 selectedNode: TreeNode;
 selectedNodes: TreeNode[];
@@ -40,6 +43,8 @@ public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'
 public items: ProduccionDetalle[];
 public productos: any[]=[];
 public proveedores: any[]=[];
+public almacenes: Almacen[];
+public clientes: Cliente[];
 public entrada_productos: any[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
@@ -57,6 +62,8 @@ es;
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
 
   ngOnInit() {
+      this.getAlmacenes();
+      this.getClientes();
      // this.getProveedores();
 
     // this.setItems();
@@ -73,8 +80,37 @@ es;
 
 
 
+getAlmacenes() {
+    
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=almacenes";
 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            //this.itemActivo = 0;
+            // Vaciar la lista actual
+            this.almacenes = [];
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                this.almacenes.push(new Almacen(element.id,element.idempresa,element.nombre,element.capacidad,element.estado,element.idproduccionordenactual,element.level));
+              }
+             // this.listaZonas.emit(this.limpiezas);
+            }
+        });
+   }
+   getClientes() {
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes";
 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.clientes = [];
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                this.clientes.push(new Cliente(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.id));
+              }
+             // this.listaZonas.emit(this.limpiezas);
+            }
+        });
+   }
 
   setItems(tree:any,idOrden?:number){
       let i=0;
@@ -93,10 +129,10 @@ es;
                        "label": element.producto + ' ' + element.proveedor,
                        "expanded":true,
                        //"parent": tree,
-                        "data": {"tipo":"materiaprima","idmateriaprima":element.idmateriaprima,"proveedor":element.proveedor,"numlote_proveedor":element.numlote_proveedor,"level":1},
+                        "data": {"tipo":"materiaprima","idmateriaprima":element.idmateriaprima,"proveedor":element.proveedor,"numlote_proveedor":element.numlote_proveedor,"level":0},
                         "expandedIcon": "fa-folder-open",
                         "collapsedIcon": "fa-folder"});
-                        this.getOrdenes(tree.children[i],element.idmateriaprima,"idmateriaprima");
+                        this.getOrdenes(tree.children[i],element.idmateriaprima,"idmateriaprima",1);
                         
                   //this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida));
                 }else{
@@ -112,8 +148,9 @@ es;
         );
   }
 
-getOrdenes(nodo: any,id:number, tipo:string){
+getOrdenes(nodo: any,id:number, tipo:string,level:number){
     let i=0;
+    level++;
 //    this.tree[0].children.forEach((child)=> {
 //        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+child.data.idmateriaprima; 
         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&"+tipo+"="+id; 
@@ -131,9 +168,9 @@ getOrdenes(nodo: any,id:number, tipo:string){
                       "label":element.numlote,
                       "parent":nodo,
                       "expanded":true,
-                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor}
+                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad}
                     });
-                    this.getOrdenes(nodo.children[i],element.idorden,"idorden");
+                    this.getOrdenes(nodo.children[i],element.idorden,"idorden",level);
                     i++;
              }
 //             i++;
@@ -149,10 +186,18 @@ getParent(idOrden){
 
 }
 
-
+    closeFicha(index:number){
+        this.msgs.splice(index,1);
+    }
     nodeSelect(event) {
-        this.msgs = [];
-        this.msgs.push({severity: 'info', data: event.node.data, summary:'Node Selected', detail: event.node.label});
+        //this.msgs = [];
+        let index= this.almacenes.findIndex((almacen)=>almacen.id==event.node.data.almacen);
+        let almacen;
+        (index <0)?almacen="":almacen = this.almacenes[index].nombre;
+        let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==event.node.data.cliente);
+        let cliente;
+        (indice_cliente <0)?cliente="":cliente = this.clientes[indice_cliente].nombre;
+        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,cliente:cliente});
         this.message="";
         
         console.log(this.msgs);
@@ -161,13 +206,13 @@ getParent(idOrden){
             this.message="label:"+event.node.label+" idMateriaPrima:"+ event.node.data.idmateriaprima+" proveedor:"+ event.node.data.proveedor+" numlote proveedor:"+ event.node.data.numlote_proveedor;
             console.log("parent",event.node.parent);
             let index = this.tree[0].children.findIndex((item) => item.data.idmateriaprima == event.node.data.idmateriaprima);
-            this.getOrdenes(event.node,event.node.data.idmateriaprima,"idmateriaprima");
+            this.getOrdenes(event.node,event.node.data.idmateriaprima,"idmateriaprima",0);
             break;
             case "orden":
             this.message="label:"+event.node.label+" idOrden:"+ event.node.data.idOrden+" Fecha Inicio Orden:"+ event.node.data.fecha_inicio_orden+" idDetalleOrden:"+ event.node.data.idDetalleOrden+" numlote_proveedor:"+ event.node.data.numlote_proveedor;
             console.log("parent",event.node.parent);
             let indice = this.tree[0].children.findIndex((item) => item.data.idOrden == event.node.data.idOrden);
-            this.getOrdenes(event.node,event.node.data.idOrden,"idorden");
+            this.getOrdenes(event.node,event.node.data.idOrden,"idorden",event.node.data.level);
             break;
             case "materiainterna":
 
@@ -229,6 +274,15 @@ getParent(idOrden){
         }
     }
 
+downloadPdf(){
+        let pdf = new jsPDF();
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
+            pdf.save("test.pdf");
+        });
+}
 // getProductos(idProveedor:number){
 //          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+idProveedor; 
 //         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(

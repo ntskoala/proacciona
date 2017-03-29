@@ -506,7 +506,10 @@ if (id>0){
     let i = this.clientes.findIndex((cli)=>cli.id==id);
     this.clienteSelected = this.clientes[i];
     this.almacenDestinoSelected = null;
+}else{
+    this.clienteSelected = null;
 }
+
 }
 
 }

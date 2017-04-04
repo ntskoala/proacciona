@@ -27,7 +27,7 @@ export class alerg{
 export class EntregaProductosComponent implements OnInit, OnChanges{
 //@Input() orden: ProduccionOrden;
 @Input() cliente: Cliente;
-public nuevoItem: Distribucion = new Distribucion(0,0,0,0,0,'',new Date(),new Date(),'',0,'','');
+public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: Distribucion[];
 public productos: ProductoPropio[]=[];
@@ -38,6 +38,7 @@ public idBorrar;
 public url=[];
 public verdoc: boolean = false;
 public foto:string;
+public cantidadMaxima:number;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/clientes_distribucion/';
 modal: Modal = new Modal();
@@ -105,6 +106,8 @@ getProductos(){
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.productos = [];
+            // this.productos.push(new ProductoPropio('selecciona','','','',null,0))
+            this.productos.push(new ProductoPropio('todos','','','',0,0))
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.productos.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa));
@@ -118,8 +121,9 @@ getProductos(){
 }
 
   newItem() {
-    
+    if (this.check()){
     let param = this.entidad+this.field+this.cliente.id;
+    let orden = this.nuevoItem.idordenproduccion;
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
     this.nuevoItem.idcliente = this.cliente.id;
     this.nuevoItem.id = 0;
@@ -129,16 +133,27 @@ getProductos(){
         if (response.success) {
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
+          this.saveRemanente(orden);
         }
     },
     error =>console.log(error),
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new Distribucion(0,0,0,0,0,'',new Date(),new Date(),'',0,'','');
+   this.nuevoItem =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
+    }
   }
 
-
+saveRemanente(idOrden:number){
+  let index = this.ordenes.findIndex((orden) => orden.id== idOrden);
+  let item: ProduccionOrden = this.ordenes[index];
+    let parametros = '?id=' + item.id+"&entidad=produccion_orden";    
+    this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
+      response => {
+        if (response.success) {
+        }
+    });
+}
 
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
@@ -180,9 +195,12 @@ checkBorrar(idBorrar: number) {
     }
   }
 
-getLotesProducto(idProducto: number){
+getLotesProducto(idProducto: any){
+  console.log(idProducto);
+  let URL;
+  (idProducto ==0 || idProducto == null)? URL = URLS.STD_ITEM: URL = URLS.STD_SUBITEM;
            let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"+"&field=idproductopropio&idItem="+idProducto; 
-        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+        this.servidor.getObjects(URL, parametros).subscribe(
           response => {
             this.ordenes = [];
             if (response.success && response.data) {
@@ -193,8 +211,8 @@ getLotesProducto(idProducto: number){
         },
         error=>console.log(error),
         ()=>{
-          let index= this.productos.findIndex((producto) => producto.id== idProducto);
-          this.nuevoItem.alergenos = this.productos[index].alergenos;
+         // let index= this.productos.findIndex((producto) => producto.id == idProducto);
+         // this.nuevoItem.alergenos = this.productos[index].alergenos;
           }
         ); 
 }
@@ -205,7 +223,20 @@ console.log(this.ordenes[index]);
 this.nuevoItem.idordenproduccion = idLote;
 this.nuevoItem.numlote = this.ordenes[index].numlote;
 this.nuevoItem.fecha_caducidad = this.ordenes[index].fecha_caducidad;
+this.nuevoItem.cantidad = this.ordenes[index].remanente;
+this.cantidadMaxima = this.ordenes[index].remanente;
+this.nuevoItem.tipo_medida = this.ordenes[index].tipo_medida;
 console.log(this.nuevoItem);
 }
 
+
+check(){
+  console.log('cheking',!isNaN(this.nuevoItem.cantidad),this.nuevoItem.cantidad < this.cantidadMaxima, this.cantidadMaxima);
+
+if (!isNaN(this.nuevoItem.cantidad) && this.nuevoItem.cantidad < this.cantidadMaxima){
+  let index = this.ordenes.findIndex((orden) => orden.id== this.nuevoItem.idordenproduccion);
+  this.ordenes[index].remanente -= this.nuevoItem.cantidad;
+  return true
+}else{ return false}
+}
 }

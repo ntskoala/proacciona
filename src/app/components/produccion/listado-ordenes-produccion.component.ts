@@ -18,7 +18,7 @@ export class ListadoOrdenesProduccionComponent implements OnInit {
 public itemActivo: number;
 public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
 public  nuevoItem: ProduccionOrden;
-public item1:ProduccionOrden = new ProduccionOrden(0,0,'Selecciona',new Date(),new Date());
+public item1:ProduccionOrden = new ProduccionOrden(0,0,'Selecciona',new Date(),new Date(),new Date());
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
 public  nuevoNombre:string;
@@ -44,7 +44,7 @@ loadItems(emp: Empresa | string, estat) {
             this.items.push(this.item1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.nombre,element.familia,element.estado));
+                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen));
               }
              console.log(this.items);
             }
@@ -59,6 +59,9 @@ seleccionarItem(valor: number){
 crearItem(){
 this.nuevoItem.numlote = this.nuevoNombre;
 this.nuevoItem.idempresa = this.empresasService.seleccionada;
+this.nuevoItem.fecha_inicio = new Date();
+this.nuevoItem.fecha_fin = new Date();
+this.nuevoItem.fecha_caducidad = new Date();
 //this.nuevoItem.nombre = this.nuevoItem.numlote;
 this.nuevoItem.estado = 'abierto';
 let param = "&entidad=produccion_orden";
@@ -102,6 +105,7 @@ let parametros = '?id=' + this.itemActivo+param;
             let indice = this.items.findIndex((limpieza) => limpieza.id == this.itemActivo);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.seleccionarItem(0);
           }
       });
     }

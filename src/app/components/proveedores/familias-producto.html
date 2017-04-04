@@ -15,6 +15,13 @@
       <input type="text" [placeholder]="'proveedores.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
     </span>
 
+    <select class="smallselect" [(ngModel)]="nuevoItem.nivel_destino" name="nivel_destino" required>
+      <option [disabled]="true" [value]="null">selecciona</option>
+      <option  [value]="0">R0</option>
+       <option  [value]="1">R1-R4</option>
+        <option [value]="3">P1-P4</option>
+    </select>
+
     <span class="cell"></span>
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
@@ -24,7 +31,8 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">{{"proveedor.familia" | translate}}</span>
+    <span class="header-cell">{{"proveedores.familia" | translate}}</span>
+    <span class="header-cell">{{"destino" | translate}}</span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
@@ -35,7 +43,12 @@
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
     </span>
 
-
+    <select class="smallselect" [(ngModel)]="item.nivel_destino" name="nivel_destino" (change)="itemEdited(item.id)">
+      <option [disabled]="true" [value]="null">selecciona</option>
+      <option  [value]="0">R0</option>
+       <option  [value]="1">R1-R4</option>
+        <option [value]="3">P1-P4</option>
+    </select>
 
 
 

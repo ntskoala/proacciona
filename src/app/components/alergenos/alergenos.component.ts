@@ -17,7 +17,8 @@ export class AlergenosComponent implements OnInit, OnChanges{
 @Input() parentAlergenos:string;
 @Output() selectedAlergenosChange:EventEmitter<string>=new EventEmitter<string>();
 public viewAlergenos: boolean;
-private alergenos:string[]=['frutos secos','lacteos','gluten','huevos','otros'];
+private alergenos:string[]=['Ing Cereales con gluten','Trz Cereales con gluten','Ing Huevos','Trz Huevos','Ing Leche','Trz Leche','Ing Cacahuetes','Trz Cacahuetes','Ing Soja','Trz Soja','Ing Fruits secs de closca','Trz Fruits secs de closca','Ing Apio','Trz Apio','Ing Mostaza','Trz Mostaza','Ing Sésamo','Trz Sésamo','Ing Pescado','Trz Pescado','Ing Crustaceos','Trz Crustaceos','Ing Moluscos','Trz Moluscos','Ing Altramuces','Trz Altramuces','Ing Dioxido de azufre y sulfitos','Trz Dioxido de azufre y sulfitos'];
+//private alergenos:string[]=['frutos secos','lacteos','gluten','huevos','otros'];
 public selectedAlergenos:string[]=[];
 
   constructor(private servidor: Servidor,private empresasService: EmpresasService) {}

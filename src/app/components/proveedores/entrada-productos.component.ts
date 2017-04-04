@@ -24,7 +24,7 @@ export class alerg{
 export class EntradaProductosComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Input() cambioProductos: boolean;
-public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
 public productos: Object[]=[];
@@ -87,7 +87,7 @@ es;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
+                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
              }
             }
         },
@@ -101,6 +101,7 @@ getProductos(){
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.productos = [];
+            //this.productos.push({"id":null,"nombre":'producto'})
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.productos.push({"id":element.id,"nombre":element.nombre});
@@ -131,7 +132,7 @@ getProductos(){
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),0,'',0,'',0,0,0,0);
+   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
   }
 
 

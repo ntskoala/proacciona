@@ -66,7 +66,7 @@ let param = "&entidad=clientes";
         if (response.success) {
           cliente.id = response.id;
           this.items.push(cliente);
-          this.nuevoItem = new Cliente('',0);
+          this.nuevoItem = null;
         }
     });
 }

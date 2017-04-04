@@ -100,15 +100,15 @@ getProductos(){
             }
         },
         error=>console.log(error),
-        ()=>{this.getProd(); }
+        ()=>{}
         ); 
 }
-getProd(){
-  if (this.orden.idproductopropio){
-  let i= this.productos.findIndex((prod)=> prod.id==this.orden.idproductopropio);
-  this.nuevoItem.alergenos = this.productos[i].alergenos;
-  }
-}
+
+// getProd(){
+//   if (this.orden.idproductopropio){
+//   let i= this.productos.findIndex((prod)=> prod.id==this.orden.idproductopropio);
+//   }
+// }
 getClientes(){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes"; 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
@@ -145,7 +145,7 @@ getClientes(){
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new Distribucion(0,0,0,0,0,'',new Date(),new Date(),'',0,'','');
+   this.nuevoItem =  new Distribucion(0,0,0,0,0,this.orden.numlote,new Date(),new Date(),'',0,'','');
   }
 
 
@@ -201,16 +201,7 @@ checkBorrar(idBorrar: number) {
 
 
 
-setAlergenos(alergens: string, idItem?: number, i?: number){
-  console.log(alergens,idItem,i);
-  if (!idItem){
-  this.nuevoItem.alergenos = alergens;
-  }else{
-    this.itemEdited(idItem);
-    this.items[i].alergenos = alergens;
-    console.log(this.items[i]);
-  }
-}
+
 
 
 

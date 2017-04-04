@@ -3,21 +3,27 @@
     <span class="table">
         <span class="header-row">
              <span class="header-cell">{{"produccion.numlote" | translate}}</span>
-             <span class="header-cell">{{"produccion.cantidad" | translate}}</span>
-             <span class="header-cell">{{"produccion.remanente" | translate}}</span>
+             <span class="header-cell">{{"produccion.producto" | translate}}</span>
+             <span class="header-cell">{{"produccion.estado" | translate}}</span>
         </span>
         <span class="row">
              <span class="cell">
                  <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.numlote' | translate" type="text"
                 required [(ngModel)]="orden.numlote" name="numlote">
              </span>
-             <span class="cell">
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.cantidad' | translate" type="text"
-                required [(ngModel)]="orden.cantidad" name="cantidad">
+            <span class="cell">
+                <select class="medium" [(ngModel)]="orden.idproductopropio" name="idproductopropio" (change)="setIdProductoPropio($event)">
+                    <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+                    {{prod.nombre}}
+                    </option>
+                </select>
              </span>
              <span class="cell">
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.remanente' | translate" type="text"
-                required [(ngModel)]="orden.remanente" name="remanente">
+                <select class="medium" [(ngModel)]="orden.estado" name="estado">
+                    <option value="abierto">{{'abierto' | translate}}</option>
+                    <option value="cerrado">{{'cerrado' | translate}}</option>
+                    <option value="Entregado">{{'entregado' | translate}}</option>
+                </select>
              </span>
         </span>
         <span class="header-row">
@@ -38,136 +44,35 @@
              </span>
         </span>
         <span class="header-row">
-             <span class="header-cell">{{"produccion.familia" | translate}}</span>
-             <span class="header-cell">{{"produccion.producto" | translate}}</span>
-             <span class="header-cell">{{"produccion.responsable" | translate}}</span>
+             <span class="header-cell">{{"produccion.cantidad" | translate}}</span>
+             <span class="header-cell">{{"produccion.tipo_medida" | translate}}</span>
+             <span class="header-cell">{{"produccion.remanente" | translate}}</span>
         </span>
         <span class="row">
              <span class="cell">
-                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.familia' | translate" type="text"
-                [(ngModel)]="orden.familia" name="familia">
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.cantidad' | translate" type="text"
+                 [(ngModel)]="orden.cantidad" name="cantidad">
              </span>
-            <span class="cell">
-                <select class="medium" [(ngModel)]="orden.idproductopropio" name="nombre">
-                    <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
-                    {{prod.nombre}}
-                    </option>
-                </select>
-             </span>
-             <span class="cell">
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
-                [(ngModel)]="orden.responsable" name="responsable">
-             </span>
-        </span>
-        <span class="header-row">
-             <span class="header-cell">{{"produccion.estado" | translate}}</span>
-             <!--<span class="header-cell">{{"produccion.destino" | translate}}</span>-->
-        </span>
-        <span class="row">
-             <span class="cell">
-                <select class="medium" [(ngModel)]="orden.estado" name="estado">
-                    <option value="abierto">{{abierto}}</option>
-                    <option value="cerrado">{{abierto}}</option>
-                    <option value="Entregado">{{abierto}}</option>
-                </select>
-             </span>
-            <!--<span class="cell">
-            <select (change)="seleccionarDestino($event.target.value)" PlaceHolder="Selecciona">
-                <option *ngFor="let almacenDestino of almacenesDestino; let i = index" [value]="i">
-                    {{almacenDestino.nombre}} -> capacidad actual {{almacenDestino.capacidad - almacenDestino.estado}}
-                </option>
-            </select>
-             </span>-->
+         <span class="cell">
+       <select class="smallselect" [(ngModel)]="orden.tipo_medida" name="tipo_medida">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+  <span class="cell">
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.remanente' | translate" type="text"
+                 [(ngModel)]="orden.remanente" name="remanente">
+    </span>
         </span>
     </span>
-    <!--<md-grid-list cols="3" rowHeight="65px">
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.numlote" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.numlote' | translate" type="text"
-                required [(ngModel)]="orden.numlote" name="numlote">
-        </md-grid-tile>
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.cantidad" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.cantidad' | translate" type="text"
-                required [(ngModel)]="orden.cantidad" name="cantidad">
-        
-        </md-grid-tile>
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.remanente" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.remanente' | translate" type="text"
-                required [(ngModel)]="orden.remanente" name="remanente">
-        </md-grid-tile>
-
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.fecha_inicio" | translate}}
-            </md-grid-tile-header>
-            <p-calendar placeholder="fecha_inicio" [(ngModel)]="orden.fecha_inicio" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_inicio"></p-calendar>
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.fecha_fin" | translate}}
-            </md-grid-tile-header>
-<p-calendar placeholder="fecha_fin" [(ngModel)]="orden.fecha_fin" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_fin"></p-calendar>
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.fecha_caducidad" | translate}}
-            </md-grid-tile-header>
-<p-calendar placeholder="fecha_caducidad" [(ngModel)]="orden.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
-        </md-grid-tile>
-
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.responsable" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
-                [(ngModel)]="orden.responsable" name="responsable">
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.familia" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.familia' | translate" type="text"
-                [(ngModel)]="orden.familia" name="familia">
-        </md-grid-tile>
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.producto" | translate}}
-            </md-grid-tile-header>
-
-    <select class="medium" [(ngModel)]="orden.idproductopropio" name="nombre">
-      <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
-        {{prod.nombre}}
-      </option>
-    </select>
-
-        </md-grid-tile>
-
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.estado" | translate}}
-            </md-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.estado' | translate" type="text"
-                [(ngModel)]="orden.estado" name="estado">
-        </md-grid-tile>
-        <md-grid-tile>
-            <md-grid-tile-header>{{"produccion.destino" | translate}}
-            </md-grid-tile-header>
-    <select (change)="seleccionarDestino($event.target.value)" PlaceHolder="Selecciona">
-      <option *ngFor="let almacenDestino of almacenesDestino; let i = index" [value]="i">
-        {{almacenDestino.nombre}} -> capacidad actual {{almacenDestino.capacidad - almacenDestino.estado}}
-      </option>
-    </select>
-        </md-grid-tile>
-    </md-grid-list>-->
+    
 
 
     <div  class="botones">
     <span class="but">
         <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" [disabled]="!myItem.form.valid" type="submit">
-          <!--<span class="material-icons">save</span>-->{{'produccion.guardar' | translate}}
+          <!--<span class="material-icons">save</span>-->{{'guardar' | translate}}
     </button>
     </span>
         <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="accent" (click)="trazabilidadAtras()" type="button">

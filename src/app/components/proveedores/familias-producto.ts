@@ -14,7 +14,7 @@ import { FamiliasProducto } from '../../models/proveedorfamilias';
 
 export class FamiliasComponent implements OnInit {
 
-public nuevoItem: FamiliasProducto = new FamiliasProducto('',0,0);
+public nuevoItem: FamiliasProducto = new FamiliasProducto('',0,null,0);
 public items: FamiliasProducto[];
 public guardar = [];
 public idBorrar;
@@ -36,7 +36,7 @@ entidad:string="&entidad=proveedores_familia";
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.items.push(new FamiliasProducto (element.nombre,element.idempresa,element.id));
+                  this.items.push(new FamiliasProducto (element.nombre,element.idempresa,element.nivel_destino,element.id));
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
             }
@@ -57,7 +57,7 @@ entidad:string="&entidad=proveedores_familia";
         if (response.success) {
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
-          this.nuevoItem = {"id":0,"idempresa":0,"nombre":''};
+          this.nuevoItem = new FamiliasProducto('',0,null,0);
         }
     });
   }

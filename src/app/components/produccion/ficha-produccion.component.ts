@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -14,7 +14,7 @@ import { ProductoPropio } from '../../models/productopropio';
   templateUrl: './ficha-produccion.component.html',
   styleUrls:['./produccion.css']
 })
-export class FichaProduccionComponent implements OnInit {
+export class FichaProduccionComponent implements OnInit, OnChanges {
 //*** STANDARD VAR
 @Input() orden: ProduccionOrden;
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
@@ -27,7 +27,7 @@ private es:any;
 private trazabilidad: boolean;
 private almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
-
+public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
   constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
 
   ngOnInit() {
@@ -42,6 +42,10 @@ public productos: ProductoPropio[]=[];
             firstDayOfWeek: 1
         }; 
   }
+  ngOnChanges(){
+
+  }
+  
 cambiarTab(){}
 
 updateItem(orden: ProduccionOrden){
@@ -94,6 +98,10 @@ getProductos(){
         error=>console.log(error),
         ()=>{}
         ); 
+}
+setIdProductoPropio(id: number){
+  let i = this.productos.findIndex((prod) => prod.id==id)
+  if (i>=0) this.orden.nombre = this.productos[i].nombre;
 }
 
 seleccionarDestino(valor){

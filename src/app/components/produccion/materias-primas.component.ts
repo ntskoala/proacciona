@@ -109,7 +109,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
              }
             }
         },
@@ -123,7 +123,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.cantidad_remanente});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
              }
             }
         },
@@ -246,8 +246,9 @@ setMaxCantidad(idLote:number){
   
   let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==idLote);
     this.nuevoItem.cantidad = this.entrada_productos[index_entrada_productos].cantidad;
+    this.nuevoItem.tipo_medida = this.entrada_productos[index_entrada_productos].tipo_medida;
   this.maxCantidad = this.entrada_productos[index_entrada_productos].cantidad;
-console.log(idLote,index_entrada_productos,this.entrada_productos[index_entrada_productos].cantidad);
+//console.log(idLote,index_entrada_productos,this.entrada_productos[index_entrada_productos].cantidad);
 }
 
 

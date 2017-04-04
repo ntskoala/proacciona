@@ -30,6 +30,8 @@ export class alerg{
 export class TrazabilidadComponent implements OnInit, OnChanges{
 @ViewChild('expandingTree')
 @ViewChild('toPDF') el: ElementRef;
+@ViewChild('toPDF2') el2: ElementRef;
+@ViewChild('toPDFTitle') elTitle: ElementRef;
 expandingTree: Tree;
 tree: TreeNode[];
 msgs: any[]=[];
@@ -193,11 +195,12 @@ getParent(idOrden){
         //this.msgs = [];
         let index= this.almacenes.findIndex((almacen)=>almacen.id==event.node.data.almacen);
         let almacen;
-        (index <0)?almacen="":almacen = this.almacenes[index].nombre;
+        (index <0)?almacen=false:almacen = this.almacenes[index].nombre;
         let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==event.node.data.cliente);
-        let cliente;
-        (indice_cliente <0)?cliente="":cliente = this.clientes[indice_cliente].nombre;
-        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,cliente:cliente});
+        let n_cliente;
+        (indice_cliente <0)?n_cliente=false:n_cliente = this.clientes[indice_cliente].nombre;
+        console.log(indice_cliente,n_cliente,this.clientes)
+        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,cliente:n_cliente});
         this.message="";
         
         console.log(this.msgs);
@@ -279,9 +282,20 @@ downloadPdf(){
         let options = {
             pagesplit: true
         };
-        pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-            pdf.save("test.pdf");
+        pdf.addHTML(this.elTitle.nativeElement,0,0,options,()=>{
+        pdf.addHTML(this.el.nativeElement, 25, 30, options, () => {
+            if (this.msgs.length>0){
+            pdf.addPage();
+             pdf.addHTML(this.el2.nativeElement, 15, 30, options,() =>{
+                pdf.save(this.orden.numlote +".pdf");
+             });
+            }else{
+                pdf.save(this.orden.numlote +".pdf");
+            }
         });
+        });
+       
+
 }
 // getProductos(idProveedor:number){
 //          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+idProveedor; 

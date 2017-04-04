@@ -9,12 +9,13 @@
 </div>
 
 
-
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
     <select class="medium" [(ngModel)]="nuevoItem.idproductopropio" name="idproductopropio" (change)="getLotesProducto($event.target.value)">
+      <!--<option [value]="null" disabled="true" [selected]="nuevoItem.idproductopropio ==null">selecciona</option>-->
+      <option [disabled]="true" [value]="null">selecciona</option>
       <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
         {{prod.nombre}}
       </option>
@@ -43,9 +44,6 @@
       </option>
     </select>
  </span>
-    <span class="cell medium">  
-       <select-alergenos name="alergenos" [parentAlergenos]="nuevoItem.alergenos" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
-      </span>
       <span class="header-cell">
       </span>
     <span class="cell">
@@ -56,21 +54,20 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">{{"proveedores.producto" | translate}}</span>
+    <span class="header-cell">{{"Produccion.producto" | translate}}</span>
     <span class="header-cell medium">{{"proveedores.numlote" | translate}}</span>
     <span class="header-cell">{{"proveedores.fecha" | translate}}</span>
     <span class="header-cell">{{"proveedores.fecha_caducidad" | translate}}</span>
     <span class="header-cell medium">{{"proveedores.cantidad" | translate}}</span>
     <span class="header-cell">{{"proveedores.tipo medida" | translate}}</span>
-    <span class="header-cell medium">{{"proveedores.alergenos" | translate}}</span>
-    <!--<span class="header-cell">{{"proveedores.Foto" | translate}}</span>-->
+
     <span class="header-cell">
       </span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
 
-  <div class="divrow"  *ngFor="let item of items; let i = index">
-  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
+  <!--<div class="divrow"  *ngFor="let item of items; let i = index">-->
+  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)"  *ngFor="let item of items; let i = index">
     <input type="hidden" [(ngModel)]="item.id" name="id">
     <span class="cell">
     <select class="medium" [(ngModel)]="item.idproductopropio" name="idproductopropio">
@@ -101,9 +98,7 @@
       </option>
     </select>
  </span>
-     <span class="cell medium">
-    <select-alergenos name="alergenos" [parentAlergenos]="item.alergenos" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
- </span>
+
 
 
 
@@ -122,7 +117,7 @@
   <!--<div class="protocol"  *ngIf="protocolo[i]">
  <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol"></protocolo>
   </div>-->
- </div>
+ <!--</div>-->
 
 
 </div>

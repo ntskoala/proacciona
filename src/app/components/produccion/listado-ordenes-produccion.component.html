@@ -52,7 +52,7 @@
   
           <h2 class="center"  *ngIf="modificaItem">{{ 'produccion.modificar' | translate }}</h2>
           <h2 class="center"  *ngIf="nuevoItem">{{ 'produccion.crear' | translate }}</h2>
-          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <input [placeholder]="'Lote' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
           <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
           <span class="material-icons">check</span>

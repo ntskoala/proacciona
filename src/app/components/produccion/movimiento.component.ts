@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from 'ng2-translate';
 import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -10,6 +11,7 @@ import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Cliente } from '../../models/clientes';
 import { URLS } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
+import { FamiliasProducto } from '../../models/proveedorfamilias';
 import { Distribucion } from '../../models/distribucion';
 
 @Component({
@@ -43,6 +45,7 @@ private cantidadTraspaso: number;
 public productos: any[]=[];
 public proveedores: any[]=[];
 public clientes: Cliente[]=[];
+public familias: FamiliasProducto[]=[];
 public clienteSelected:Cliente;
 public distribucion:Distribucion;
 public entrada_productos: any[]=[];
@@ -53,12 +56,13 @@ public loteSelected:ProveedorLoteProducto;
 public max_cantidad:number=70;
 public contador:number;
 public alerts:string[]=[];
-  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
+  constructor(private empresasService: EmpresasService, private servidor: Servidor, private translate: TranslateService) {}
 
   ngOnInit() {
       this.getAlmacenes();
       this.getProveedores();
       this.getClientes();
+      this.getFamilias();
   //  this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
   }
 
@@ -118,7 +122,20 @@ getAlmacenes() {
             }
         });
    }
+   getFamilias() {
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_familia";
 
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.familias = [];
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                this.familias.push(new FamiliasProducto(element.nombre,element.idempresa,element.nivel_destino,element.id));
+              }
+             // this.listaZonas.emit(this.limpiezas);
+            }
+        });
+   }
 getProveedores(){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores"; 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
@@ -164,10 +181,10 @@ getEntradasProducto(idProducto){
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
-            this.entrada_productos.push(new ProveedorLoteProducto('selecciona',new Date(),0,'',0,'',0,0,0,0));
+            this.entrada_productos.push(new ProveedorLoteProducto('selecciona',new Date(),new Date(),0,'',0,'',0,0,0,0));
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push(new ProveedorLoteProducto(element.numlote_proveedor,element.fecha_entrada,element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
+                  this.entrada_productos.push(new ProveedorLoteProducto(element.numlote_proveedor,element.fecha_entrada,element.fecha_caducidad,element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
              }
             }
         },
@@ -189,14 +206,20 @@ seleccionarOrigen(origen: string,valor: number){
             this.ordenOrigen = null;
         }
     }else{
+        //***********SELECCIONAR LEVEL DESTINO CUANDO ORIGEN = LOTE PROVEEDOR */
         let indiceProducto = this.productos.findIndex((prod) => prod.id == this.idProductoActual);
-        console.log (indiceProducto, this.productos[indiceProducto].familia)
-        if (this.productos[indiceProducto].familia ==1){//Leche Normal
-            this.level=1;
+        let indiceFamilia = this.familias.findIndex((fam) => fam.id == this.productos[indiceProducto].familia);
+        if (indiceFamilia<0){
+            this.level = 1;
+        }else{
+        this.level = this.familias[indiceFamilia].nivel_destino;
         }
-        else{//Leche Pasteurizada o otras Leches
-            this.level=3;
-        }
+        // if (this.productos[indiceProducto].familia ==1){//Leche Normal
+        //     this.level=1;
+        // }
+        // else{//Leche Pasteurizada o otras Leches
+        //     this.level=3;
+        // }
          this.almacenesDestino = this.almacenesOrigen.filter((almacen) => (almacen.level >= this.level));
          this.almacenesDestino = this.almacenesDestino.filter((almacen) => (almacen.level <= this.level));
          this.loteSelected = this.entrada_productos[valor];
@@ -244,15 +267,26 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
     this.contador= 0;
     let contadorF=0;
     if (this.almacenDestinoSelected){
-        this.nuevaOrden.cantidad=this.almacenDestinoSelected.estado + this.cantidadTraspaso;
+        this.nuevaOrden.cantidad=+this.almacenDestinoSelected.estado + +this.cantidadTraspaso;
         this.nuevaOrden.idalmacen = this.almacenDestinoSelected.id;
+        console.log("Destino",this.almacenDestinoSelected);
         if (this.almacenDestinoSelected.level > 1){
+            if(this.almacenOrigenSelected){
             if (this.almacenOrigenSelected.level<=1){
                 this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
             }else{
-                this.nuevaOrden.fecha_caducidad = this.ordenOrigen.fecha_caducidad;
+                 let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                    this.nuevaOrden.fecha_caducidad = caducidad;
             }
-
+            }else if (this.loteSelected){
+                if (this.ordenDestino)
+                {
+                let caducidad = (moment(this.loteSelected.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.loteSelected.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                    this.nuevaOrden.fecha_caducidad = caducidad;
+                }else{
+                    this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
+                }
+            }
         }
     }else{
         this.nuevaOrden.cantidad= this.cantidadTraspaso;
@@ -448,13 +482,17 @@ cambioOrigen(){
 
 controlarOrigen(){
      if (!this.almacenOrigenSelected && !this.loteSelected){
-         this.alerts.push('No se ha seleccionado un tanque o lote de origen');
+         this.translate.get('produccion.alert_tanque_origen').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
      }
     if (isNaN(this.cantidadTraspaso) || this.cantidadTraspaso < 1){
        // alert('Cantidad tiene que ser un número mayor de cero');
        // this.dialog.open('Cantidad tiene que ser un número mayor de cero');
        // this.snackBar.open('Cantidad tiene que ser un número mayor de cero', "Cerrar",{duration: 5000});
-        this.alerts.push('Cantidad tiene que ser un número mayor de cero');
+         this.translate.get('produccion.alert_cantidad_mayor_cero').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
         return false;
     }
 
@@ -463,7 +501,9 @@ controlarOrigen(){
        if( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente){
            return true;
        }else{
-           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en origen');
+         this.translate.get('produccion.alert_cantidad_menor_disponible_origen').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
            return false;
        }
 
@@ -472,7 +512,9 @@ controlarOrigen(){
         if ( +this.cantidadTraspaso <= +this.almacenOrigenSelected.estado){
             return true;
         }else{
-           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en origen');
+         this.translate.get('produccion.alert_cantidad_menor_disponible_origen').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
            return false;
         }
     }
@@ -487,11 +529,15 @@ controlarDestino(){
         if((+this.almacenDestinoSelected.capacidad - +this.almacenDestinoSelected.estado) >= +this.cantidadTraspaso){
             return true;
         }else{
-           this.alerts.push('Cantidad tiene que ser menor o igual al disponible en destino');
+         this.translate.get('produccion.alert_cantidad_menor_disponible_destino').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
            return false;
         }
     }else{
-        this.alerts.push('No ha seleccionado Tanque destino');
+         this.translate.get('produccion.alert_tanque_destino').subscribe(
+             (valor) => this.alerts.push(valor)
+         );
         return false;
     }
         }

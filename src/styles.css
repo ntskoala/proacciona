@@ -547,7 +547,11 @@ md-grid-tile-header{
   background: #ffd740 !important;
 }
 
-
+/*TRAZABILIDAD*/
+.miarbol{
+    width:100%;
+    background-color: #fff;
+}
 
 /*
 ***********************

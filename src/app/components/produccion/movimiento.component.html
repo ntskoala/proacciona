@@ -68,6 +68,9 @@
         Cantidad Inicial: {{loteSelected.cantidad_inicial}}<br>
         Cantidad Disponible: {{loteSelected.cantidad_remanente}}<br>
         Fecha Entrada: {{loteSelected.fecha_entrada | date:'dd/MM/yy'}}<br>
+        <span *ngIf="loteSelected.fecha_caducidad != 'Invalid Date'">
+        Fecha caducidad: {{loteSelected.fecha_caducidad | date:'dd/MM/yy'}}<br>
+         </span>
   </md-card>
 
 </div>

@@ -21,6 +21,7 @@
     </span>
     <span class="cell">
           <select [(ngModel)]="nuevoItem.idfamilia" PlaceHolder="Familia" name="idfamilia">
+        <option [disabled]="true" [value]="null">{{'proveedores.familia' | translate}}</option>     
       <option *ngFor="let familia of familias; let i = index" [value]="familia.id">
         {{familia.nombre}}
       </option>

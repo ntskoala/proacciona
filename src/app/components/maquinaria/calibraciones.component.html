@@ -53,7 +53,7 @@
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
     </span>
     <span class="cell">
-    <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarMantenimiento(calibracion.id)" name="fecha"></p-calendar>
     </span>
     <span class="cell">
       <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">

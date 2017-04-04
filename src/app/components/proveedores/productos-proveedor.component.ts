@@ -25,8 +25,8 @@ export class alerg{
 export class ProductosProveedorComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Output() nuevoProducto: EventEmitter<boolean> = new EventEmitter<boolean>();
-public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);
-public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0);;
+public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null);
+public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null);;
 public items: ProveedorProducto[];
 public familias: FamiliasProducto[];
 public guardar = [];
@@ -81,7 +81,7 @@ getFamilias(){
             this.familias = [];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.familias.push(new FamiliasProducto (element.nombre,element.idempresa,element.id));   
+                  this.familias.push(new FamiliasProducto (element.nombre,element.idempresa,element.nivel_destino,element.id));   
              }
             }
         });
@@ -125,7 +125,7 @@ getFamilias(){
     () =>this.setItems()   
     );
 
-   this.nuevoItem = new ProveedorProducto('','','','',0,0);
+   this.nuevoItem = new ProveedorProducto('','','','',0,0,null);
    this.nuevoProducto.emit(true);
   }
 
@@ -146,7 +146,6 @@ getFamilias(){
           this.nuevoProducto.emit(true);
         }
     });
-
   }
 
 

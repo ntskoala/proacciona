@@ -247,7 +247,10 @@
     "nombre":"Nombre",
     "contacto":"Nombre contacto",
     "telf":"Teléfono",
-    "email":"email"
+    "email":"email",
+    "producto":"Producto",
+    "numlote":"Num Lote",
+    "fecha":"Fecha"
   },
   "almacenes":{
     "nombre":"Nombre",
@@ -255,6 +258,13 @@
     "estado":"Cantidad actual",
     "numlote_actual":"Id Lote en tanque",
     "level":"Nivel"
+  },
+  "filter-dates":{
+    "desde":"Fecha Desde",
+    "hasta":"Fecha Hasta",
+    "filtrar fechas":"Filtrar Fechas",
+    "Mostrando del":"Mostrando del",
+    "al":"al"
   },
   "alergenos":"alérgenos",
   "lunes":"lunes",

@@ -25,6 +25,7 @@ export class AlmacenesComponent implements OnInit, OnChanges{
 public nuevoItem: Almacen = new Almacen(0,0,'',0,0,0,0);
 public addnewItem: Almacen = new Almacen(0,0,'',0,0,0,0);
 public items: Almacen[];
+public lotes: string[]=[];
 public guardar = [];
 public idBorrar;
 public url=[];
@@ -64,11 +65,14 @@ entidad:string="&entidad=almacenes";
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
+            let i=0;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
+                  if (element.idproduccionordenactual>0) this.getLote(element.idproduccionordenactual,i);
                   this.items.push(new Almacen(element.id,element.idempresa,element.nombre,element.capacidad,element.estado,element.idproduccionordenactual,element.level));
-             }
+                  i++;
+              }
             }
         },
         error=>console.log(error),
@@ -78,7 +82,21 @@ entidad:string="&entidad=almacenes";
         );
   }
 
-
+getLote(lote:number,i:number){
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"+"&field=id&idItem="+lote; 
+        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+          response => {
+            //this.items = [];
+            if (response.success && response.data) {
+              for (let element of response.data) { 
+                 this.lotes[i]= element.numlote;
+             }
+            }
+        },
+        error=>console.log(error),
+        ()=>{}
+        );
+}
 
   newItem() {
     

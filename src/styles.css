@@ -107,6 +107,12 @@ nav {
   margin: 2rem auto;
 }
 
+.space{
+  display:block;
+  height: 30px;
+  width: 100%;
+}
+
 input[type="text"] {
   font-size: 0.9rem;
   border: 0;
@@ -553,6 +559,27 @@ md-grid-tile-header{
     background-color: #fff;
 }
 
+/*FILTER*/
+.filter-window {
+  width: 500px;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.6);
+  border: 2px solid grey;
+  background-color: #fff;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+}
+
+.filter{ /*FILTER Mostranso del xx/xx/ al xx/xx */
+width: 400px;
+    position: absolute;
+    top: 0px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
 /*
 ***********************
 * STD ITEMS *

@@ -8,6 +8,19 @@
   </div>
 </div>
 
+<div class="filter">
+  {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}}
+      <span class="">
+                  <button md-mini-fab color="primary" (click)="filter=!filter" type="button">
+        <span class="material-icons">filter_list</span>
+      </button>
+      </span>
+    <span class="">
+            <button md-mini-fab color="primary" (click)="excel()" type="button">
+        <span class="material-icons">cloud_download</span>
+      </button>
+      </span>
+</div>
 
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -54,16 +67,17 @@
   </form>
 
   <div class="header-row">
-    <span class="header-cell">{{"Produccion.producto" | translate}}</span>
-    <span class="header-cell medium">{{"proveedores.numlote" | translate}}</span>
-    <span class="header-cell">{{"proveedores.fecha" | translate}}</span>
+    <span class="header-cell">{{"clientes.producto" | translate}}</span>
+    <span class="header-cell medium">{{"clientes.numlote" | translate}}</span>
+    <span class="header-cell">{{"clientes.fecha" | translate}}</span>
     <span class="header-cell">{{"proveedores.fecha_caducidad" | translate}}</span>
     <span class="header-cell medium">{{"proveedores.cantidad" | translate}}</span>
     <span class="header-cell">{{"proveedores.tipo medida" | translate}}</span>
 
     <span class="header-cell">
       </span><!--Borrar-->
-    <span class="header-cell"></span><!--Guardar-->
+    <span class="header-cell">
+      </span><!--Guardar-->
   </div>
 
   <!--<div class="divrow"  *ngFor="let item of items; let i = index">-->
@@ -127,5 +141,7 @@
   <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
 <img class="iframe" [src]="foto">
 </div>
-
+<div class="modal" *ngIf="filter">
+<filter-dates (onDates)="setDates($event)"></filter-dates>
+</div>
 

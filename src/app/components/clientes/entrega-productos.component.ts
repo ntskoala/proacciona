@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import * as moment from 'moment/moment';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -30,6 +31,9 @@ export class EntregaProductosComponent implements OnInit, OnChanges{
 public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: Distribucion[];
+public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+public filtro_inicio:String;
+public filtro_fin:String;
 public productos: ProductoPropio[]=[];
 public ordenes: ProduccionOrden[] =[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
@@ -39,7 +43,7 @@ public url=[];
 public verdoc: boolean = false;
 public foto:string;
 public cantidadMaxima:number;
-
+public filter:boolean=false;
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/clientes_distribucion/';
 modal: Modal = new Modal();
 entidad:string="&entidad=clientes_distribucion";
@@ -84,9 +88,14 @@ es;
 
 
 
-  setItems(){
-     console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id; 
+  setItems(filterDates?:string){
+    let parametros ="";
+     if (filterDates){
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+filterDates; 
+     }else{
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id; 
+     }
+      //let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+filterDates; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
@@ -115,7 +124,9 @@ getProductos(){
             }
         },
         error=>console.log(error),
-        ()=>{this.setItems()
+        ()=>{
+          //this.setItems()
+          this.setDates(this.fechas_inicio);
           }
         ); 
 }
@@ -137,7 +148,7 @@ getProductos(){
         }
     },
     error =>console.log(error),
-    () =>this.setItems()   
+    () =>this.setDates(this.fechas_inicio) 
     );
 
    this.nuevoItem =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
@@ -238,5 +249,67 @@ if (!isNaN(this.nuevoItem.cantidad) && this.nuevoItem.cantidad < this.cantidadMa
   this.ordenes[index].remanente -= this.nuevoItem.cantidad;
   return true
 }else{ return false}
+}
+
+setDates(dates:any){
+this.filter = false;
+if (dates!= 'void'){
+  this.fechas_inicio = dates;
+ this.filtro_inicio = moment(new Date (dates['fecha_inicio'])).format('DD-MM-YYYY').toString();
+ this.filtro_fin = moment(new Date (dates['fecha_fin'])).format('DD-MM-YYYY').toString();
+  this.setItems("&filterdates=true&fecha_field=fecha&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
+}
+}
+excel(){
+  console.log("send to excel");
+
+ let columnas=['producto','numlote','fecha','fecha_caducidad','cantidad','tipo_medida'];
+ let data=[];
+ this.items.forEach((item)=>{
+   let indice = this.productos.findIndex((prod)=>prod.id == item.idproductopropio);
+   let producto;
+   (indice<=0)?producto="":producto= this.productos[indice].nombre;
+   
+   data.push({'producto':producto,'numlote':item.numlote,'fecha':moment(item.fecha).format('DD-MM-YYYY'),'fecha_caducidad':moment(item.fecha_caducidad).format('DD-MM-YYYY'),'cantidad':item.cantidad,'tipo_medida':item.tipo_medida})
+ });
+var csvData = this.ConvertToCSV(columnas, data);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    //window.open(url,'_blank');
+    a.href = url;
+    
+    a.download = 'entrega_Productos'+this.cliente.nombre+'.csv';
+    a.click();
+}
+
+ConvertToCSV(controles,objArray){
+var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            var str = '';
+            var row = "";
+            //row += "Usuario;Fecha;"
+            for (var i = 0; i < cabecera.length; i++) {
+              row += cabecera[i] + ';';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            str += row + '\r\n';
+ 
+            for (var i = 0; i < array.length; i++) {
+                
+                var line ="";//array[i].usuario+";"+array[i].fecha + ";";
+
+              for (var x = 0; x < cabecera.length; x++) {
+                let columna = cabecera[x];
+                let resultado = array[i][cabecera[x]];
+              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+            }
+            line = line.slice(0,-1);
+                str += line + '\r\n';
+            }
+            return str;
 }
 }

@@ -47,6 +47,8 @@ import { InformePeriodicidadComponent } from './components/informe-periodicidad.
 import { ModalComponent } from './components/modal.component';
 import {PeriodicidadComponent} from './components/programadorfechas/periodicidad.component';
 import { PageNotFoundComponent } from './components/404.component';
+/********    GENERAL COMPONENTS */
+import { FilterDatesComponent } from './components/filterdates/filter-dates.component';
 
 /********    MAQUINARIA COMPONENTS */
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
@@ -148,6 +150,8 @@ import { PermisosService } from './services/permisos.service';
     InformeControlesComponent,
     InformeChecklistsComponent,
     InformePeriodicidadComponent,
+//******GENERALES */
+    FilterDatesComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,

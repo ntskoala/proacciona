@@ -128,6 +128,7 @@ var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
     a.click();
 }
+
 ConvertToCSV(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
@@ -155,6 +156,7 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             }
             return str;
 }
+
 formatFecha(fecha: Date):string{
 let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getUTCHours()+2)).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
 console.log(mifecha);

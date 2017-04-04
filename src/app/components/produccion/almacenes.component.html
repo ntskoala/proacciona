@@ -20,10 +20,10 @@
       <input type="text" [placeholder]="'produccion.capacidad' | translate" required [(ngModel)]="nuevoItem.capacidad" name="capacidad">
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'produccion.estado' | translate" required [(ngModel)]="nuevoItem.estado" name="estado">
+      <input type="text" disabled [placeholder]="'produccion.estado' | translate" required [(ngModel)]="nuevoItem.estado" name="estado">
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'produccion.idproduccionordenactual' | translate" required [(ngModel)]="nuevoItem.idproduccionordenactual" name="idproduccionordenactual">
+      <input type="text" disabled [placeholder]="'produccion.idproduccionordenactual' | translate" required [(ngModel)]="nuevoItem.idproduccionordenactual" name="idproduccionordenactual">
     </span>
     <span class="cell">
       <input type="text" [placeholder]="'produccion.level' | translate" required [(ngModel)]="nuevoItem.level" name="level">
@@ -64,7 +64,7 @@
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.idproduccionordenactual" name="idproduccionordenactual" (keyup)="itemEdited(item.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.level" name="level" (keyup)="itemEdited(item.id)">
+      <input disabled [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.level" name="level" (keyup)="itemEdited(item.id)"><span *ngIf="lotes[i]">{{lotes[i]}}</span>
     </span>
 
 

@@ -8,8 +8,19 @@
   </div>
 </div>
 
-
-
+<div class="filter">
+  {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}}
+      <span class="">
+                  <button md-mini-fab color="primary" (click)="filter=!filter" type="button">
+        <span class="material-icons">filter_list</span>
+      </button>
+      </span>
+    <span class="">
+            <button md-mini-fab color="primary" (click)="excel()" type="button">
+        <span class="material-icons">cloud_download</span>
+      </button>
+      </span>
+</div>
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
@@ -137,4 +148,7 @@
 <img class="iframe" [src]="foto">
 </div>
 
+<div class="modal" *ngIf="filter">
+<filter-dates (onDates)="setDates($event)"></filter-dates>
+</div>
 

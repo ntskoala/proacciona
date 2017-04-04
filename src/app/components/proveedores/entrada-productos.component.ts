@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import * as moment from 'moment/moment';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -27,7 +28,11 @@ export class EntradaProductosComponent implements OnInit, OnChanges{
 public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
-public productos: Object[]=[];
+public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+public filtro_inicio:String;
+public filtro_fin:String;
+public filter:boolean=false;
+public productos: any[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public guardar = [];
 public idBorrar;
@@ -79,9 +84,14 @@ es;
 
 
 
-  setItems(){
-     console.log('setting items...')
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+  setItems(filterDates?:string){
+    let parametros ="";
+     if (filterDates){
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id+filterDates; 
+     }else{
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+     }
+     // let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
@@ -109,7 +119,10 @@ getProductos(){
             }
         },
         error=>console.log(error),
-        ()=>{this.setItems()}
+        ()=>{
+          //this.setItems()
+          this.setDates(this.fechas_inicio);
+          }
         ); 
 }
 
@@ -129,7 +142,7 @@ getProductos(){
         }
     },
     error =>console.log(error),
-    () =>this.setItems()   
+    () =>this.setDates(this.fechas_inicio)   
     );
 
    this.nuevoItem =  new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
@@ -194,6 +207,66 @@ checkBorrar(idBorrar: number) {
     )
   }
 
+setDates(dates:any){
+this.filter = false;
+if (dates!= 'void'){
+  this.fechas_inicio = dates;
+ this.filtro_inicio = moment(new Date (dates['fecha_inicio'])).format('DD-MM-YYYY').toString();
+ this.filtro_fin = moment(new Date (dates['fecha_fin'])).format('DD-MM-YYYY').toString();
+  this.setItems("&filterdates=true&fecha_field=fecha_entrada&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
+}
+}
+excel(){
+  console.log("send to excel");
 
+ let columnas=['Materia Prima','Lote Proveedor','fecha','fecha_caducidad','cantidad','tipo_medida','remanente'];
+ let data=[];
+ this.items.forEach((item)=>{
+   let indice = this.productos.findIndex((prod)=>prod['id'] == item.idproducto);
+   let producto;
+   (indice<0)?producto="":producto= this.productos[indice].nombre;
+   
+   data.push({'Materia Prima':producto,'Lote Proveedor':item.numlote_proveedor,'fecha':moment(item.fecha_entrada).format('DD-MM-YYYY'),'fecha_caducidad':moment(item.fecha_caducidad).format('DD-MM-YYYY'),'cantidad':item.cantidad_inicial,'tipo_medida':item.tipo_medida,'remanente':item.cantidad_remanente})
+ });
+var csvData = this.ConvertToCSV(columnas, data);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    //window.open(url,'_blank');
+    a.href = url;
+    
+    a.download = 'Entrada_Productos'+this.proveedor.nombre+'.csv';
+    a.click();
+}
+
+ConvertToCSV(controles,objArray){
+var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            var str = '';
+            var row = "";
+            //row += "Usuario;Fecha;"
+            for (var i = 0; i < cabecera.length; i++) {
+              row += cabecera[i] + ';';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            str += row + '\r\n';
+ 
+            for (var i = 0; i < array.length; i++) {
+                
+                var line ="";//array[i].usuario+";"+array[i].fecha + ";";
+
+              for (var x = 0; x < cabecera.length; x++) {
+                let columna = cabecera[x];
+                let resultado = array[i][cabecera[x]];
+              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+            }
+            line = line.slice(0,-1);
+                str += line + '\r\n';
+            }
+            return str;
+}
 
 }

@@ -175,9 +175,13 @@ getProductos(idProveedor:number){
 }
 
 getEntradasProducto(idProducto){
+ let filtro_inicio = moment(new Date()).format('YYYY-DD-MM').toString();
+ let filtro_fin = moment(new Date ()).format('YYYY-MM-DD').toString();
+  let filtro_dates = "&filterdates=true&fecha_field=fecha_entrada&fecha_inicio="+ filtro_inicio +  "&fecha_fin="+filtro_fin;
+
         this.idProductoActual = idProducto;
         console.log('entradasproducto',idProducto)
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto; 
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto+filtro_dates; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
@@ -299,7 +303,7 @@ this.nuevaOrden.fecha_inicio = fecha;
 this.nuevaOrden.fecha_fin = fecha;
 this.nuevaOrden.responsable = this.empresasService.userName;
 this.nuevaOrden.remanente = this.nuevaOrden.cantidad;
-this.nuevaOrden.estado = 'cerrado';
+this.nuevaOrden.tipo_medida = "l.";
 
 //buscamos las ordenes de produccion de la empresa actual, que tengan como fecha_inicio "creacion", igual a hoy, incremento contador para cada registro
 //Cuando termina, actualizazo el valor de numlote de la nuevaOrden, y creo la orden.
@@ -321,10 +325,12 @@ this.nuevaOrden.estado = 'cerrado';
             if (this.clienteSelected){
             this.nuevaOrden.numlote = "F"+fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+contadorF;
             this.nuevaOrden.fecha_caducidad = this.ordenOrigen.fecha_caducidad;
+            this.nuevaOrden.estado = 'entregado';
               this.distribucion = new Distribucion(0,this.empresasService.seleccionada,this.clienteSelected.id,0,0,this.nuevaOrden.numlote,new Date(),this.nuevaOrden.fecha_caducidad,this.empresasService.userName,this.nuevaOrden.cantidad,'L','alergenos');
 //            this.setNewClienteDistribucion(this.distribucion);
             }else{
             this.nuevaOrden.numlote = fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+this.contador;
+            this.nuevaOrden.estado = 'cerrado';
             }
 
 this.nuevaOrden.nombre = this.nuevaOrden.numlote;

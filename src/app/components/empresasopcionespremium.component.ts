@@ -68,7 +68,7 @@ getOpciones(parametros){
             if (response.success && response.data) {
               for (let element of response.data) {
                 this.opcionesempresa[element.idopcion] = parseInt(element.id);
-                this.permisos.setOpciones(true,element.opcion);
+                this.permisos.setOpciones(true,element.idopcion);
                 //this.guardar[element.id] = false;
               }
             }
@@ -86,8 +86,8 @@ getOpciones(parametros){
       this.servidor.deleteObject(URLS.OPCIONES_EMPRESA, parametros).subscribe(
         response => {
           if (response.success) {
-            this.permisos.setOpciones(false,this.opciones[i]);
-            console.log("quita",this.opciones[i].nombre)
+            this.permisos.setOpciones(false,this.opciones[i].id);
+            console.log("quita",this.opciones[i].id)
           }
       });
     }
@@ -98,8 +98,8 @@ getOpciones(parametros){
         response => {
           if (response.success) {
             this.opcionesempresa[opcion] = response.id;
-            this.permisos.setOpciones(true,this.opciones[i]);
-            console.log("pon",this.opciones[i].nombre)
+            this.permisos.setOpciones(true,this.opciones[i].id);
+            console.log("pon",this.opciones[i].id)
           }
       });
     }

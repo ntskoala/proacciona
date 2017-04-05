@@ -4,10 +4,14 @@
   <!--{{'clientes.clientes' | translate}}<br>-->
 
   <!--<md-slide-toggle (change)="changeEstado()">{{'produccion.lotes_cerrados' | translate}}</md-slide-toggle>-->
+    <button md-mini-fab color="primary" (click)="filter=!filter" type="button">
+        <span class="material-icons">filter_list</span>
+      </button>
   <form>
     <select class="medium" (change)="changeEstado($event.target.value)">
       <option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</option>
       <option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</option>
+      <option  value="entregado">{{'produccion.lotes_entregados' | translate}}</option>
     </select>
   </form>
   <form>
@@ -64,4 +68,8 @@
           <span class="material-icons">close</span>
         </button>
   </div>
+</div>
+
+<div class="modal" *ngIf="filter">
+<filter-dates (onDates)="setDates($event)"></filter-dates>
 </div>

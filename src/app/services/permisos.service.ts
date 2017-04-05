@@ -12,6 +12,9 @@ export class PermisosService {
     fichas_maquinaria: boolean;
     personal: boolean;
     limpieza:boolean;
+    proveedores:boolean;
+    clientes:boolean;
+    produccion:boolean;
     constructor(private servidor: Servidor){}
 
 
@@ -21,22 +24,31 @@ export class PermisosService {
 
 
     setOpciones(valor: boolean, opcion) {
-   //     console.log(opcion);
+        console.log(opcion);
         switch (opcion) {
-            case "exportar informes":
+            case "1"://"exportar informes":
                 // this.exportarFuente.next(valor);
                 this.exportar = valor;
   //              console.log ("exportar", this.fichas_maquinaria);
                 break;
-            case "fichas maquinaria":
+            case "2"://"fichas maquinaria":
                 this.fichas_maquinaria = valor;
                 break;
-            case "limpieza":
+            case "3"://"limpieza":
                 this.limpieza = valor;
                 break;
-            case "personal":
-                this.personal = valor;
+            case "4"://"limpieza":
+                this.proveedores = valor;
                 break;
+            case "5"://"limpieza":
+                this.clientes = valor;
+                break;
+            case "6"://"limpieza":
+                this.produccion = valor;
+                break;
+            // case ://"personal":
+            //     this.personal = valor;
+            //     break;
         }
     }
 

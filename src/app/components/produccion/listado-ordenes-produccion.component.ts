@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -24,17 +25,28 @@ public  modificaItem: boolean;
 public  nuevoNombre:string;
 public estado:string='abierto';
 //*** ESPECIFIC VAR */
-
+public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+public filtro_inicio:String;
+public filtro_fin:String;
+public filter:boolean=false;
   constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
 
   ngOnInit() {
-    this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
+    //this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
+    this.setDates(this.fechas_inicio);
+
   }
 cambiarTab(){}
 
-loadItems(emp: Empresa | string, estat) {
-    let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+"";
+loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
+    let params = typeof(emp) == "string" ? emp : emp.id;
+     let parametros ="";
+      if (filterDates){
+       parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+filterDates; 
+     }else{
+       parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+"";
+     }
+    
 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
@@ -134,6 +146,20 @@ addItem(){
 // }
 changeEstado(estado: string){
   console.log('cambio estado',estado)
-  this.loadItems(this.empresasService.seleccionada.toString(), estado);
+  //this.loadItems(this.empresasService.seleccionada.toString(), estado);
+  this.estado = estado;
+this.setDates(this.fechas_inicio);
 }
+
+
+setDates(dates:any){
+this.filter = false;
+if (dates!= 'void'){
+  this.fechas_inicio = dates;
+ this.filtro_inicio = moment(new Date (dates['fecha_inicio'])).format('DD-MM-YYYY').toString();
+ this.filtro_fin = moment(new Date (dates['fecha_fin'])).format('DD-MM-YYYY').toString();
+  this.loadItems(this.empresasService.seleccionada.toString(), this.estado,"&filterdates=true&fecha_field=fecha_inicio&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
+}
+}
+
 }

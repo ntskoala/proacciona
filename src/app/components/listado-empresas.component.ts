@@ -53,14 +53,14 @@ export class ListadoEmpresasComponent implements OnInit {
 }
 
 setPermisos(idempresa){
- 
+ console.log(idempresa);
         let parametros = '&idempresa=' + idempresa; 
         this.servidor.getObjects(URLS.OPCIONES_EMPRESA, parametros).subscribe(
           response => {
             
             if (response.success && response.data) {
               for (let element of response.data) {
-                  this.permisos.setOpciones(true,element.opcion);
+                  this.permisos.setOpciones(true,element.idopcion);
                 //this.guardar[element.id] = false;
               }
             }

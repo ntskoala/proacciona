@@ -37,13 +37,13 @@ export class PermisosService {
             case "3"://"limpieza":
                 this.limpieza = valor;
                 break;
-            case "4"://"limpieza":
-                this.proveedores = valor;
-                break;
-            case "5"://"limpieza":
+            case "4"://"clientes":
                 this.clientes = valor;
                 break;
-            case "6"://"limpieza":
+            case "5"://"proveedores":
+                this.proveedores = valor;
+                break;
+            case "6"://"produccion":
                 this.produccion = valor;
                 break;
             // case ://"personal":

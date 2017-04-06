@@ -131,7 +131,8 @@
     "ultimo":"últim",
     "realizados":"realitzats",
     "proximos":"propers",
-    "vencidos":"vençuts"
+    "vencidos":"vençuts",
+    "borrarMantenimientoR":"Eliminar Manteniment"
   },	
     "limpieza": {
     "nueva":"Nova Àrea Neteja",
@@ -164,7 +165,8 @@
     "vencidas":"vençudes",
     "dosificacion":"dosificació",
     "ficha":"fitxa",
-    "productoslimpieza":"Productes Neteja"
+    "productoslimpieza":"Productes Neteja",
+     "borrarLimpiezaR":"Eliminar Neteja"
   },
     "proveedores":{
     "proveedores":"Proveïdors",

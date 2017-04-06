@@ -131,7 +131,8 @@
     "ultimo":"último",
     "realizados":"realizados",
     "proximos":"próximos",
-    "vencidos":"vencidos"
+    "vencidos":"vencidos",
+    "borrarMantenimientoR":"Borrar mantenimiento"
   },
   "limpieza": {
     "nueva": "Nueva Area Limpieza",
@@ -164,7 +165,8 @@
     "vencidas":"vencidas",
     "dosificacion":"dosificación",
     "ficha":"ficha",
-    "productoslimpieza":"Productos limpieza"
+    "productoslimpieza":"Productos limpieza",
+    "borrarLimpiezaR":"Borrar Limpieza"
   },
   "proveedores":{
     "proveedores":"Proveedores",

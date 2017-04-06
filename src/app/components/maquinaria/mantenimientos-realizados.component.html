@@ -1,3 +1,4 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="table">
   <!--</div>-->
   <div class="header-row">
@@ -9,6 +10,8 @@
     <span class="header-cell">{{"maquinas.descripcion" | translate}}</span>
     <span class="header-cell">{{"maquinas.causa" | translate}}</span>
     <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
   </div>
 
 
@@ -19,13 +22,13 @@
       <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.mantenimiento" name="mantenimiento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell small">
-      <p-calendar class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fechaprevista"></p-calendar>    
+      <p-calendar class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
     <span class="cell">
-      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>    
+      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
     <span class="cell small">
-     <input class="small" [readonly]="!empresasService.administrador" [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
+     <input class="small" [readonly]="!empresasService.administrador" [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
       <input [readonly]="!empresasService.administrador" [placeholder]="'elemento' | translate" type="text" [(ngModel)]="mantenimiento.elemento" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
@@ -41,11 +44,17 @@
       <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
     </span>
 
-    <!--<span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="submit">
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
         <span class="material-icons">close</span>
       </button>
-    </span>-->
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
     <!--<span class="cell">
       <button *ngIf="empresasService.administrador" [disabled]="!mantenimiento.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
         <span class="material-icons">photo_camera</span>
@@ -55,11 +64,7 @@
         <label *ngIf="empresasService.administrador" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
         <input *ngIf="empresasService.administrador" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, mantenimiento.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
-        <span class="material-icons">check</span>
-      </button>                
-    </span>-->
+-->
   </form>
 
 </div>

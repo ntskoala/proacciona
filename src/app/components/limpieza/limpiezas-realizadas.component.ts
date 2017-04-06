@@ -17,7 +17,10 @@ export class LimpiezasRealizadasComponent implements OnInit, OnChanges {
 @Input() limpieza: LimpiezaZona;
 @Input() nueva: number;
 public items: LimpiezaRealizada[];
-modal: Modal = new Modal();
+ public guardar = [];
+public idBorrar;
+
+  modal: Modal = new Modal();
 entidad:string="&entidad=limpieza_realizada";
 field:string="&field=idlimpiezazona&idItem=";
 es
@@ -59,4 +62,54 @@ es
         });
        
   }
+
+    itemEdited(idMantenimiento: number) {
+    this.guardar[idMantenimiento] = true;
+  }
+
+
+  checkBorrar(idBorrar: number) {
+    // Guardar el id del control a borrar
+    this.idBorrar = idBorrar;
+    // Crea el modal
+    this.modal.titulo = 'limpieza.borrarLimpiezaR';
+    this.modal.subtitulo = 'limpieza.borrarLimpiezaR';
+    this.modal.eliminar = true;
+    this.modal.visible = true;
+  }
+
+  cerrarModal(event: boolean) {
+    this.modal.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.idBorrar+this.entidad;
+      this.servidor.deleteObject(URLS.STD_SUBITEM, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
+            let indice = this.items.indexOf(controlBorrar);
+            this.items.splice(indice, 1);
+          }
+      });
+    }
+  }
+
+
+
+ saveItem(mantenimiento: LimpiezaRealizada) {
+   console.log ("evento",event);
+    this.guardar[mantenimiento.id] = false;
+    console.log ("actualizar_mantenimiento",mantenimiento);
+    mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
+    //let parametros = '?id=' + mantenimiento.id;
+    let parametros = '?id=' + mantenimiento.id+this.entidad;  
+    this.servidor.putObject(URLS.STD_SUBITEM, parametros, mantenimiento).subscribe(
+      response => {
+        if (response.success) {
+          console.log('Limpieza updated');
+        }
+    });
+  }
+
+
+
 }

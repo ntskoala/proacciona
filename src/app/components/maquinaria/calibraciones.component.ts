@@ -51,7 +51,7 @@ ngOnChanges(){
             if (response.success && response.data) {
               for (let element of response.data) {
                 this.calibraciones.push(new CalibracionesMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
-                  element.tipo_periodo, element.doc));
+                  element.tipo_periodo, element.doc,element.usuario,element.responsable));
                 this.guardar[element.id] = false;
               }
             }

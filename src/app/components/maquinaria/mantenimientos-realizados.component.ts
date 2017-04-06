@@ -9,6 +9,7 @@ import { Empresa } from '../../models/empresa';
  import { CalendarioMantenimiento } from '../../models/calendariomantenimiento';
  import { MantenimientoRealizado } from '../../models/mantenimientorealizado';
  import { Periodicidad } from '../../models/periodicidad';
+ import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'mantenimientos-realizados',
@@ -24,6 +25,9 @@ export class MantenimientosRealizadosComponent implements OnInit {
 public mantenimientos: MantenimientoRealizado[];
 public es:any;
  public guardar = [];
+public idBorrar;
+
+  modal: Modal = new Modal();
 // public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
 // public date = new Date();
 // public url:string[]=[];
@@ -75,19 +79,48 @@ public es:any;
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
   }
-//  saveItem(mantenimiento: MantenimientoRealizado) {
-//    console.log ("evento",event);
-//     this.guardar[mantenimiento.id] = false;
-//     console.log ("actualizar_mantenimiento",mantenimiento);
-//     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
-//     let parametros = '?id=' + mantenimiento.id;        
-//     this.servidor.putObject(URLS.MANTENIMIENTOS_REALIZADOS, parametros, mantenimiento).subscribe(
-//       response => {
-//         if (response.success) {
-//           console.log('Mantenimiento updated');
-//         }
-//     });
-//   }
+
+
+  checkBorrar(idBorrar: number) {
+    // Guardar el id del control a borrar
+    this.idBorrar = idBorrar;
+    // Crea el modal
+    this.modal.titulo = 'maquinas.borrarMantenimientoR';
+    this.modal.subtitulo = 'maquinas.borrarMantenimientoR';
+    this.modal.eliminar = true;
+    this.modal.visible = true;
+  }
+
+  cerrarModal(event: boolean) {
+    this.modal.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.idBorrar;
+      this.servidor.deleteObject(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let controlBorrar = this.mantenimientos.find(mantenimiento => mantenimiento.id == this.idBorrar);
+            let indice = this.mantenimientos.indexOf(controlBorrar);
+            this.mantenimientos.splice(indice, 1);
+          }
+      });
+    }
+  }
+
+
+
+ saveItem(mantenimiento: MantenimientoRealizado) {
+   console.log ("evento",event);
+    this.guardar[mantenimiento.id] = false;
+    console.log ("actualizar_mantenimiento",mantenimiento);
+    mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
+    let parametros = '?id=' + mantenimiento.id;        
+    this.servidor.putObject(URLS.MANTENIMIENTOS_REALIZADOS, parametros, mantenimiento).subscribe(
+      response => {
+        if (response.success) {
+          console.log('Mantenimiento updated');
+        }
+    });
+  }
 
 // checkBorrar(){}
 //   uploadImg(event, idItem,i) {

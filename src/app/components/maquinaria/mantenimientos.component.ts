@@ -56,7 +56,7 @@ ngOnChanges(){
             if (response.success && response.data) {
               for (let element of response.data) {
                 this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
-                  element.tipoperiodo, element.doc));
+                  element.tipoperiodo, element.doc,element.usuario,element.responsable));
                 this.guardar[element.id] = false;
                 this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
                 i++;

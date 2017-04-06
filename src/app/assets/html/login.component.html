@@ -54,6 +54,7 @@
           [(ngModel)]="usuario.password" name="password"></md-input>
         <label for="idioma">Seleccionar idioma</label>
         <select class="white-select" required [(ngModel)]="usuario.idioma" name="idioma">
+          <option disabled value="null">Selecciona</option>
           <option value="cat">Català</option>
           <option value="es">Castellano</option>
         </select>

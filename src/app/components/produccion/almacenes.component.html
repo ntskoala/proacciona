@@ -19,13 +19,13 @@
     <span class="cell">
       <input type="text" [placeholder]="'produccion.capacidad' | translate" required [(ngModel)]="nuevoItem.capacidad" name="capacidad">
     </span>
-    <span class="cell">
+    <span *ngIf="permisosService.traspasos" class="cell">
       <input type="text" disabled [placeholder]="'produccion.estado' | translate" required [(ngModel)]="nuevoItem.estado" name="estado">
     </span>
-    <span class="cell">
+    <span *ngIf="permisosService.traspasos" class="cell">
       <input type="text" disabled [placeholder]="'produccion.idproduccionordenactual' | translate" required [(ngModel)]="nuevoItem.idproduccionordenactual" name="idproduccionordenactual">
     </span>
-    <span class="cell">
+    <span *ngIf="permisosService.traspasos" class="cell">
       <input type="text" [placeholder]="'produccion.level' | translate" required [(ngModel)]="nuevoItem.level" name="level">
     </span>
 
@@ -41,9 +41,9 @@
   <div class="header-row">
     <span class="header-cell">{{"almacenes.nombre" | translate}}</span>
     <span class="header-cell">{{"almacenes.capacidad" | translate}}</span>
-    <span class="header-cell">{{"almacenes.estado" | translate}}</span>
-    <span class="header-cell">{{"almacenes.numlote_actual" | translate}}</span>
-    <span class="header-cell">{{"almacenes.level" | translate}}</span>
+    <span *ngIf="permisosService.traspasos" class="header-cell">{{"almacenes.estado" | translate}}</span>
+    <span *ngIf="permisosService.traspasos" class="header-cell">{{"almacenes.numlote_actual" | translate}}</span>
+    <span *ngIf="permisosService.traspasos" class="header-cell">{{"almacenes.level" | translate}}</span>
     <span class="header-cell">
       </span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
@@ -57,14 +57,15 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.capacidad" name="capacidad" (keyup)="itemEdited(item.id)">
     </span>
-    <span class="cell">
+    <span *ngIf="permisosService.traspasos" class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.estado" name="estado" (keyup)="itemEdited(item.id)">
     </span>
-    <span class="cell">
+    <span *ngIf="permisosService.traspasos" class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.idproduccionordenactual" name="idproduccionordenactual" (keyup)="itemEdited(item.id)">
+      <span *ngIf="lotes[i]" style="font-size: 7px">{{lotes[i]}}</span>
     </span>
-    <span class="cell">
-      <input disabled [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.level" name="level" (keyup)="itemEdited(item.id)"><span *ngIf="lotes[i]">{{lotes[i]}}</span>
+    <span *ngIf="permisosService.traspasos" class="cell">
+      <input disabled [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="number" [(ngModel)]="item.level" name="level" (keyup)="itemEdited(item.id)">
     </span>
 
 

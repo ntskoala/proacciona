@@ -156,6 +156,8 @@ getProductos(){
   }
  saveItem(item: ProveedorLoteProducto,i: number) {
     this.guardar[item.id] = false;
+    item.fecha_entrada = moment(item.fecha_entrada).add(2,'h').utc().toDate();
+    item.fecha_caducidad = moment(item.fecha_caducidad).add(2,'h').utc().toDate();
     let parametros = '?id=' + item.id+this.entidad;    
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {

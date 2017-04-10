@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
 import { ProduccionOrden } from '../../models/produccionorden';
 //import { Producto } from '../../models/productos';
 
@@ -17,7 +18,7 @@ public traspaso: boolean;
 public productos: boolean;
 public almacenes: boolean;
 
-  constructor(private empresasService: EmpresasService) {}
+  constructor(private empresasService: EmpresasService, private permisosService:PermisosService) {}
 
   ngOnInit() {
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { EmpresasService } from '../../services/empresas.service';
+
 import { Proveedor } from '../../models/proveedor';
 //import { Producto } from '../../models/productos';
 

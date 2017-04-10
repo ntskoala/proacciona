@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
 import { Modal } from '../../models/modal';
 import { FamiliasProducto } from '../../models/proveedorfamilias';
 
@@ -20,7 +21,7 @@ public guardar = [];
 public idBorrar;
 modal: Modal = new Modal();
 entidad:string="&entidad=proveedores_familia";
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(private servidor: Servidor,private empresasService: EmpresasService, private permisosService:PermisosService) {}
 
   ngOnInit() {
       this.setItems();

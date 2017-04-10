@@ -175,7 +175,7 @@ getProductos(idProveedor:number){
 }
 
 getEntradasProducto(idProducto){
- let filtro_inicio = moment(new Date()).format('YYYY-DD-MM').toString();
+ let filtro_inicio = moment(new Date()).format('YYYY-MM-DD').toString();
  let filtro_fin = moment(new Date ()).format('YYYY-MM-DD').toString();
   let filtro_dates = "&filterdates=true&fecha_field=fecha_entrada&fecha_inicio="+ filtro_inicio +  "&fecha_fin="+filtro_fin;
 
@@ -327,6 +327,7 @@ this.nuevaOrden.tipo_medida = "l.";
             this.nuevaOrden.fecha_caducidad = this.ordenOrigen.fecha_caducidad;
             this.nuevaOrden.estado = 'entregado';
               this.distribucion = new Distribucion(0,this.empresasService.seleccionada,this.clienteSelected.id,0,0,this.nuevaOrden.numlote,new Date(),this.nuevaOrden.fecha_caducidad,this.empresasService.userName,this.nuevaOrden.cantidad,'L','alergenos');
+
 //            this.setNewClienteDistribucion(this.distribucion);
             }else{
             this.nuevaOrden.numlote = fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+this.contador;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
+import { PermisosService } from '../../services/permisos.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Almacen } from '../../models/almacenes';
@@ -38,7 +39,7 @@ entidad:string="&entidad=almacenes";
 
 
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(private servidor: Servidor,private empresasService: EmpresasService, private permisosService:PermisosService) {}
 
   ngOnInit() {
       this.setItems();

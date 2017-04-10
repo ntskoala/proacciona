@@ -9,7 +9,7 @@
  <md-card-subtitle>
 
    <div class="cabecerabuttons">
- <button md-raised-button (click)="traspasar()" *ngIf="empresasService.seleccionada == 77">{{'produccion.traspasos' | translate}}</button>
+ <button md-raised-button (click)="traspasar()" *ngIf="permisosService.traspasos">{{'produccion.traspasos' | translate}}</button>
   <button md-raised-button (click)="editProductos()">{{'produccion.productos' | translate}}</button>
   <button md-raised-button (click)="editAlmacenes()">{{'produccion.almacenes' | translate}}</button>
    </div>  

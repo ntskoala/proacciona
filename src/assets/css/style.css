@@ -1,0 +1,436 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+}
+
+.container {
+  width: 95%;
+  max-width: 1100px;
+  /*margin: 40px auto;*/
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #673ab7;
+}
+
+hr {
+  width: 131%;
+}
+
+navigation {
+  width: 100%;
+  display: flex;
+  margin: auto;
+  min-height: 56px;
+  background: #fff;
+}
+
+nav {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.logo,
+.logo-empresa {
+  width: 50%;
+}
+
+.logo img {
+  float: left;
+  height: 56px;
+  padding: 3px 0 3px;
+}
+
+.logo-empresa {
+  width: 50%;
+}
+
+.logo-empresa img {
+  float: right;
+  height: 56px;
+  padding: 3px 0 3px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.modal-window {
+  width: 500px;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.6);
+  border: 4px solid #f44336;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+}
+
+.titulo {
+  font-size: 1.2rem;
+  color: #f44336;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  color: #333;
+  margin: 2rem auto;
+}
+
+input[type="text"] {
+  font-size: 0.9rem;
+  border: 0;
+  padding: 0.2rem;
+  outline: 0;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-width: 300px;
+  font-size: 0.9rem;
+  border: 1px solid #fbc02d;
+  border-radius: 0;
+  padding: 5px 10px;
+  background: url('../images/keyboard_arrow_down.svg') no-repeat 97% 50% #fff9c4;
+  outline: 0;
+}
+
+.white-select {
+  min-width: 140px;
+  border: 1px solid #eee;
+  background: url('../images/keyboard_arrow_down.svg') no-repeat 97% 50% #fff;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.small {
+  width: 45px !important;
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.right {
+  text-align: right;
+  padding-right: 11px !important;
+}
+
+.leyenda {
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  color: #9e9e9e;
+}
+
+.hide {
+  display: none !important;
+}
+
+/*
+**************
+* Components *
+**************
+*/
+
+/* LoginComponent */
+.login-form {
+  max-width: 400px;
+  margin: auto;
+}
+
+/* EmpresasComponent */
+.empresas {
+  display: flex;
+  flex-wrap: wrap;
+}
+.homeimg{
+  width: 100%;
+  margin-top: -11px;
+  margin-left: 75px;
+}
+
+/* SeleccionarEmpresaComponent */
+seleccionar-empresa {
+  width: 48%;
+  float: left;
+  padding-right: 2%;
+}
+
+.id-empresa {
+  color: #fff;
+  margin-left: 1rem;
+}
+
+.inputfile {
+  opacity: 0;
+}
+
+.inputlabel {
+  margin-left: 1rem;
+  color: #673ab7;
+}
+
+.inputlabel:focus,
+.inputlabel:hover {
+  cursor: pointer;
+  border-bottom: 1px solid #673ab7;
+}
+
+/* NuevaEmpresaComponent */
+nueva-empresa {
+  width: 48%;
+  float: right;
+  padding-left: 2%;
+}
+
+/* GestionTablasComponent */
+gestion-tablas {
+  width: 100%;
+  /*padding-top: 4%;*/
+}
+
+.tab {
+  display: none;
+}
+
+.active {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* ChecklistsComponent */
+.seleccionar-checklist {
+  width: 30%;
+  padding-right: 1%;
+  float: left;
+}
+
+.nueva-checklist {
+  width: 68%;
+  padding-left: 1%;
+  float: right;
+}
+
+.mostrar-checklist {
+  width: 30%;
+  padding-right: 1%;
+}
+
+.modificar-checklist {
+  width: 68%;
+  padding-left: 1%;
+  float: right;
+}
+
+/* PermisosComponent */
+.seleccionar-usuario {
+  width: 100%;
+}
+
+.marcar-controles,
+.marcar-checklists {
+  width: 48%;
+}
+
+.marcar-controles {
+  padding-right: 2%;
+}
+
+.marcar-checklists {
+  padding-left: 2%;
+}
+
+/* GestionInformesComponent */
+gestion-informes {
+  width: 100%;
+  /*padding-top: 4%;*/
+}
+
+/* InformeControlesComponent */
+.fechas {
+  width: 100%;
+}
+
+.foto-link {
+  cursor: pointer;
+  color: #673ab7;
+}
+
+.foto-link:hover {
+  color: #673ab7;
+  opacity: 0.6;
+}
+
+.foto {
+  padding: 30px;
+}
+
+.foto-window {
+  position: fixed;
+  top: calc(50% - 180px);
+  left: calc(50% - 142px);
+  background: #fff;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.6);
+}
+
+.close {
+  position: absolute;
+  cursor: pointer;
+  top: 2px;
+  right: 2px;
+}
+
+.close:hover {
+  opacity: 0.6;
+}
+
+.wrong {
+  color: red;
+  position: relative;
+}
+
+.wrong:hover:before {
+  content: attr(title);
+  font-size: 1rem;
+  color: #9c27b0;
+  position: absolute;
+  left: -5px;
+  top: 5px;
+  opacity: 0.6;
+}
+
+/* InformeChecklistsComponent */
+.checklist {
+  width: 100%;
+}
+.descrip-link{
+  width:24px;
+}
+.descripcion {
+    visibility: hidden;
+    position: fixed;
+    top: calc(50% - 100px);
+    left: calc(50% - 100px);
+    background-color: #ccc;
+    z-index: 10;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    text-align: left;
+
+}
+.descrip-link:hover + .descripcion{
+  visibility: visible;
+}
+
+
+/* InformePeriodicidadComponent */
+.mostrar-informe {
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.informe {
+  width: 30% !important;
+}
+
+/*
+*********
+* Table *
+*********
+*/
+
+.table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background: #fff;
+}
+
+.header-row {
+  display: table-row;
+  background: #ffd740;
+}
+
+.header-cell {
+  display: table-cell;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 0 8px 11px;
+}
+
+.header-cell:last-child {
+  padding-right: 11px;
+}
+
+.header-cell .small {
+  text-align: left;
+}
+
+.row {
+  display: table-row;
+  transition: background-color, 0.2s;
+}
+
+.row:hover {
+  background-color: #eee;
+}
+
+.cell {
+  display: table-cell;
+  padding: 3px 0 3px 8px;
+  vertical-align: middle;
+}
+
+/*
+***********************
+* Material components *
+***********************
+*/
+
+.material-icons {
+  vertical-align: middle;
+}
+
+md-card-footer {
+  position: inherit !important;
+}
+
+md-card-title {
+  margin: -24px -24px 24px -24px !important;
+}
+
+md-input {
+  font-size: 0.9rem !important;
+}
+
+button[md-mini-fab] {
+  width: 35px;
+  height: 35px;
+}

@@ -1,0 +1,82 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+    <input type="hidden" [(ngModel)]="nuevoCalibracion.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoCalibracion.nombre" name="nombre">
+    </span>
+    <span class="cell">
+      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoCalibracion.fecha"></ng2-datepicker>-->
+      <p-calendar [(ngModel)]="nuevoCalibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
+        <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
+        <option value="interno">{{'maquinas.interno' | translate}}</option>
+        <option value="externo">{{'maquinas.externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event)" [fechaPrevista]="nuevoCalibracion.fecha" [miperiodo]="false"></periodicidad>
+    </span>
+    <span class="cell">
+      <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"maquinas.calibracion" | translate}}</span>
+    <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
+    <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+    <span class="header-cell">{{"maquinas.periodicidad" | translate}}</span>
+    <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i)" *ngFor="let calibracion of calibraciones; let i=index">
+    <input type="hidden" [(ngModel)]="calibracion.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="calibracion.nombre" name="nombre" (keyup)="modificarMantenimiento(calibracion.id)">
+    </span>
+    <span class="cell">
+    <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [(ngModel)]="calibracion.fecha" [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarMantenimiento(calibracion.id)" name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
+      <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="calibracion.tipo" name="tipo" (change)="modificarMantenimiento(calibracion.id)">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event, calibracion.id, i)" [fechaPrevista]="calibracion.fecha" [miperiodo]="calibracion.periodicidad" name="periodicidad"></periodicidad>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="calibracion.responsable" name="responsable" (keyup)="modificarMantenimiento(calibracion.id)">
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(calibracion.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[calibracion.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>

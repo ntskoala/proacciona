@@ -1,0 +1,75 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal()"></modal>
+
+    <div class="homeimg">
+      <img  [src]="gallery" (error)="logoEmpresa='./assets/images/pixel.png'">
+      <div class="presentacion">{{'bienvenido' | translate}}</div>
+      <!--<div>
+        <informe-periodicidad></informe-periodicidad>
+      </div>-->
+      <div class="introduccion"><div class="intro">
+        <md-card>
+          <md-card-title>
+            TFC BACKOFFICE
+          </md-card-title>
+          <md-list>
+          <md-list-item><span  class="material-icons">restaurant</span>{{'tfc1' | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">smartphone</span>{{'tfc2' | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">settings</span>{{'settings' | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">show_chart</span>{{'informes' | translate}}</md-list-item>
+          <md-list-item><span class="material-icons">settings_applications</span>{{"maquinaria" | translate}}</md-list-item>
+          <md-list-item><span class="material-icons">supervisor_account</span>{{"personal" | translate}}</md-list-item>
+         <md-list-item><span  class="material-icons">trending_up</span>{{"tfc3" | translate}}</md-list-item>
+         <md-list-item><span  class="material-icons">settings_remote</span>{{"tfc5" | translate}}</md-list-item>
+         <md-list-item><span  class="material-icons">call_merge</span>{{"tfc6" | translate}}</md-list-item>
+          </md-list>
+        </md-card>
+        </div>
+        <div class="qr"><md-card><md-card-title>
+            TFC MOBILE/TABLET
+          </md-card-title>
+          <md-list>
+          <md-list-item><span  class="material-icons">smartphone</span> {{"tfcm1" | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">add_a_photo</span> {{"tfcm2" | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">vpn_key</span> {{"tfcm3" | translate}}</md-list-item>
+          <md-list-item><span  class="material-icons">supervisor_account</span> {{"tfcm4" | translate}}</md-list-item>
+         <md-list-item><span  class="material-icons">delete_forever</span>{{"tfcm5" | translate}}</md-list-item>
+          </md-list>
+          <img src="./assets/images/qr_tfc_android.jpg" width="200px"></md-card>
+          </div>
+      </div>
+
+      </div>
+
+
+<div class="login-form">
+  <md-card style="height:100%">
+    <md-card-title>
+      <md-toolbar color="accent">Login</md-toolbar>
+    </md-card-title>
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
+      <md-card-content>
+        <md-input-container>
+        <input mdInput class="full-width" type="text" required [placeholder]="'Usuario' | translate" 
+          [(ngModel)]="usuario.user" name="user">
+        </md-input-container>
+        <md-input-container>
+        <input mdInput class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
+          [(ngModel)]="usuario.password" name="password">
+        </md-input-container>
+        <label for="idioma">Seleccionar idioma</label>
+        <select class="white-select" required [(ngModel)]="usuario.idioma" name="idioma">
+          <option disabled value="null">Selecciona</option>
+          <option value="cat">Català</option>
+          <option value="es">Castellano</option>
+        </select>
+                
+      </md-card-content>
+      <md-card-footer>
+<button md-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
+          Enviar
+        </button>
+      </md-card-footer>
+    </form>
+  </md-card>
+</div>
+

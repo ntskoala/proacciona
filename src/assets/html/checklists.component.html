@@ -1,0 +1,122 @@
+<modal [modal]="modalCL" (onCerrar)="cerrarModalCL($event)"></modal>
+<modal [modal]="modalCCL" (onCerrar)="cerrarModalCCL($event)"></modal>
+<modal [modal]="modalImportCL" (onImportar)="cerrarModalImportCL($event)" (onCerrar)="cerrarModalImportCL($event)"></modal>
+
+<!-- Seleccionar checklist -->
+<div class="seleccionar-checklist">
+  <h2>Checklist</h2>
+  <!--<listado-checklists [empresa]="empresaSeleccionada"></listado-checklists>-->
+  <form>
+    <select (change)="mostrarCCL($event.target.value)">
+      <option *ngFor="let checklist of checklists" [value]="checklist.id">
+        {{checklist.nombrechecklist}}
+      </option>
+    </select>
+  </form>
+  <button *ngIf="empresasService.administrador" md-button color="warn" (click)="checkBorrarCL()" type="submit">Eliminar</button>
+  <button *ngIf="empresasService.administrador" md-button color="primary" (click)="modificarCL()" type="submit">Modificar</button>
+  <button *ngIf="empresasService.administrador" md-button color="primary" (click)="import()" type="submit">Importar</button>
+  
+</div>
+
+<!-- Nueva checklist -->
+<div *ngIf="empresasService.administrador" class="nueva-checklist">
+  <h2>{{'Nueva' | translate}} checklist</h2>
+  <div class="table">
+    <form class="row" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
+      <span class="cell">
+        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="cl.nombrechecklist" name="nombrechecklist">
+      </span>
+      <span class="cell">
+        <input [placeholder]="'Periodicidad' | translate" type="text" required [(ngModel)]="cl.periodicidad" name="periodicidad">
+      </span>
+      <span class="cell">
+        <select class="white-select" required [(ngModel)]="cl.tipoperiodo" name="tipoperiodo">
+          <option value="Día">{{'Día' | translate}}</option>
+          <option value="Semana">{{'Semana' | translate}}</option>
+          <option>Mes</option>
+          <option value="Any">{{'Año' | translate}}</option>
+        </select>
+      </span>
+        <!--<span class="cell">
+          <button md-mini-fab color="accent" (click)="import()">
+            <span class="material-icons">archive</span>
+          </button>
+        </span>-->
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
+          <span class="material-icons">add</span>
+        </button>
+      </span>
+    </form>
+  </div>
+</div>
+
+<!-- Mostrar control checklists -->
+<div class="mostrar-checklist">
+  <div *ngIf="checklistActiva != 0">
+    <h2>Control checklists</h2>
+    <div class="table">
+      <form *ngIf="empresasService.administrador"  class="row" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
+        <span class="cell">
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="ccl.nombre" name="nombre">
+        </span>
+        <span class="cell"></span>
+        <span class="cell">
+          <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
+            <span class="material-icons">add</span>
+          </button>
+        </span>
+      </form>
+      <div class="header-row">
+        <span class="header-cell">{{'Nombre' | translate}}</span>
+        <span class="header-cell"></span>
+        <span class="header-cell"></span>
+      </div>
+      <form class="row" *ngFor="let controlchecklist of controlchecklists"
+        #actualizarCCLf="ngForm" (ngSubmit)="actualizarCCL(controlchecklist.id)">
+        <span class="cell">
+          <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
+        </span>
+        <span class="cell">
+          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
+            <span class="material-icons">close</span>
+          </button>
+        </span>
+        <span class="cell">
+          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
+            <span class="material-icons">check</span>
+          </button>                
+        </span>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modificar checklist -->
+<div class="modificar-checklist" *ngIf="modificar">
+  <h2>Modificar Checklist</h2>
+  <div class="table">
+    <form class="row" #actCLf="ngForm" (ngSubmit)="actualizarCL()">
+      <span class="cell">
+        <input type="text" required [(ngModel)]="modCL.nombrechecklist" name="nombrechecklist">
+      </span>
+      <span class="cell">
+        <input type="text" required [(ngModel)]="modCL.periodicidad" name="periodicidad">
+      </span>
+      <span class="cell">
+        <select class="white-select" required [(ngModel)]="modCL.tipoperiodo" name="tipoperiodo">
+          <option value="Día">{{'Día' | translate}}</option>
+          <option value="Semana">{{'Semana' | translate}}</option>
+          <option>Mes</option>
+          <option value="Any">{{'Año' | translate}}</option>
+        </select>
+      </span>
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!actCLf.form.valid" type="submit">
+          <span class="material-icons">check</span>
+        </button>
+      </span>
+    </form>
+  </div>
+</div>

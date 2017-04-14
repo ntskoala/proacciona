@@ -1,0 +1,28 @@
+  <md-card>
+    <md-card-title>
+      <md-toolbar color="accent">{{'limpieza.planlimpieza' | translate}}</md-toolbar>
+    </md-card-title>
+ <md-card-subtitle>
+   <div class="w80">
+   <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)"></listado-limpieza>
+   </div>
+   <div class="w20">
+   <div class="calendarios">
+  <button md-raised-button (click)="calendarios()">{{'limpieza.calendarios' | translate}}</button>
+  <button md-raised-button (click)="verProductosLimpieza()">{{'limpieza.productos' | translate}}</button>
+  </div>
+   </div>
+
+ </md-card-subtitle>
+
+ <div class="contenido">
+   <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
+   <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>
+   <h2 class="center" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2>
+<md-tab-group *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
+  <md-tab label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" *ngIf="limpieza"></elementos-limpieza></md-tab>
+<md-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></md-tab>  
+  <!--<md-tab label="{{'limpiezas.limpiezascorrectivas' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [limpieza]="limpieza" *ngIf="limpieza"></mantenimientos-correctivos></md-tab>-->
+</md-tab-group>
+ </div>
+  </md-card>

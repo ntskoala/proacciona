@@ -1,0 +1,24 @@
+  <md-card>
+    <md-card-title>
+      <md-toolbar color="accent">{{'proveedores.areaproveedores' | translate}}</md-toolbar>
+    </md-card-title>
+ <md-card-subtitle>
+   <div class="w80">
+   <listado-proveedores (itemSeleccionado)="seleccionProveedor($event)"></listado-proveedores>
+   </div>
+   <div class="w20">
+     <button md-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>
+   </div>
+
+ </md-card-subtitle>
+
+ <div class="contenido">
+   <familias-producto *ngIf="familias"></familias-producto>   
+ <md-toolbar color="accent" *ngIf="proveedor && proveedor.id >0"><h2 class="center" >{{proveedor.nombre}}</h2></md-toolbar>
+<md-tab-group *ngIf="proveedor && proveedor.id > 0" [dynamicHeight]="false">
+  <md-tab label="{{'proveedores.ficha' | translate}}"><span class="space"></span><ficha-proveedor class="tabs"  [proveedor]="proveedor" *ngIf="proveedor"></ficha-proveedor></md-tab>  
+  <md-tab label="{{'proveedores.productos' | translate}}"><span class="space"></span><productos-proveedor class="tabs"  [proveedor]="proveedor" (nuevoProducto)="cambioEnProductos($event)" *ngIf="proveedor"></productos-proveedor></md-tab>
+<md-tab label="{{'proveedores.entradaproductos' | translate}}"><span class="space"></span><entrada-productos class="tabs" [proveedor]="proveedor" [cambioProductos]="cambioProds" *ngIf="proveedor"></entrada-productos></md-tab>  
+</md-tab-group>
+ </div>
+  </md-card>

@@ -1,0 +1,26 @@
+.medium{
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.contenido{
+    min-height: 450px;
+}
+
+.tabs{
+  min-height: 430px;
+    display: flex;
+}
+md-grid-tile-header{
+    height: 25px;
+    color: #000;
+    z-index:2;
+}
+md-grid-tile{
+    z-index:1;
+}
+.campo{
+  background-color: #fff9c4;
+  border: 1px solid #fbc02d;
+  margin-top: 28px;
+}

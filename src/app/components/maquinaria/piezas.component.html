@@ -1,0 +1,90 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #creaForm="ngForm" (ngSubmit)="crearItem()">
+    <input type="hidden" [(ngModel)]="nuevoPieza.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
+    </span>
+
+    <span class="cell">
+      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.cantidad" name="cantidad">
+    </span>
+    <span class="cell">
+      <input type="text" placeholder="material" required [(ngModel)]="nuevoPieza.material" name="material">
+    </span>
+    <span class="cell">
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{'maquinas.pieza' | translate}}</span>
+    <span class="header-cell">{{'maquinas.cantidad' | translate}}</span>
+    <span class="header-cell">{{'maquinas.material' | translate}}</span>
+    <span class="header-cell">{{'maquinas.imagen' | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row" #actualizaForm="ngForm" (ngSubmit)="actualizarItem(actualizaForm.value)" *ngFor="let pieza of piezas; let i = index">
+    <input type="hidden" [(ngModel)]="pieza.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.nombre" name="nombre" (keyup)="modificarItem(pieza.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
+    </span>
+  <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
+    </span>
+    <span class="cell">
+          <!--<span  class="but but2">
+        <label *ngIf="empresasService.administrador" class="inputlabel" attr.for="{{'doc'+i}}">{{'maquinas.subir foto' | translate}}</label>                
+        <input *ngIf="empresasService.administrador" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+    <span  class="but">
+        <button type="button" [disabled]="!pieza.doc" md-raised-button *ngIf="maquina.doc" color="accent" (click)="photoURL(i)">
+        {{'maquinas.ver foto' | translate}}
+        </button>     
+    </span>-->
+     <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!pieza.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+    </span>
+    <span class="cell mini-fab">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>    
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img   class="iframe" [src]="foto">
+</div>

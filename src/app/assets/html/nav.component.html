@@ -1,0 +1,19 @@
+<nav>
+  <div class="logo">
+    <img src="./assets/images/logo.jpg" alt="Logo">
+  </div>
+
+  <div class="logo-empresa">
+  <div class="userlogged" *ngIf="empresasService.userId"> <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
+        <span class="material-icons">account_circle</span>
+  </button></div>
+  <!--<md-menu positionX="after" positionY="below" #menu="mdMenu">
+  <button md-menu-item (click)="closeSession()">
+    <md-icon>account_circle</md-icon>
+    <span>Cerrar Session</span>
+  </button>
+</md-menu>-->
+    <img [src]="logoEmpresa" alt="Logo empresa" (error)="logoEmpresa='./assets/images/pixel.png'" *ngIf="logoEmpresa">
+  </div>
+
+</nav>

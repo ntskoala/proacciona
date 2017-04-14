@@ -1,0 +1,22 @@
+.arbol{
+    width: 40%;
+    float: left;
+    background-color: #fff;
+    position: relative;
+    margin-left: 25px;
+    margin-top: 60px;
+}
+
+.info{
+    width: 40%;
+    float: left;
+    background-color: #fff;
+    position: relative;
+    margin-left: 25px;
+    margin-top: 60px;
+}
+.botones{
+    position: absolute;
+    top:65px;
+    left:45px;
+}

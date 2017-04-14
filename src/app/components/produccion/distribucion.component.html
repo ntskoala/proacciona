@@ -1,0 +1,137 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+
+
+
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+    <span class="cell">
+    <select class="medium" [(ngModel)]="nuevoItem.idcliente" name="idcliente">
+      <option *ngFor="let cliente of clientes; let i = index" [value]="cliente.id">
+        {{cliente.nombre}}
+      </option>
+    </select>
+    </span>
+    <span class="cell">
+    <input type="text" disabled [(ngModel)]="nuevoItem.numlote" name="numlote">
+    </span> 
+    <span class="cell">
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
+      <p-calendar placeholder="fecha_caducidad" [(ngModel)]="nuevoItem.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
+    </span>
+    <span class="cell medium">
+      <input class="medium" type="text" [placeholder]="'proveedores.cantidad' | translate" required [(ngModel)]="nuevoItem.cantidad" name="cantidad">
+    </span>
+         <span class="cell">
+       <select class="medium" [(ngModel)]="nuevoItem.tipo_medida" name="tipo_medida">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+    <!--<span class="cell medium">  
+       <select-alergenos name="alergenos" [parentAlergenos]="nuevoItem.alergenos" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
+      </span>-->
+      <span class="header-cell">
+      </span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"produccion.cliente" | translate}}</span>
+    <span class="header-cell medium">{{"produccion.numlote" | translate}}</span>
+    <span class="header-cell">{{"produccion.fecha" | translate}}</span>
+    <span class="header-cell">{{"produccion.fecha_caducidad" | translate}}</span>
+    <span class="header-cell medium">{{"produccion.cantidad" | translate}}</span>
+    <span class="header-cell">{{"produccion.tipo medida" | translate}}</span>
+    <!--<span class="header-cell medium">{{"produccion.alergenos" | translate}}</span>-->
+    <!--<span class="header-cell">{{"proveedores.Foto" | translate}}</span>-->
+    <span class="header-cell">
+      </span><!--Borrar-->
+    <span class="header-cell"></span><!--Guardar-->
+  </div>
+  <div class="divrow"  *ngFor="let item of items; let i = index">
+  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
+    <input type="hidden" [(ngModel)]="item.id" name="id">
+    <span class="cell">
+    <select class="smallselect" [(ngModel)]="item.idcliente" name="idcliente">
+      <option *ngFor="let cliente of clientes; let i = index" [value]="cliente.id">
+        {{cliente.nombre}}
+      </option>
+    </select>
+    </span>
+    <span class="cell medium">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.numlote" name="numlote" (keyup)="itemEdited(item.id)">
+    </span>
+    <span class="cell">
+      <p-calendar [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
+    </span>
+    <span class="cell">
+      <p-calendar placeholder="fecha_caducidad" [(ngModel)]="item.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
+    </span>
+    <span class="cell medium">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.cantidad" name="cantidad" (keyup)="itemEdited(item.id)">
+    </span>
+
+     <span class="cell">
+       <select class="medium" [(ngModel)]="item.tipo_medida" name="tipo_medida" (change)="itemEdited(item.id)">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+     <!--<span class="cell medium">
+    <select-alergenos name="alergenos" [parentAlergenos]="item.alergenos" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
+ </span>-->
+
+
+<!--*****  subir/ver FOTO  *********-->
+    <!--<span class="cell"> 
+      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="!item.doc" md-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
+    </span>-->
+<!--****** FIN ********************-->
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+   
+  </form>
+  <!--<div class="protocol"  *ngIf="protocolo[i]">
+ <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol"></protocolo>
+  </div>-->
+ </div>
+</div>
+
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img class="iframe" [src]="foto">
+</div>
+
+

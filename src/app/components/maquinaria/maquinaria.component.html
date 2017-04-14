@@ -1,0 +1,29 @@
+  <md-card>
+    <md-card-title>
+      <md-toolbar color="accent">{{'maquinas.planmantenimiento' | translate}}</md-toolbar>
+    </md-card-title>
+ <md-card-subtitle>
+   <div class="w80">
+   <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>
+   </div>
+   <div class="w20">
+   <div class="calendarios">
+  <button md-raised-button (click)="calendarios()">{{'maquinas.calendarios' | translate}}</button>
+  <button md-raised-button (click)="lubricantes()">{{'maquinas.lubricantes' | translate}}</button>
+  </div>
+   </div>
+ </md-card-subtitle>
+ <div class="contenido">
+   <calendarios *ngIf="calendario" [maquinas]="maquinas"></calendarios>
+   <lubricantes *ngIf="lubricante"></lubricantes>
+    <h2 class="center" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2>
+<md-tab-group *ngIf="maquina && maquina.id > 0">
+  <md-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
+  <md-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>  
+  <md-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></md-tab>
+<md-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-realizados></md-tab>  
+  <md-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>
+  <md-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></md-tab>
+</md-tab-group>
+ </div>
+  </md-card>

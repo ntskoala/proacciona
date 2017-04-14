@@ -1,0 +1,93 @@
+
+<form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
+    <span class="table">
+        <span class="header-row">
+             <span class="header-cell">{{"produccion.numlote" | translate}}</span>
+             <span class="header-cell">{{"produccion.producto" | translate}}</span>
+             <span class="header-cell">{{"produccion.estado" | translate}}</span>
+        </span>
+        <span class="row">
+             <span class="cell">
+                 <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.numlote' | translate" type="text"
+                required [(ngModel)]="orden.numlote" name="numlote">
+             </span>
+            <span class="cell">
+                <select class="medium" [(ngModel)]="orden.idproductopropio" name="idproductopropio" (change)="setIdProductoPropio($event)">
+                    <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+                    {{prod.nombre}}
+                    </option>
+                </select>
+             </span>
+             <span class="cell">
+                <select class="medium" [(ngModel)]="orden.estado" name="estado">
+                    <option value="abierto">{{'abierto' | translate}}</option>
+                    <option value="cerrado">{{'cerrado' | translate}}</option>
+                    <option value="Entregado">{{'entregado' | translate}}</option>
+                </select>
+             </span>
+        </span>
+        <span class="header-row">
+             <span class="header-cell">{{"produccion.fecha_inicio" | translate}}</span>
+             <span class="header-cell">{{"produccion.fecha_fin" | translate}}</span>
+             <span class="header-cell">{{"produccion.fecha_caducidad" | translate}}</span>
+        </span>
+        <span class="row">
+             <span class="cell">
+            <p-calendar placeholder="fecha_inicio" [(ngModel)]="orden.fecha_inicio" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_inicio"></p-calendar>
+
+             </span>
+             <span class="cell">
+            <p-calendar placeholder="fecha_fin" [(ngModel)]="orden.fecha_fin" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_fin"></p-calendar>
+             </span>
+             <span class="cell">
+                <p-calendar placeholder="fecha_caducidad" [(ngModel)]="orden.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
+             </span>
+        </span>
+        <span class="header-row">
+             <span class="header-cell">{{"produccion.cantidad" | translate}}</span>
+             <span class="header-cell">{{"produccion.tipo_medida" | translate}}</span>
+             <span class="header-cell">{{"produccion.remanente" | translate}}</span>
+        </span>
+        <span class="row">
+             <span class="cell">
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.cantidad' | translate" type="text"
+                 [(ngModel)]="orden.cantidad" name="cantidad">
+             </span>
+         <span class="cell">
+       <select class="smallselect" [(ngModel)]="orden.tipo_medida" name="tipo_medida">
+      <option *ngFor="let medida of medidas; let i = index" [value]="medida">
+        {{medida}}
+      </option>
+    </select>
+ </span>
+  <span class="cell">
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.remanente' | translate" type="text"
+                 [(ngModel)]="orden.remanente" name="remanente">
+    </span>
+        </span>
+    </span>
+    
+
+
+    <div  class="botones">
+    <span class="but">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" [disabled]="!myItem.form.valid" type="submit">
+          <!--<span class="material-icons">save</span>-->{{'guardar' | translate}}
+    </button>
+    </span>
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="accent" (click)="trazabilidadAtras()" type="button">
+          <span class="material-icons">restore</span>
+    </button>
+    </div>
+
+
+</form>
+
+<div class="traza" *ngIf="trazabilidad">
+<trazabilidad [orden]="orden" *ngIf="trazabilidad"></trazabilidad>
+    <div class="close-button">
+        <button  md-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">
+          <span class="material-icons">close</span>
+    </button>
+    </div>
+</div>

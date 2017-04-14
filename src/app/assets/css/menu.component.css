@@ -1,0 +1,15 @@
+.panel{
+  position: fixed;
+  margin: 0;
+  float:right;
+  width: 75px;
+  height: 100%;
+  background-color: #999999;
+  z-index: 10;
+right: 0px;
+top: 62px;
+}
+
+.opcion{
+    margin:20px 17px;
+}

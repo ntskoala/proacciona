@@ -1,0 +1,15 @@
+<div class="modal" *ngIf="modal.visible">
+  <div class="modal-window">
+    <md-card>
+      <md-card-content>
+        <p class="titulo">{{modal.titulo | translate}}</p>
+        <listado-empresas *ngIf="modal.importchecklist" (empresaseleccionada)="seleccionada($event)"></listado-empresas>
+        <p class="subtitulo">{{modal.subtitulo | translate}}</p>
+        <listado-checklists *ngIf="modal.importchecklist" [empresaSeleccionada]="empresaSeleccionada" (checklistSeleccionada)="checklistseleccionada($event)"></listado-checklists>
+        <button md-raised-button color="warn" [class.hide]="!modal.eliminar" (click)="eliminar()">Eliminar</button>
+        <button md-raised-button color="primary" (click)="cerrar()">{{'Cerrar' | translate}}</button>
+        <button md-raised-button color="primary" [disabled]="!checklist" [class.hide]="!modal.importchecklist" (click)="importar()">{{'Importar' | translate}}</button>
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

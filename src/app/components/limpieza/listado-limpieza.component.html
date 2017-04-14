@@ -1,0 +1,45 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="selector">
+  {{'limpieza.areadelimpieza' | translate}}<br>
+  <form>
+    <select (change)="seleccionarZona($event.target.value, $event)">
+      <option *ngFor="let limpieza of limpiezas; let i = index" [value]="i">
+        {{limpieza.nombre}}
+      </option>
+    </select>
+  </form>
+<button *ngIf="empresasService.administrador && limpiezaActiva > 0" md-button color="warn" (click)="eliminaZona()" type="submit">Eliminar</button>
+<button *ngIf="empresasService.administrador && limpiezaActiva > 0" md-button color="primary" (click)="modificarZona()" type="button">Modificar</button>
+</div>
+<div class="nueva">
+<!-- Nueva maquina -->
+<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="nueva-maquina">
+  <h2>{{'limpieza.nueva' | translate}}</h2>
+  <div class="table">
+    <form class="row" (ngSubmit)="nuevaZona(newItem.value)" #newItem="ngForm">
+      <span class="cell">
+        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="novaLimpieza.nombre" name="nombre">
+      </span>
+      <span class="cell">
+        <button md-mini-fab color="accent" [disabled]="!newItem.form.valid" type="submit">
+          <span class="material-icons">add</span>
+        </button>
+      </span>
+    </form>
+  </div>
+</div>
+</div>
+<div class="modal" *ngIf="modificaZona">
+  <div class="modal-window modificar">
+  
+          <h2 class="center">{{ 'modificar' | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarZona()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>

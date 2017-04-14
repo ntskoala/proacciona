@@ -1,0 +1,12 @@
+      <button md-raised-button color="accent"  type="button" (click)="setAlergenos('save')">{{'alergenos' | translate}}</button>
+
+      <div class="selalergenos" *ngIf="viewAlergenos">
+          <md-list *ngFor="let alergeno of alergenos;let i = index">
+                <md-list-item [ngClass]="{'yellow': selectedAlergenos.indexOf(alergeno) != -1,'grey': selectedAlergenos.indexOf(alergeno) <0, 'itemproducto':true, 'round':true}" (click)="cambiaEstadoAlergeno(alergeno)" >{{alergeno}}</md-list-item>
+        </md-list>
+    <span class="cell">
+      <button md-mini-fab color="primary" (click)="setAlergenos('save')" type="button">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+      </div>

@@ -1,0 +1,9 @@
+.divrow{
+    display: table-row-group;
+}
+.header{
+    background-color: #ffd740;
+}
+.prot{
+    background-color: gainsboro;
+}

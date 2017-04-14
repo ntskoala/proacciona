@@ -1,0 +1,74 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+    <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoMantenimiento.nombre" name="nombre">
+    </span>
+    <span class="cell">
+      <p-calendar placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+    <span class="cell">
+        <select class="white-select" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
+        <option value="interno">{{'maquinas.interno' | translate}}</option>
+        <option value="externo">{{'maquinas.externo' | translate}}</option>
+      </select>
+    </span>
+
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoMantenimiento.fecha"></periodicidad>
+    </span>
+    <span class="cell">
+      <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+  <div class="header-row">
+    <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
+    <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
+    <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+    <span class="header-cell">{{"maquinas.periodicidad" | translate}}</span>
+    <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row"#actMantenimientoF="ngForm" (ngSubmit)="actualizarMantenimiento(actMantenimientoF.value, i, $event)" *ngFor="let mantenimiento of mantenimientos;let i = index">
+    <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="modificarMantenimiento(mantenimiento.id)">
+    </span>
+    <span class="cell">
+      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarMantenimiento(mantenimiento.id,mantenimiento.fecha)" name="fecha"></p-calendar>    
+    </span>
+    <span class="cell">
+      <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="mantenimiento.tipo" name="tipo" (change)="modificarMantenimiento(mantenimiento.id)">
+        <option value="interno">{{'interno' | translate}}</option>
+        <option value="externo">{{'externo' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <periodicidad (periodo)="setPeriodicidad($event, mantenimiento.id, i)" [miperiodo]="mantenimiento.periodicidad" [fechaPrevista]="mantenimiento.fecha" name="periodicidad"></periodicidad>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="modificarMantenimiento(mantenimiento.id)">
+    </span>
+
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>

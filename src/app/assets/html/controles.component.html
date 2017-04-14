@@ -1,0 +1,103 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
+    <input type="hidden" [(ngModel)]="nuevoControl.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'Nombre' | translate" required [(ngModel)]="nuevoControl.nombre" name="nombre">
+    </span>
+    <span class="cell">
+      <input type="text" placeholder="Pla" required [(ngModel)]="nuevoControl.pla" name="pla">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" [(ngModel)]="nuevoControl.valorminimo" name="valorminimo">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" [(ngModel)]="nuevoControl.valormaximo" name="valormaximo">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" [(ngModel)]="nuevoControl.objetivo" name="objetivo">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" [(ngModel)]="nuevoControl.tolerancia" name="tolerancia">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" [(ngModel)]="nuevoControl.critico" name="critico">
+    </span>
+    <span class="cell">
+      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoControl.periodicidad" name="periodicidad">
+    </span>
+    <span class="cell">
+      <select class="white-select" required [(ngModel)]="nuevoControl.tipoperiodo" name="tipoperiodo">
+        <option value="Día">{{'Día' | translate}}</option>
+        <option value="Semana">{{'Semana' | translate}}</option>
+        <option>Mes</option>
+        <option value="Año">{{'Año' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+  <div class="header-row">
+    <span class="header-cell">Control</span>
+    <span class="header-cell">Pla</span>
+    <span class="header-cell right">min</span>
+    <span class="header-cell right">max</span>
+    <span class="header-cell right">obj</span>
+    <span class="header-cell right">tol</span>
+    <span class="header-cell right">crit</span>
+    <span class="header-cell right">per</span>
+    <span class="header-cell">{{'Periodo' | translate}}</span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+  <form class=" row"#actControlF="ngForm" (ngSubmit)="actualizarControl(actControlF.value)" *ngFor="let control of controles">
+    <input type="hidden" [(ngModel)]="control.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="control.nombre" name="nombre" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="control.pla" name="pla" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.valorminimo" name="valorminimo" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.valormaximo" name="valormaximo" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.objetivo" name="objetivo" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.tolerancia" name="tolerancia" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.critico" name="critico" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" type="text" [(ngModel)]="control.periodicidad" name="periodicidad" (keyup)="modificarControl(control.id)">
+    </span>
+    <span class="cell">
+      <select [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="white-select" [(ngModel)]="control.tipoperiodo" name="tipoPeriodo" (change)="modificarControl(control.id)">
+        <option value="Día">{{'Día' | translate}}</option>
+        <option value="Semana">{{'Semana' | translate}}</option>
+        <option>Mes</option>
+        <option value="Año">{{'Año' | translate}}</option>
+      </select>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+</div>
+<div class="leyenda" [innerHTML]="'pieControles' | translate"></div>

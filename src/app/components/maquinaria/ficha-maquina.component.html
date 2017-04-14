@@ -1,0 +1,144 @@
+
+<form (ngSubmit)="udateMaquina(myMachine.value)" #myMachine="ngForm">
+    <md-grid-list cols="3" rowHeight="65px">
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.nombre" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.Nombre' | translate" type="text"
+                required [(ngModel)]="maquina.nombre" name="nombre">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.ubicacion" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.ubicacion' | translate" type="text"
+                [(ngModel)]="maquina.ubicacion" name="ubicacion">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.fecha" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.fecha' | translate" type="date"
+                [(ngModel)]="maquina.fecha_adquisicion" name="fecha_adquisicion">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.numserie" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento' " md-input class="campo" [placeholder]="'maquinas.numserie' | translate" type="text"
+                [(ngModel)]="maquina.numserie" name="numserie">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.fabricante" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.fabricante' | translate" type="text"
+                [(ngModel)]="maquina.fabricante" name="fabricante">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.modelo" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.modelo' | translate" type="text"
+                [(ngModel)]="maquina.modelo" name="modelo">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.codigo_interno" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.codigo_interno' | translate" type="text"
+                [(ngModel)]="maquina.codigo_interno" name="codigo_interno">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.potencia" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.potencia' | translate" type="text"
+                [(ngModel)]="maquina.potencia" name="potencia">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.medidas" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.medidas' | translate" type="text"
+                [(ngModel)]="maquina.medidas" name="medidas">
+        </md-grid-tile>
+
+
+        <md-grid-tile [colspan]="3" [rowspan]="2">
+            <md-grid-tile-header>{{"maquinas.funciones" | translate}}
+            </md-grid-tile-header>
+            <textarea [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="campo fullsize" [placeholder]="'maquinas.funciones' | translate" type="text"
+                [(ngModel)]="maquina.funciones" name="funciones"></textarea>
+
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.regimen_trabajo" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.regimen_trabajo' | translate" type="text"
+                [(ngModel)]="maquina.regimen_trabajo" name="regimen_trabajo">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.ciclo_productivo" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.ciclo_productivo' | translate"
+                type="text" [(ngModel)]="maquina.ciclo_productivo" name="ciclo_productivo">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.material" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.material' | translate" type="text"
+                [(ngModel)]="maquina.material" name="material">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.liquido_refrigerante" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.liquido_refrigerante' | translate"
+                type="text" [(ngModel)]="maquina.liquido_refrigerante" name="liquido_refrigerante">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.modo_trabajo" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.modo_trabajo' | translate" type="text"
+                [(ngModel)]="maquina.modo_trabajo" name="modo_trabajo">
+        </md-grid-tile>
+
+        <md-grid-tile>
+            <md-grid-tile-header>{{"maquinas.lubricacion" | translate}}
+            </md-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo" [placeholder]="'maquinas.lubricacion' | translate" type="text"
+                [(ngModel)]="maquina.lubricacion" name="lubricacion">
+        </md-grid-tile>
+    </md-grid-list>
+
+
+    <div  class="botones">
+    <span class="but">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" md-raised-button color="accent" [disabled]="!myMachine.form.valid" type="submit">
+          <!--<span class="material-icons">save</span>-->{{'maquinas.guardar' | translate}}
+    </button>
+    </span>
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" class="inputlabel" for="doc">{{'maquinas.subir documento' | translate}}</label>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event)" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+    <span  class="but">
+        <button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="0==1" (click)="verFoto('ficha')">
+        {{'maquinas.ver documento' | translate}}
+        </button>     
+    </span>
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" class="inputlabel" for="doc2">{{'maquinas.subir foto' | translate}}</label>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" id="doc2" class="inputfile" type="file" (change)="uploadFunciones($event,'fotomaquina')" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+    <img [src]="image" width="100" (error)="image='./assets/images/pixel.png'" (click)="verFoto('maquina')" />
+    </div>
+</form>
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+<img   class="iframe" [src]="foto">
+</div>

@@ -1,0 +1,30 @@
+<div class="table prot">
+    <div class="row">
+        <span class="cell">
+    <input type="text" [(ngModel)]="nuevoProcedimiento" >
+    </span>
+        <span class="cell small">
+      <button md-mini-fab color="accent" type="button" [disabled]="!nuevoProcedimiento" (click)="addProcedimiento()">
+        <span class="material-icons">add</span>
+        </button>
+        </span>
+    </div>
+    <div class="divrow yellow">
+        <span class="cell">{{"limpieza.descripcion" | translate}}</span>
+        <span class="cell small">
+      <button md-mini-fab color="primary" type="button" (click)="setProtocolo()">
+        <span class="material-icons">check</span>
+        </button>
+        </span>
+    </div>
+    <div class="row" *ngFor="let procedimiento of protocolo;let n = index">
+        <span class="cell">
+    {{procedimiento.descripcion}}
+    </span>
+        <span class="cell small">
+            <button md-mini-fab color="primary" type="button" (click)="removeProcedimiento(n)">
+                <span class="material-icons">remove</span>
+            </button>
+        </span>
+    </div>
+</div>

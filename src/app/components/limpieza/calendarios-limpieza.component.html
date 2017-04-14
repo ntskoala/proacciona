@@ -1,0 +1,55 @@
+<!--[locale]="es" -->
+<md-card>
+<h2 class="center">Calendario General Limpieza</h2>
+<p-schedule [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
+ dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+<!--(onDayClick)="handleDayClick($event)"-->
+<md-card>leyenda
+    <div class="leyenda">
+        {{'limpieza.limpiezas' | translate}}
+        <md-chip-list>
+            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip  color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</md-chip>
+            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#F67E1F" selected="true">{{'limpieza.proximas' | translate}}</md-chip>
+            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="accent" selected="true">{{'limpieza.vencidas' | translate}}</md-chip>
+        </md-chip-list>
+    </div>
+</md-card>
+</md-card>
+
+ <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="limpiezarealizada">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'limpieza.nombre' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="limpiezarealizada.nombre" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_prevista' | translate}}</label></div>
+            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="limpiezarealizada.fecha_prevista" format="dd-mm-yy"></p-calendar></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_real' | translate}}</label></div>
+            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="limpiezarealizada.fecha" format="dd-mm-yy"></p-calendar></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'limpieza.descripcion' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="limpiezarealizada.descripcion" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'limpieza.tipo' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="tipo" [(ngModel)]="limpiezarealizada.tipo" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'limpieza.responsable' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="limpiezarealizada.responsable" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
+            <button *ngIf="estado=='pendiente'" type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+        </div>
+    </p-footer>
+</p-dialog>

@@ -1,0 +1,115 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="modal2">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+<h2 class="center">{{"limpieza.productoslimpieza" | translate}}</h2>
+<div class="table">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'limpieza.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+    </span>
+
+    <span class="cell">
+      <input type="text" [placeholder]="'limpieza.marca' | translate" required [(ngModel)]="nuevoItem.marca" name="marca">
+    </span>
+    <span class="cell">
+      <!--<input class="small" type="text" [placeholder]="'limpieza.desinfectante' | translate" required [(ngModel)]="nuevoItem.desinfectante" name="desinfectante">-->
+        <select class="small" class="white-select" [(ngModel)]="nuevoItem.desinfectante" name="desinfectante">
+        <option value="si">{{'si' | translate}}</option>
+        <option value="no">{{'no' | translate}}</option>
+      </select>
+    </span>
+        <span class="cell">
+      <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="nuevoItem.dosificacion" name="dosificacion">
+    </span>
+    <span class="cell">
+    </span>
+    <span class="cell">
+    </span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell"></span>
+    <span class="cell">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+
+  <div class="header-row">
+    <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
+    <span class="header-cell">{{"limpieza.marca" | translate}}</span>
+    <span class="header-cell">{{"limpieza.desinfectante" | translate}}</span>
+    <span class="header-cell">{{"limpieza.dosificacion" | translate}}</span>
+    <span class="header-cell">{{"limpieza.imagen" | translate}}</span>
+    <span class="header-cell"></span>
+        <span class="header-cell">{{"limpieza.ficha" | translate}}</span>
+            <span class="header-cell"></span>
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
+  </div>
+
+  <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index">
+    <input type="hidden" [(ngModel)]="item.id" name="id">
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.marca" name="marca" (keyup)="itemEdited(item.id)">
+    </span>
+  <span class="cell">
+      <!--<input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="item.desinfectante" name="deinfectante" (keyup)="itemEdited(item.id)">-->
+       <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.desinfectante" name="desinfectante" (change)="itemEdited(item.id)">
+        <option value="si">{{'si' | translate}}</option>
+        <option value="no">{{'no' | translate}}</option>
+      </select>
+    </span>
+        <span class="cell">
+      <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="item.dosificacion" name="dosificacion" (keyup)="itemEdited(item.id)">
+    </span>
+<!--*****  subir/ver FOTO  *********-->
+    <span class="cell small">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" md-mini-fab color="accent" (click)="photoURL(i,'doc',item.doc)" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+    </span>
+    <span class="cell mini-fab">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+<!--****** FIN ********************-->
+<!--*****  subir/ver Ficha  *********-->
+    <span class="cell small">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.ficha" md-mini-fab color="accent" (click)="photoURL(i,'ficha',item.ficha)" type="button">
+        <span class="material-icons">photo_camera</span>
+      </button>
+    </span>
+    <span class="cell mini-fab">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'ficha'+i}}"></label>                
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'ficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'ficha')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+    </span>
+<!--****** FIN ********************-->
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+  </form>
+
+</div>
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+<img   class="iframe" [src]="foto">
+</div>

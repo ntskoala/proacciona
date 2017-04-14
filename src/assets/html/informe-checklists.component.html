@@ -1,0 +1,60 @@
+<!-- Modal foto -->
+<div class="modal" *ngIf="modal">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+
+<h2>Informe de checklists</h2>
+<div class="checklist">
+  <h2>Checklist</h2>
+  <form>
+    <select (change)="cambioChecklist($event.target.value)">
+      <option *ngFor="let checklist of checklists" [value]="checklist.id">
+        {{checklist.nombrechecklist}}
+      </option>
+    </select>
+  </form>
+</div>
+
+<div class="fechas">
+  <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
+   <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio"></ng2-datepicker>
+   <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin"></ng2-datepicker>
+    <!--<input mdInput type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio">
+    <input mdInput type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin">-->
+    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+      <span class="material-icons">check</span>
+    </button>                
+  </form>
+</div>
+
+<div class="table">
+  <div class="header-row">
+    <span class="header-cell">{{'Fecha' | translate}}</span>
+    <span class="header-cell center">{{'Imagen' | translate}}</span>
+    <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
+  </div>
+  <div class="row" *ngFor="let resultado of tabla; let fila = index">
+    <span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>
+    <span class="cell center" *ngIf="resultado.foto">
+      <span class="foto-link material-icons" (click)="ventanaFoto(resultado.id,'checklist')">photo_camera</span>
+    </span>
+    <span class="cell center" *ngIf="!resultado.foto">
+      <span class="material-icons">do_not_disturb_alt</span>
+    </span>
+    <span class="cell right" *ngFor="let columna of columnas; let i = index">
+      <span class="foto-link material-icons" *ngIf="resultado[columna.fotocontrol]" (click)="ventanaFoto(resultado[columna.fotocontrol],'checklistcontrol')">photo_camera</span>
+      <span class="descrip-link material-icons" *ngIf="resultado[columna.id2]">comments</span>
+      <div class="descripcion"><span *ngIf="resultado[columna.id2]">{{resultado[columna.id2]}}</span></div>
+        
+      <span id="{{fila}}-{{i}}" class="material-icons green" *ngIf="resultado[columna.id]">check</span>
+      <span id="{{fila}}-{{i}}" class="material-icons red" *ngIf="!resultado[columna.id]">close</span>
+    </span>
+  </div>
+
+
+</div>

@@ -1,0 +1,25 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<md-card>
+  <md-card-title>
+    <md-toolbar color="accent">
+      Empresa
+      <span class="id-empresa" *ngIf="empresasService.seleccionada != 0">
+        24{{empresasService.seleccionada}}53
+      </span>
+    </md-toolbar>
+  </md-card-title>
+  <md-card-content>
+    <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
+    <!--<form>
+      <select (change)="selecciona($event.target.value)">
+        <option *ngFor="let empresa of empresas" [value]="empresa.id">
+          {{empresa.nombre}}
+        </option>
+      </select>
+        </form>-->
+      <label class="inputlabel full-width" for="logo">{{'le' | translate}}</label>
+      <input id="logo" class="inputfile" type="file" (change)="uploadLogo($event)"/>
+
+    <button md-button color="warn" (click)="checkBorrar()" type="submit">Eliminar</button>
+  </md-card-content>
+</md-card>

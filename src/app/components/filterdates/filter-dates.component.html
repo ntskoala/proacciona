@@ -1,0 +1,25 @@
+<div class="filter-window">
+    <div class="table">
+    <div  class="header-row">
+        {{'filter-dates.filtrar fechas' | translate}}
+    </div>
+    </div>
+    <div class="space"></div>
+<div class="table">
+    <div class="header-row">
+    <span class="cell">{{'filter-dates.desde' | translate}}</span>
+    <span class="cell">{{'filter-dates.hasta' | translate}}</span>
+    </div>
+    <div class="row">
+        <span class="cell">
+<p-calendar placeholder="fecha Inicio" [(ngModel)]="fechas.fecha_inicio" [locale]="es" dateFormat="dd/mm/yy" ></p-calendar>
+        </span>
+        <span class="cell">
+<p-calendar placeholder="fecha Fin" [(ngModel)]="fechas.fecha_fin" [locale]="es" dateFormat="dd/mm/yy"></p-calendar>
+        </span>
+    </div>
+</div>
+<div class="space"></div>
+<button md-mini-fab  (click)="seleccion('close')"><md-icon>close</md-icon></button>
+<button md-mini-fab  (click)="seleccion('ok')"><md-icon>check</md-icon></button>
+</div>

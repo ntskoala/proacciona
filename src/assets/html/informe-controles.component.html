@@ -1,0 +1,43 @@
+<!-- Modal foto -->
+<div class="modal" *ngIf="modal">
+  <div class="foto-window">
+      <span class="close material-icons" (click)="cerrarFoto()">close</span>
+      <div class="foto">
+        <img src="{{fotoSrc}}">
+      </div>
+  </div>
+</div>
+
+<h2>{{'Informe de controles' | translate}}</h2>
+<div class="fechas">
+  <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
+    <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio"></ng2-datepicker>
+   <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin"></ng2-datepicker>
+    <!--<input mdInput type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio">
+    <input mdInput type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin">-->
+    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+      <span class="material-icons">check</span>
+    </button>                
+  </form>
+</div>
+
+<div class="table">
+  <div class="header-row">
+    <span class="header-cell">{{'Fecha' | translate}}</span>
+    <span class="header-cell small">{{'Imagen' | translate}}</span>
+    <span class="header-cell right" *ngFor="let columna of columnas">{{columna}}</span>
+  </div>
+  <div class="row" *ngFor="let resultado of tabla">
+    <span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>
+    <span class="cell center" *ngIf="resultado.foto">
+      <span class="foto-link material-icons" (click)="ventanaFoto(resultado.id)">photo_camera</span>
+    </span>
+    <span class="cell center" *ngIf="!resultado.foto">
+      <span class="material-icons">do_not_disturb_alt</span>
+    </span>
+    <span class="cell right" *ngFor="let columna of columnas" [class.wrong]="resultado.error"
+      title="{{resultado[columna + 'mensaje'] | translate}}">
+      {{resultado[columna]}}
+    </span>
+  </div>
+</div>

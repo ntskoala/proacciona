@@ -10,7 +10,7 @@ import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoad
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
 import { DatePickerModule } from 'ng2-datepicker';
 //**********REQUIRED FOR CALENDAR */
-import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
+//import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
 import {MomentModule} from 'angular2-moment';
 //**********PRIME NG MODULES */
 import {CalendarModule} from 'primeng/primeng';
@@ -135,7 +135,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
   ],
   declarations: [
     AppComponent,
-    CalendarComponent,
+    //CalendarComponent,
     NavComponent,
     MenuComponent,
     AlertasComponent,
@@ -207,8 +207,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PageNotFoundComponent
   ],
   providers: [
-    Servidor,
     EmpresasService,
+    Servidor,
     PermisosService
   ],
   

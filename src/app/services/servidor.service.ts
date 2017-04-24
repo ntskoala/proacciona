@@ -4,9 +4,9 @@ import 'rxjs/add/operator/map';
 import {EmpresasService} from './empresas.service';
 
 @Injectable()
-@Component({
-providers: [EmpresasService]
-})
+// @Component({
+// providers: [EmpresasService]
+// })
 export class Servidor {
 
   constructor (private llamada: Http, private empresasService: EmpresasService) {}

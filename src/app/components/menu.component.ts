@@ -10,7 +10,7 @@ export class MenuComponent implements OnInit{
 @Output() selectedMenu: EventEmitter<string>= new EventEmitter<string>();
 
 
-  constructor(private empresasService: EmpresasService,private permisos: PermisosService) {}
+  constructor(public empresasService: EmpresasService,private permisos: PermisosService) {}
 
   ngOnInit() {
   }

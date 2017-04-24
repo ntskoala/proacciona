@@ -113,6 +113,7 @@ getFamilias(){
     
     let param = this.entidad+this.field+this.proveedor.id;
     this.nuevoItem.idproveedor = this.proveedor.id;
+    if (!this.nuevoItem.idfamilia) this.nuevoItem.idfamilia = 0;
     this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.addnewItem,param).subscribe(
       response => {

@@ -23,12 +23,12 @@ export class FichaProduccionComponent implements OnInit, OnChanges {
 
 
 //*** ESPECIFIC VAR */
-private es:any;
-private trazabilidad: boolean;
-private almacenesDestino: Almacen[];
+public es:any;
+public trazabilidad: boolean;
+public almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
-  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
+  constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
     this.getProductos();

@@ -61,7 +61,7 @@ entidad:string="&entidad=produccion_detalle";
 field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 es;
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
       this.getAlmacenes();
@@ -268,7 +268,7 @@ getParent(idOrden){
         } );
     }
     
-    private expandRecursive(node:TreeNode, isExpand:boolean){
+    public expandRecursive(node:TreeNode, isExpand:boolean){
         node.expanded = isExpand;
         if(node.children){
             node.children.forEach( childNode => {

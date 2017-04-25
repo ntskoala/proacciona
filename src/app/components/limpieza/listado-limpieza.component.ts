@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChange,Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit,Output,EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -16,15 +16,15 @@ import { Modal } from '../../models/modal';
 export class ListadoLimpiezasComponent implements OnInit {
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
-  private subscription: Subscription;
-  limpiezaActiva: number = 0;
-  limpieza1: LimpiezaZona = new LimpiezaZona(0,0, 'Seleccionar zona');
-  limpiezas: LimpiezaZona[] = [];
-  novaLimpieza: LimpiezaZona = new LimpiezaZona(0,0,'');
-  modal: Modal = new Modal();
-  modificaZona: boolean;
-  nuevoNombre:string;
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  public subscription: Subscription;
+  public limpiezaActiva: number = 0;
+  public limpieza1: LimpiezaZona = new LimpiezaZona(0,0, 'Seleccionar zona');
+  public limpiezas: LimpiezaZona[] = [];
+  public novaLimpieza: LimpiezaZona = new LimpiezaZona(0,0,'');
+  public modal: Modal = new Modal();
+  public modificaZona: boolean;
+  public nuevoNombre:string;
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
@@ -52,7 +52,7 @@ ngOnInit(){
         });
    }
 
-seleccionarZona(valor: any){
+seleccionarZona(valor: any, event:any){
 //  console.log("changelist",valor,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.zonaSeleccionada.emit(this.limpiezas[valor]);
@@ -60,7 +60,7 @@ seleccionarZona(valor: any){
 }
 
 
-ngOnChanges(changes: {[propKey: string]: SimpleChange}) {}
+// ngOnChanges(changes:SimpleChange) {}
 
 nuevaZona(zona: LimpiezaZona){
 zona.idempresa = this.empresasService.seleccionada;

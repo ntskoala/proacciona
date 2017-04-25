@@ -50,14 +50,14 @@
       <md-card-content>
         <md-input-container>
         <input mdInput class="full-width" type="text" required [placeholder]="'Usuario' | translate" 
-          [(ngModel)]="usuario.user" name="user">
+          [(ngModel)]="usuario['user']" name="user">
         </md-input-container>
         <md-input-container>
         <input mdInput class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
-          [(ngModel)]="usuario.password" name="password">
+          [(ngModel)]="usuario['password']" name="password">
         </md-input-container>
         <label for="idioma">Seleccionar idioma</label>
-        <select class="white-select" required [(ngModel)]="usuario.idioma" name="idioma">
+        <select class="white-select" required [(ngModel)]="usuario['idioma']" name="idioma">
           <option disabled value="null">Selecciona</option>
           <option value="cat">Català</option>
           <option value="es">Castellano</option>

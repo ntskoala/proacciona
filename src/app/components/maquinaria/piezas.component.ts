@@ -24,7 +24,7 @@ public verdoc: boolean = false;
 public url=[];
 public foto:string;
   modal: Modal = new Modal();
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar

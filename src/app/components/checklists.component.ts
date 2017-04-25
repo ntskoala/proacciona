@@ -15,7 +15,7 @@ import { Modal } from '../models/modal';
 })
 export class ChecklistsComponent implements OnInit{
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   checklistActiva: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
   checklists: Checklist[] = [];
@@ -30,7 +30,7 @@ export class ChecklistsComponent implements OnInit{
   modalCCL: Modal = new Modal();
   modalImportCL: Modal = new Modal();
   empresa: any;
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
   ngOnInit() {
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());

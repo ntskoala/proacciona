@@ -19,9 +19,12 @@ public nuevoItem: FamiliasProducto = new FamiliasProducto('',0,null,0);
 public items: FamiliasProducto[];
 public guardar = [];
 public idBorrar;
-modal: Modal = new Modal();
-entidad:string="&entidad=proveedores_familia";
-  constructor(private servidor: Servidor,private empresasService: EmpresasService, private permisosService:PermisosService) {}
+public modal: Modal = new Modal();
+public modal2: Modal;
+
+public entidad:string="&entidad=proveedores_familia";
+
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public permisosService:PermisosService) {}
 
   ngOnInit() {
       this.setItems();

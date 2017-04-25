@@ -13,12 +13,12 @@ import { Control } from '../models/control';
 })
 export class InformePeriodicidadComponent {
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   controles: any[] = [];
   checklists: any[] = [];
   fecha: Object = {inicio: '2016-10-01'};
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService, private permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public permisos: PermisosService) {}
 
   mostrarInforme() {
     let parametros = '&idempresa=' + this.empresasService.seleccionada;

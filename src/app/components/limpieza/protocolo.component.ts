@@ -16,9 +16,9 @@ import { Modal } from '../../models/modal';
 export class ProtocoloComponent implements OnInit, OnChanges{
 @Input() parentProtocol:string;
 @Output() protocolEmitter:EventEmitter<string>=new EventEmitter<string>();
-private protocolo:Object[]=[];
+public protocolo:Object[]=[];
 nuevoProcedimiento:string='';
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
       if(this.parentProtocol) {

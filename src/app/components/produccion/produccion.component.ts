@@ -18,7 +18,7 @@ public traspaso: boolean;
 public productos: boolean;
 public almacenes: boolean;
 
-  constructor(private empresasService: EmpresasService, private permisosService:PermisosService) {}
+  constructor(public empresasService: EmpresasService, public permisosService:PermisosService) {}
 
   ngOnInit() {
   }

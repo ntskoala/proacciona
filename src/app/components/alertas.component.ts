@@ -10,7 +10,7 @@ export class AlertasComponent implements OnInit{
 //@Output() selectedMenu: EventEmitter<string>= new EventEmitter<string>();
 
 
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
   }

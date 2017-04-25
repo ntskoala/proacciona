@@ -22,11 +22,11 @@ export class SelectProductosComponent implements OnInit, OnChanges{
 @Input() elementoLimpieza:number;
 @Output() selectedProductsChange:EventEmitter<string[]>=new EventEmitter<string[]>();
 //@Input() productos:string[]=[];
-private productos:prods[]=[];
-private misproductos:string[]=[];
-private viewProducts:boolean=false;
+public productos:prods[]=[];
+public misproductos:string[]=[];
+public viewProducts:boolean=false;
 public items;
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
       this.getMisProductos();

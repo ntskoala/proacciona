@@ -34,12 +34,13 @@ public verdoc: boolean = false;
 public foto:string;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/productos/';
-modal: Modal = new Modal();
+public modal: Modal = new Modal();
+public modal2: Modal;
 entidad:string="&entidad=almacenes";
 
 
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService, private permisosService:PermisosService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public permisosService:PermisosService) {}
 
   ngOnInit() {
       this.setItems();

@@ -14,7 +14,7 @@ import { ResultadoControl } from '../models/resultadocontrol';
 })
 export class InformeControlesComponent implements OnInit {
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   controles: any[] = [];
   resultadoscontrol: ResultadoControl[] = [];
   columnas: string[] = [];
@@ -25,7 +25,7 @@ export class InformeControlesComponent implements OnInit {
   fotoSrc: string;
   exportar_informes: boolean =false;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent, private permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
 
   ngOnInit() {
     // Conseguir controles

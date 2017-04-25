@@ -15,14 +15,14 @@ import { Modal } from '../models/modal';
 
 export class ControlesComponent implements OnInit {
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   controles: Control[] = [];
   nuevoControl: Object = {tipoperiodo: 'Día'};
   guardar = [];
   idBorrar: number;
   modal: Modal = new Modal();
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
   ngOnInit() {
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());

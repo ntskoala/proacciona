@@ -47,7 +47,7 @@ public tipoevento:string[]=[];
 public event:any;
 public estado;
 entidad:string="&entidad=limpieza_realizada";
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
 

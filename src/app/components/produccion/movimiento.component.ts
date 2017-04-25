@@ -14,6 +14,8 @@ import { Almacen } from '../../models/almacenes';
 import { FamiliasProducto } from '../../models/proveedorfamilias';
 import { Distribucion } from '../../models/distribucion';
 
+
+
 @Component({
   selector: 'movimiento-produccion',
   templateUrl: './movimiento.component.html',
@@ -35,13 +37,13 @@ public passItem: ProduccionDetalle;
 public estado:string='abierto';
 //*** ESPECIFIC VAR */
 public traspaso:boolean=false;
-private almacenesOrigen: Almacen[];
-private almacenOrigenSelected: Almacen;
-private almacenesDestino: Almacen[];
-private almacenDestinoSelected: Almacen;
-private level:number;
-private idAlmacenDestino: number;
-private cantidadTraspaso: number;
+public almacenesOrigen: Almacen[];
+public almacenOrigenSelected: Almacen;
+public almacenesDestino: Almacen[];
+public almacenDestinoSelected: Almacen;
+public level:number;
+public idAlmacenDestino: number;
+public cantidadTraspaso: number;
 public productos: any[]=[];
 public proveedores: any[]=[];
 public clientes: Cliente[]=[];
@@ -56,7 +58,7 @@ public loteSelected:ProveedorLoteProducto;
 public max_cantidad:number=70;
 public contador:number;
 public alerts:string[]=[];
-  constructor(private empresasService: EmpresasService, private servidor: Servidor, private translate: TranslateService) {}
+  constructor(public empresasService: EmpresasService, public servidor: Servidor, public translate: TranslateService) {}
 
   ngOnInit() {
       this.getAlmacenes();
@@ -89,9 +91,7 @@ getOrden(idorden:number,fuente:string) {
 
 
 getAlmacenes() {
-    
     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=almacenes";
-
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             //this.itemActivo = 0;
@@ -185,6 +185,7 @@ getEntradasProducto(idProducto){
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
+              this.entrada_productos.push(new ProveedorLoteProducto('nueva entrada',new Date(),new Date(),0,'l.',0,'',idProducto,this.idProveedorActual,this.empresasService.seleccionada));
             this.entrada_productos.push(new ProveedorLoteProducto('selecciona',new Date(),new Date(),0,'',0,'',0,0,0,0));
             if (response.success && response.data) {
               for (let element of response.data) { 
@@ -260,11 +261,52 @@ traspasar(){
 //    console.log('si destino == tanque p, poner fecha caducidad = fecha_inicio(del lote nuevo) + 7 días');
     }
     else if (this.loteSelected){
+         if (this.loteSelected.numlote_proveedor == 'nueva entrada'){
+            this.setNuevaEntradaProveedor();
+        }else{
         this.setNewOrdenProduccion();
+        }
     }
 }
 }
 
+setNuevaEntradaProveedor(){
+    let contadorP=0;
+//let nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem="+this.loteSelected.idproveedor+"&WHERE=fecha_entrada=curdate()%2B&valor=";
+        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+          response => {
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                      contadorP++;
+                }
+            }
+        },
+    error =>{
+        console.log(error);
+        //this.errorEn('Calculando num lote');
+        },
+        ()=>{
+let param = "&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem="+this.loteSelected.idproveedor;
+   let fecha = new Date();
+    this.loteSelected.numlote_proveedor = "P"+fecha.getDate() + "/"+ (+fecha.getMonth() + +1)+"/"+fecha.getFullYear()+"-"+contadorP;
+    this.loteSelected.cantidad_inicial =  this.cantidadTraspaso;
+    this.loteSelected.cantidad_remanente = this.cantidadTraspaso;
+    
+    this.servidor.postObject(URLS.STD_ITEM, this.loteSelected,param).subscribe(
+      response => {
+        if (response.success) {
+          //this.items.push(this.nuevoItem);
+          //this.items[this.items.length-1].id= response.id;
+          this.loteSelected.id = response.id;
+          this.setNewOrdenProduccion();
+        }
+    },
+    error =>console.log("Error en nueva entrada producto",error),
+    () =>console.log('entrada producto ok')
+    );
+        });
+}
 //crear Nueva Orden de Producción ojo (si loteSelected or si almacenOrigenSelected)
 //si almacenOrigenSelected --> Orden del almacenOrigenSelected
 setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
@@ -505,7 +547,7 @@ controlarOrigen(){
 
     if (this.proveedor){
        console.log (this.cantidadTraspaso,+this.loteSelected.cantidad_remanente,typeof this.cantidadTraspaso, typeof +this.loteSelected.cantidad_remanente, +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente);
-       if( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente){
+       if( +this.cantidadTraspaso <= +this.loteSelected.cantidad_remanente || this.loteSelected.numlote_proveedor =="nueva entrada"){
            return true;
        }else{
          this.translate.get('produccion.alert_cantidad_menor_disponible_origen').subscribe(

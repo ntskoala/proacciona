@@ -21,7 +21,7 @@ export class SeleccionarEmpresaComponent {
   // formdata: FormData = new FormData();
   public Premium: boolean;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 
 

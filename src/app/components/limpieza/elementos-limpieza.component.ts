@@ -35,16 +35,17 @@ public protocolo:boolean[];
 public newItemprotocolo:boolean;
 public color:string="accent";
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_elemento/';
-modal: Modal = new Modal();
-entidad:string="&entidad=limpieza_elemento";
-field:string="&field=idlimpiezazona&idItem=";
-es;
+public modal: Modal = new Modal();
+public modal2: Modal;
+public entidad:string="&entidad=limpieza_elemento";
+public field:string="&field=idlimpiezazona&idItem=";
+public es;
 public cantidad:number=1;
 public productosSeleccionadosItem:Object[]=[];
 public productosSeleccionados: string[]=[];
 public producto:myprods;
 public productos: prods[]=[];
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
      // this.setItems();

@@ -29,7 +29,7 @@ public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days')
 public filtro_inicio:String;
 public filtro_fin:String;
 public filter:boolean=false;
-  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
+  constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
     //this.loadItems(this.empresasService.seleccionada.toString(), this.estado);

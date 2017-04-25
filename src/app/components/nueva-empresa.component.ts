@@ -12,7 +12,7 @@ import { Empresa } from '../models/empresa';
 
 export class NuevaEmpresaComponent {
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
   
   empresa: Empresa = {nombre: '', logo: ''};
   

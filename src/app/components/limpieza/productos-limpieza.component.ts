@@ -22,9 +22,10 @@ public url=[];
 public verdoc: boolean = false;
 public foto:string;
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_producto/';
-modal: Modal = new Modal();
-entidad:string="&entidad=limpieza_producto";
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+public modal: Modal = new Modal();
+public modal2: Modal;
+public entidad:string="&entidad=limpieza_producto";
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
       this.setItems();

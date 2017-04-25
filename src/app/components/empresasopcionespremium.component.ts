@@ -19,14 +19,14 @@ import { URLS } from '../models/urls';
 })
 
 export class OpcionesPremium implements OnInit {
-  private subscription: Subscription;
+  public subscription: Subscription;
   idEmpresa: number;
   public opciones: Opciones[]=[];
   public opcionesempresa: number[] = [];
 
  // public opcionespremium: Object[] = [{"nombre":"Exportar informes","value":this.empresasService.empresa.exportar_informes},{"nombre":"Fichas Maquinaria","value":this.empresasService.empresa.fichas_maquinaria}];
   public estados =[{"Exportar informes":false},{"Fichas Maquinaria":true}];
-  constructor(private router: Router, private route: ActivatedRoute, private empresasService: EmpresasService, private servidor: Servidor, private permisos: PermisosService) {}
+  constructor(public router: Router, public route: ActivatedRoute, public empresasService: EmpresasService, public servidor: Servidor, public permisos: PermisosService) {}
   
   
   ngOnInit() {

@@ -9,13 +9,13 @@ import { Empresa } from '../models/empresa';
   templateUrl: '../assets/html/empresas.component.html'
 })
 export class EmpresasComponent implements OnInit {
-@ViewChild('scrollMe') private myScrollContainer: ElementRef;
+@ViewChild('scrollMe') public myScrollContainer: ElementRef;
 public selectedMenu:string='home';
 
   permiso: boolean = false;
   token = sessionStorage.getItem('token');
   empresa: Empresa;
-  constructor(private router: Router, private empresasService: EmpresasService) {}
+  constructor(public router: Router, public empresasService: EmpresasService) {}
 
   ngOnInit() {
 

@@ -7,7 +7,7 @@ import { EmpresasService } from '../services/empresas.service';
 })
 export class GestionTablasComponent {
 
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   tabs = [true, null, null, null,null]
   tabActivo: number = 0;

@@ -16,12 +16,12 @@ import { Modal } from '../models/modal';
 export class ListadoChecklistsComponent implements OnInit {
   @Input() empresaSeleccionada: string;
   @Output() checklistSeleccionada: EventEmitter<string>=new EventEmitter<string>();
-  private subscription: Subscription;
+  public subscription: Subscription;
   checklistActiva: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
   checklists: Checklist[] = [];
   
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));

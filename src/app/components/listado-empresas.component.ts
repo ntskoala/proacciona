@@ -20,7 +20,7 @@ export class ListadoEmpresasComponent implements OnInit {
   empresa: Empresa = new Empresa('Seleccionar empresa', '0',0);
   formdata: FormData = new FormData();
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService, private permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public permisos: PermisosService) {}
 
   ngOnInit() {
     // Subscripción a la creación de nuevas empresa

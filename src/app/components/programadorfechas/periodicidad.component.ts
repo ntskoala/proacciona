@@ -21,26 +21,26 @@ export class PeriodicidadComponent implements OnInit {
 @Output() periodo:EventEmitter<string>= new EventEmitter<string>();
 @Input() miperiodo: string;
 @Input() fechaPrevista: Date;
-private fecha:String;
-private periodoactual: Periodicidad;
-private repeticion:String;
-private tipomes : string="diames";
-private diames: number;
-private diasemana: string;
-private numsemana: string;
-private writemes:String ="mes";
-private writesemana:String="semana";
-private cadames:number = 1;
-private cadasemana:number =1;
-private mes: number;
-private alert:boolean=false;
-private periodos: String[] = ['diaria', 'semanal','mensual','anual'];
+public fecha:String;
+public periodoactual: Periodicidad;
+public repeticion:String;
+public tipomes : string="diames";
+public diames: number;
+public diasemana: string;
+public numsemana: string;
+public writemes:String ="mes";
+public writesemana:String="semana";
+public cadames:number = 1;
+public cadasemana:number =1;
+public mes: number;
+public alert:boolean=false;
+public periodos: String[] = ['diaria', 'semanal','mensual','anual'];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','diciembre'];
 public numdias = [];
 public dias = [{'nombre':'lunes','checked':true},{'nombre':'martes','checked':true},{'nombre':'miercoles','checked':true},{'nombre':'jueves','checked':true},{'nombre':'viernes','checked':true},{'nombre':'sabados','checked':false},{'nombre':'domingos','checked':false}];
-private period: boolean=false;
+public period: boolean=false;
 //public moment: Moment;
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar

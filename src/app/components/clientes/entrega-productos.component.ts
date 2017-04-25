@@ -45,12 +45,13 @@ public foto:string;
 public cantidadMaxima:number;
 public filter:boolean=false;
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/clientes_distribucion/';
-modal: Modal = new Modal();
-entidad:string="&entidad=clientes_distribucion";
-field:string="&field=idcliente&idItem=";//campo de relación con tabla padre
-es;
+public modal: Modal = new Modal();
+public modal2: Modal;
+public entidad:string="&entidad=clientes_distribucion";
+public field:string="&field=idcliente&idItem=";//campo de relación con tabla padre
+public es;
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
      // this.setItems();

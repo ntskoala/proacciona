@@ -13,7 +13,7 @@ export class NavComponent implements OnInit{
   logoEmpresa: string;
   subscription: Subscription;
 
-  constructor(private router: Router,private servidor: Servidor, public empresasService: EmpresasService) {}
+  constructor(public router: Router,public servidor: Servidor, public empresasService: EmpresasService) {}
 
   ngOnInit() {
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(

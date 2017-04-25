@@ -15,7 +15,7 @@ public maquina: Maquina;
 public calendario: boolean = false;
 public lubricante: boolean = false;
 public maquinas: Maquina[];
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
 

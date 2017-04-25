@@ -16,7 +16,7 @@ public calendario: boolean = false;
 public proveedores: Proveedor[];
 public familias:boolean = false;
 public cambioProds:boolean;
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
 

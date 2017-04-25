@@ -16,7 +16,7 @@ import { PermissionUserChecklist } from '../models/permissionuserchecklist';
 })
 export class PermisosComponent {
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   public usuario: Usuario = new Usuario(0, 'Seleccionar', '', '', '', 0)
   public usuarios: Usuario[] = [];
   public controles: Control[] = [];
@@ -28,7 +28,7 @@ export class PermisosComponent {
   public checkControl: number | boolean[] = [];
   public checkChecklist: number | boolean[] = [];
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       seleccionada => {
         this.seleccionarPermisos()

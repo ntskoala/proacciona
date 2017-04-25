@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   styles: [':host {fon-size: 2rem;}']
 })
 export class PageNotFoundComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
   ngOnInit() {
     sessionStorage.removeItem('token');
     this.router.navigate(['login']);

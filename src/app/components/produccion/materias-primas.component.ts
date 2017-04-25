@@ -41,12 +41,13 @@ public foto:string;
 public maxCantidad:number=0;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/';
-modal: Modal = new Modal();
+public modal: Modal = new Modal();
+public modal2: Modal;
 entidad:string="&entidad=produccion_detalle";
 field:string="&field=idorden&idItem=";//campo de relación con tabla padre
-es;
+public es;
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
       this.getProveedores();

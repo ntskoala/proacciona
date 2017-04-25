@@ -44,7 +44,7 @@ public calibraciones: CalibracionesMaquina[]=[];
 public tipoevento:string[]=[];
 public event:any;
 public estado;
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
 

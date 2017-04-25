@@ -14,14 +14,14 @@ import { Modal } from '../models/modal';
 })
 export class UsuariosComponent implements OnInit {
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   usuarios: Usuario[] = [];
   guardar = [];
   nuevoUsuario: Object = {tipouser: 'Operario'};
   idBorrar: number;
   modal: Modal = new Modal();
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
   ngOnInit() {
     console.log (this.empresasService.seleccionada);

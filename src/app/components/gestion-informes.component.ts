@@ -11,7 +11,7 @@ export class GestionInformesComponent {
   tabs = [true, null, null, null]
   tabActivo: number = 0;
 
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   cambiarTab(tab: number) {
     this.tabActivo = tab;

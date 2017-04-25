@@ -12,8 +12,8 @@ import * as moment from 'moment/moment';
 
 export class FilterDatesComponent implements OnInit {
 @Output() onDates:EventEmitter<Object>= new EventEmitter<Object>();
-private es: any;
-private fechas:Object={fecha_inicio:new Date(),fecha_fin:new Date()};
+public es: any;
+public fechas:Object={fecha_inicio:new Date(),fecha_fin:new Date()};
 
   constructor() {}
 

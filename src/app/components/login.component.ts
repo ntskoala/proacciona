@@ -14,11 +14,12 @@ import { Modal } from '../models/modal';
 })
 export class LoginComponent implements OnInit {
 //  usuario: Object = {"user":"","password":"","idioma":null};
-  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
-  modal: Modal = new Modal();
+ public  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
+ public  modal: Modal = new Modal();
+  public logoEmpresa:string;
 public gallery: string;
-  constructor(private servidor: Servidor, private router: Router,
-    private empresasService: EmpresasService, private translate: TranslateService, private permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public router: Router,
+    public empresasService: EmpresasService, public translate: TranslateService, public permisos: PermisosService) {}
 
 ngOnInit(){
    this.gallery = "https://source.unsplash.com/1200x200/?food";

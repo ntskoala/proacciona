@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChange,Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit,Output,EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -17,7 +17,7 @@ import { Modal } from '../../models/modal';
 export class ListadoMaquinasComponent implements OnInit {
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
-  private subscription: Subscription;
+  public subscription: Subscription;
   maquinaActiva: number = 0;
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
   maquinas: Maquina[] = [];
@@ -25,7 +25,7 @@ export class ListadoMaquinasComponent implements OnInit {
   modal: Modal = new Modal();
   //   modificaMaquina: boolean;
   // nuevoNombre:string;
-  constructor(private servidor: Servidor, private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
@@ -56,7 +56,7 @@ ngOnInit(){
 
 
 
-seleccionarMaquina(valor: any){
+seleccionarMaquina(valor: any,event:any){
 //  console.log("changelist",valor,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.maquinaSeleccionada.emit(this.maquinas[valor]);
@@ -64,9 +64,9 @@ seleccionarMaquina(valor: any){
 }
 
 
-ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+// ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 
-  }
+//   }
 
 nuevaMaquina(maq: Maquina){
 maq.idempresa = this.empresasService.seleccionada;

@@ -25,7 +25,7 @@ public  nuevoNombre:string;
 
 //*** ESPECIFIC VAR */
 
-  constructor(private empresasService: EmpresasService, private servidor: Servidor) {}
+  constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
     this.loadItems(this.empresasService.seleccionada.toString());

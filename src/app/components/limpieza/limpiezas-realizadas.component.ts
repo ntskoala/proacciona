@@ -24,7 +24,7 @@ public idBorrar;
 entidad:string="&entidad=limpieza_realizada";
 field:string="&field=idlimpiezazona&idItem=";
 es
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
  ngOnInit() {

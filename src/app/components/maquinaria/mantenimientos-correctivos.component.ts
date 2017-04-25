@@ -29,7 +29,7 @@ public date = new Date();
 public url:string[]=[];
 public verdoc: boolean = false;
 public foto:string;
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
 

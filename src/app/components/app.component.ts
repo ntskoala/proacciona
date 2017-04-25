@@ -18,7 +18,7 @@ import '../assets/i18n/es.json';
   `
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
   ngOnInit() {
     this.router.navigate(['empresas']);
   }

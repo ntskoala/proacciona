@@ -18,7 +18,7 @@ import { Columna } from '../models/columna';
 })
 export class InformeChecklistsComponent implements OnInit{
 
-  private subscription: Subscription;
+  public subscription: Subscription;
   checklistSeleccionada: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
   checklists: Checklist[];
@@ -33,7 +33,7 @@ export class InformeChecklistsComponent implements OnInit{
   fotoSrc: string;
   exportar_informes: boolean =false;
 
-  constructor(private servidor: Servidor, private empresasService: EmpresasService, public empresasComponent: EmpresasComponent, private permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
 
   ngOnInit() {
     // Conseguir checklists

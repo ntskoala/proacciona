@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -21,7 +21,7 @@ public verdoc:boolean=false;
 public image;
 public foto;
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService, private sanitizer: DomSanitizer) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
 
   ngOnInit() {
    // this.campos2Array();
@@ -31,14 +31,14 @@ public foto;
     console.log("#"+this.empresasService.userTipo+"#");
   }
 
-  ngOnChanges(){
+  ngOnChanges(changes: SimpleChanges){
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/maquinaria/';
     this.url = this.baseurl + this.maquina.id +'_'+this.maquina.doc;
     this.image= this.baseurl + this.maquina.id+"_"+this.maquina.id+".jpg";
      console.log("#"+this.empresasService.userTipo+"#");
   }
 
-  verFoto(foto){
+  verFoto(foto:string){
     this.verdoc =  true;
     if (foto=="ficha"){
     this.foto=this.url;
@@ -53,7 +53,7 @@ public foto;
 
 
 
-udateMaquina(){
+udateMaquina(valor:any){
   console.log('myMachine',this.maquina);
     let parametros = '?id=' + this.maquina.id;        
     this.servidor.putObject(URLS.MAQUINAS, parametros, this.maquina).subscribe(
@@ -66,7 +66,7 @@ udateMaquina(){
   // openDoc(doc){
   //   window.open(URLS.DOCS + this.empresasService.seleccionada + '/maquinaria/' + this.maquina.id +'_'+doc,'_BLANK');
   // }
-  uploadFunciones(event,field?:string) {
+  uploadFunciones(event:any,field?:string) {
     var target = event.target || event.srcElement; //if target isn't there then take srcElement
     let files = target.files;
     //let files = event.srcElement.files;

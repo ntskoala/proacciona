@@ -36,13 +36,14 @@ public verdoc: boolean = false;
 public foto:string;
 
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_productos/';
-modal: Modal = new Modal();
-entidad:string="&entidad=proveedores_productos";
-field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
-es;
+public modal: Modal = new Modal();
+public modal2: Modal;
+public entidad:string="&entidad=proveedores_productos";
+public field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
+public es;
 
 
-  constructor(private servidor: Servidor,private empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
      // this.setItems();

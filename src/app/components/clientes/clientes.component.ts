@@ -13,7 +13,7 @@ export class ClientesComponent implements OnInit {
 public cliente: Cliente;
 public clientes: Cliente[];
 
-  constructor(private empresasService: EmpresasService) {}
+  constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
 

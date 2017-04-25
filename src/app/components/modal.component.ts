@@ -11,7 +11,7 @@ import { Modal } from '../models/modal';
 export class ModalComponent {
 empresaSeleccionada:string;
 checklist:string;
-  constructor(private empresasService: EmpresasService, private translate: TranslateService) {
+  constructor(public empresasService: EmpresasService, public translate: TranslateService) {
     translate.use(this.empresasService.idioma);
   }
 

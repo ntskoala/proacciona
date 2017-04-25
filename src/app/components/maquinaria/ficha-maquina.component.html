@@ -128,7 +128,7 @@
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event)" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
     <span  class="but">
-        <button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="0==1" (click)="verFoto('ficha')">
+        <button type="button" md-raised-button *ngIf="maquina.doc" color="accent" [disabled]="false" (click)="verFoto('ficha')">
         {{'maquinas.ver documento' | translate}}
         </button>     
     </span>

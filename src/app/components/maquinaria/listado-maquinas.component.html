@@ -8,8 +8,8 @@
       </option>
     </select>
   </form>
-<button *ngIf="empresasService.administrador" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
-<!--<button *ngIf="empresasService.administrador" md-button color="primary" (click)="modificarMaquina()" type="button">Modificar</button>-->
+<button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento') && maquinaActiva > 0" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
+<button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento') && maquinaActiva > 0" md-button color="primary" (click)="modificarMaquina()" type="button">Modificar</button>
 </div>
 <div class="nueva">
 <!-- Nueva maquina -->
@@ -30,7 +30,7 @@
 </div>
 </div>
 
-<!--
+
 <div class="modal" *ngIf="modificaMaquina">
   <div class="modal-window modificar">
   
@@ -44,4 +44,4 @@
           <span class="material-icons">close</span>
         </button>
   </div>
-</div>-->
+</div>

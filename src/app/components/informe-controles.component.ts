@@ -75,6 +75,7 @@ export class InformeControlesComponent implements OnInit {
               resultado['id'] = element.idr;
               resultado['usuario'] = element.usuario;
               resultado['fecha'] = this.formatFecha(element.fecha);
+              //resultado['fecha'] = element.fecha;
               resultado[control.nombre] = element.resultado;
               if (element.foto == 'true') {
                 resultado['foto'] = true;
@@ -158,8 +159,8 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 }
 
 formatFecha(fecha: Date):string{
-let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getUTCHours()+2)).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
-console.log(mifecha);
+let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getHours()+2)).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
+console.log('fecha',mifecha);
   return mifecha;
 }
 

@@ -23,8 +23,8 @@ export class ListadoMaquinasComponent implements OnInit {
   maquinas: Maquina[] = [];
   novaMaquina: Maquina = new Maquina(0,'',0);
   modal: Modal = new Modal();
-  //   modificaMaquina: boolean;
-  // nuevoNombre:string;
+  public   modificaMaquina: boolean;
+  public nuevoNombre:string;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -80,17 +80,23 @@ maq.idempresa = this.empresasService.seleccionada;
     });
 }
 
-// modificar(){
-//   let maquina = new Maquina(this.maquinaActiva,this.nuevoNombre,this.empresasService.seleccionada);
-// let param = "&entidad=limpieza_zona";
-// let parametros = '?id=' + this.maquinaActiva+param;     
-//     this.servidor.putObject(URLS.MAQUINAS,parametros, maquina).subscribe(
-//       response => {
-//         if (response.success) {
-//           console.log("updated");
-//         }
-//     });
-// }
+modificar(){
+  let maquina = new Maquina(this.maquinaActiva,this.nuevoNombre,this.empresasService.seleccionada);
+  let index = this.maquinas.findIndex((maquina)=>maquina.id == this.maquinaActiva);
+  maquina = this.maquinas[index];
+  maquina.nombre = this.nuevoNombre;
+//let param = "&entidad=limpieza_zona";
+let parametros = '?id=' + this.maquinaActiva;     
+    this.servidor.putObject(URLS.MAQUINAS,parametros, maquina).subscribe(
+      response => {
+        if (response.success) {
+          console.log("updated");
+          // this.maquinas[index].nombre = this.nuevoNombre;
+          // this.maquinaSeleccionada.emit(this.maquinas[index]);
+          this.modificaMaquina = false;
+        }
+    });
+}
 
 
 
@@ -115,7 +121,7 @@ eliminaMaquina(){
     this.modal.visible = true;
 }
 
-// modificarMaquina(){
-// this.modificaMaquina = !this.modificaMaquina;
-// }
+modificarMaquina(){
+this.modificaMaquina = !this.modificaMaquina;
+}
 }

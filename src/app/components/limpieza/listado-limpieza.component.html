@@ -8,8 +8,8 @@
       </option>
     </select>
   </form>
-<button *ngIf="empresasService.administrador && limpiezaActiva > 0" md-button color="warn" (click)="eliminaZona()" type="submit">Eliminar</button>
-<button *ngIf="empresasService.administrador && limpiezaActiva > 0" md-button color="primary" (click)="modificarZona()" type="button">Modificar</button>
+<button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente') && limpiezaActiva > 0" md-button color="warn" (click)="eliminaZona()" type="submit">Eliminar</button>
+<button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente') && limpiezaActiva > 0" md-button color="primary" (click)="modificarZona()" type="button">Modificar</button>
 </div>
 <div class="nueva">
 <!-- Nueva maquina -->

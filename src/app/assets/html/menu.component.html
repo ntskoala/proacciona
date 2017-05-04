@@ -5,15 +5,6 @@
         <button [disabled]="!empresasService.administrador" (click)="setSeleccion('empresas')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">business</span>
       </button>
-        <button [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.proveedores" (click)="setSeleccion('proveedores')" class="opcion" md-mini-fab color="accent" >
-        <span  class="material-icons">work</span>
-      </button>  
-        <button [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.clientes" (click)="setSeleccion('clientes')" class="opcion" md-mini-fab color="accent" >
-        <span  class="material-icons">store</span>
-      </button>   
-        <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.produccion" (click)="setSeleccion('produccion')" class="opcion" md-mini-fab color="accent" >
-        <span class="material-icons">developer_board</span>
-      </button>   
         <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('settings')" class="opcion" md-mini-fab color="accent" >
         <span  class="material-icons">settings</span>
       </button>
@@ -24,10 +15,18 @@
         <span class="material-icons">build</span>
       </button>
         <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.limpieza" (click)="setSeleccion('limpieza')" class="opcion" md-mini-fab color="accent" >
- 
         <span class="material-icons">brush</span>
- 
       </button>
+        <button [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.proveedores" (click)="setSeleccion('proveedores')" class="opcion" md-mini-fab color="accent" >
+        <span  class="material-icons">work</span>
+      </button>  
+        <button [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.clientes" (click)="setSeleccion('clientes')" class="opcion" md-mini-fab color="accent" >
+        <span  class="material-icons">store</span>
+      </button>   
+        <button  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.produccion" (click)="setSeleccion('produccion')" class="opcion" md-mini-fab color="accent" >
+        <span class="material-icons">developer_board</span>
+      </button>  
+
         <button  [disabled]="!empresasService.empresaActiva || !permisos.personal || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('personal')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">supervisor_account</span>
       </button>

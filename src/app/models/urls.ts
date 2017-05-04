@@ -1,5 +1,5 @@
-//let server = 'http://tfc.proacciona.es/'; //prod
-let server = 'http://tfc.ntskoala.com/';//DESARROLLO
+let server = 'http://tfc.proacciona.es/'; //prod
+//let server = 'http://tfc.ntskoala.com/';//DESARROLLO
 let base = server + 'api/';
 
 export const URLS = {
@@ -30,6 +30,7 @@ export const URLS = {
   STD_SUBITEM: base + 'std_subitem.php',
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
+  TRAZA_ATRAS:  base + 'traza_atras.php',
   UPDATE_REMANENTE: base+ 'update_remanente.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',

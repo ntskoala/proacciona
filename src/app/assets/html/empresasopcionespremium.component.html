@@ -1,12 +1,12 @@
 <div class="table">
 <div class="header-row">
-    <span class="header-cell">Opción</span>
-    <span class="header-cell">Estado</span>
+    <span class="header-cell">{{'Opcion' | translate}}</span>
+    <span class="header-cell">{{'Estado' | translate}}</span>
   </div>
         <form class="row" *ngFor="let opcion of opciones; let i = index"
         #actualizarCCLf="ngForm" (ngSubmit)="actualizarOpcion(opcion.id,i)">
           <span class="cell">
-         {{opcion.nombre}}
+         {{'premium.'+opcion.nombre | translate}}
         </span>
         <span class="cell">
          <md-checkbox [disabled]="!empresasService.administrador"  [checked]="opcionesempresa[opcion.id]" (change)="actualizarOpcion(opcion.id, i)">

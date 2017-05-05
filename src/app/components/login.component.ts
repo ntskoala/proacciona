@@ -13,8 +13,8 @@ import { Modal } from '../models/modal';
   templateUrl: '../assets/html/login.component.html'
 })
 export class LoginComponent implements OnInit {
-//  usuario: Object = {"user":"","password":"","idioma":null};
- public  usuario: Object = {"user":"admin","password":"admin","idioma":"es"};
+ // public usuario: Object = {"user":"","password":"","idioma":null};
+ public  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
  public  modal: Modal = new Modal();
   public logoEmpresa:string;
 public gallery: string;

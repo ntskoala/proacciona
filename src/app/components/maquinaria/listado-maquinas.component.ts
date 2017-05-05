@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -15,6 +15,7 @@ import { Modal } from '../../models/modal';
   styleUrls:['./listado-maquinas.css']
 })
 export class ListadoMaquinasComponent implements OnInit {
+  @ViewChild('choicer') Choicer: ElementRef;
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   public subscription: Subscription;
@@ -30,6 +31,7 @@ export class ListadoMaquinasComponent implements OnInit {
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadMaquinas(this.empresasService.seleccionada.toString());
+
 }
 
      loadMaquinas(emp: Empresa | string) {
@@ -48,9 +50,14 @@ ngOnInit(){
               for (let element of response.data) {
                 this.maquinas.push(new Maquina(element.id,element.nombre, element.idempresa, element.ubicacion, element.numserie, element.fecha_adquisicion, element.fabricante, element.modelo, element.codigo_interno, element.potencia, element.medidas, element.funciones, element.doc, element.regimen_trabajo, element.ciclo_productivo, element.material, element.liquido_refrigerante, element.modo_trabajo, element.lubricacion ));
               }
-              this.listaMaquinas.emit(this.maquinas);
             }
-        });
+          },
+              (error) => {console.log(error)},
+              ()=>{
+              this.listaMaquinas.emit(this.maquinas);
+               this.expand(this.Choicer.nativeElement);
+              }
+        );
    }
 
 
@@ -61,6 +68,7 @@ seleccionarMaquina(valor: any,event:any){
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.maquinaSeleccionada.emit(this.maquinas[valor]);
   this.maquinaActiva = this.maquinas[valor].id;
+  this.unExpand(this.Choicer.nativeElement);
 }
 
 
@@ -123,5 +131,16 @@ eliminaMaquina(){
 
 modificarMaquina(){
 this.modificaMaquina = !this.modificaMaquina;
+}
+
+expand(list){
+
+let mysize = this.maquinas.length
+console.log('abriendo',mysize)
+list.size=mysize;
+}
+unExpand(list){
+console.log('cerrando',list)
+list.size=1;
 }
 }

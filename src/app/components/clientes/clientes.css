@@ -12,7 +12,7 @@
     display: flex;
 }
 md-grid-tile-header{
-    height: 25px;
+    height: 25px !important;
     color: #000;
     z-index:2;
 }

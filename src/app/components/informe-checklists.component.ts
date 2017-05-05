@@ -11,7 +11,7 @@ import { Checklist } from '../models/checklist';
 import { ControlChecklist } from '../models/controlchecklist';
 import { ResultadoChecklist } from '../models/resultadochecklist';
 import { Columna } from '../models/columna';
-
+import * as moment from 'moment';
 @Component({
   selector: 'informe-checklists',
   templateUrl: '../assets/html/informe-checklists.component.html'
@@ -32,7 +32,7 @@ export class InformeChecklistsComponent implements OnInit{
   modal: boolean = false;
   fotoSrc: string;
   exportar_informes: boolean =false;
-
+public es;
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
 
   ngOnInit() {
@@ -40,6 +40,14 @@ export class InformeChecklistsComponent implements OnInit{
     this.getChecklists();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getChecklists());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
+            this.es = {
+            firstDayOfWeek: 1,
+            dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+            dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+            dayNamesMin: [ "D","L","M","X","J","V","S" ],
+            monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+            monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ]
+        }
   }
 
   getChecklists() {
@@ -88,7 +96,10 @@ export class InformeChecklistsComponent implements OnInit{
   filtrarFechas(fecha) {
     this.idrs = [];
     // Conseguir resultadoschecklist
-    let parametros = '&idchecklist=' + this.checklistSeleccionada + '&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+    let parametros = '&idchecklist=' + this.checklistSeleccionada + 
+    //'&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+          '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
+
     this.servidor.getObjects(URLS.RESULTADOS_CHECKLIST, parametros).subscribe(
       response => {
         this.resultadoschecklist = [];

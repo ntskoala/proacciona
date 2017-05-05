@@ -7,7 +7,7 @@ import { PermisosService } from '../services/permisos.service';
 import { EmpresasComponent } from './empresas.component';
 import { URLS } from '../models/urls';
 import { ResultadoControl } from '../models/resultadocontrol';
-
+import * as moment from 'moment';
 @Component({
   selector: 'informe-controles',
   templateUrl: '../assets/html/informe-controles.component.html'
@@ -24,7 +24,7 @@ export class InformeControlesComponent implements OnInit {
   modal: boolean = false;
   fotoSrc: string;
   exportar_informes: boolean =false;
-
+public es;
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
 
   ngOnInit() {
@@ -32,6 +32,14 @@ export class InformeControlesComponent implements OnInit {
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
+            this.es = {
+            firstDayOfWeek: 1,
+            dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+            dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+            dayNamesMin: [ "D","L","M","X","J","V","S" ],
+            monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+            monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ]
+        }
   }
 
   getControles() {
@@ -52,10 +60,11 @@ export class InformeControlesComponent implements OnInit {
   }
 
   filtrarFechas(fecha) {
-    console.log (fecha.inicio.formatted,fecha.fin.formatted);
-    // conseguir resultadoscontrol
+   // console.log (fecha.inicio.formatted,fecha.fin.formatted);
+    console.log (moment(fecha.inicio).format('YYYY-MM-DD'),moment(fecha.fin).format('YYYY-MM-DD'));
     let parametros = '&idempresa=' + this.empresasService.seleccionada +
-      '&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+    //  '&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+      '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
     this.servidor.getObjects(URLS.RESULTADOS_CONTROL, parametros).subscribe(
       response => {
         this.resultadoscontrol = [];

@@ -2,7 +2,7 @@
 <div class="selector">
   Selecciona maquina<br>
   <form>
-    <select (change)="seleccionarMaquina($event.target.value, $event)">
+    <select #choicer  (change)="seleccionarMaquina($event.target.value, $event)">
       <option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
       </option>

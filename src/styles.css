@@ -372,8 +372,18 @@ gestion-informes {
 /* InformeControlesComponent */
 .fechas {
   width: 100%;
+  background-color:#cccccc;
 }
-
+  .filtro-dates{
+    width:410px;
+    display: inline-block;
+    margin-left: 8px;
+  }
+  .filtro{
+    width:200px;
+    max-width: 200px;
+    display: inline-block;
+  }
 .foto-link {
   cursor: pointer;
   color: #673ab7;

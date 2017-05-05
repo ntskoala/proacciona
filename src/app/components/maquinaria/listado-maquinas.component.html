@@ -1,4 +1,4 @@
-<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<!--<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="selector">
   Selecciona maquina<br>
   <form>
@@ -11,8 +11,8 @@
 <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento') && maquinaActiva > 0" md-button color="warn" (click)="eliminaMaquina()" type="submit">Eliminar</button>
 <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento') && maquinaActiva > 0" md-button color="primary" (click)="modificarMaquina()" type="button">Modificar</button>
 </div>
+
 <div class="nueva">
-<!-- Nueva maquina -->
 <div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="nueva-maquina">
   <h2>{{'maquinas.nueva' | translate}}</h2>
   <div class="table">
@@ -28,10 +28,10 @@
     </form>
   </div>
 </div>
-</div>
+</div>-->
 
 
-<div class="modal" *ngIf="modificaMaquina">
+<!--<div class="modal" *ngIf="modificaMaquina">
   <div class="modal-window modificar">
   
           <h2 class="center">{{ 'modificar' | translate }}</h2>
@@ -41,6 +41,49 @@
           <span class="material-icons">check</span>
         </button>
           <button md-mini-fab color="accent" (click)="modificarMaquina()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>-->
+
+
+
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="cabeceraItems">
+  <!--{{'clientes.clientes' | translate}}<br>-->
+  <form>
+    <select #choicer  (change)="seleccionarMaquina($event.target.value, $event)">
+      <option *ngFor="let maquina of maquinas; let i = index" [value]="i">
+        {{maquina.nombre}}
+      </option>
+    </select>
+  </form>
+<!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
+<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="primary" (click)="addItem()" type="button">
+          <span class="material-icons">add</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(maquinaActiva > 0)">
+          <span class="material-icons">edit</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="warn" (click)="eliminaMaquina()" type="button" [disabled]="!(maquinaActiva > 0)">
+          <span class="material-icons">delete_forever</span>
+        </button>
+</div>
+<div class="modal" *ngIf="modificaMaquina || novaMaquina">
+  <div class="modal-window modificar">
+  
+          <h2 class="center"  *ngIf="modificaMaquina">{{ 'modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="novaMaquina">{{ 'maquinas.nueva'  | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaMaquina">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="nuevaMaquina(novaMaquina)" *ngIf="novaMaquina">
+          <span class="material-icons">add</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarItem()">
           <span class="material-icons">close</span>
         </button>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ViewChild, ElementRef } from '@angular/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -14,6 +14,7 @@ import { URLS } from '../../models/urls';
 })
 export class ListadoClientesComponent implements OnInit {
 //*** STANDARD VAR
+@ViewChild('choicer') Choicer: ElementRef;
 @Output() itemSeleccionado: EventEmitter<Cliente> = new EventEmitter<Cliente>();
 public itemActivo: number;
 public items: Cliente[]=[];//Array de Items para el desplegable;
@@ -48,12 +49,18 @@ loadItems(emp: Empresa | string) {
               }
              // this.listaZonas.emit(this.limpiezas);
             }
-        });
+        },
+        (error) => console.log(error),
+        ()=>{
+          this.expand(this.Choicer.nativeElement);
+        }
+        );
    }
 seleccionarItem(valor: number){
 
   this.itemSeleccionado.emit(this.items[valor]);
   this.itemActivo = this.items[valor].id;
+  this.unExpand(this.Choicer.nativeElement);
 }
 
 crearItem(cliente: Cliente){
@@ -119,5 +126,15 @@ modificarItem(){
 addItem(){
   this.modificaItem=false;
   this.nuevoItem = new Cliente('',0);
+}
+expand(list){
+
+let mysize = this.items.length
+console.log('abriendo',mysize)
+list.size=mysize;
+}
+unExpand(list){
+console.log('cerrando',list)
+list.size=1;
 }
 }

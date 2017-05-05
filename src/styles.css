@@ -600,9 +600,11 @@ width: 400px;
 .cabeceraItems {
     width: 5%;
     display: flex;
-    /* text-align: center; */
     margin-left: auto;
     margin-right: auto;
+    position: absolute;
+    margin-left: 20%;
+    margin-top: -15px;
 }
 .cabeceraItems button{
   margin-left:10px;

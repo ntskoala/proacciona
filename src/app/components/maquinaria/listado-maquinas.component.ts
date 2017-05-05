@@ -22,7 +22,7 @@ export class ListadoMaquinasComponent implements OnInit {
   maquinaActiva: number = 0;
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
   maquinas: Maquina[] = [];
-  novaMaquina: Maquina = new Maquina(0,'',0);
+  novaMaquina: Maquina;// = new Maquina(0,'',0);
   modal: Modal = new Modal();
   public   modificaMaquina: boolean;
   public nuevoNombre:string;
@@ -78,12 +78,13 @@ seleccionarMaquina(valor: any,event:any){
 
 nuevaMaquina(maq: Maquina){
 maq.idempresa = this.empresasService.seleccionada;
+maq.nombre = this.nuevoNombre;
     this.servidor.postObject(URLS.MAQUINAS, maq).subscribe(
       response => {
         if (response.success) {
           maq.id = response.id;
           this.maquinas.push(maq);
-          this.novaMaquina = new Maquina(0,'',0);;
+          this.novaMaquina = null;
         }
     });
 }
@@ -129,9 +130,22 @@ eliminaMaquina(){
     this.modal.visible = true;
 }
 
-modificarMaquina(){
-this.modificaMaquina = !this.modificaMaquina;
+// modificarMaquina(){
+// this.modificaMaquina = !this.modificaMaquina;
+// }
+
+modificarItem(){
+(this.novaMaquina)? this.novaMaquina = null :this.modificaMaquina = !this.modificaMaquina;
+
 }
+
+addItem(){
+  this.modificaMaquina=false;
+  this.novaMaquina = new Maquina(0,'',0);
+}
+
+
+
 
 expand(list){
 

@@ -1,16 +1,19 @@
   <md-card>
     <md-card-title>
-      <md-toolbar color="accent">{{'limpieza.planlimpieza' | translate}}</md-toolbar>
+      <md-toolbar color="accent">{{'limpieza.planlimpieza' | translate}}
+
+        <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)"></listado-limpieza>
+      </md-toolbar>
     </md-card-title>
  <md-card-subtitle>
-   <div class="w80">
+   <!--<div class="w80">
    <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)"></listado-limpieza>
    </div>
-   <div class="w20">
+   <div class="w20">-->
    <div class="calendarios">
   <button md-raised-button (click)="calendarios()">{{'limpieza.calendarios' | translate}}</button>
   <button md-raised-button (click)="verProductosLimpieza()">{{'limpieza.productos' | translate}}</button>
-  </div>
+  <!--</div>-->
    </div>
 
  </md-card-subtitle>

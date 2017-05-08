@@ -119,6 +119,7 @@ let parametros = '?id=' + this.maquinaActiva;
             let indice = this.maquinas.findIndex((mantenimiento) => mantenimiento.id == this.maquinaActiva);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.maquinas.splice(indice, 1);
+            this.maquinaSeleccionada.emit(this.maquinas[0]);
           }
       });
     }

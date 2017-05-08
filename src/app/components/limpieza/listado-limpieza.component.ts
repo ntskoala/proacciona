@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -14,13 +14,14 @@ import { Modal } from '../../models/modal';
   styleUrls:['./listado-limpieza.css']
 })
 export class ListadoLimpiezasComponent implements OnInit {
+  @ViewChild('choicer') Choicer: ElementRef;
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
   public subscription: Subscription;
   public limpiezaActiva: number = 0;
   public limpieza1: LimpiezaZona = new LimpiezaZona(0,0, 'Seleccionar zona');
   public limpiezas: LimpiezaZona[] = [];
-  public novaLimpieza: LimpiezaZona = new LimpiezaZona(0,0,'');
+  public novaLimpieza: LimpiezaZona;// = new LimpiezaZona(0,0,'');
   public modal: Modal = new Modal();
   public modificaZona: boolean;
   public nuevoNombre:string;
@@ -47,9 +48,14 @@ ngOnInit(){
               for (let element of response.data) {
                 this.limpiezas.push(new LimpiezaZona(element.id,element.idempresa,element.nombre, element.descripcion));
               }
-              this.listaZonas.emit(this.limpiezas);
             }
-        });
+          },
+              (error) => {console.log(error)},
+              ()=>{
+              this.listaZonas.emit(this.limpiezas);
+               this.expand(this.Choicer.nativeElement);
+              }
+        );
    }
 
 seleccionarZona(valor: any, event:any){
@@ -57,6 +63,7 @@ seleccionarZona(valor: any, event:any){
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.zonaSeleccionada.emit(this.limpiezas[valor]);
   this.limpiezaActiva = this.limpiezas[valor].id;
+  this.unExpand(this.Choicer.nativeElement);
 }
 
 
@@ -64,13 +71,15 @@ seleccionarZona(valor: any, event:any){
 
 nuevaZona(zona: LimpiezaZona){
 zona.idempresa = this.empresasService.seleccionada;
+zona.nombre = this.nuevoNombre;
+zona.idempresa = this.empresasService.seleccionada;
 let param = "&entidad=limpieza_zona";
     this.servidor.postObject(URLS.STD_ITEM, zona,param).subscribe(
       response => {
         if (response.success) {
           zona.id = response.id;
           this.limpiezas.push(zona);
-          this.novaLimpieza = new LimpiezaZona(0,0,'');
+          this.novaLimpieza = null;
         }
     });
 }
@@ -103,6 +112,9 @@ let parametros = '?id=' + this.limpiezaActiva+param;
             let indice = this.limpiezas.findIndex((limpieza) => limpieza.id == this.limpiezaActiva);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.limpiezas.splice(indice, 1);
+            this.limpiezaActiva = 0;
+            this.zonaSeleccionada.emit(this.limpiezas[0]);
+
           }
       });
     }
@@ -114,8 +126,32 @@ eliminaZona(){
     this.modal.visible = true;
 }
 
-modificarZona(){
-this.modificaZona = !this.modificaZona;
+// modificarZona(){
+// this.modificaZona = !this.modificaZona;
+// }
+
+modificarItem(){
+  this.nuevoNombre = this.limpiezas[this.limpiezas.findIndex((limpieza)=>limpieza.id==this.limpiezaActiva)].nombre;
+(this.novaLimpieza)? this.novaLimpieza = null :this.modificaZona = !this.modificaZona;
 }
 
+addItem(){
+  this.nuevoNombre='';
+  this.modificaZona=false;
+  this.novaLimpieza = new LimpiezaZona(0,0,'');
+}
+
+
+
+
+expand(list){
+
+let mysize = this.limpiezas.length
+console.log('abriendo',mysize)
+list.size=mysize;
+}
+unExpand(list){
+console.log('cerrando',list)
+list.size=1;
+}
 }

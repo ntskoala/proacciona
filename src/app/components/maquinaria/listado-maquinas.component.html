@@ -52,7 +52,7 @@
 <div class="cabeceraItems">
   <!--{{'clientes.clientes' | translate}}<br>-->
   <form>
-    <md-select  class="cabeceraSelect" #choicer  (change)="seleccionarMaquina($event)">
+    <md-select  class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarMaquina($event)">
       <md-option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
       </md-option>

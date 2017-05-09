@@ -4,7 +4,9 @@
   </md-card-title>
   <form #nuevaEmpresaForm="ngForm" (ngSubmit)="nuevaEmpresa(nuevaEmpresaForm.value)">
     <md-card-content>
-      <input mdInput class="full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresa.nombre" name="nombre">
+      <md-input-container  >
+      <input mdInput class="cabeceraSelect full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresa.nombre" name="nombre">
+      </md-input-container>
     </md-card-content>
     <md-card-footer>
       <button md-raised-button color="accent" [disabled]="!nuevaEmpresaForm.form.valid" type="submit">Crear</button>

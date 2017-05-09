@@ -1,4 +1,4 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Servidor } from '../services/servidor.service';
@@ -6,7 +6,7 @@ import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
 import { URLS } from '../models/urls';
 import { Empresa } from '../models/empresa';
-
+import {MdSelect} from '@angular/material';
  
 @Component({
   selector: 'listado-empresas',
@@ -14,6 +14,7 @@ import { Empresa } from '../models/empresa';
 })
 
 export class ListadoEmpresasComponent implements OnInit {
+  @ViewChild('choicer') Choicer: ElementRef;
   @Output() empresaseleccionada: EventEmitter<Empresa>=new EventEmitter<Empresa>();
   subscription: Subscription;
   empresas: Empresa[] = [];
@@ -42,7 +43,13 @@ export class ListadoEmpresasComponent implements OnInit {
             ))
           }
         }
-    });
+    },
+    (error)=>console.log(error),
+    ()=>{
+      this.expand();
+    }
+    
+    );
   }
 
   selecciona(empresa: number){
@@ -50,6 +57,7 @@ export class ListadoEmpresasComponent implements OnInit {
   let emp = this.empresas.find(emp => emp.id == empresa);
   this.empresaseleccionada.emit(emp);
   this.setPermisos(empresa);
+  this.unExpand();
 }
 
 setPermisos(idempresa){
@@ -68,5 +76,12 @@ setPermisos(idempresa){
         error => {console.log(error)});
 }
 
+expand(){
+//setTimeout(()=>{this.Choicer.open();},200)
+this.Choicer.nativeElement.size=15;
+}
+unExpand(){
+  this.Choicer.nativeElement.size=1;
+}
 
 }

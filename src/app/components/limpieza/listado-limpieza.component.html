@@ -7,7 +7,7 @@
         {{limpieza.nombre}}
       </md-option>
     </md-select>-->
-    <md-select class="cabeceraSelect" #choicer  (change)="seleccionarZona($event)">
+    <md-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarZona($event)">
       <md-option *ngFor="let limpieza of limpiezas; let i = index" [value]="i">
         {{limpieza.nombre}}
       </md-option>

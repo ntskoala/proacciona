@@ -8,14 +8,14 @@
         <span class="material-icons">filter_list</span>
       </button>
   <form>
-    <md-select class="cabeceraSelect" #choiceEstat class="medium" (change)="changeEstado($event)">
+    <md-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (change)="changeEstado($event)">
       <md-option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</md-option>
       <md-option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</md-option>
       <md-option  value="entregado">{{'produccion.lotes_entregados' | translate}}</md-option>
     </md-select>
   </form>
   <form>
-    <md-select class="cabeceraSelect" #choicer class="medium" (change)="seleccionarItem($event)">
+    <md-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choicer (change)="seleccionarItem($event)">
       <md-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.numlote}}
       </md-option>

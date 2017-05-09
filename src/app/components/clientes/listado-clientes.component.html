@@ -39,7 +39,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="cabeceraItems">
   <form>
-    <md-select class="cabeceraSelect" #choicer  (change)="seleccionarItem($event)">
+    <md-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarItem($event)">
       <md-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.nombre}}
       </md-option>

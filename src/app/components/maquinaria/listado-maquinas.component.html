@@ -52,11 +52,11 @@
 <div class="cabeceraItems">
   <!--{{'clientes.clientes' | translate}}<br>-->
   <form>
-    <select #choicer  (change)="seleccionarMaquina($event.target.value, $event)">
-      <option *ngFor="let maquina of maquinas; let i = index" [value]="i">
+    <md-select  class="cabeceraSelect" #choicer  (change)="seleccionarMaquina($event)">
+      <md-option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
-      </option>
-    </select>
+      </md-option>
+    </md-select>
   </form>
 <!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
 <button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->

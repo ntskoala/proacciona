@@ -6,7 +6,7 @@ import { Empresa } from '../../models/empresa';
 import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
-
+import {MdSelect} from '@angular/material';
 @Component({
   selector: 'listado-clientes',
   templateUrl: './listado-clientes.component.html',
@@ -14,7 +14,7 @@ import { URLS } from '../../models/urls';
 })
 export class ListadoClientesComponent implements OnInit {
 //*** STANDARD VAR
-@ViewChild('choicer') Choicer: ElementRef;
+ @ViewChild('choicer') Choicer: MdSelect;
 @Output() itemSeleccionado: EventEmitter<Cliente> = new EventEmitter<Cliente>();
 public itemActivo: number;
 public items: Cliente[]=[];//Array de Items para el desplegable;
@@ -52,15 +52,15 @@ loadItems(emp: Empresa | string) {
         },
         (error) => console.log(error),
         ()=>{
-          this.expand(this.Choicer.nativeElement);
+          this.expand();
         }
         );
    }
-seleccionarItem(valor: number){
+seleccionarItem(event: any){
 
-  this.itemSeleccionado.emit(this.items[valor]);
-  this.itemActivo = this.items[valor].id;
-  this.unExpand(this.Choicer.nativeElement);
+  this.itemSeleccionado.emit(this.items[event.value]);
+  this.itemActivo = this.items[event.value].id;
+  this.unExpand();
 }
 
 crearItem(cliente: Cliente){
@@ -107,6 +107,7 @@ let parametros = '?id=' + this.itemActivo+param;
             let indice = this.items.findIndex((cliente) => cliente.id == this.itemActivo);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.expand();
           }
       });
     }
@@ -119,22 +120,20 @@ eliminarItem(){
 }
 
 modificarItem(){
+  this.nuevoNombre = this.items[this.items.findIndex((item)=>item.id==this.itemActivo)].nombre;
 (this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
-
 }
 
 addItem(){
+  this.nuevoNombre='';
   this.modificaItem=false;
   this.nuevoItem = new Cliente('',0);
 }
-expand(list){
 
-let mysize = this.items.length
-console.log('abriendo',mysize)
-list.size=mysize;
+expand(){
+setTimeout(()=>{this.Choicer.open();},200)
 }
-unExpand(list){
-console.log('cerrando',list)
-list.size=1;
+unExpand(){
+  this.Choicer.close();
 }
 }

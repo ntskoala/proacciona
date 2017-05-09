@@ -1,6 +1,5 @@
-<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<!--<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="cabeceraItems">
-  <!--{{'clientes.clientes' | translate}}<br>-->
   <form>
     <select #choicer (change)="seleccionarItem($event.target.value)">
       <option *ngFor="let item of items; let i = index" [value]="i">
@@ -8,9 +7,7 @@
       </option>
     </select>
   </form>
-<!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
-<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
-        <button md-mini-fab color="primary" (click)="addItem()" type="button">
+      <button md-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
         <button md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
@@ -20,13 +17,51 @@
           <span class="material-icons">delete_forever</span>
         </button>
 </div>
-
-
 <div class="modal" *ngIf="modificaItem || nuevoItem">
   <div class="modal-window modificar">
   
           <h2 class="center"  *ngIf="modificaItem">{{ 'clientes.modificar' | translate }}</h2>
           <h2 class="center"  *ngIf="nuevoItem">{{ 'clientes.crear' | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
+          <span class="material-icons">add</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>-->
+
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="cabeceraItems">
+  <form>
+    <md-select class="cabeceraSelect" #choicer  (change)="seleccionarItem($event)">
+      <md-option *ngFor="let item of items; let i = index" [value]="i">
+        {{item.nombre}}
+      </md-option>
+    </md-select>
+  </form>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="addItem()" type="button">
+          <span class="material-icons">add</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
+          <span class="material-icons">edit</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
+          <span class="material-icons">delete_forever</span>
+        </button>
+</div>
+
+<!--**************** POP UP OPCIONES -->
+<div class="modal" *ngIf="modificaItem || nuevoItem">
+  <div class="modal-window modificar">
+  
+          <h2 class="center"  *ngIf="modificaZona">{{ 'modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="novaLimpieza">{{ 'limpieza.nueva'  | translate }}</h2>
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
           <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">

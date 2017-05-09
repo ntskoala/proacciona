@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -6,6 +6,7 @@ import { Empresa } from '../../models/empresa';
 import { Proveedor } from '../../models/proveedor';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
+import {MdSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-proveedores',
@@ -14,10 +15,11 @@ import { URLS } from '../../models/urls';
 })
 export class ListadoProveedoresComponent implements OnInit {
 //*** STANDARD VAR
+ @ViewChild('choicer') Choicer: MdSelect;
 @Output() itemSeleccionado: EventEmitter<Proveedor> = new EventEmitter<Proveedor>();
 public itemActivo: number;
 public items: Proveedor[]=[];//Array de Items para el desplegable;
-public  nuevoItem: Proveedor = new Proveedor('',0);
+public  nuevoItem: Proveedor;// = new Proveedor('',0);
 public item1:Proveedor = new Proveedor('Selecciona',0);
 public  modal: Modal = new Modal();
 public  modificaItem: boolean;
@@ -48,23 +50,33 @@ loadItems(emp: Empresa | string) {
               }
              // this.listaZonas.emit(this.limpiezas);
             }
-        });
+          },
+              (error) => {console.log(error)},
+              ()=>{
+              //this.listaZonas.emit(this.limpiezas);
+               //this.expand(this.Choicer.nativeElement);
+               this.expand();
+              }
+        );
    }
-seleccionarItem(valor: number){
+seleccionarItem(event: any){
 
-  this.itemSeleccionado.emit(this.items[valor]);
-  this.itemActivo = this.items[valor].id;
+  this.itemSeleccionado.emit(this.items[event.value]);
+  this.itemActivo = this.items[event.value].id;
+  this.unExpand();
 }
 
 crearItem(proveedor: Proveedor){
 proveedor.idEmpresa = this.empresasService.seleccionada;
+proveedor.nombre = this.nuevoNombre;
 let param = "&entidad=proveedores";
     this.servidor.postObject(URLS.STD_ITEM, proveedor,param).subscribe(
       response => {
         if (response.success) {
           proveedor.id = response.id;
           this.items.push(proveedor);
-          this.nuevoItem = new Proveedor('',0);
+          console.log(this.items);
+          this.nuevoItem = null;
         }
     });
 }
@@ -99,6 +111,9 @@ let parametros = '?id=' + this.itemActivo+param;
             let indice = this.items.findIndex((limpieza) => limpieza.id == this.itemActivo);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.itemActivo = 0;
+            this.itemSeleccionado.emit(this.items[0]);
+            this.expand();
           }
       });
     }
@@ -110,8 +125,23 @@ eliminarItem(){
     this.modal.visible = true;
 }
 
+
 modificarItem(){
-this.modificaItem = !this.modificaItem;
+  this.nuevoNombre = this.items[this.items.findIndex((item)=>item.id==this.itemActivo)].nombre;
+(this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
+}
+
+addItem(){
+  this.nuevoNombre='';
+  this.modificaItem=false;
+  this.nuevoItem = new Proveedor('',0);
+}
+
+expand(){
+setTimeout(()=>{this.Choicer.open();},200)
+}
+unExpand(){
+  this.Choicer.close();
 }
 
 }

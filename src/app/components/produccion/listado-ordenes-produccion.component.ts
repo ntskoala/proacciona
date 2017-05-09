@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
 import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -7,14 +7,18 @@ import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
+import {MdSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-ordenes-produccion',
   templateUrl: './listado-ordenes-produccion.component.html',
   styleUrls:['./produccion.css']
 })
+
 export class ListadoOrdenesProduccionComponent implements OnInit {
 //*** STANDARD VAR
+ @ViewChild('choiceEstat') ChoiceEstat: MdSelect;
+  @ViewChild('choicer') Choicer: MdSelect;
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 public itemActivo: number;
 public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
@@ -33,8 +37,8 @@ public filter:boolean=false;
 
   ngOnInit() {
     //this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
-    this.setDates(this.fechas_inicio);
-
+    //this.setDates(this.fechas_inicio);
+    this.expand(this.ChoiceEstat)
   }
 cambiarTab(){}
 
@@ -60,12 +64,18 @@ loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
               }
              console.log(this.items);
             }
-        });
+        },
+        (error) => console.log(error),
+        ()=>{
+          this.expand(this.Choicer);
+        }
+        );
    }
-seleccionarItem(valor: number){
 
-  this.itemSeleccionado.emit(this.items[valor]);
-  this.itemActivo = this.items[valor].id;
+seleccionarItem(event: any){
+  this.itemSeleccionado.emit(this.items[event.value]);
+  this.itemActivo = this.items[event.value].id;
+    this.unExpand(this.Choicer);
 }
 
 crearItem(){
@@ -83,6 +93,7 @@ let param = "&entidad=produccion_orden";
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
           this.nuevoItem = null;
+          this.expand(this.Choicer);
         }
     });
 }
@@ -93,6 +104,8 @@ modificar(){
  let index = this.items.findIndex((prov) => prov.id == this.itemActivo);
 let prov = this.items[index];
 prov.nombre=this.nuevoNombre;
+prov.numlote=this.nuevoNombre;
+
 let param = "&entidad=produccion_orden";
 let parametros = '?id=' + this.itemActivo+param;     
     this.servidor.putObject(URLS.STD_ITEM,parametros, prov).subscribe(
@@ -117,7 +130,8 @@ let parametros = '?id=' + this.itemActivo+param;
             let indice = this.items.findIndex((limpieza) => limpieza.id == this.itemActivo);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.items.splice(indice, 1);
-            this.seleccionarItem(0);
+            //this.seleccionarItem(0);
+            this.expand(this.Choicer);
           }
       });
     }
@@ -129,26 +143,45 @@ eliminarItem(){
     this.modal.visible = true;
 }
 
-modificarItem(){
-(this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
+// modificarItem(){
+// (this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
 
+// }
+
+// addItem(){
+//   this.modificaItem=false;
+//   this.nuevoItem= new ProduccionOrden(0,0,'',new Date(),new Date());
+// }
+modificarItem(){
+  this.nuevoNombre = this.items[this.items.findIndex((item)=>item.id==this.itemActivo)].numlote;
+(this.nuevoItem)? this.nuevoItem = null :this.modificaItem = !this.modificaItem;
 }
 
 addItem(){
+  this.nuevoNombre='';
   this.modificaItem=false;
-  this.nuevoItem= new ProduccionOrden(0,0,'',new Date(),new Date());
+  this.nuevoItem = new ProduccionOrden(0,0,'',new Date(),new Date());
 }
+
+expand(list: MdSelect){
+setTimeout(()=>{list.open();},200)
+}
+unExpand(list: MdSelect){
+  list.close();
+}
+
 
 // changeEstado(){
 //   console.log('cambiando');
 //   this.estado == "abierto"? this.estado="cerrado":this.estado="abierto";
 //   this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
 // }
-changeEstado(estado: string){
-  console.log('cambio estado',estado)
+changeEstado(event: any){
+  console.log('cambio estado',event)
   //this.loadItems(this.empresasService.seleccionada.toString(), estado);
-  this.estado = estado;
-this.setDates(this.fechas_inicio);
+  this.estado = event.value;
+  this.setDates(this.fechas_inicio);
+  this.unExpand(this.ChoiceEstat);
 }
 
 

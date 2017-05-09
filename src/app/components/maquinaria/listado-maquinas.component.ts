@@ -8,6 +8,7 @@ import { URLS } from '../../models/urls';
 import { Checklist } from '../../models/checklist';
 import { Maquina } from '../../models/maquina';
 import { Modal } from '../../models/modal';
+import {MdSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-maquinas',
@@ -15,7 +16,8 @@ import { Modal } from '../../models/modal';
   styleUrls:['./listado-maquinas.css']
 })
 export class ListadoMaquinasComponent implements OnInit {
-  @ViewChild('choicer') Choicer: ElementRef;
+  //@ViewChild('choicer') Choicer: ElementRef;
+  @ViewChild('choicer') Choicer: MdSelect;
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   public subscription: Subscription;
@@ -55,7 +57,7 @@ ngOnInit(){
               (error) => {console.log(error)},
               ()=>{
               this.listaMaquinas.emit(this.maquinas);
-               this.expand(this.Choicer.nativeElement);
+               this.expand();
               }
         );
    }
@@ -63,12 +65,12 @@ ngOnInit(){
 
 
 
-seleccionarMaquina(valor: any,event:any){
+seleccionarMaquina(event:any){
 //  console.log("changelist",valor,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
-  this.maquinaSeleccionada.emit(this.maquinas[valor]);
-  this.maquinaActiva = this.maquinas[valor].id;
-  this.unExpand(this.Choicer.nativeElement);
+  this.maquinaSeleccionada.emit(this.maquinas[event.value]);
+  this.maquinaActiva = this.maquinas[event.value].id;
+  this.unExpand();
 }
 
 
@@ -120,6 +122,7 @@ let parametros = '?id=' + this.maquinaActiva;
            // let indice = this.mantenimientos.indexOf(controlBorrar);
             this.maquinas.splice(indice, 1);
             this.maquinaSeleccionada.emit(this.maquinas[0]);
+            this.expand();
           }
       });
     }
@@ -136,11 +139,13 @@ eliminaMaquina(){
 // }
 
 modificarItem(){
+  this.nuevoNombre = this.maquinas[this.maquinas.findIndex((maquina)=>maquina.id==this.maquinaActiva)].nombre;
 (this.novaMaquina)? this.novaMaquina = null :this.modificaMaquina = !this.modificaMaquina;
 
 }
 
 addItem(){
+  this.nuevoNombre='';
   this.modificaMaquina=false;
   this.novaMaquina = new Maquina(0,'',0);
 }
@@ -148,14 +153,10 @@ addItem(){
 
 
 
-expand(list){
-
-let mysize = this.maquinas.length
-console.log('abriendo',mysize)
-list.size=mysize;
+expand(){
+setTimeout(()=>{this.Choicer.open();},200)
 }
-unExpand(list){
-console.log('cerrando',list)
-list.size=1;
+unExpand(){
+  this.Choicer.close();
 }
 }

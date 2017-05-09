@@ -1,14 +1,14 @@
   <md-card>
     <md-card-title>
-      <md-toolbar color="accent">{{'proveedores.areaproveedores' | translate}}</md-toolbar>
+      <md-toolbar color="accent">{{'proveedores.areaproveedores' | translate}}
+   <listado-proveedores (itemSeleccionado)="seleccionProveedor($event)"></listado-proveedores>
+        
+      </md-toolbar>
     </md-card-title>
  <md-card-subtitle>
-   <div class="w80">
-   <listado-proveedores (itemSeleccionado)="seleccionProveedor($event)"></listado-proveedores>
-   </div>
-   <div class="w20">
+
      <button md-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>
-   </div>
+
 
  </md-card-subtitle>
 

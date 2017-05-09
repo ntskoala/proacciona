@@ -6,6 +6,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { Http } from '@angular/http';
 
 import { MaterialModule } from '@angular/material';
+//import {MdSelectModule} from '@angular/material';
 import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
 import { DatePickerModule } from 'ng2-datepicker';
@@ -122,6 +123,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     TreeModule,
     // MultiSelectModule,
     MaterialModule.forRoot(),
+   // MdSelectModule,
     DatePickerModule,
     TranslateModule.forRoot({
       provide: TranslateLoader,

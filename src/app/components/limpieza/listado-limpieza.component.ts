@@ -7,14 +7,15 @@ import { URLS } from '../../models/urls';
 import { Empresa } from '../../models/empresa';
 import { LimpiezaZona } from '../../models/limpiezazona';
 import { Modal } from '../../models/modal';
-
+import {MdSelect} from '@angular/material';
 @Component({
   selector: 'listado-limpieza',
   templateUrl: './listado-limpieza.component.html',
   styleUrls:['./listado-limpieza.css']
 })
 export class ListadoLimpiezasComponent implements OnInit {
-  @ViewChild('choicer') Choicer: ElementRef;
+  //@ViewChild('choicer') Choicer: ElementRef;
+  @ViewChild('choicer') Choicer: MdSelect;
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
   public subscription: Subscription;
@@ -25,11 +26,13 @@ export class ListadoLimpiezasComponent implements OnInit {
   public modal: Modal = new Modal();
   public modificaZona: boolean;
   public nuevoNombre:string;
+  public open:boolean;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadLimpiezas(this.empresasService.seleccionada.toString());
+
 }
 
      loadLimpiezas(emp: Empresa | string) {
@@ -53,17 +56,16 @@ ngOnInit(){
               (error) => {console.log(error)},
               ()=>{
               this.listaZonas.emit(this.limpiezas);
-               this.expand(this.Choicer.nativeElement);
+               //this.expand(this.Choicer.nativeElement);
+               this.expand();
               }
         );
    }
 
-seleccionarZona(valor: any, event:any){
-//  console.log("changelist",valor,event);
-//this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
-  this.zonaSeleccionada.emit(this.limpiezas[valor]);
-  this.limpiezaActiva = this.limpiezas[valor].id;
-  this.unExpand(this.Choicer.nativeElement);
+seleccionarZona(event:any){
+  this.zonaSeleccionada.emit(this.limpiezas[event.value]);
+  this.limpiezaActiva = this.limpiezas[event.value].id;
+  this.unExpand();
 }
 
 
@@ -114,7 +116,7 @@ let parametros = '?id=' + this.limpiezaActiva+param;
             this.limpiezas.splice(indice, 1);
             this.limpiezaActiva = 0;
             this.zonaSeleccionada.emit(this.limpiezas[0]);
-
+            this.expand();
           }
       });
     }
@@ -143,15 +145,10 @@ addItem(){
 
 
 
-
-expand(list){
-
-let mysize = this.limpiezas.length
-console.log('abriendo',mysize)
-list.size=mysize;
+expand(){
+setTimeout(()=>{this.Choicer.open();},200)
 }
-unExpand(list){
-console.log('cerrando',list)
-list.size=1;
+unExpand(){
+  this.Choicer.close();
 }
 }

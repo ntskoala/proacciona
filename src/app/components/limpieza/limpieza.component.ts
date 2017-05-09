@@ -24,7 +24,7 @@ public nuevaLimpiezaR: number;
 cambiarTab(){}
 
 seleccionZona($event){
-  console.log($event);
+  //console.log($event);
   this.limpieza = $event;
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Servidor } from '../services/servidor.service';
@@ -17,7 +17,7 @@ import * as moment from 'moment';
   templateUrl: '../assets/html/informe-checklists.component.html'
 })
 export class InformeChecklistsComponent implements OnInit{
-
+  @ViewChild ('listaChecklist') lista:ElementRef;
   public subscription: Subscription;
   checklistSeleccionada: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
@@ -66,10 +66,16 @@ public es;
                   element.periodicidad, element.tipoperiodo));
               }
             }
-        });
+          },
+    error => console.log("error getting usuarios en permisos",error),
+    ()=>{
+      this.expand();
+    }
+    );
   }
 
   cambioChecklist(idChecklist: number) {
+    this.unExpand();
     this.tabla = [];
     this.checklistSeleccionada = idChecklist;
     let parametros = '&idchecklist=' + idChecklist;
@@ -204,5 +210,12 @@ console.log(mifecha);
   return mifecha;
 }
 
+unExpand(){
+  this.lista.nativeElement.size = 1;
+}
+expand(){
+  let num = this.checklists.length;
+  this.lista.nativeElement.size = num;
+}
 
 }

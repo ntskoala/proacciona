@@ -37,7 +37,7 @@ ngOnInit(){
 
      loadLimpiezas(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=limpieza_zona";
+    let parametros = '&idempresa=' + params+"&entidad=limpieza_zona&order=nombre";
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(

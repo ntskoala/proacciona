@@ -46,9 +46,9 @@ loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
     let params = typeof(emp) == "string" ? emp : emp.id;
      let parametros ="";
       if (filterDates){
-       parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+filterDates; 
+       parametros = '&idempresa=' + params+"&entidad=produccion_orden&order=id DESC&WHERE=estado=&valor="+estat+filterDates; 
      }else{
-       parametros = '&idempresa=' + params+"&entidad=produccion_orden&WHERE=estado=&valor="+estat+"";
+       parametros = '&idempresa=' + params+"&entidad=produccion_orden&order=id DESC&WHERE=estado=&valor="+estat+"";
      }
     
 

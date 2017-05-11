@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../services/empresas.service';
@@ -15,7 +15,7 @@ import { PermissionUserChecklist } from '../models/permissionuserchecklist';
   templateUrl: '../assets/html/permisos.component.html'
 })
 export class PermisosComponent {
-
+@ViewChild ('listUsuarios') lista: ElementRef;
   public subscription: Subscription;
   public usuario: Usuario = new Usuario(0, 'Seleccionar', '', '', '', 0)
   public usuarios: Usuario[] = [];
@@ -51,7 +51,12 @@ export class PermisosComponent {
           }
         }
     },
-    error => console.log("error getting usuarios en permisos",error));
+    error => console.log("error getting usuarios en permisos",error),
+    ()=>{
+      this.expand();
+    }
+    
+    );
     // conseguir controles
     this.servidor.getObjects(URLS.CONTROLES, parametros).subscribe(
       response => {
@@ -78,6 +83,7 @@ export class PermisosComponent {
   }
 
   seleccionarUsuario(idUsuario: number) {
+    this.unExpand();
     this.usuarioSeleccionado = idUsuario;
     this.checkControl = [];
     this.checkChecklist = [];
@@ -149,4 +155,11 @@ export class PermisosComponent {
     }
   }
 
+unExpand(){
+  this.lista.nativeElement.size = 1;
+}
+expand(){
+    let num = this.usuarios.length;
+  this.lista.nativeElement.size = num;
+}
 }

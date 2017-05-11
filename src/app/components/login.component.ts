@@ -13,24 +13,35 @@ import { Modal } from '../models/modal';
   templateUrl: '../assets/html/login.component.html'
 })
 export class LoginComponent implements OnInit {
- // public usuario: Object = {"user":"","password":"","idioma":null};
- public  usuario: Object = {"user":"demo","password":"demo","idioma":"es"};
+ //public usuario: Object = {"user":"","password":"","idioma":null};
+ public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
  public  modal: Modal = new Modal();
   public logoEmpresa:string;
 public gallery: string;
+public idioma:string;
   constructor(public servidor: Servidor, public router: Router,
     public empresasService: EmpresasService, public translate: TranslateService, public permisos: PermisosService) {}
 
 ngOnInit(){
-   this.gallery = "https://source.unsplash.com/1200x200/?food";
       this.translate.setDefaultLang('cat');
       this.translate.use('cat');
+    if (localStorage.getItem("idioma")){
+      this.idioma = localStorage.getItem("idioma");
+       this.empresasService.idioma = this.idioma;
+      this.translate.use(this.idioma);
+    }
+   this.gallery = "https://source.unsplash.com/1200x200/?food";
+
 }
 
   login(usuario) {
+    if (!localStorage.getItem("idioma")){
+    localStorage.setItem("idioma",usuario.idioma);
     this.empresasService.idioma = usuario.idioma;
      this.translate.use(usuario.idioma);
     console.log ("idioma:", usuario.idioma);
+      }
+      console.log ("idioma:", usuario.idioma);
     // Parámetros
     let param = '?user=' + usuario.user + '&password=' + usuario.password; 
     this.servidor.login(URLS.LOGIN, param).subscribe(
@@ -42,6 +53,7 @@ ngOnInit(){
           this.empresasService.userId = response.data[0].id;
           this.empresasService.userName = response.data[0].usuario;
           this.empresasService.userTipo = response.data[0].tipouser;
+          //this.empresasService.idioma = response.data[0].idioma;
           // Guarda token en sessionStorage
           sessionStorage.setItem('token', response.token);
           // Redirección en función del tipo de usuario

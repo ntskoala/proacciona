@@ -38,10 +38,10 @@ ngOnInit(){
 
      loadMaquinas(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params;
+    let parametros = '&idempresa=' + params+"&entidad=maquinaria&order=nombre";
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
-        this.servidor.getObjects(URLS.MAQUINAS, parametros).subscribe(
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             // Ocultar mostrar control checklists
             this.maquinaActiva = 0;
@@ -81,7 +81,8 @@ seleccionarMaquina(event:any){
 nuevaMaquina(maq: Maquina){
 maq.idempresa = this.empresasService.seleccionada;
 maq.nombre = this.nuevoNombre;
-    this.servidor.postObject(URLS.MAQUINAS, maq).subscribe(
+let param = "&entidad=maquinaria";
+    this.servidor.postObject(URLS.STD_ITEM, maq, param).subscribe(
       response => {
         if (response.success) {
           maq.id = response.id;
@@ -97,8 +98,9 @@ modificar(){
   maquina = this.maquinas[index];
   maquina.nombre = this.nuevoNombre;
 //let param = "&entidad=limpieza_zona";
-let parametros = '?id=' + this.maquinaActiva;     
-    this.servidor.putObject(URLS.MAQUINAS,parametros, maquina).subscribe(
+let param = "&entidad=maquinaria";
+let parametros = '?id=' + this.maquinaActiva+param;   
+    this.servidor.putObject(URLS.STD_ITEM,parametros, maquina).subscribe(
       response => {
         if (response.success) {
           console.log("updated");
@@ -114,8 +116,8 @@ let parametros = '?id=' + this.maquinaActiva;
   cerrarModal(event: boolean) {
     this.modal.visible = false;
     if (event) {
-      let parametros = '?id=' + this.maquinaActiva;
-      this.servidor.deleteObject(URLS.MAQUINAS, parametros).subscribe(
+      let parametros = '?id=' + this.maquinaActiva+"&entidad=maquinaria";
+      this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
         response => {
           if (response.success) {
             let indice = this.maquinas.findIndex((mantenimiento) => mantenimiento.id == this.maquinaActiva);

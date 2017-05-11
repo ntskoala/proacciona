@@ -1,7 +1,7 @@
 <div class="seleccionar-usuario">
   <h2>{{'Usuario' | translate}}</h2>
   <form>
-    <select (change)="seleccionarUsuario($event.target.value)">
+    <select #listUsuarios (change)="seleccionarUsuario($event.target.value)">
       <option *ngFor="let usuario of usuarios" [value]="usuario.id">
         {{usuario.usuario}}
       </option>

@@ -190,6 +190,23 @@ select {
 * Components *
 **************
 */
+/* MENU COMPONENT */
+.tooltip {
+  display: inline-flex;
+  align-items: center;
+  margin: 0px;
+}
+.mat-tooltip .ngcontent {
+    position: relative;
+    opacity: 1;
+    font-size:14px;
+}
+.mat-tooltip{
+  background-color: rgba(0,0,0,0.5);
+  font-size: 12px !important;
+  max-width: 100px !important;
+  /*margin-right: 30px !important;*/
+}
 
 /* LoginComponent */
 .login-form {
@@ -224,7 +241,7 @@ top: 0px;
 
 .profile{
   float:right;
-  margin:11px 22px !important;
+  margin:11px 18px !important;
 }
 
 /* EmpresasComponent */

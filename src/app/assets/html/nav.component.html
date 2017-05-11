@@ -4,9 +4,13 @@
   </div>
 
   <div class="logo-empresa">
-  <div class="userlogged" *ngIf="empresasService.userId"> <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
+  <div class="userlogged" *ngIf="empresasService.userId"> 
+  <div class="tooltip" mdTooltip="{{'menu.login' | translate}}" [mdTooltipPosition]="'before'">    
+    <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
         <span class="material-icons">account_circle</span>
-  </button></div>
+  </button>
+  </div>
+  </div>
   <!--<md-menu positionX="after" positionY="below" #menu="mdMenu">
   <button md-menu-item (click)="closeSession()">
     <md-icon>account_circle</md-icon>

@@ -56,16 +56,18 @@
         <input mdInput class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
           [(ngModel)]="usuario['password']" name="password">
         </md-input-container>
+        <span *ngIf="!idioma">
         <label for="idioma">Seleccionar idioma</label>
         <select class="white-select" required [(ngModel)]="usuario['idioma']" name="idioma">
           <option disabled value="null">Selecciona</option>
           <option value="cat">Català</option>
           <option value="es">Castellano</option>
         </select>
-                
+        </span>
       </md-card-content>
       <md-card-footer>
-<button md-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
+
+<button mdTooltip="LogIn" md-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
           Enviar
         </button>
       </md-card-footer>

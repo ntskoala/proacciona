@@ -7,7 +7,7 @@
   <h2>Checklist</h2>
   <!--<listado-checklists [empresa]="empresaSeleccionada"></listado-checklists>-->
   <form>
-    <select (change)="mostrarCCL($event.target.value)">
+    <select #listaChecklist (change)="mostrarCCL($event.target.value)">
       <option *ngFor="let checklist of checklists" [value]="checklist.id">
         {{checklist.nombrechecklist}}
       </option>

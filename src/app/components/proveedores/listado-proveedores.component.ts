@@ -36,7 +36,7 @@ cambiarTab(){}
 
 loadItems(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=proveedores";
+    let parametros = '&idempresa=' + params+"&entidad=proveedores&order=nombre";
 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {

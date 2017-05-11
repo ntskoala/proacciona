@@ -32,7 +32,10 @@ if ($_GET["order"]){
 //   $where = " AND " . mysqli_real_escape_string($conexion,$_GET["WHERE"]);
 // }
 if ($_GET["WHERE"]){
-  $where = " AND " . mysqli_real_escape_string($conexion,$_GET["WHERE"]) . "'". mysqli_real_escape_string($conexion,$_GET["valor"]) ."'";
+  $where = " AND " . mysqli_real_escape_string($conexion,$_GET["WHERE"]);
+  if ($_GET["valor"]){
+   $where .= "'". mysqli_real_escape_string($conexion,$_GET["valor"]) ."'";
+  }
 }
 if ($_GET["filterdates"] && $_GET["fecha_inicio"] && $_GET["fecha_fin"] && $_GET["fecha_field"]){
   $filter = " AND ".$_GET["fecha_field"].">='" . $_GET["fecha_inicio"] . "' AND ".$_GET["fecha_field"]." <='".$_GET["fecha_fin"]."'";

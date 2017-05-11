@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../services/empresas.service';
@@ -14,7 +14,7 @@ import { Modal } from '../models/modal';
   templateUrl: '../assets/html/checklists.component.html'
 })
 export class ChecklistsComponent implements OnInit{
-
+@ViewChild ('listaChecklist') lista: ElementRef;
   public subscription: Subscription;
   checklistActiva: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
@@ -62,7 +62,12 @@ export class ChecklistsComponent implements OnInit{
                   element.periodicidad, element.tipoperiodo));
               }
             }
-        });
+          },
+    error => console.log("error getting usuarios en permisos",error),
+    ()=>{
+      this.expand();
+    }
+    );
    }
 
   nuevaChecklist(cl: Checklist) {
@@ -130,6 +135,7 @@ export class ChecklistsComponent implements OnInit{
   }
 
   mostrarCCL(idChecklist: number) {
+    this.unExpand();
     console.log(idChecklist);
     let parametros = '&idchecklist=' + idChecklist;
     // llamada al servidor para conseguir los controlchecklist
@@ -229,5 +235,11 @@ export class ChecklistsComponent implements OnInit{
     }
   }
 
-
+unExpand(){
+  this.lista.nativeElement.size = 1;
+}
+expand(){
+    let num = this.checklists.length;
+  this.lista.nativeElement.size = num;
+}
 }

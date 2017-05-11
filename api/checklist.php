@@ -17,6 +17,7 @@ $decoded = JWT::decode($token, $key, array('HS256'));
 
 $method = $_SERVER['REQUEST_METHOD'];
 $idempresa = $_GET["idempresa"];
+$userId = $_GET["userId"];
 $key = $_GET["id"];
 // get the HTTP method, path and body of the request
 //$method = $_SERVER['REQUEST_METHOD'];
@@ -51,7 +52,7 @@ for ($i=0;$i<count($columns);$i++) {
 // create SQL based on HTTP method
 switch ($method) {
   case 'GET':
-    $sql = "select * from `$table` WHERE idempresa=$idempresa"; break;
+    $sql = "select * from `$table` WHERE idempresa=$idempresa order by nombrechecklist"; break;
   case 'PUT':
     $sql = "update `$table` set $set where id=$key"; break;
   case 'POST':
@@ -78,7 +79,18 @@ if ($method == 'GET') {
 } else {
   	$result = '{"success":"true","rows":' . mysqli_affected_rows($conexion). '}';
 }
-
+//******** LOGGING
+try{
+if ($method != "GET"){
+$sql_log = "INSERT INTO  logs SET fecha = '" .date("Y-m-d H:i:s"). "', idusuario=".$userId.", tabla= '".$table."', accion= '".$method."', valor= '".mysqli_real_escape_string($conexion,$sql)."', idempresa=".$idempresa;
+$log =  mysqli_query($conexion,$sql_log);// or die('{"success":"false","error":"query->'.$sql_log.'"}');
+//$result .='{"log":"'.$sql_log.'"}';
+}
+}
+catch (Exception $e) {
+//  echo '{"success":"false","error logging":"',  $e->getMessage(), '"}';
+  }
+//******** FIN LOGGING
 print json_encode($result);
 
 }

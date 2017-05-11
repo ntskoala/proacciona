@@ -1,4 +1,4 @@
-//let server = 'http://tfc.proacciona.es/'; //prod
+//let server = 'https://tfc.proacciona.es/'; //prod
 let server = 'http://tfc.ntskoala.com/';//DESARROLLO
 let base = server + 'api/';
 

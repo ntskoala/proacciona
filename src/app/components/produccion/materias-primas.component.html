@@ -34,7 +34,7 @@
      <span class="cell">
     <select class="smallselect"  [(ngModel)]="nuevoItem.idmateriaprima" name="idmateriaprima" (change)="setMaxCantidad($event.target.value)">
       <option *ngFor="let lote of entrada_productos; let i = index" [value]="lote.id">
-        {{lote.lote}}
+        {{lote.lote}} #{{lote.cantidad}}
       </option>
     </select>
     </span>      

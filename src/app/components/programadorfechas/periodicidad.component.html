@@ -1,4 +1,4 @@
-<button [disabled]="!fechaPrevista" type="button" [ngClass]="{'alert': alert }" md-raised-button (click)="seleccion()">{{'maquinas.periodicidad' | translate}}</button>
+<button [disabled]="!fechaPrevista" color="accent" type="button" [ngClass]="{'alert': alert }" md-raised-button (click)="seleccion()">{{'maquinas.periodicidad' | translate}}</button>
 
 <div *ngIf="period" class="periods">
     <md-card>

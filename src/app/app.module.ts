@@ -104,6 +104,8 @@ import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
 import { PermisosService } from './services/permisos.service';
 
+import { InformesControlComponent } from './components/informes-control/informes-control.component';
+
 
 export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
 
@@ -206,7 +208,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    InformesControlComponent
   ],
   providers: [
     EmpresasService,

@@ -225,8 +225,13 @@ seleccionarOrigen(origen: string,valor: number){
         // else{//Leche Pasteurizada o otras Leches
         //     this.level=3;
         // }
+        if (this.level<3){
          this.almacenesDestino = this.almacenesOrigen.filter((almacen) => (almacen.level >= this.level));
          this.almacenesDestino = this.almacenesDestino.filter((almacen) => (almacen.level <= this.level));
+        }else{
+         this.almacenesDestino = this.almacenesOrigen;
+         this.almacenesDestino.splice(0,1);
+        }
          this.loteSelected = this.entrada_productos[valor];
     }
     //console.log(this.ordenOrigen)
@@ -273,7 +278,7 @@ traspasar(){
 setNuevaEntradaProveedor(){
     let contadorP=0;
 //let nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
-    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem="+this.loteSelected.idproveedor+"&WHERE=fecha_entrada=curdate()%2B&valor=";
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem="+this.loteSelected.idproveedor+"&WHERE=fecha_entrada=curdate()";
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             if (response.success == 'true' && response.data) {

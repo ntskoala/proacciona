@@ -385,16 +385,24 @@ gestion-informes {
   width: 100%;
  /* padding-top: 4%;*/
 }
-
+.informe-header{
+    width: 100%;
+    height: 53px;
+    background-color: #ffd740;
+    padding: 10px;
+}
 /* InformeControlesComponent */
 .fechas {
   width: 100%;
   background-color:#cccccc;
+  margin-top:15px;
 }
   .filtro-dates{
     width:410px;
     display: inline-block;
     margin-left: 8px;
+    /*float:left;*/
+    margin-top: 5px;
   }
   .filtro{
     width:200px;

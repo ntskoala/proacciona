@@ -12,7 +12,8 @@
         (click)="cambiarTab(2)">{{'Periodicidad' | translate}}</button>
     </md-card-subtitle>
     <md-card-content>
-      <informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>
+      <!--<informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>-->
+      <app-informes-control class="tab" [class.active]="tabActivo == 0"></app-informes-control>
       <informe-checklists class="tab" [class.active]="tabActivo == 1"></informe-checklists>
       <informe-periodicidad class="tab" [class.active]="tabActivo == 2"></informe-periodicidad>
     </md-card-content>

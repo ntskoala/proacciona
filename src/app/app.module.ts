@@ -19,9 +19,9 @@ import {ScheduleModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import {LightboxModule} from 'primeng/primeng';
 import {TreeModule,TreeNode} from 'primeng/primeng';
-// import {MultiSelectModule} from 'primeng/primeng';
-
-
+import {MultiSelectModule} from 'primeng/primeng';
+import {DataTableModule,SharedModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/primeng';
 
 
 //**********MY COMPONENTS */
@@ -123,7 +123,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     DialogModule,
     LightboxModule,
     TreeModule,
-    // MultiSelectModule,
+    DataTableModule,
+    SharedModule,
+    MultiSelectModule,
+    DropdownModule,
     MaterialModule.forRoot(),
    // MdSelectModule,
     DatePickerModule,

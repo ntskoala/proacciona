@@ -5,10 +5,7 @@
   <button md-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
 </md-toolbar>
 
- <!--<div class="header-row">
-   <span class="header-cell">{{"nombre" | translate}}</span>
-   <span class="header-cell">{{"periodicidad" | translate}}</span>
- </div>-->
+
 
 <div class="zona" *ngFor="let item of zonas; let i = index">
   <div class="yellow full-width">
@@ -16,25 +13,7 @@
       <span *ngIf="migrarList[i]['migrado']">ok- </span>
       {{item.nombre}}
       </md-checkbox>
-              <!--<span class="migra-cell">
-      <p-calendar placeholder="fecha" [(ngModel)]="migrarList[i]['fecha']" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
-    </span>
-        <span class="migra-cell">
-      <periodicidad (periodo)="setPeriodicidad($event, limpieza.id, i, x)" [miperiodo]="migrarList[i]['periodicidad']" [fechaPrevista]="limpieza.fecha" name="periodicidad"></periodicidad>
-    </span>
-    <span class="small migra-cell">
-        <select class="white-select small" required [(ngModel)]="migrarList[i]['tipo']" name="tipo">
-        <option value="interno">{{'interno' | translate}}</option>
-        <option value="externo">{{'externo' | translate}}</option>
-      </select>
-    </span>
-     <span class="migra-cell">
-    <select-productos name="productos" [elementoLimpieza]="migrarList[i]['fecha']" (selectedProductsChange)="setProducts($event)"></select-productos>
- </span>
 
-    <span class="migra-cell">
-      <input [placeholder]="'responsable' | translate" type="text" [(ngModel)]="migrarList[i]['responsable']" name="responsable">
-    </span>-->
   </div>
 <span *ngIf="limpiezas[i]">
   <div class="elemento" *ngFor="let limpieza of limpiezas[i]['Alimpiezas']; let x = index">
@@ -55,7 +34,6 @@
       </select>
     </span>
      <span class="migra-cell">
-    <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionadosItem[i]" name="productos"></p-multiSelect>-->
     <select-productos name="productos" [elementoLimpieza]="0" (selectedProductsChange)="setProducts($event,i,x)"></select-productos>
  </span>
 
@@ -73,12 +51,3 @@
   <button md-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
 </md-toolbar>
 
-
-<!--<md-grid-list cols="2" rowHeight="100px"  *ngFor="let item of zonas; let i = index">
-<md-grid-tile [style.background]="yellow">
-  <md-checkbox class="example-margin" [(ngModel)]="migrarList[i]">{{item.nombre}}</md-checkbox>  
-  </md-grid-tile>
-<md-grid-tile  [style.background]="yellow">
-    <md-checkbox class="example-margin" *ngFor="let control of controles[i]; let x = index">{{control.nombre}}</md-checkbox>
-  </md-grid-tile>
-</md-grid-list>-->

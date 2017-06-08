@@ -216,8 +216,9 @@ calcFecha(idChecklist: number){
 
 
 setPeriodicidad(periodicidad: string, idItem: number, i: number, x:number){
-    console.log(this.limpiezas[i][x]);
-    this.limpiezas[i][x].periodicidad = periodicidad;
+   // console.log(this.limpiezas[i][x]);
+   // this.limpiezas[i][x].periodicidad = periodicidad;
+   this.limpiezas[i]['Alimpiezas'][x].periodicidad = periodicidad;
 }
 
 

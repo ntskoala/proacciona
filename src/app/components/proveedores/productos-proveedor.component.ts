@@ -121,10 +121,11 @@ getFamilias(){
         if (response.success) {
           this.items.push(this.addnewItem);
           this.items[this.items.length-1].id= response.id;
+          setTimeout(()=>{this.setItems()},150);
         }
     },
     error =>console.log(error),
-    () =>this.setItems()   
+    () =>  {}
     );
 
    this.nuevoItem = new ProveedorProducto('','','','',0,0,null);

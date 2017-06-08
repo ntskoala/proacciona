@@ -4,6 +4,7 @@ export class Checklist {
     public idempresa: number,
     public nombrechecklist: string,
     public periodicidad: number,
-    public tipoperiodo: string
+    public tipoperiodo: string,
+    public migrado?: number
   ) {}
 }

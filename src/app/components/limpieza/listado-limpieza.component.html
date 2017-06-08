@@ -7,6 +7,9 @@
         {{limpieza.nombre}}
       </md-option>
     </md-select>-->
+         <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="importChecklists('abrir')" type="button">
+          <span class="material-icons">get_app</span>
+        </button>   
     <md-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarZona($event)">
       <md-option *ngFor="let limpieza of limpiezas; let i = index" [value]="i">
         {{limpieza.nombre}}
@@ -43,3 +46,10 @@
         </button>
   </div>
 </div>
+
+<!--**************** POP UP IMPORT CHECK LISTS -->
+<!--<div class="modal" *ngIf="import">-->
+  <div class="modal-window-import" *ngIf="import">
+    <app-migra-check-list (finMigracion)="importChecklists($event)"></app-migra-check-list>
+  </div>
+<!--</div>-->

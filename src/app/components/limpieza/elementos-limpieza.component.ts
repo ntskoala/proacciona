@@ -88,7 +88,8 @@ public productos: prods[]=[];
             this.protocolo =[];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable));
+                let app = element.app== "1"? true:false;
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app));
                   this.protocolo.push(false);
              }
             }

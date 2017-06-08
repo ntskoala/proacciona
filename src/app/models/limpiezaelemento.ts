@@ -10,6 +10,7 @@ export class LimpiezaElemento {
     public protocol?: string,
     public protocolo?: string,
     public usuario?: string,
-    public responsable?: string
+    public responsable?: string,
+    public app?: boolean
   ) {}
 }

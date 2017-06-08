@@ -1,4 +1,4 @@
-//let server = 'http://tfc.proacciona.es/'; //prod
+//let server = 'https://tfc.proacciona.es/'; //prod
 let server = 'http://tfc.ntskoala.com/';//DESARROLLO
 let base = server + 'api/';
 
@@ -13,6 +13,7 @@ export const URLS = {
   CONTROLCHECKLISTS: base + 'controlchecklist.php',
   PERMISSION_USER_CONTROL: base + 'permissionusercontrol.php',
   PERMISSION_USER_CHECKLIST: base + 'permissionuserchecklist.php',
+  PERMISSION_USER_LIMPIEZA: base + 'permissionuserlimpieza.php',
   RESULTADOS_CONTROL: base + 'resultadoscontrol.php',
   RESULTADOS_CHECKLIST: base + 'resultadoschecklist.php',
   PERIODICIDAD_CONTROL: base + 'periodicidadcontrol.php',

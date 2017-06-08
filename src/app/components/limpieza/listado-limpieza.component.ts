@@ -27,6 +27,7 @@ export class ListadoLimpiezasComponent implements OnInit {
   public modificaZona: boolean;
   public nuevoNombre:string;
   public open:boolean;
+  public import: boolean=false;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -143,7 +144,16 @@ addItem(){
   this.novaLimpieza = new LimpiezaZona(0,0,'');
 }
 
-
+importChecklists(valor){
+  this.import = !this.import;
+  if (valor  == 'cerrar'){
+      this.loadLimpiezas(this.empresasService.seleccionada.toString());
+  }
+  if (valor  == 'abrir' && this.limpiezaActiva > 0){
+      let event = new Object({value:0})
+      this.seleccionarZona(event);
+  }  
+}
 
 expand(){
 setTimeout(()=>{this.Choicer.open();},200)

@@ -16,12 +16,12 @@
     <span class="cell">
       <input type="text" [placeholder]="'limpieza.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
     </span>
-    <span class="cell">
+    <span class="medium cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
-      <p-calendar placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
-    <span class="cell small">
-        <select class="white-select small" required [(ngModel)]="nuevoItem.tipo" name="tipo">
+    <span class="medium cell small">
+        <select class="medium white-select small" required [(ngModel)]="nuevoItem.tipo" name="tipo">
         <option value="interno">{{'interno' | translate}}</option>
         <option value="externo">{{'externo' | translate}}</option>
       </select>
@@ -33,8 +33,16 @@
     <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionados" name="productos"></p-multiSelect>-->
     <select-productos name="productos" [elementoLimpieza]="0" (selectedProductsChange)="setProducts($event)"></select-productos>
  </span>
-    <span class="cell">
-      <input type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
+    <span class="medium cell">
+      <input class="medium" type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
+    </span>
+    <span class="cell small">
+        <md-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></md-checkbox>
+    </span>
+      <span class="cell small">
+        <button md-mini-fab class="camera" (click)="verPermisos(-1)" type="button">
+        <span class="material-icons">phonelink_lock</span>
+      </button>  
     </span>
     <span class="cell medium">
              <button md-mini-fab class="camera" (click)="verProtocolo(-1)" type="button">
@@ -68,11 +76,13 @@
   </div>
   <div class="header-row">
     <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
-    <span class="header-cell">{{"limpieza.fecha" | translate}}</span>
-    <span class="header-cell">{{"limpieza.tipo" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.fecha" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
     <span class="header-cell">{{"limpieza.periodicidad" | translate}}</span>
     <span class="header-cell">{{"limpieza.productos" | translate}}</span>
-    <span class="header-cell">{{"limpieza.responsable" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
+     <span class="header-cell">{{"App" | translate}}</span>
+      <span class="header-cell small">{{"permisos" | translate}}</span>
     <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
     <span class="header-cell">
       <!--<button md-button (click)="SETPROCESO()">proceso</button>-->
@@ -85,11 +95,11 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
     </span>
-    <span class="cell">
-      <p-calendar [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
+    <span class="medium cell">
+      <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
     </span>
-    <span class="cell small">
-      <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.tipo" name="tipo" (change)="itemEdited(item.id)">
+    <span class="medium cell small">
+      <select class="medium small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.tipo" name="tipo" (change)="itemEdited(item.id)">
         <option value="interno">{{'interno' | translate}}</option>
         <option value="externo">{{'externo' | translate}}</option>
       </select>
@@ -103,14 +113,18 @@
     <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos>
  </span>
 
-    <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
+    <span class="medium cell">
+      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
-    <!--<span class="cell small">
-           <button md-mini-fab color="primary" (click)="verProtocolo(i)" type="submit">
-        <span class="material-icons">list</span>
-      </button>
-    </span>-->
+    <span class="cell small">
+        <md-checkbox [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="example-margin" [(ngModel)]="item.app" name="app" (change)="itemEdited(item.id)"></md-checkbox>
+    </span>
+      <span class="cell small">
+        <app-permisos-limpieza [limpieza]="item.id"></app-permisos-limpieza>
+        <!--<button md-mini-fab class="camera" (click)="verPermisos(i)" type="button">
+        <span class="material-icons">phonelink_lock</span>
+      </button>  -->
+    </span>
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell">
        <button md-mini-fab class="camera" (click)="verProtocolo(i)" type="button">

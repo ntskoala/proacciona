@@ -1,0 +1,7 @@
+.selpermisos{
+    position: absolute;
+    z-index: 10;
+    padding: 10px;
+    background-color: gainsboro;
+    border-radius: 5px;
+}

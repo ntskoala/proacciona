@@ -18,6 +18,8 @@ export class ListadoLimpiezasComponent implements OnInit {
   @ViewChild('choicer') Choicer: MdSelect;
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
+  @Output() migrando: EventEmitter<boolean>=new EventEmitter<boolean>();
+  
   public subscription: Subscription;
   public limpiezaActiva: number = 0;
   public limpieza1: LimpiezaZona = new LimpiezaZona(0,0, 'Seleccionar zona');
@@ -148,10 +150,15 @@ importChecklists(valor){
   this.import = !this.import;
   if (valor  == 'cerrar'){
       this.loadLimpiezas(this.empresasService.seleccionada.toString());
+      this.migrando.emit(false);
   }
-  if (valor  == 'abrir' && this.limpiezaActiva > 0){
+  if (valor  == 'abrir'){
+    if(this.limpiezaActiva > 0){
       let event = new Object({value:0})
       this.seleccionarZona(event);
+    }
+      this.migrando.emit(true);
+      
   }  
 }
 

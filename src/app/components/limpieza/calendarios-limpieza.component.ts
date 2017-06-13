@@ -69,6 +69,7 @@ entidad:string="&entidad=limpieza_realizada";
             this.calendario = [];
             if (response.success && response.data) {
               for (let element of response.data) {
+
                 this.calendario.push(new CalendarioLimpieza(element.zona, element.nombre, element.tipo, element.periodicidad));
                   let color = this.setColor(element.fecha)
                   this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.zona + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"periodicidad":element.periodicidad,"color":color,"estado":"pendiente"});  

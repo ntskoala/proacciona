@@ -2,7 +2,7 @@
     <md-card-title>
       <md-toolbar color="accent">{{'limpieza.planlimpieza' | translate}}
 
-        <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)"></listado-limpieza>
+        <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)" (migrando)="migrando($event)"></listado-limpieza>
       </md-toolbar>
     </md-card-title>
  <md-card-subtitle>
@@ -10,7 +10,7 @@
    <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)"></listado-limpieza>
    </div>
    <div class="w20">-->
-   <div class="calendarios">
+   <div class="calendarios" *ngIf="!migrandoEstat">
   <button color="accent" md-raised-button (click)="calendarios()">{{'limpieza.calendarios' | translate}}</button>
   <button color="accent" md-raised-button (click)="verProductosLimpieza()">{{'limpieza.productos' | translate}}</button>
   <!--</div>-->

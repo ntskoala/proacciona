@@ -34,7 +34,7 @@ public cadames:number = 1;
 public cadasemana:number =1;
 public mes: number;
 public alert:boolean=false;
-public periodos: String[] = ['diaria', 'semanal','mensual','anual'];
+public periodos: String[] = ['diaria', 'semanal','mensual','anual','por uso'];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 public numdias = [];
 public dias = [{'nombre':'lunes','checked':true},{'nombre':'martes','checked':true},{'nombre':'miercoles','checked':true},{'nombre':'jueves','checked':true},{'nombre':'viernes','checked':true},{'nombre':'sabados','checked':false},{'nombre':'domingos','checked':false}];

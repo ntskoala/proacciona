@@ -16,6 +16,7 @@ public calendario: boolean = false;
 public productosLimpieza: boolean = false;
 public limpiezas: LimpiezaZona[];
 public nuevaLimpiezaR: number;
+public migrandoEstat: boolean= false;
   constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -42,8 +43,12 @@ verProductosLimpieza(){
 }
 
 nuevaLimpiezaRealizada(event){
-  console.log('paso2');
   this.nuevaLimpiezaR = event;
+
+}
+
+migrando(event){
+this.migrandoEstat = event;
 
 }
 }

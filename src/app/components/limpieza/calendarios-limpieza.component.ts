@@ -69,11 +69,21 @@ entidad:string="&entidad=limpieza_realizada";
             this.calendario = [];
             if (response.success && response.data) {
               for (let element of response.data) {
+                let fecha;
+                let color = this.setColor(element.fecha)
+                let repeticion = this.checkPeriodo(element.periodicidad);
+                if (repeticion =='por uso'){
+                  console.log('############POR USO')
+                  fecha = new Date();
+                  color = "#3333ff";
+                }else{
+                  fecha = element.fecha;
+                }
 
                 this.calendario.push(new CalendarioLimpieza(element.zona, element.nombre, element.tipo, element.periodicidad));
-                  let color = this.setColor(element.fecha)
-                  this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.zona + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"periodicidad":element.periodicidad,"color":color,"estado":"pendiente"});  
-                   this.mantenimientos.push(new LimpiezaElemento(element.id, element.idlimpiezazona, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
+                  
+                  this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.zona + " " + element.nombre,"start":fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"periodicidad":element.periodicidad,"color":color,"descripcion":repeticion,"estado":"pendiente"});  
+                   this.mantenimientos.push(new LimpiezaElemento(element.id, element.idlimpiezazona, element.nombre,new Date(fecha), element.tipo, element.periodicidad,
                   element.productos,element.protocol,element.protocolo,element.usuario,element.responsable));
               }
             }
@@ -103,6 +113,11 @@ loadRealizados(){
 
 }
 
+checkPeriodo(periodicidad: string): string{
+let valor:string;
+let periodo = JSON.parse(periodicidad);
+return periodo.repeticion;
+}
 
 setColor(fecha){
   let color: string;
@@ -126,7 +141,7 @@ handleEventClick(event){
 
       if (event.calEvent.estado == 'pendiente'){
         this.estado="pendiente";
-        this.limpiezarealizada = new LimpiezaRealizada(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,'',new Date(event.calEvent.start),new Date(),event.calEvent.tipo,this.empresasService.userId,event.calEvent.responsable,0,this.empresasService.seleccionada);
+        this.limpiezarealizada = new LimpiezaRealizada(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),event.calEvent.tipo,this.empresasService.userId,event.calEvent.responsable,0,this.empresasService.seleccionada);
         try{
         this.periodicidad = JSON.parse(event.calEvent.periodicidad);
         }
@@ -186,6 +201,9 @@ handleEventClick(event){
         } else{
           proximaFecha = this.nextYearDay();
         }
+        break;
+        case "por uso":
+        proximaFecha = moment(new Date());
         break;
       }
 
@@ -260,8 +278,11 @@ return proximafecha;
  actualizarMantenimiento(mantenimiento: LimpiezaElemento, i: number) {
 
 // console.log (this.tipoevento[i])
-
-this.event.color = "#F67E1F";
+if (this.checkPeriodo(this.event.periodicidad) == 'por uso') {
+  this.event.color = "#3333ff";
+}else{
+  this.event.color = "#F67E1F";
+}
 
     // console.log ("actualizar:##",mantenimiento);
     //mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;

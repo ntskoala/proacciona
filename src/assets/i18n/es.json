@@ -89,6 +89,7 @@
     "Personal":"Módulo personal"
   },
   "maquinas": {
+    "CalendarioGeneralMantenimiento":"Calendario general mantenimiento",
     "nueva": "Nueva máquina",
     "maquinaria": "Mantenimiento",
     "maquinas": "Maquinas",
@@ -161,6 +162,7 @@
     "borrarMantenimientoR":"Borrar mantenimiento"
   },
   "limpieza": {
+    "CalendarioGeneralLimpieza":"Calendario general limpieza",
     "nueva": "Nueva area limpieza",
     "areadelimpieza": "Area de limpieza",
     "limpieza": "Limpieza",
@@ -345,5 +347,6 @@
   "años":"años",
   "dias":"dias",
   "dia":"dia",
-  "por uso": "por uso"
+  "por uso": "por uso",
+  "leyenda":"leyenda"
 }

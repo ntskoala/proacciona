@@ -17,9 +17,9 @@ margin-top: -20px;
 }
 
 .modal-window-import{
-    position: relative;
-    top: 900px;
-    left: -170px;
+    position: absolute;
+    top: 150px;
+    left: 0px;
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.6);
     border: 4px solid #ffd740;
     background-color: #fff;

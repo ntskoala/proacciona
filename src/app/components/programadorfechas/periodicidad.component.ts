@@ -20,6 +20,7 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 export class PeriodicidadComponent implements OnInit {
 @Output() periodo:EventEmitter<string>= new EventEmitter<string>();
 @Input() miperiodo: string;
+@Input() origen: string;
 @Input() fechaPrevista: Date;
 public fecha:String;
 public periodoactual: Periodicidad;
@@ -34,7 +35,7 @@ public cadames:number = 1;
 public cadasemana:number =1;
 public mes: number;
 public alert:boolean=false;
-public periodos: String[] = ['diaria', 'semanal','mensual','anual','por uso'];
+public periodos: String[];// = ['diaria', 'semanal','mensual','anual','por uso'];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 public numdias = [];
 public dias = [{'nombre':'lunes','checked':true},{'nombre':'martes','checked':true},{'nombre':'miercoles','checked':true},{'nombre':'jueves','checked':true},{'nombre':'viernes','checked':true},{'nombre':'sabados','checked':false},{'nombre':'domingos','checked':false}];
@@ -45,6 +46,13 @@ public period: boolean=false;
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
+  console.log('##########',this.origen);
+if (this.origen == 'limpieza'){
+    this.periodos = ['diaria', 'semanal','mensual','anual','por uso'];
+}else{
+     this.periodos = ['diaria', 'semanal','mensual','anual'];
+}
+
 if (this.fechaPrevista){
   this.fecha = moment(this.fechaPrevista).format('DD-MM-YYYY');
   this.diasemana = moment(this.fechaPrevista).isoWeekday().toString();

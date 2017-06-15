@@ -1,10 +1,10 @@
 <md-card>
-<h2 class="center">Calendario General Maquinaria</h2>
+<h2 class="center">{{'maquinas.CalendarioGeneralMantenimiento' | translate}}</h2>
 <p-schedule [events]="events" [header]="headerCalendar"  [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"
   (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card>leyenda
+<md-card>{{'leyenda' | translate}}
     <div class="leyenda">
        {{'maquinas.mantenimientos' | translate}}
         <md-chip-list>

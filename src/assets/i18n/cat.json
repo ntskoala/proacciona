@@ -89,6 +89,7 @@
     "Personal":"Mòdul personal"
   },
   "maquinas": {
+    "CalendarioGeneralMantenimiento":"Calendari general manteniment",
     "nueva":"Nova màquina",
     "maquinaria":"Manteniment",
     "maquinas":"Màquines",
@@ -161,6 +162,7 @@
     "borrarMantenimientoR":"Eliminar manteniment"
   },	
     "limpieza": {
+    "CalendarioGeneralLimpieza":"Calendari general neteja",
     "nueva":"Nova àrea neteja",
     "areadelimpieza":"Àrea de neteja",
     "limpieza":"Neteja",
@@ -345,5 +347,6 @@
   "años":"anys",
   "dias":"dies",
   "dia":"dia",
-  "por uso": "per ús"
+  "por uso": "per ús",
+  "leyenda":"llegenda"
 }	

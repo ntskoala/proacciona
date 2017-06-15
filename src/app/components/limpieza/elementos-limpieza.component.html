@@ -27,7 +27,7 @@
       </select>
     </span>
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo"></periodicidad>
     </span>
      <span class="cell">
     <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionados" name="productos"></p-multiSelect>-->
@@ -105,7 +105,7 @@
       </select>
     </span>
     <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" name="periodicidad"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
     </span>
 
  <span class="cell">

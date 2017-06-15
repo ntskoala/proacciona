@@ -34,6 +34,7 @@ public foto:string;
 public protocolo:boolean[];
 public newItemprotocolo:boolean;
 public color:string="accent";
+public tipo:string="limpieza";
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_elemento/';
 public modal: Modal = new Modal();
 public modal2: Modal;

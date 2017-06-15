@@ -1,10 +1,10 @@
 <!--[locale]="es" -->
 <md-card>
-<h2 class="center">Calendario General Limpieza</h2>
+<h2 class="center">{{'limpieza.CalendarioGeneralLimpieza' | translate}}</h2>
 <p-schedule [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card>leyenda
+<md-card>{{'leyenda' | translate}}
     <div class="leyenda">
         {{'limpieza.limpiezas' | translate}}
         <md-chip-list>
@@ -12,6 +12,8 @@
             <md-chip  color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</md-chip>
             <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
             <md-chip color="#F67E1F" selected="true">{{'limpieza.proximas' | translate}}</md-chip>
+            <figure style="display: block;background: #3333ff;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="accent" selected="true">{{'por uso' | translate}}</md-chip>
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
             <md-chip color="accent" selected="true">{{'limpieza.vencidas' | translate}}</md-chip>
         </md-chip-list>

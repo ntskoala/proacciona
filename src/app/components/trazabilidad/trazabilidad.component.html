@@ -2,7 +2,7 @@
   <md-card>
     <md-card-title>
         <div #toPDFTitle>
-      <md-toolbar color="accent">{{'Trazabilidad' | translate}} {{'lote' | translate}} {{orden.numlote}}
+      <md-toolbar color="accent">{{'trazabilidad.Trazabilidad' | translate}} {{'trazabilidad.lote' | translate}} {{orden.numlote}}
       </md-toolbar>
         </div>
     </md-card-title>
@@ -11,16 +11,16 @@
         <button  md-mini-fab color="accent" (click)="downloadPdf()" type="button">
           <span class="material-icons">picture_as_pdf</span>
     </button>
-            <button  md-mini-fab color="accent" (click)="doInforme()" type="button">
+            <!--<button  md-mini-fab color="accent" (click)="doInforme()" type="button">
           <span class="material-icons">picture_as_pdf</span>
-    </button>
+    </button>-->
  </div>
  </md-card-subtitle>
 
 <div #toPDF class="arbol" [ngStyle]="{'width': widthArbol}">
     <md-card>
                 <md-card-title>
-            {{'Arbol' | translate}}
+            {{'trazabilidad.Arbol' | translate}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </md-card-title>
 <p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
@@ -40,18 +40,18 @@
         </md-card-title>
         
         <!--{{'num traspaso' }} : {{card.data.level}}<br>-->
-        <span *ngIf="card.data.proveedor">{{'proveedor'| translate}} : {{card.data.proveedor}}<br></span>
-        <span *ngIf="card.data.cliente && card.data.cliente>0">{{'cliente'| translate}} : {{card.cliente}}<br></span>
+        <span *ngIf="card.data.proveedor">{{'trazabilidad.proveedor'| translate}} : {{card.data.proveedor}}<br></span>
+        <span *ngIf="card.data.cliente && card.data.cliente>0">{{'produccion.cliente'| translate}} : {{card.cliente}}<br></span>
         <!--<span *ngIf="card.data.numlote_proveedor">{{'Lote de Proveedor' | translate}} : {{card.data.numlote_proveedor}}<br></span>-->
         <!--<span *ngIf="card.data.proveedor">{{'proveedor' | translate}} : {{card.proveedor}}<br></span>-->
-        <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'tanque' | translate}} : {{card.almacen}}<br></span>
-        <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'cantidad' | translate}} : {{card.cantidad}}<br></span>
-        <span *ngIf="card.data.fecha_inicio_orden">{{'fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
-        <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date'">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad}}<br></span>
-        {{'origen' | translate}}: {{card.procedencia}}<br>
+        <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'trazabilidad.tanque' | translate}} : {{card.almacen}}<br></span>
+        <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
+        <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+        <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date'">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
+        {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br>
         <!--{{message}}-->
         </md-card>
-        <md-card >
+        <!--<md-card >
             {{informe}}
-        </md-card>
+        </md-card>-->
 </div>

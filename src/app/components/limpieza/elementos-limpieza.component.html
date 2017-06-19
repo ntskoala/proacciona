@@ -40,9 +40,9 @@
         <md-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></md-checkbox>
     </span>
       <span class="cell small">
-        <button md-mini-fab class="camera" (click)="verPermisos(-1)" type="button">
+        <!--<button md-mini-fab class="camera" (click)="verPermisos(-1)" type="button">
         <span class="material-icons">phonelink_lock</span>
-      </button>  
+      </button>  -->
     </span>
     <span class="cell medium">
              <button md-mini-fab class="camera" (click)="verProtocolo(-1)" type="button">
@@ -121,9 +121,6 @@
     </span>
       <span class="cell small">
         <app-permisos-limpieza [limpieza]="item.id"></app-permisos-limpieza>
-        <!--<button md-mini-fab class="camera" (click)="verPermisos(i)" type="button">
-        <span class="material-icons">phonelink_lock</span>
-      </button>  -->
     </span>
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell">

@@ -287,6 +287,15 @@
     "numlote":"Num lote",
     "fecha":"Fecha"
   },
+  "trazabilidad":{
+    "Trazabilidad":"Trazabilidad",
+    "lote":"lote",
+    "Arbol":"Arbol",
+    "tanque":"Tanc",
+    "origen":"Origen",
+    "fecha orden":"Fecha orden",
+    "proveedor":"Proveedor"
+  },
   "almacenes":{
     "nombre":"Nombre",
     "capacidad":"Capacidad",
@@ -318,6 +327,7 @@
     "Cliente Destino":"Cliente destino",
     "Cantidad":"Cantidad",
     "Disponible":"Disponible",
+    "Destino":"Destino",
     "entendido":"entendido",
     "traspasar":"traspasar"
   },

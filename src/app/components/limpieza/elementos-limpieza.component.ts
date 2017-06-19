@@ -122,9 +122,12 @@ public productos: prods[]=[];
         }
     },
     error =>console.log(error),
-    () =>this.setItems()   
+    () =>  {}
     );
-    }
+  }
+  setTimeout(()=>{
+      this.setItems()
+  },500);
    this.nuevoItem = new LimpiezaElemento(0,0,'','');
   }
 

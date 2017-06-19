@@ -92,9 +92,9 @@ public es;
   setItems(filterDates?:string){
     let parametros ="";
      if (filterDates){
-       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+filterDates; 
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+filterDates+"&order=fecha desc"; 
      }else{
-       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id; 
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+"&order=fecha desc"; 
      }
       //let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.cliente.id+filterDates; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(

@@ -89,9 +89,9 @@ public es;
   setItems(filterDates?:string){
     let parametros ="";
      if (filterDates){
-       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id+filterDates; 
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id+filterDates+"&order=fecha_entrada desc"; 
      }else{
-       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
+       parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id+"&order=fecha_entrada desc"; 
      }
      // let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
@@ -109,6 +109,7 @@ public es;
   }
 
 getProductos(){
+  console.log('get_prods');
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+this.field+this.proveedor.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
@@ -118,6 +119,7 @@ getProductos(){
               for (let element of response.data) { 
                   this.productos.push({"id":element.id,"nombre":element.nombre});
              }
+             //console.log("PRODS",this.productos);
             }
         },
         error=>console.log(error),

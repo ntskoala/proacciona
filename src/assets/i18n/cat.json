@@ -243,7 +243,7 @@
     "lotes_entregados":"Lots entregats",
     "lotes_finalizados":"Lots finalitzats",
     "ficha":"Fitxa producció",
-    "materias_primas":"Materias primas",
+    "materias_primas":"Materies primes",
     "traspasos":"Traspassos",
     "productos":"Productes",
     "almacenes":"Magatzem",
@@ -272,6 +272,15 @@
     "alert_cantidad_menor_disponible_destino":"Quantitat ha de ser menor o igual a la  capacitat disponible en destí",
     "alert_tanque_destino":"No ha seleccionat un Tanc de destí",
     "alert6":""
+  },
+    "trazabilidad":{
+    "Trazabilidad":"Traçabilitat",
+    "lote":"lot",
+    "Arbol":"Arbre",
+    "tanque":"Tanc",
+    "origen":"Origen",
+    "fecha orden":"Data ordre",
+    "proveedor":"Proveïdor"
   },
   "clientes":{
     "crear":"Crear",
@@ -318,6 +327,7 @@
     "Cliente Destino":"Client destí",
     "Cantidad":"Quantitat",
     "Disponible":"Disponible",
+    "Destino":"Destí",
     "entendido":"Entés",
     "traspasar":"Traspassar"
   },

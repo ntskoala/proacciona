@@ -111,7 +111,6 @@ getFamilias(){
 
 
   newItem() {
-    
     let param = this.entidad+this.field+this.proveedor.id;
     this.nuevoItem.idproveedor = this.proveedor.id;
     if (!this.nuevoItem.idfamilia) this.nuevoItem.idfamilia = 0;
@@ -121,7 +120,9 @@ getFamilias(){
         if (response.success) {
           this.items.push(this.addnewItem);
           this.items[this.items.length-1].id= response.id;
-          setTimeout(()=>{this.setItems()},150);
+          setTimeout(()=>{this.setItems();
+                          this.nuevoProducto.emit(true);  
+                        },150);
         }
     },
     error =>console.log(error),
@@ -129,7 +130,7 @@ getFamilias(){
     );
 
    this.nuevoItem = new ProveedorProducto('','','','',0,0,null);
-   this.nuevoProducto.emit(true);
+   
   }
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef } from '@angular/core';
 import {Tree,TreeNode } from 'primeng/primeng';
-
+import { TranslateService } from 'ng2-translate';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -35,6 +35,7 @@ export class TrazabilidadComponent implements OnInit, OnChanges{
 
 expandingTree: Tree;
 tree: TreeNode[];
+tree2:TreeNode[];
 msgs: any[]=[];
 message:string;
 selectedNode: TreeNode;
@@ -57,13 +58,14 @@ public verdoc: boolean = false;
 public foto:string;
 public widthArbol;
 public informe:string;
+public nodozero:boolean=false;
 
 modal: Modal = new Modal();
 entidad:string="&entidad=produccion_detalle";
 field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 es;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public translate: TranslateService) {}
 
   ngOnInit() {
       this.getAlmacenes();
@@ -75,6 +77,7 @@ es;
 
   ngOnChanges(){
     console.log("onChange");
+    this.nodozero = false;
      this.tree = [];
      this.tree.push({"label": "inicio","data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
 
@@ -208,6 +211,7 @@ getOrdenes(nodo: any,id:number, tipo:string,level:number){
 getParent(nodo: any,id:number, tipo:string,level:number){
     let i=0;
     level++;
+    let lastItem = true;
 //    this.tree[0].children.forEach((child)=> {
 //        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+child.data.idmateriaprima;
         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&"+tipo+"="+id;
@@ -236,6 +240,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                         
                         i++
                       }else{
+                          lastItem = false;
                       nodo.children.push({
                       "label":element.numlote,
                       "parent":nodo,
@@ -251,6 +256,10 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                 //     this.getParent(nodo.children[i],element.idloteinterno,'idorden',level);
                 // }
              }
+             if (lastItem){
+                 //this.tree[0] = this.tree[0].children[0];
+                 this.nodoZero();
+             }
 //             i++;
             }
         },
@@ -265,18 +274,58 @@ getParent(nodo: any,id:number, tipo:string,level:number){
         );
 }
 
+nodoZero(){
+    if (!this.nodozero){
+        this.nodozero = true;
+    let tanque;
+    this.translate.get('trazabilidad.tanque').subscribe((valor)=>tanque = valor);
+    if (this.tree[0].children.length>1){
+        this.tree[0].label = tanque + ' ' + this.findAlmacen(this.tree[0].children[0].data.almacen);
+        this.tree[0].children.forEach(element => {
+       this.tree[0].data.cantidad += element.data.cantidad;
+
+    //    this.tree[0].data.fecha_caducidad = element.data.fecha_caducidad;
+    //     if (new Date(this.tree[0].data.fecha_caducidad) > new Date(element.data.fecha_caducidad))
+    //     this.tree[0].data.fecha_caducidad = element.data.fecha_caducidad;
+        });
+    }else{
+        //this.tree2 = [];
+        this.tree = this.tree[0].children;
+        console.log('$$$$: ',this.tree[0].data.cliente);
+    if(this.tree[0].data.cliente > 0){
+    this.tree[0].label += ' ' + this.findCliente(this.tree[0].data.cliente);
+    }else{
+    this.tree[0].label += ' ' + this.findAlmacen(this.tree[0].data.almacen);
+    }
+}
+    }
+}
+
+findCliente(cli:number){
+        let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==cli);
+        let n_cliente;
+        (indice_cliente <0)?n_cliente=false:n_cliente = this.clientes[indice_cliente].nombre;
+return n_cliente;
+}
+findAlmacen(alm:number):string{
+let almacen;
+        let index= this.almacenes.findIndex((almacen)=>almacen.id==alm);
+        
+        (index <0)?almacen=false:almacen = this.almacenes[index].nombre;
+return almacen;
+}
     closeFicha(index:number){
         this.msgs.splice(index,1);
     }
     nodeSelect(event) {
         //this.msgs = [];
-        let index= this.almacenes.findIndex((almacen)=>almacen.id==event.node.data.almacen);
-        let almacen;
-        (index <0)?almacen=false:almacen = this.almacenes[index].nombre;
-        let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==event.node.data.cliente);
-        let n_cliente;
-        (indice_cliente <0)?n_cliente=false:n_cliente = this.clientes[indice_cliente].nombre;
-        console.log(indice_cliente,n_cliente,this.clientes)
+        //let index= this.almacenes.findIndex((almacen)=>almacen.id==event.node.data.almacen);
+        let almacen = this.findAlmacen(event.node.data.almacen);
+        //(index <0)?almacen=false:almacen = this.almacenes[index].nombre;
+       // let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==event.node.data.cliente);
+        let n_cliente = this.findCliente(event.node.data.cliente);
+        //(indice_cliente <0)?n_cliente=false:n_cliente = this.clientes[indice_cliente].nombre;
+       // console.log(indice_cliente,n_cliente,this.clientes)
 
         let procedencia =""
         // if (event.node.children){

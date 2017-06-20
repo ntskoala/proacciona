@@ -258,7 +258,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
              }
              if (lastItem){
                  //this.tree[0] = this.tree[0].children[0];
-                 this.nodoZero();
+                 if (this.empresasService.seleccionada == 26) this.nodoZero();
              }
 //             i++;
             }
@@ -274,16 +274,19 @@ getParent(nodo: any,id:number, tipo:string,level:number){
         );
 }
 
+
+////Quitar nodo "INICIO" substituir por cliente o TANQUE
+///SOLO VAQUERIA. VER this.empresasService.seleccionada == 26
 nodoZero(){
     if (!this.nodozero){
         this.nodozero = true;
     let tanque;
     this.translate.get('trazabilidad.tanque').subscribe((valor)=>tanque = valor);
     if (this.tree[0].children.length>1){
+
         this.tree[0].label = tanque + ' ' + this.findAlmacen(this.tree[0].children[0].data.almacen);
         this.tree[0].children.forEach(element => {
        this.tree[0].data.cantidad += element.data.cantidad;
-
     //    this.tree[0].data.fecha_caducidad = element.data.fecha_caducidad;
     //     if (new Date(this.tree[0].data.fecha_caducidad) > new Date(element.data.fecha_caducidad))
     //     this.tree[0].data.fecha_caducidad = element.data.fecha_caducidad;

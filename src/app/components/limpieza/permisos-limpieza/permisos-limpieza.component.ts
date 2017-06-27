@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
 import { Usuario } from '../../../models/usuario';
@@ -12,6 +12,8 @@ import { EmpresasService } from '../../../services/empresas.service';
 })
 export class PermisosLimpiezaComponent implements OnInit {
 @Input() limpieza: number;
+@Input() supervisor: number;
+@Output() setSupervisor:EventEmitter<number> =new EventEmitter<number>();
 public viewPermisos: boolean = false;
 public usuarios: Usuario[] = [];
 public permisos: PermissionUserLimpieza[] = [];
@@ -21,8 +23,8 @@ public field:string="&field=idelementolimpieza&idItem=";
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
-    
-    this.getPermisos().then(
+    if(this.limpieza){
+      this.getPermisos().then(
       (resultado) =>{
         console.log("ltadoresu",resultado);
         if (resultado){
@@ -30,6 +32,11 @@ public field:string="&field=idelementolimpieza&idItem=";
         }
       }
     );
+    }else{
+      this.permisos.push(new PermissionUserLimpieza(null,this.supervisor,null));
+      this.getUsuarios();
+    
+    }
   }
 
 getUsuarios(){
@@ -82,6 +89,15 @@ verPermisos(){
 
 
 cambiaEstadoPermiso(usuario:Usuario,i:number){
+  console.log(usuario,this.limpieza)
+if (this.limpieza){
+  this.guardaEstadoPermiso(usuario,i);  
+}else{
+  this.setSupervision(usuario,i);
+}
+}
+
+guardaEstadoPermiso(usuario:Usuario,i:number){
     console.log(this.haypermiso)
    // let indice = this.permisos.findIndex((permiso) => permiso.idusuario == usuario.id);
    // console.log("indice:",indice,this.permisos[indice])
@@ -107,6 +123,15 @@ cambiaEstadoPermiso(usuario:Usuario,i:number){
           }
       });
      }
-
 }
+
+setSupervision(usuario:Usuario,i:number){
+console.log(usuario.id);
+this.permisos=[];
+this.haypermiso = this.haypermiso.map((element)=>element=-1);
+this.permisos.push(new PermissionUserLimpieza(null,usuario.id,null));
+this.haypermiso[i]=this.permisos.length -1
+this.setSupervisor.emit(usuario.id);
+}
+
 }

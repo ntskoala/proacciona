@@ -298,6 +298,8 @@ let param = "&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem=
     this.loteSelected.cantidad_inicial =  this.cantidadTraspaso;
     this.loteSelected.cantidad_remanente = this.cantidadTraspaso;
     
+    this.loteSelected.fecha_caducidad = moment().add(7,'days').toDate();
+    
     this.servidor.postObject(URLS.STD_ITEM, this.loteSelected,param).subscribe(
       response => {
         if (response.success) {
@@ -321,6 +323,8 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
         this.nuevaOrden.cantidad=+this.almacenDestinoSelected.estado + +this.cantidadTraspaso;
         this.nuevaOrden.idalmacen = this.almacenDestinoSelected.id;
         console.log("Destino",this.almacenDestinoSelected);
+        console.log("ORIGEN SELECTED",this.almacenOrigenSelected);
+        console.log("LOTE SELECTED",this.loteSelected);
         if (this.almacenDestinoSelected.level > 1){
             if(this.almacenOrigenSelected){
             if (this.almacenOrigenSelected.level<=1){
@@ -328,12 +332,16 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
             }else{
                  let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                     this.nuevaOrden.fecha_caducidad = caducidad;
+        console.log("CADUCIDAD 1",this.almacenOrigenSelected.level, caducidad);
+                    
             }
-            }else if (this.loteSelected){
+        }else if (this.loteSelected){
+            console.log("CADUCIDAD 1.2",this.loteSelected,this.ordenDestino,this.nuevaOrden);
                 if (this.ordenDestino)
                 {
                 let caducidad = (moment(this.loteSelected.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.loteSelected.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                     this.nuevaOrden.fecha_caducidad = caducidad;
+                    console.log("CADUCIDAD 2",this.loteSelected,this.ordenDestino,caducidad);
                 }else{
                     this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
                 }

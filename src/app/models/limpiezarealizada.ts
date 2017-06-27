@@ -10,6 +10,10 @@ export class LimpiezaRealizada {
     public idusuario?:number,
     public responsable?: string,
     public id?:number,
-    public idempresa?:number
+    public idempresa?:number,
+    public idsupervisor?:number,
+    public fecha_supervision?:Date,
+    public supervision?:boolean,
+    public detalles_supervision?:string
   ) {}
 }

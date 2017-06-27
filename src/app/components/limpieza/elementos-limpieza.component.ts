@@ -90,7 +90,7 @@ public productos: prods[]=[];
             if (response.success && response.data) {
               for (let element of response.data) { 
                 let app = element.app== "1"? true:false;
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app));
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor));
                   this.protocolo.push(false);
              }
             }
@@ -155,6 +155,7 @@ setProdsElemtento(idElemento){
     item.periodicidad = this.items[i].periodicidad; 
     item.productos = this.items[i].productos;
     item.protocol = this.items[i].protocol;
+    item.supervisor = this.items[i].supervisor;
     console.log(item);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
@@ -242,6 +243,10 @@ setProducts(productos:string[]){
   this.productosSeleccionados = productos;
 }
 
+setSupervisor(idUsuario: number,item: LimpiezaElemento){
+item.supervisor = idUsuario;
+this.itemEdited(item.id);
+}
 //**********************TEMP */
 //   setProductos(){
 //           let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=limpieza_producto"; 

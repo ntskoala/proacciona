@@ -179,6 +179,7 @@
     "descripcion":"Descripció",
     "protocolo":"Protocol",
     "responsable":"Responsable",
+    "supervisor":"Supervisor",
     "fecha_prevista":"Data prevista",
     "fecha_real":"Data real",
     "nombre":"Nom",

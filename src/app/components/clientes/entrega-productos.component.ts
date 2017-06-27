@@ -243,9 +243,9 @@ console.log(this.nuevoItem);
 
 
 check(){
-  console.log('cheking',!isNaN(this.nuevoItem.cantidad),this.nuevoItem.cantidad < this.cantidadMaxima, this.cantidadMaxima);
+  console.log('cheking',!isNaN(this.nuevoItem.cantidad),+this.nuevoItem.cantidad < +this.cantidadMaxima, this.cantidadMaxima);
 
-if (!isNaN(this.nuevoItem.cantidad) && this.nuevoItem.cantidad < this.cantidadMaxima){
+if (!isNaN(this.nuevoItem.cantidad) && +this.nuevoItem.cantidad < +this.cantidadMaxima){
   let index = this.ordenes.findIndex((orden) => orden.id== this.nuevoItem.idordenproduccion);
   this.ordenes[index].remanente -= this.nuevoItem.cantidad;
   return true

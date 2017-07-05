@@ -107,6 +107,7 @@ import { PermisosService } from './services/permisos.service';
 import { InformesControlComponent } from './components/informes-control/informes-control.component';
 import { MigraCheckListComponent } from './components/migra-check-list/migra-check-list.component';
 import { PermisosLimpiezaComponent } from './components/limpieza/permisos-limpieza/permisos-limpieza.component';
+import { PlanifiacionesComponent } from './components/planifiaciones/planifiaciones.component';
 
 
 export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
@@ -216,7 +217,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PageNotFoundComponent,
     InformesControlComponent,
     MigraCheckListComponent,
-    PermisosLimpiezaComponent
+    PermisosLimpiezaComponent,
+    PlanifiacionesComponent
   ],
   providers: [
     EmpresasService,

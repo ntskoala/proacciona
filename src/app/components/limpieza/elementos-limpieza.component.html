@@ -83,6 +83,7 @@
     <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
      <span class="header-cell">{{"App" | translate}}</span>
       <span class="header-cell small">{{"Permisos" | translate}}</span>
+      <span class="header-cell small">{{"Supervisor" | translate}}</span>
     <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
     <span class="header-cell">
       <!--<button md-button (click)="SETPROCESO()">proceso</button>-->
@@ -121,6 +122,9 @@
     </span>
       <span class="cell small">
         <app-permisos-limpieza [limpieza]="item.id"></app-permisos-limpieza>
+    </span>
+      <span class="cell small">
+        <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>
     </span>
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell">

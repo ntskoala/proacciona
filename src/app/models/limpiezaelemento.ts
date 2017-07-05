@@ -11,6 +11,7 @@ export class LimpiezaElemento {
     public protocolo?: string,
     public usuario?: string,
     public responsable?: string,
-    public app?: boolean
+    public app?: boolean,
+    public supervisor?: number
   ) {}
 }

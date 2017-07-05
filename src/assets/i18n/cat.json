@@ -179,6 +179,7 @@
     "descripcion":"Descripció",
     "protocolo":"Protocol",
     "responsable":"Responsable",
+    "supervisor":"Supervisor",
     "fecha_prevista":"Data prevista",
     "fecha_real":"Data real",
     "nombre":"Nom",
@@ -194,7 +195,14 @@
     "dosificacion":"Dosificació",
     "ficha":"Fitxa",
     "productoslimpieza":"Productes neteja",
-     "borrarLimpiezaR":"Eliminar neteja"
+     "borrarLimpiezaR":"Eliminar neteja",
+     "idsupervisor":"Supervisor",
+     "supervision":"Supervisión",
+     "fecha_supervision":"Fecha Sup.",
+     "detalles_supervision":"Descrip. Sup.",
+     "correcta":"Correcta",
+     "incorrecta":"Incorrecta",
+     "porSupervisar":"Per supervisar"
   },
  "proveedores":{
     "proveedores":"Proveïdors",
@@ -275,7 +283,7 @@
   },
     "trazabilidad":{
     "Trazabilidad":"Traçabilitat",
-    "lote":"lot",
+    "lote":"Lot",
     "Arbol":"Arbre",
     "tanque":"Tanc",
     "origen":"Origen",
@@ -357,6 +365,6 @@
   "años":"anys",
   "dias":"dies",
   "dia":"dia",
-  "por uso": "per ús",
-  "leyenda":"llegenda"
+  "por uso": "Per ús",
+  "leyenda":"Llegenda"
 }	

@@ -3,38 +3,58 @@
   <!--</div>-->
   <div class="header-row">
     <span class="header-cell">{{"limpieza.limpieza" | translate}}</span>
-    <span class="header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
-    <span class="header-cell">{{"limpieza.fecha" | translate}}</span>
-    <span class="header-cell">{{"limpieza.tipo" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.fecha_real" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
     <span class="header-cell">{{"limpieza.descripcion" | translate}}</span>
-    <span class="header-cell">{{"limpieza.responsable" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.fecha_supervision" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.supervision" | translate}}</span>
+    <span class="medium header-cell">{{"limpieza.supervisor" | translate}}</span>
+    <span class="header-cell"></span>
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
 
 
-  <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
-
+  <form class="row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
+    <!--<span class="detalle" *ngIf="mantenimiento.detalles_supervision">?<span class="reason">{{mantenimiento.detalles_supervision}}</span></span>-->
     <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
     <span class="cell">
       <input [readonly]="true" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="itemEdited(mantenimiento.id)">
     </span>
-    <span class="cell small">
-      <p-calendar class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+    <span class="medium cell small">
+      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
-    <span class="cell">
-      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+    <span class="medium cell">
+      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
-    <span class="cell">
-     <input class="small"  [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
+    <span class="medium cell">
+     <input class="medium small"  [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
     </span>
-    <span class="cell">
-      <input  [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
+    <span class="medium cell">
+      <input class="medium small" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
     </span>
-    <span class="cell">
-      <input  [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
+    <span class="medium cell">
+      <input  class="medium small" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
     </span>
-
+    <span class="medium cell small">
+      <p-calendar [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="mantenimiento.fecha_supervision" [locale]="es" dateFormat="dd/mm/yy" name="fecha_supervision" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+    </span>
+     <span class="medium cell">
+      <p-dropdown (onChange)="itemEdited(mantenimiento.id)" [style]="{'width':'100px'}" [options]="supervisar" [(ngModel)]="mantenimiento.supervision" name="supervision"></p-dropdown>
+    </span>   
+    <span class="medium cell">
+      <input disabled class="medium" [placeholder]="'supervisor' | translate" type="text" [(ngModel)]="mantenimiento.supervisor" [ngModelOptions]="{standalone: true}" (keyup)="itemEdited(mantenimiento.id)">
+    </span>
+    <span class="cell detalle" [ngClass]="{'supervisionOk': mantenimiento.supervision==1, 'supervisionFail': mantenimiento.supervision==2}">
+      <span class="reason" *ngIf="motivo[i]">
+        <input   [placeholder]="'detalles_supervision' | translate" type="text" [(ngModel)]="mantenimiento.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(mantenimiento.id)">
+        </span>
+      <button [disabled]="mantenimiento.supervision==1" md-mini-fab  (click)="detalleSupervision(mantenimiento.id,i)" type="button">
+        <span class="material-icons">info</span>
+      </button>
+    </span>
     <span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
         <span class="material-icons">close</span>

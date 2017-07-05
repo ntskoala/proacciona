@@ -13,17 +13,17 @@
             <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
             <md-chip color="#F67E1F" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="accent" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
+            <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
         <br>
         {{'maquinas.calibraciones' | translate}}
         <md-chip-list>
             <figure style="display: block;background: #88ee88;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip  color="red" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
+            <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
             <figure style="display: block;background: #673AB7;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#673AB7" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
+            <md-chip color="#33cc33" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
             <figure style="display: block;background: red;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#88ee88" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
+            <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
     </div>
 </md-card>
@@ -37,11 +37,11 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">{{'maquinas.fecha_prevista' | translate}}</label></div>
-            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="mantenimientorealizado.fecha_prevista" format="dd-mm-yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="mantenimientorealizado.fecha_prevista"  dateFormat="dd/mm/yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">{{'maquinas.fecha_real' | translate}}</label></div>
-            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="mantenimientorealizado.fecha" format="dd-mm-yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="mantenimientorealizado.fecha"  dateFormat="dd/mm/yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.elemento' | translate}}</label></div>

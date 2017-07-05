@@ -195,7 +195,14 @@
     "dosificacion":"Dosificación",
     "ficha":"Ficha",
     "productoslimpieza":"Productos limpieza",
-    "borrarLimpiezaR":"Borrar limpieza"
+    "borrarLimpiezaR":"Borrar limpieza",
+    "idsupervisor":"Supervisor",
+     "supervision":"Supervisió",
+     "fecha_supervision":"Data Sup.",
+     "detalles_supervision":"Descrip. Sup.",
+     "correcta":"Correcta",
+     "incorrecta":"Incorrecta",
+     "porSupervisar":"Por supervisar"
   },
   "proveedores":{
     "proveedores":"Proveedores",
@@ -290,7 +297,7 @@
   },
   "trazabilidad":{
     "Trazabilidad":"Trazabilidad",
-    "lote":"lote",
+    "lote":"Lote",
     "Arbol":"Arbol",
     "tanque":"Tanc",
     "origen":"Origen",
@@ -358,6 +365,6 @@
   "años":"años",
   "dias":"dias",
   "dia":"dia",
-  "por uso": "por uso",
-  "leyenda":"leyenda"
+  "por uso": "Por uso",
+  "leyenda":"Leyenda"
 }

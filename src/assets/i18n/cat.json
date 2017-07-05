@@ -197,9 +197,9 @@
     "productoslimpieza":"Productes neteja",
      "borrarLimpiezaR":"Eliminar neteja",
      "idsupervisor":"Supervisor",
-     "supervision":"Supervisión",
-     "fecha_supervision":"Fecha Sup.",
-     "detalles_supervision":"Descrip. Sup.",
+     "supervision":"Supervisió",
+     "fecha_supervision":"Data sup.",
+     "detalles_supervision":"Descrip. sup.",
      "correcta":"Correcta",
      "incorrecta":"Incorrecta",
      "porSupervisar":"Per supervisar"

@@ -76,7 +76,8 @@
     "proveedores":"Mòdul proveïdors",
     "clientes":"Mòdul clients",
     "produccion":"Mòdul producció",
-    "personal":"Mòdul personal"
+    "personal":"Mòdul personal",
+    "planificaciones":"planificacions"
   },
   "premium":{
     "exportar informes":"Exporta informes",

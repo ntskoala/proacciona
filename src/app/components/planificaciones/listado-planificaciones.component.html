@@ -1,0 +1,42 @@
+
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="cabeceraItems">
+  <form>
+
+ 
+    <md-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarPlan($event)">
+      <md-option *ngFor="let plan of planes; let i = index" [value]="i">
+        {{plan.nombre}}
+      </md-option>
+    </md-select>
+  </form>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="addItem()" type="button">
+          <span class="material-icons">add</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(planActivo > 0)">
+          <span class="material-icons">edit</span>
+        </button>
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="warn" (click)="eliminaPlan()" type="button" [disabled]="!(planActivo > 0)">
+          <span class="material-icons">delete_forever</span>
+        </button>
+</div>
+
+<!--**************** POP UP OPCIONES -->
+<div class="modal" *ngIf="modificaPlan || novoPlan">
+  <div class="modal-window modificar">
+  
+          <h2 class="center"  *ngIf="modificaZona">{{ 'modificar' | translate }}</h2>
+          <h2 class="center"  *ngIf="novaLimpieza">{{ 'planificacion.nueva'  | translate }}</h2>
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
+          <hr>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaPlan">
+          <span class="material-icons">check</span>
+        </button>
+          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="nuevoPlan(novoPlan)" *ngIf="novoPlan">
+          <span class="material-icons">add</span>
+        </button>
+          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <span class="material-icons">close</span>
+        </button>
+  </div>
+</div>

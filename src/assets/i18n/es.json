@@ -76,7 +76,8 @@
     "proveedores":"Módulo proveedores",
     "clientes":"Módulo clientes",
     "produccion":"Módulo producción",
-    "personal":"Módulo personal"
+    "personal":"Módulo personal",
+    "planificaciones":"planificaciones"
   },
   "premium":{
     "exportar informes":"Exportar informes",

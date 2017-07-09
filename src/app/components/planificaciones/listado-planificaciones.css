@@ -1,0 +1,30 @@
+.selector{
+width: 40%;
+float:left;
+}
+.nueva{
+width: 50%;
+float:right;
+margin-right: 50px;
+margin-top: -20px;
+}
+
+.modificar{
+    background-color: #f9f9f9;
+    height: 200px;
+    padding: 50px;
+
+}
+
+.modal-window-import{
+    position: absolute;
+    top: 150px;
+    left: 0px;
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.6);
+    border: 4px solid #ffd740;
+    background-color: #fff;
+    border-radius: 5px;
+    /* -webkit-transform: translate(-50%, -50%); */
+    /* transform: translate(-50%, -50%); */
+    padding: 25px;
+}

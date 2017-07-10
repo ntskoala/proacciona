@@ -2,7 +2,6 @@
     <md-card-title>
       <md-toolbar color="accent">{{'planificaciones.planificaciones' | translate}}
 
-        <listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>
       </md-toolbar>
     </md-card-title>
  <md-card-subtitle>
@@ -17,9 +16,12 @@
 
  <div class="contenido">
    <calendarios-planificaciones *ngIf="calendario" [planes]="planes" (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
-   <h2 class="center" *ngIf="plan && plan.id >0">{{plan.nombre}}</h2>
+   <!--<h2 class="center" *ngIf="plan && plan.id >0">{{plan.nombre}}</h2>-->
+        <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
+   
 <md-tab-group [dynamicHeight]="false">
-  <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs"  [planes]="planes" ></app-planes></md-tab>
+  
+  <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" ></app-planes></md-tab>
 <!--<md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></md-tab>  -->
 </md-tab-group>
  </div>

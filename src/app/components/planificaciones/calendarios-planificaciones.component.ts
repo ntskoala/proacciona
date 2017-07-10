@@ -93,8 +93,8 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                 //console.log ('#',element.idsupervisor,supervisor);
                   this.events.push({"idelemento":element.id,"title": element.nombre,"start":fecha,"periodicidad":element.periodicidad,
                   "color":color,"descripcion":repeticion,"estado":"pendiente","idsupervisor":element.supervisor,"supervisor":supervisor});
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre, new Date(element.fecha), 
-                element.periodicidad,element.photo,element.supervisor));
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion, element.familia,
+                 new Date(element.fecha), element.periodicidad,element.supervisor));
 
               }
              //              this.loadRealizados();

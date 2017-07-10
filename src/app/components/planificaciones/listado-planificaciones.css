@@ -15,7 +15,9 @@ margin-top: -20px;
     padding: 50px;
 
 }
-
+.divrow{
+    display: table-row-group;
+}
 .modal-window-import{
     position: absolute;
     top: 150px;

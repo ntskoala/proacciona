@@ -8,6 +8,9 @@
 
    <div class="calendarios" *ngIf="!migrandoEstat">
   <button color="accent" md-raised-button (click)="calendarios()">{{'planificaciones.calendarios' | translate}}</button>
+  <button color="accent" md-raised-button (click)="familias()">{{'planificaciones.familias' | translate}}</button>
+  <button color="accent" md-raised-button (click)="familias()">{{'planificaciones.permisos' | translate}}</button>
+  
   <!--<button color="accent" md-raised-button (click)="verProductosLimpieza()">{{'planificaciones.productos' | translate}}</button>-->
 
    </div>
@@ -16,13 +19,15 @@
 
  <div class="contenido">
    <calendarios-planificaciones *ngIf="calendario" [planes]="planes" (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
+   <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
+   
    <!--<h2 class="center" *ngIf="plan && plan.id >0">{{plan.nombre}}</h2>-->
         <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
    
 <md-tab-group [dynamicHeight]="false">
   
   <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" ></app-planes></md-tab>
-<!--<md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></md-tab>  -->
+  <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="plan"></app-planes-realizados></md-tab>  
 </md-tab-group>
  </div>
   </md-card>

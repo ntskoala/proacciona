@@ -1,8 +1,9 @@
 export class PlanRealizado {
   constructor(
     public id: number,
+    public idplan: number,
+    public idfamilia: number,
     public idempresa:number,
-    public idPlan: number,
     public nombre:string,
     public descripcion: string,
     public fecha_prevista: any,
@@ -12,6 +13,7 @@ export class PlanRealizado {
     public fecha_supervision?:Date,
     public supervision?:number,
     public detalles_supervision?:string,
-    public supervisor?:string
+    public supervisor?:string,
+    public imagen?:string
   ) {}
 }

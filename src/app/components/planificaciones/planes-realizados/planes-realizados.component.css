@@ -1,0 +1,30 @@
+.supervisionOk{
+   /* background-color: #99cc99;*/
+    background-color: lightgreen;
+}
+.supervisionFail{
+    /*background-color: #ff7777;*/
+    background-color: red;
+}
+
+.detalle{
+    position: relative;
+    padding-right: 7px;
+}
+
+
+.detalle:hover + .reason{
+ /*   z-index: 10;
+    display: flex;*/
+}
+
+.reason{
+    display: flex;
+    position: absolute;
+    z-index: 100;
+    background-color: #ddd;
+    border: 1px double #000;
+    height: 50px;
+    width: 210px;
+    left: -210px;
+}

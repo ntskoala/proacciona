@@ -8,8 +8,11 @@ import { Planificacion } from '../../models/planificacion';
 })
 export class PlanificacionesComponent implements OnInit {
 public calendario:boolean=false;
+public familia:boolean=false;
+
 public planes: Planificacion[] = [];
 public plan: Planificacion;
+
   constructor() { }
 
   ngOnInit() {
@@ -18,10 +21,16 @@ public plan: Planificacion;
 calendarios(){
 this.calendario = !this.calendario;
 }
+familias(){
+this.familia = !this.familia;
+}
 loadPlanes(planes){
 this.planes = planes;
 }
 seleccionPlan(plan){
 this.plan = plan;
+}
+nuevoPlanRealizado(id:number){
+console.log('nuevoPlanRealizado',id)
 }
 }

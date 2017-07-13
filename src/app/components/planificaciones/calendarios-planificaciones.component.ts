@@ -39,14 +39,14 @@ public planrealizado: PlanRealizado;
 public newdate = new Date();
 public periodicidad: Periodicidad;
 public moment: Moment;
-public mantenimientos: LimpiezaElemento[]=[];
+//public mantenimientos: LimpiezaElemento[]=[];
 public usuarios:Usuario[];
 public tipoevento:string[]=[];
 public event:any;
 public estado;
 //public localSupervisor: string;
 public supervisor: string;
-entidad:string="&entidad=limpieza_realizada";
+entidad:string="&entidad=planificaciones_realizadas";
 public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"label":"correcto"},{"value":2,"label":"incorrecto"}];
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
@@ -91,7 +91,7 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                  let supervisor = ''; 
                 (element.supervisor>0)? supervisor = this.findSupervisor(element.supervisor):supervisor =  '';
                 //console.log ('#',element.idsupervisor,supervisor);
-                  this.events.push({"idelemento":element.id,"title": element.nombre,"start":fecha,"periodicidad":element.periodicidad,
+                  this.events.push({"idplan":element.id,"title": element.nombre,"start":fecha,"periodicidad":element.periodicidad,
                   "color":color,"descripcion":repeticion,"estado":"pendiente","idsupervisor":element.supervisor,"supervisor":supervisor});
                 this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion, element.familia,
                  new Date(element.fecha), element.periodicidad,element.supervisor));
@@ -192,7 +192,7 @@ handleEventClick(event){
 
       if (event.calEvent.estado == 'pendiente'){
         this.estado="pendiente";
-        this.planrealizado = new PlanRealizado(null,this.empresasService.seleccionada,event.calEvent.idelemento,event.calEvent.title, 
+        this.planrealizado = new PlanRealizado(null,event.calEvent.idplan,event.calEvent.idfamilia,this.empresasService.seleccionada,event.calEvent.title, 
         event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),this.empresasService.userId,
         event.calEvent.idsupewrvisor,new Date());
         this.supervisor = event.calEvent.supervisor
@@ -219,11 +219,11 @@ handleEventClick(event){
 
     saveEvent() {
 
-        let index = this.events.findIndex((event)=> event.idelemento == this.planrealizado.idPlan);
-        // console.log (index, this.mantenimientos[index],this.planrealizado)
-        this.mantenimientos[index].fecha = this.nuevaFecha();
-        this.actualizarMantenimiento(this.mantenimientos[index],index);
-        this.newMantenimientoRealizado();
+        let index = this.events.findIndex((event)=> event.idplan == this.planrealizado.idplan);
+       console.log (index, this.planes[index],this.planrealizado)
+        this.planes[index].fecha = this.nuevaFecha();
+        this.actualizarPlan(this.planes[index],index);
+        this.newPlanRealizado();
         this.dialogVisible = false;
     }
 
@@ -345,7 +345,7 @@ if (primerdia >6) primerdia= primerdia-7;
 return proximafecha;
 }
 
- actualizarMantenimiento(mantenimiento: LimpiezaElemento, i: number) {
+ actualizarPlan(plan: Planificacion, i: number) {
 
 // console.log (this.tipoevento[i])
 if (this.checkPeriodo(this.event.periodicidad) == 'por uso') {
@@ -356,12 +356,12 @@ if (this.checkPeriodo(this.event.periodicidad) == 'por uso') {
 
     // console.log ("actualizar:##",mantenimiento);
     //mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
-    let parametros = '?id=' + mantenimiento.id+"&entidad=limpieza_elemento";  
-    this.servidor.putObject(URLS.STD_SUBITEM, parametros, mantenimiento).subscribe(
+    let parametros = '?id=' + plan.id+"&entidad=planificaciones";  
+    this.servidor.putObject(URLS.STD_ITEM, parametros, plan).subscribe(
       response => {
         if (response.success) {
           // console.log("move...",this.events[i].start , this.mantenimientos[i].fecha,i);
-          this.event.start = new Date(this.mantenimientos[i].fecha);
+          this.event.start = new Date(this.planes[i].fecha);
           this.events[i] = this.event; 
           // console.log(this.events[i].start);
         }
@@ -375,7 +375,7 @@ this.event.supervision = evento.value;
 
  supervisarMantenimiento() {
 
-  let index = this.events.findIndex((event)=> event.idelemento == this.planrealizado.idPlan);
+  let index = this.events.findIndex((event)=> event.idelemento == this.planrealizado.idplan);
     let parametros = '?id=' + this.planrealizado.id+this.entidad;
     this.planrealizado.idempresa = this.empresasService.seleccionada;
     this.planrealizado.idsupervisor = this.empresasService.userId;
@@ -404,7 +404,7 @@ this.event.supervision = evento.value;
     });
   }
 
-newMantenimientoRealizado(){
+newPlanRealizado(){
     //let hoy = new Date();
     this.planrealizado.fecha = new Date(Date.UTC(this.planrealizado.fecha.getFullYear(), this.planrealizado.fecha.getMonth(), this.planrealizado.fecha.getDate()));
     this.planrealizado.idempresa = this.empresasService.seleccionada;

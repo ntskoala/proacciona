@@ -111,9 +111,10 @@ import { PermisosLimpiezaComponent } from './components/limpieza/permisos-limpie
 /********     PLANIFICACIONES          */
 import { PlanificacionesComponent } from './components/planificaciones/planificaciones.component';
 import { CalendariosPlanificacionesComponent } from './components/planificaciones/calendarios-planificaciones.component';
-import { ListadoPlanificacionesComponent } from './components/planificaciones/listado-planificaciones.component';
 import { PlanesComponent } from './components/planificaciones/planes/planes.component';
 import { PlanesRealizadosComponent } from './components/planificaciones/planes-realizados/planes-realizados.component';
+import { FamiliasPlanesComponent } from './components/planificaciones/familias/familias.component';
+import { PlanesPermisosComponent } from './components/planificaciones/planes-permisos/planes-permisos.component';
 
 
 
@@ -228,9 +229,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PermisosLimpiezaComponent,
     PlanificacionesComponent,
     CalendariosPlanificacionesComponent,
-    ListadoPlanificacionesComponent,
     PlanesComponent,
-    PlanesRealizadosComponent
+    PlanesRealizadosComponent,
+    FamiliasPlanesComponent,
+    PlanesPermisosComponent
   ],
   providers: [
     EmpresasService,

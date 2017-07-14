@@ -14,7 +14,12 @@ import { Modal } from '../models/modal';
 })
 export class LoginComponent implements OnInit {
  //public usuario: Object = {"user":"","password":"","idioma":null};
+
  public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
+
+ //public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
+ //public  usuario: Object = {"user":"admin","password":"admin$2017","idioma":null};
+
  public  modal: Modal = new Modal();
   public logoEmpresa:string;
 public gallery: string;

@@ -17,7 +17,7 @@
  </div>
  </md-card-subtitle>
 
-<div #toPDF class="arbol" [ngStyle]="{'width': widthArbol}">
+<div #toPDF class="arbol" [ngStyle]="{'width': widthArbol, 'overflow-y':'scroll'}">
     <md-card>
                 <md-card-title>
             {{'trazabilidad.Arbol' | translate}}
@@ -47,7 +47,7 @@
         <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'trazabilidad.tanque' | translate}} : {{card.almacen}}<br></span>
         <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
         <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
-        <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date'">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
+        <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date' && card.nivel == '2' ">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
         {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br>
         <!--{{message}}-->
         </md-card>

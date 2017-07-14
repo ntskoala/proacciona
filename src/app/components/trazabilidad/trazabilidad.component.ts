@@ -266,7 +266,8 @@ getParent(nodo: any,id:number, tipo:string,level:number){
         error=>console.log("Error get_orden: ",error),
         ()=>{  
             //this.widthArbol = (+level * 150) + 'px !important';
-            let width = 150 * (+level+2);         
+            let width = 150 * (+level+2);  
+            width= 1200+width;
             this.widthArbol =  width + 'px';
             console.log(this.widthArbol)
             }
@@ -317,6 +318,13 @@ let almacen;
         (index <0)?almacen=false:almacen = this.almacenes[index].nombre;
 return almacen;
 }
+findNivelAlmacen(alm:number):string{
+let nivel;
+        let index= this.almacenes.findIndex((almacen)=>almacen.id==alm);
+        
+        (index <0)?nivel=false:nivel = this.almacenes[index].level;
+return nivel;
+}
     closeFicha(index:number){
         this.msgs.splice(index,1);
     }
@@ -324,6 +332,8 @@ return almacen;
         //this.msgs = [];
         //let index= this.almacenes.findIndex((almacen)=>almacen.id==event.node.data.almacen);
         let almacen = this.findAlmacen(event.node.data.almacen);
+        let nivel = this.findNivelAlmacen(event.node.data.almacen);
+        console.log('Nivel',nivel);
         //(index <0)?almacen=false:almacen = this.almacenes[index].nombre;
        // let indice_cliente= this.clientes.findIndex((cliente)=>cliente.id==event.node.data.cliente);
         let n_cliente = this.findCliente(event.node.data.cliente);
@@ -353,7 +363,7 @@ return almacen;
             procedencia = "Proveedor"
         }
 
-        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia});
+        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia});
         this.message="";
 
         // console.log(this.msgs);
@@ -430,7 +440,8 @@ return almacen;
 downloadPdf(){
         let pdf = new jsPDF();
         let options = {
-            pagesplit: true
+            pagesplit: false,
+            orientation:"l"
         };
         pdf.addHTML(this.elTitle.nativeElement,0,0,options,()=>{
         pdf.addHTML(this.el.nativeElement, 25, 30, options, () => {

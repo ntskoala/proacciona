@@ -115,6 +115,7 @@ import { PlanesComponent } from './components/planificaciones/planes/planes.comp
 import { PlanesRealizadosComponent } from './components/planificaciones/planes-realizados/planes-realizados.component';
 import { FamiliasPlanesComponent } from './components/planificaciones/familias/familias.component';
 import { PlanesPermisosComponent } from './components/planificaciones/planes-permisos/planes-permisos.component';
+import { PermisosGeneralComponent } from './components/permisos/permisos.component';
 
 
 
@@ -232,7 +233,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PlanesComponent,
     PlanesRealizadosComponent,
     FamiliasPlanesComponent,
-    PlanesPermisosComponent
+    PlanesPermisosComponent,
+    PermisosGeneralComponent
   ],
   providers: [
     EmpresasService,

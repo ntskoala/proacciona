@@ -26,6 +26,7 @@ export class PlanesComponent implements OnInit {
   public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'',0);
   public planes: Planificacion[] = [];
   public guardar = [];
+  public familias = [];
   public tipo:string="planificacion";
   public novoPlan: Planificacion;// = new Planificacion(0,0,'');
   public modal: Modal = new Modal();

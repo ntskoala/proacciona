@@ -200,14 +200,20 @@ mergeData(){
   });
 
   this.usuarios.forEach(user=>{
+    let generalSwitch = true;
     let row= '{"user":"'+user.usuario+'","iduser":"'+user.id+'"'
   this.items.forEach(control => {
    let valor = this.permisos.findIndex((permiso)=>permiso.idusuario == user.id && permiso.idplan == control.id);
    let check:boolean;
-   (valor<0)?check=false:check=true;
+   if (valor<0){
+     check=false;
+     generalSwitch = false;
+    }else{
+      check=true
+    };
   row += ',"'+control.nombre+'":'+check+''
   });
-row += '}';
+row += ',"generalSwitch":'+generalSwitch+'}';
   this.tabla.push(JSON.parse(row))
 
   })
@@ -225,13 +231,13 @@ setPermiso(user,event,col?){
       (valor)=>{
         this.procesando = false;
         console.log(valor)
-        //if (valor) this.procesando = false
+        this.switchGeneral(user)
       }
     )
   }else{
     this.deletePermiso(user,idControl).then(
       (response)=>{
-
+        this.switchGeneral(user)
       }
     )
   }
@@ -243,14 +249,14 @@ setPermiso(user,event,col?){
       if (index == -1){
         this.addPermiso(user,control['id']).then(
           (response)=>{
-
+        this.switch(user,control['id'],true);
         });
       }
        }else{
         if (index >= 0){
           this.deletePermiso(user,control['id']).then(
             ()=>{
-
+        this.switch(user,control['id'],false);
             }
           )
        }
@@ -269,7 +275,10 @@ addPermiso(user,idControl){
         this.servidor.postObject(URLS.STD_ITEM, permiso,parametros).subscribe(
           response => {
             if (response.success) {
-            this.permisos.push(new Permiso(response.id,permiso.idplan,permiso.idusuario,permiso.idempresa));              
+            this.permisos.push(new Permiso(response.id,permiso.idplan,permiso.idusuario,permiso.idempresa));  
+            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);    
+            let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
+            this.tabla[index][nombre]= true;        
               console.log("permisos",permiso);
              resolve('permisos ok');
             }else{
@@ -297,6 +306,9 @@ return new Promise((resolve, reject) => {
           if (response.success) {
              let indice = this.permisos.findIndex((permiso) => permiso.id == idPermiso);
              this.permisos.splice(indice, 1);
+            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);    
+            let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
+            this.tabla[index][nombre]= false; 
             resolve('permisos ok');
             this.procesando = false;
           }else{
@@ -305,5 +317,23 @@ return new Promise((resolve, reject) => {
           }
       });
 });
+}
+
+switch(user,idControl,estado){
+  console.log(user,idControl,estado)
+let nombreControl = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
+let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);
+console.log(nombreControl,index)
+this.tabla[index][nombreControl]=estado;
+}
+switchGeneral(user){
+let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);
+let generalSwitch= true;
+this.items.forEach(control => {
+  console.log(control.nombre,this.tabla[index][control.nombre])
+   if (this.tabla[index][control.nombre]==false) generalSwitch = false;
+});
+  console.log(this.tabla[index]['generalSwitch'],index,generalSwitch)
+ this.tabla[index]['generalSwitch']=generalSwitch; 
 }
 }

@@ -87,7 +87,7 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                  let supervisor = ''; 
                 (element.supervisor>0)? supervisor = this.findSupervisor(element.supervisor):supervisor =  '';
                 //console.log ('#',element.idsupervisor,supervisor);
-                  this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.zona + " " + element.nombre,
+                  this.events.push({"idelemento":element.id,"idzona":element.idlimpiezazona,"title":element.nombre+ " " + element.zona ,
                   "start":fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,
                   "periodicidad":element.periodicidad,"color":color,"descripcion":repeticion,"estado":"pendiente","idsupervisor":element.supervisor,
                   "supervisor":supervisor});

@@ -28,3 +28,11 @@
     width: 210px;
     left: -210px;
 }
+
+.ficha{
+    position: absolute;
+    margin: 10%;
+    width: 90%;
+    min-height: 90%;
+    background-color: #fff
+}

@@ -9,7 +9,14 @@ import { Planificacion } from '../../../models/planificacion';
 import { Modal } from '../../../models/modal';
 import {MdSelect} from '@angular/material';
 import * as moment from 'moment';
-
+export class Familia{
+  constructor(
+    public id: number,
+    public idempresa: number,
+    public nombre:string,
+    public descripcion:string
+  ){}
+}
 @Component({
   selector: 'app-planes',
   templateUrl: './planes.component.html',
@@ -26,7 +33,7 @@ export class PlanesComponent implements OnInit {
   public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'',0);
   public planes: Planificacion[] = [];
   public guardar = [];
-  public familias = [];
+  public familias: Familia[];
   public tipo:string="planificacion";
   public novoPlan: Planificacion;// = new Planificacion(0,0,'');
   public modal: Modal = new Modal();
@@ -41,6 +48,7 @@ export class PlanesComponent implements OnInit {
 ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadplanes(this.empresasService.seleccionada.toString());
+ this.loadFamilias();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -76,7 +84,28 @@ ngOnInit(){
               }
         );
    }
-
+loadFamilias(){
+  return new Promise((resolve,reject)=>{
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=planificaciones_familias&order=nombre";
+        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+          response => {
+            this.familias = [];
+            if (response.success == 'true' && response.data) {
+              for (let element of response.data) {
+                this.familias.push(new Familia(element.id,element.idempresa,element.nombre,element.descripcion));
+              }
+              resolve('ok');
+            }
+          },
+              (error) => {
+                console.log(error)
+                resolve(error)
+              },
+              ()=>{
+              }
+        );
+  });
+}
 
 
     itemEdited(idItem: number, fecha?: any) {
@@ -107,7 +136,9 @@ let parametros = '?id=' + this.planActivo+param;
 }
 
 
-
+checkBorrar(){
+this.modal.visible = true;
+}
   cerrarModal(event: boolean) {
     this.modal.visible = false;
     if (event) {

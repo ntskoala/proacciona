@@ -229,15 +229,16 @@ setPermiso(user,event,col?){
   if (event){
     this.addPermiso(user,idControl).then(
       (valor)=>{
-        this.procesando = false;
         console.log(valor)
         this.switchGeneral(user)
+        this.procesando = false;
       }
     )
   }else{
     this.deletePermiso(user,idControl).then(
       (response)=>{
         this.switchGeneral(user)
+        this.procesando = false;
       }
     )
   }
@@ -262,7 +263,9 @@ setPermiso(user,event,col?){
        }
        }
       });
-      this.procesando=false;
+      setTimeout(()=>{
+        this.procesando=false;
+      },900);
   } 
 }
 
@@ -310,7 +313,7 @@ return new Promise((resolve, reject) => {
             let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
             this.tabla[index][nombre]= false; 
             resolve('permisos ok');
-            this.procesando = false;
+
           }else{
             console.log('no se cancelo elpermiso', response)
             resolve('error');

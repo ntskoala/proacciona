@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Planificacion } from '../../models/planificacion';
-
+import { PlanRealizado } from '../../models/planrealizado';
 @Component({
   selector: 'app-planificaciones',
   templateUrl: './planificaciones.component.html',
@@ -13,6 +13,7 @@ public permiso:boolean=false;
 
 public planes: Planificacion[] = [];
 public plan: Planificacion;
+public planRealizado: PlanRealizado;
 
   constructor() { }
 
@@ -33,6 +34,9 @@ this.planes = planes;
 }
 seleccionPlan(plan){
 this.plan = plan;
+}
+seleccionPlanRealizado(plan){
+this.planRealizado = plan;
 }
 nuevoPlanRealizado(id:number){
 console.log('nuevoPlanRealizado',id)

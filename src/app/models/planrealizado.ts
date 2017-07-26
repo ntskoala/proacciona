@@ -14,6 +14,7 @@ export class PlanRealizado {
     public supervision?:number,
     public detalles_supervision?:string,
     public supervisor?:string,
-    public imagen?:string
+    public imagen?:string,
+    public doc?:string
   ) {}
 }

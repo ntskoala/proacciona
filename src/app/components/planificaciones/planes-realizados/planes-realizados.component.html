@@ -1,77 +1,94 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <!-- <modal class="modal">
   <div class="ficha">
-
   </div>
 </modal> -->
-<div class="table">
-  <!--</div>-->
-  <div class="header-row">
-    <span class="header-cell">{{"limpieza.limpieza" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_real" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
-    <span class="header-cell">{{"limpieza.descripcion" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_supervision" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.supervision" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.supervisor" | translate}}</span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
-  </div>
 
 
-  <form class="row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
-    <!--<span class="detalle" *ngIf="mantenimiento.detalles_supervision">?<span class="reason">{{mantenimiento.detalles_supervision}}</span></span>-->
-    <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
-    <span class="cell">
-      <input [readonly]="true" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="itemEdited(mantenimiento.id)">
+  <div *ngIf="plan == 'nuevo'">
+
+<p-dataTable [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" onEditInit="onEdit($event)" onEdit="onEdit($event)" onEditCancel="onEdit('cancel')">
+  <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template>
+  <p-column expander="true" styleClass="col-icon"></p-column>
+  <p-column field="nombre" header="nombre" [editable]="true"></p-column>
+  <p-column field="fecha_prevista" header="fecha prevista" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
+</ng-template>
+  </p-column>
+  <p-column field="fecha" header="fecha real" [editable]="true">
+     <ng-template let-col let-item="rowData" pTemplate="body">
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+</ng-template>
+  </p-column>
+  <p-column field="supervision" header="supervion" [editable]="true" (onEditComplete)="onEdit($event)"></p-column>
+  <p-column field="supervisor" header="supervisor" [editable]="true" (onEditComplete)="onEdit($event)"></p-column>
+    <p-column field="fecha_supervision" header="fecha supervision" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+</ng-template>
+  </p-column>
+  <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
+   <!--//************--> 
+         <span class="plan_descripcion">
+            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Descripcion'">
+                   <md-input-container class="full-width textareacontainer">
+      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="Descripcion" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+    </md-input-container> 
+      <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
+    <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
+    </p-panel>
     </span>
-    <span class="medium cell small">
-      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+
+
+      <p-panel [style]="{'width':'23%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Imagen'">
+     <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id)" /> 
+    <!-- <img *ngIf="!images[i]" [src]="./assets/images/noimage.png" height="80px" (error)="image='assets/images/noimage.png'" (click)="verFoto('maquina')" /> -->
+  
+    <hr>
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
-    <span class="medium cell">
-      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
-    </span>
-    <span class="medium cell">
-     <input class="medium small"  [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell">
-      <input class="medium small" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell">
-      <input  class="medium small" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell small">
-      <p-calendar [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="mantenimiento.fecha_supervision" [locale]="es" dateFormat="dd/mm/yy" name="fecha_supervision" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
-    </span>
-     <span class="medium cell">
-      <p-dropdown (onChange)="itemEdited(mantenimiento.id)" [style]="{'width':'100px'}" [options]="supervisar" [(ngModel)]="mantenimiento.supervision" name="supervision"></p-dropdown>
-    </span>   
-    <span class="medium cell">
-      <input disabled class="medium" [placeholder]="'supervisor' | translate" type="text" [(ngModel)]="mantenimiento.supervisor" [ngModelOptions]="{standalone: true}" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="cell detalle" [ngClass]="{'supervisionOk': mantenimiento.supervision==1, 'supervisionFail': mantenimiento.supervision==2}">
-      <span class="reason" *ngIf="motivo[i]">
-        <input   [placeholder]="'detalles_supervision' | translate" type="text" [(ngModel)]="mantenimiento.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(mantenimiento.id)">
-        </span>
-      <button [disabled]="mantenimiento.supervision==1" md-mini-fab  (click)="detalleSupervision(mantenimiento.id,i)" type="button">
-        <span class="material-icons">info</span>
-      </button>
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
+    
+      </p-panel>
+
+        <p-panel [style]="{'width':'23%','height':'250px','margin':'0 1%', 'float':'left'}" header="'DOC'">
+                <!-- <button *ngIf="empresasService.administrador" md-raised-button color="primary" (click)="cerrarModal()" type="button">
+       ver pdf
+      </button> -->
+     <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
+         <hr>
+    <span  class="but but2 altPanel">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
+        <br>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="{{'pdf'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+      
+      </span>
+        </p-panel>
+
+
+
+   <!--//************-->
+  </ng-template>
+  <p-column styleClass="col-icon" header="actions">
+       <ng-template let-col let-item="rowData" pTemplate="body">
+             <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item)" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
+</ng-template>  
+  </p-column>  
+</p-dataTable>
+  </div>
 
-  </form>
 
+  <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+<img   class="iframe" [src]="foto">
 </div>
-

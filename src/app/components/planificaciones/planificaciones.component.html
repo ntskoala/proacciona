@@ -1,4 +1,10 @@
-  <md-card>
+<div class="modal" *ngIf="planRealizado">
+  <div class="ficha">
+    <!-- <button color="accent" md-raised-button (click)="planRealizado=NULL">{{'planificaciones.cerrar' | translate}}</button> -->
+    <app-plan-realizado class="tabs" [planRealizado]="planRealizado" (opnenedmodal)="planRealizado=$event"></app-plan-realizado>
+  </div>
+</div>  
+<md-card>
     <md-card-title>
       <md-toolbar color="accent">{{'planificaciones.planificaciones' | translate}}
 
@@ -27,7 +33,9 @@
 <md-tab-group [dynamicHeight]="false">
   
   <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></md-tab>
-  <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="plan"></app-planes-realizados></md-tab>  
+  <!-- <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'normal'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>   -->
+  <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'nuevo'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>  
+  
 </md-tab-group>
  </div>
   </md-card>

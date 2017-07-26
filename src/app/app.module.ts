@@ -22,6 +22,9 @@ import {TreeModule,TreeNode} from 'primeng/primeng';
 import {MultiSelectModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/primeng';
+import {FieldsetModule} from 'primeng/primeng';
+import {PanelModule} from 'primeng/primeng';
+import {InputTextareaModule} from 'primeng/primeng';
 
 
 //**********MY COMPONENTS */
@@ -116,6 +119,7 @@ import { PlanesRealizadosComponent } from './components/planificaciones/planes-r
 import { FamiliasPlanesComponent } from './components/planificaciones/familias/familias.component';
 import { PlanesPermisosComponent } from './components/planificaciones/planes-permisos/planes-permisos.component';
 import { PermisosGeneralComponent } from './components/permisos/permisos.component';
+import { PlanRealizadoComponent } from './components/planificaciones/plan-realizado/plan-realizado.component';
 
 
 
@@ -140,6 +144,9 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     SharedModule,
     MultiSelectModule,
     DropdownModule,
+    FieldsetModule,
+    PanelModule,
+    InputTextareaModule,
     MaterialModule.forRoot(),
    // MdSelectModule,
     DatePickerModule,
@@ -234,7 +241,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PlanesRealizadosComponent,
     FamiliasPlanesComponent,
     PlanesPermisosComponent,
-    PermisosGeneralComponent
+    PermisosGeneralComponent,
+    PlanRealizadoComponent
   ],
   providers: [
     EmpresasService,

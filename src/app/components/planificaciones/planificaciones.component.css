@@ -1,0 +1,13 @@
+.ficha{
+    position: absolute;
+    margin-top:  5%;
+    margin-left: 10%;
+    margin-bottom: 5%;
+    padding: 15px;
+    width: 80%;
+    min-height: 80%;
+    background-color: #fff
+}
+.fieldSet{
+    margin-top: 15px;
+}

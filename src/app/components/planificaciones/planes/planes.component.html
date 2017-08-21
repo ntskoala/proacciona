@@ -6,13 +6,14 @@
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'planificacion.nombre' | translate" required [(ngModel)]="plan.nombre" name="nombre">
+      <input type="text" [placeholder]="'planificaciones.nombre' | translate" required [(ngModel)]="plan.nombre" name="nombre">
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'planificacion.descripcion' | translate" required [(ngModel)]="plan.descripcion" name="descripcion">
+      <input type="text" [placeholder]="'planificaciones.descripcion' | translate" required [(ngModel)]="plan.descripcion" name="descripcion">
     </span>
     <span *ngIf="familias"  class="medium cell small">
         <select class="medium white-select small" required [(ngModel)]="plan.familia" name="familia">
+          <option [disabled] value="null">{{'planificaciones.familia' | translate}}</option>
         <option *ngFor="let familia of familias" value="familia.id">{{familia.nombre}}</option>
       </select>
     </span>
@@ -22,6 +23,9 @@
 
     <span class="cell">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="plan.fecha" [origen]="tipo"></periodicidad>
+    </span>
+      <span class="cell small">
+      <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsaable" name="responsable">
     </span>
       <span class="cell small">
         <app-permisos-limpieza [supervisor]="plan.supervisor"  (setSupervisor)="setSupervisor($event,plan)"></app-permisos-limpieza>
@@ -41,6 +45,7 @@
     <span *ngIf="familias" class="medium header-cell">{{"planificaciones.familia" | translate}}</span>
     <span class="header-cell">{{"planificaciones.fecha" | translate}}</span>
     <span class="header-cell">{{"planificaciones.periodicidad" | translate}}</span>
+     <span class="medium header-cell">{{"planificaciones.responsable" | translate}}</span>
     <span class="medium header-cell">{{"planificaciones.supervisor" | translate}}</span>
     <span class="header-cell"></span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
@@ -65,6 +70,9 @@
     </span>
     <span class="cell">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
+    </span>
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
       <span class="cell small">
         <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>

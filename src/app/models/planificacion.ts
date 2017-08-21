@@ -6,7 +6,8 @@ export class Planificacion {
     public descripcion: string,
     public familia: number,
     public fecha: any,
-    public periodicidad?: string,
+    public periodicidad: string,
+    public responsable: string,
     public supervisor?: number
   ) {}
 }

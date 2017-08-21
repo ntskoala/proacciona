@@ -23,13 +23,14 @@ export class PlanesRealizadosComponent implements OnInit {
 
 @Input() nuevo: number;
 
-@Input() plan: string;
+//@Input() plan: string;
 @Output() planRealizado: EventEmitter<PlanRealizado> = new EventEmitter<PlanRealizado>();
 // public items: LimpiezaRealizada[];
 public items: PlanRealizado[];
 public images: string[];
 public docs: string[];
-public usuarios:Usuario[];
+public usuarios:object[];
+
  public guardar = [];
 public idBorrar;
 public motivo:boolean[]=[];
@@ -47,6 +48,7 @@ public baseurl;
 public verdoc:boolean=false;
 public image;
 public foto;
+public top = '50px';
 //************** */
   constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
 
@@ -66,7 +68,7 @@ public foto;
 
   ngOnChanges(){
       this.loadSupervisores();
-      console.log('paso3',this.nuevo);
+     // console.log('paso3',this.nuevo);
 
   //*******IMAGES */
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/planificaciones_realizadas/';
@@ -89,11 +91,11 @@ public foto;
               for (let element of response.data) {  
                 let fecha;
                 (moment(new Date(element.fecha_supervision)).isValid())? fecha = new Date(element.fecha_supervision): fecha = null;
-                let supervisor = ''; 
-                (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
+                // let supervisor = ''; 
+                // (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
                   this.items.push(new PlanRealizado(element.id,element.idplan,element.idfamilia,element.idempresa,
-                    element.nombre,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.usuario,
-                  element.idsupervisor,fecha,element.supervision,element.detalles_supervision,supervisor,element.imagen,element.doc));
+                    element.nombre,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.responsable,element.usuario,
+                  element.idsupervisor,fecha,element.supervision,element.detalles_supervision,element.supervisor,element.imagen,element.doc));
                   this.motivo.push(false);
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
@@ -115,33 +117,37 @@ loadSupervisores(){
             if (response.success && response.data) {
 
               for (let element of response.data) {  
-                  this.usuarios.push(new Usuario(
-                    element.id,element.usuario,element.password,element.tipouser,element.email,element.idempresa
-                  ));
+                  // this.usuarios.push(new Usuario(
+                  //   element.id,element.usuario,element.password,element.tipouser,element.email,element.idempresa
+                  // ));
+                    this.usuarios.push({label:element.usuario,value:element.id})
              }
-
+            // console.log('usuarios',this.usuarios)
              this.setItems();
             // this.localSupervisor = this.findSupervisor(this.empresasService.userId);
             }
         });
 }
 
-findSupervisor(id:number){
-//console.log(id);
-let index = this.usuarios.findIndex((user)=>user.id==id)
-//console.log(this.usuarios[index]);
-let user = this.usuarios[index].usuario;
-//console.log(user);
-return user;
+// findSupervisor(id:number){
+// //console.log(id);
+// let index = this.usuarios.findIndex((user)=>user.id==id)
+// //console.log(this.usuarios[index]);
+// let user = this.usuarios[index].usuario;
+// //console.log(user);
+// return user;
+// }
+
+doSomething(item,header,col,field){
+console.log(item,header,col,field)
 }
-
-
 itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
   }
 
 onEdit(event){
   console.log(event);
+  this.itemEdited(event.data.id);
 }
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
@@ -194,16 +200,19 @@ this.motivo[index] = !this.motivo[index];
 setSupervision($event){
 
 }
-openIt(plan){
-  console.log(plan)
-  this.planRealizado.emit(plan);
-}
+// openIt(plan){
+//   console.log(plan)
+//   this.planRealizado.emit(plan);
+// }
 
 
 
 //*******IMAGENES */
 
     verFoto(foto:string,idItem){
+      
+      let calc = window.scrollY;
+        this.top = calc + 'px';
       
       let index = this.items.findIndex((item)=>item.id==idItem);
     if (foto=="doc"){

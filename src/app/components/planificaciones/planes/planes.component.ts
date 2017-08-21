@@ -30,7 +30,7 @@ export class PlanesComponent implements OnInit {
   
   public subscription: Subscription;
   public planActivo: number = 0;
-  public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'',0);
+  public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'','',0);
   public planes: Planificacion[] = [];
   public guardar = [];
   public familias: Familia[];
@@ -73,7 +73,7 @@ ngOnInit(){
             //this.planes.push(this.plan);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.supervisor));
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor));
               }
             }
           },
@@ -174,13 +174,13 @@ eliminaPlan(){
       response => {
         if (response.success) {
           this.planes.push(new Planificacion(response.id,this.plan.idempresa,this.plan.nombre,this.plan.descripcion,this.plan.familia,
-          this.plan.fecha,this.plan.periodicidad,this.plan.supervisor));
+          this.plan.fecha,this.plan.periodicidad,this.plan.responsable,this.plan.supervisor));
         }
     },
     error =>console.log(error),
     () =>  {}
     );
-   this.plan = new Planificacion(null,null,null,null,0,new Date(),'',0);
+   this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
   }
 
 modificarItem(){

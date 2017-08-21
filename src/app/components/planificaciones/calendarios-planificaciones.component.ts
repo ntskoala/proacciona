@@ -22,9 +22,10 @@ import { Empresa } from '../../models/empresa';
 })
 export class CalendariosPlanificacionesComponent implements OnInit {
 public planificacion: Planificacion;
-@Input() planes: Planificacion[];
+//@Input() planes: Planificacion[];
 @Output() nuevoPlanRealizado:EventEmitter<number>= new EventEmitter<number>();
 //public calendario: CalendarioLimpieza[];
+public planes: Planificacion[];
 public cols:number = 7;
 public events :any[] =[];
 public events_realizados :any[] =[];
@@ -67,6 +68,8 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
            // this.calendario = [];
+           this.events = [];
+           this.planes=[];
             if (response.success && response.data) {
               for (let element of response.data) {
                 let fecha;
@@ -91,19 +94,20 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                  let supervisor = ''; 
                 (element.supervisor>0)? supervisor = this.findSupervisor(element.supervisor):supervisor =  '';
                 //console.log ('#',element.idsupervisor,supervisor);
-                  this.events.push({"idplan":element.id,"title": element.nombre,"start":fecha,"periodicidad":element.periodicidad,
+                  this.events.push({"idplan":element.id,"title": element.nombre,"familia":element.familia,"start":fecha,"responsable":element.responsable,"periodicidad":element.periodicidad,
                   "color":color,"descripcion":repeticion,"estado":"pendiente","idsupervisor":element.supervisor,"supervisor":supervisor});
                 this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion, element.familia,
-                 new Date(element.fecha), element.periodicidad,element.supervisor));
+                 new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor));
 
               }
-             //              this.loadRealizados();
+                           this.loadRealizados();
             }
         },
         (error) => console.log(error),
         ()=> {});
   }
 loadRealizados(){
+   console.log('@realizados ini');
 ///****** INSEERT MANTENIMIENTOS REALIZADOS */
 ///****** INSEERT MANTENIMIENTOS REALIZADOS */
     let params = this.empresasService.seleccionada;
@@ -122,12 +126,12 @@ loadRealizados(){
                 let supervisor = ''; 
                 (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
                   console.log('@'+supervisor);
-                  this.events.push({"idlimpiezaelemento":element.id,"idlimpiezazona":element.limpiezazona,"title":element.nombre,
+                  this.events.push({"id":element.id,"idplan":element.idplan,"title":element.nombre,"familia":element.familia,
                   "descripcion":element.descripcion,"start":element.fecha,"prevista":element.fecha_prevista,"tipo":element.tipo,
                   "elemento":element.elemento,"usuario":element.idusuario,"responsable":element.responsable,"color":"#33cc33","estado":estado,
                   "borderColor":supervisionColor,"textColor":supervisionColor,"idsupervisor":element.idsupervisor,
                   "supervisor":supervisor,"supervision":element.supervision,
-                  "fecha_supervision":element.fecha_supervision,"detalles_supervision":element.detalles_supervision});
+                  "fecha_supervision":element.fecha_supervision,"detalles_supervision":element.detalles_supervision,"imagen":element.imagen,"doc":element.doc});
              }
             //  console.log("realizadost",this.events_realizados);
              this.events.concat(this.events_realizados);
@@ -193,7 +197,7 @@ handleEventClick(event){
       if (event.calEvent.estado == 'pendiente'){
         this.estado="pendiente";
         this.planrealizado = new PlanRealizado(null,event.calEvent.idplan,event.calEvent.idfamilia,this.empresasService.seleccionada,event.calEvent.title, 
-        event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),this.empresasService.userId,
+        event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),event.calEvent.responsable,this.empresasService.userId,
         event.calEvent.idsupewrvisor,new Date());
         this.supervisor = event.calEvent.supervisor
         try{
@@ -207,10 +211,12 @@ handleEventClick(event){
       else{
         this.estado="realizado";
         if (event.calEvent.supervision > 0) this.estado = 'supervisado';
-                // this.planrealizado = new PlanRealizado(event.calEvent.idelemento,event.calEvent.idzona,event.calEvent.title,
-                // event.calEvent.descripcion,new Date(event.calEvent.prevista),new Date(event.calEvent.start),event.calEvent.tipo,
-                // this.empresasService.userId,event.calEvent.responsable,event.calEvent.idlimpiezaelemento,this.empresasService.seleccionada,event.calEvent.idsupervisor,
-                // new Date(event.calEvent.fecha_supervision),event.calEvent.supervision,event.calEvent.detalles_supervision);
+                this.planrealizado = new PlanRealizado(event.calEvent.id,event.calEvent.idplan,event.calEvent.idfamilia,
+                this.empresasService.seleccionada,event.calEvent.title,event.calEvent.descripcion,
+                new Date(event.calEvent.prevista),new Date(event.calEvent.start),event.calEvent.responsable,this.empresasService.userId,
+                event.calEvent.idsupervisor,new Date(event.calEvent.fecha_supervision),
+                event.calEvent.supervision,event.calEvent.detalles_supervision,event.calEvent.supervisor,
+                event.calEvent.imagen,event.calEvent.doc);
                 this.supervisor = event.calEvent.supervisor
         if (event.calEvent.supervision == 0) this.planrealizado.fecha_supervision = new Date();
         this.dialogVisible = true;
@@ -426,8 +432,7 @@ newPlanRealizado(){
     },
     error=>console.log(error),
     ()=>{
-      
-      
+
       }
     );
 }

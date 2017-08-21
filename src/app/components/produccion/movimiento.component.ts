@@ -32,7 +32,7 @@ public  ordenDestino: ProduccionOrden;
 public nuevoDetalleOrden_Origen:  ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 public nuevoDetalleOrden_Destino:  ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 public passItem: ProduccionDetalle;
-
+public bloquearTraspaso:boolean=false;
 
 public estado:string='abierto';
 //*** ESPECIFIC VAR */
@@ -250,7 +250,7 @@ seleccionarDestino(valor:number){
 }
 
 traspasar(){
-
+    this.bloquearTraspaso = true;
     //console.log(this.controlarOrigen() , this.controlarDestino());
     if (this.controlarOrigen() && this.controlarDestino()){
 
@@ -398,6 +398,7 @@ let param = "&entidad=produccion_orden";
           //this.items.push(this.nuevoItem);
           this.prepareNewOrdenProduccionDetalle(response.id);
           this.nuevaOrden = new ProduccionOrden(0,0,'',new Date(),new Date());
+          this.bloquearTraspaso=false;
         }
     });
     });
@@ -415,12 +416,14 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Origen.numlote_proveedor = this.loteSelected.numlote_proveedor;
     this.nuevoDetalleOrden_Origen.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==this.idProveedorActual)].nombre;
     this.nuevoDetalleOrden_Origen.producto = this.productos[this.productos.findIndex((prod)=>prod.id==this.idProductoActual)].nombre;
+    this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.loteSelected.cantidad_remanente- this.cantidadTraspaso;    
     }
     if (!this.proveedor){
      this.nuevoDetalleOrden_Origen.idloteinterno = this.ordenOrigen.id;
     this.nuevoDetalleOrden_Origen.idmateriaprima = 0;
     this.nuevoDetalleOrden_Origen.proveedor = 'interno';
     this.nuevoDetalleOrden_Origen.producto = 'lote interno';
+    this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.almacenOrigenSelected.estado - this.cantidadTraspaso;        
     }
     console.log('origen');
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Origen,'origen');

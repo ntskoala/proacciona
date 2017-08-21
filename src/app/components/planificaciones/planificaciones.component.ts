@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Planificacion } from '../../models/planificacion';
 import { PlanRealizado } from '../../models/planrealizado';
 @Component({
@@ -7,6 +7,7 @@ import { PlanRealizado } from '../../models/planrealizado';
   styleUrls: ['./planificaciones.component.css']
 })
 export class PlanificacionesComponent implements OnInit {
+//@Output() newPlanRealizado: EventEmitter<number> = new EventEmitter<number>();
 public calendario:boolean=false;
 public familia:boolean=false;
 public permiso:boolean=false;
@@ -14,7 +15,7 @@ public permiso:boolean=false;
 public planes: Planificacion[] = [];
 public plan: Planificacion;
 public planRealizado: PlanRealizado;
-
+public newPlanRealizado:number;
   constructor() { }
 
   ngOnInit() {
@@ -40,6 +41,9 @@ this.planRealizado = plan;
 }
 nuevoPlanRealizado(id:number){
 console.log('nuevoPlanRealizado',id)
+//this.newPlanRealizado.emit(id);
+this.newPlanRealizado = id;
+
 }
 actualizaFamilias(id){
 console.log('nuevoPlanRealizado',id)

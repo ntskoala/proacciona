@@ -24,7 +24,7 @@
  </md-card-subtitle>
 
  <div class="contenido">
-   <calendarios-planificaciones *ngIf="calendario" [planes]="planes" (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
+   <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
    <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
    <app-permisos *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
 
@@ -34,7 +34,7 @@
   
   <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></md-tab>
   <!-- <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'normal'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>   -->
-  <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'nuevo'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>  
+  <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="newPlanRealizado"  (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>  
   
 </md-tab-group>
  </div>

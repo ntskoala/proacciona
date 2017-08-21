@@ -8,6 +8,7 @@ export class PlanRealizado {
     public descripcion: string,
     public fecha_prevista: any,
     public fecha: any,
+    public responsable: string,
     public idusuario?:number,
     public idsupervisor?:number,
     public fecha_supervision?:Date,

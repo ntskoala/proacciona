@@ -147,7 +147,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     FieldsetModule,
     PanelModule,
     InputTextareaModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
    // MdSelectModule,
     DatePickerModule,
     TranslateModule.forRoot({

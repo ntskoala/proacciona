@@ -5,9 +5,9 @@
 </modal> -->
 
 
-  <div *ngIf="plan == 'nuevo'">
+  <div>
 
-<p-dataTable [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" onEditInit="onEdit($event)" onEdit="onEdit($event)" onEditCancel="onEdit('cancel')">
+<p-dataTable [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)">
   <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template>
   <p-column expander="true" styleClass="col-icon"></p-column>
   <p-column field="nombre" header="nombre" [editable]="true"></p-column>
@@ -21,8 +21,36 @@
       <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="supervision" header="supervion" [editable]="true" (onEditComplete)="onEdit($event)"></p-column>
-  <p-column field="supervisor" header="supervisor" [editable]="true" (onEditComplete)="onEdit($event)"></p-column>
+  <p-column field="responsable" header="responsable" [editable]="true"></p-column>
+
+  <p-column [style]="{'width':'190px'}" field="supervision" header="supervion" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+       <div style="float:left">
+         <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
+  <md-option value="0">por supervisar</md-option>
+   <md-option value="1">correcto</md-option>
+    <md-option value="2">incorrecto</md-option>
+</md-select>
+    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
+       </div>
+  <div style="float:right">
+        <figure *ngIf="item.supervision==1" style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+        <figure *ngIf="item.supervision==2" style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+  </div>
+  </ng-template>
+
+  </p-column>
+  <p-column field="idsupervisor" header="supervisor" [editable]="true"  [style]="{'width':'150px','overflow':'visible'}">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+       <div style="position:relative">
+    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
+          <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
+  <md-option *ngFor="let usuario of usuarios" [value]="usuario.value">{{usuario.label}}</md-option>
+</md-select>      
+  
+  </div>
+  </ng-template>
+  </p-column>
     <p-column field="fecha_supervision" header="fecha supervision" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
@@ -39,10 +67,18 @@
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>
     </span>
+         <span class="plan_descripcion">
+            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Detalles supervisión'">
+                   <md-input-container class="full-width textareacontainer">
+      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="Detalles supervisión" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+    </md-input-container> 
+      <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
+    <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
+    </p-panel>
+    </span>
 
-
-      <p-panel [style]="{'width':'23%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Imagen'">
-     <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id)" /> 
+      <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Imagen'">
+     <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
     <!-- <img *ngIf="!images[i]" [src]="./assets/images/noimage.png" height="80px" (error)="image='assets/images/noimage.png'" (click)="verFoto('maquina')" /> -->
   
     <hr>
@@ -53,7 +89,7 @@
     
       </p-panel>
 
-        <p-panel [style]="{'width':'23%','height':'250px','margin':'0 1%', 'float':'left'}" header="'DOC'">
+        <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="'DOC'">
                 <!-- <button *ngIf="empresasService.administrador" md-raised-button color="primary" (click)="cerrarModal()" type="button">
        ver pdf
       </button> -->
@@ -89,6 +125,6 @@
   </div>
 
 
-  <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-<img   class="iframe" [src]="foto">
+<div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
+<img   class="iframe"  [src]="foto">
 </div>

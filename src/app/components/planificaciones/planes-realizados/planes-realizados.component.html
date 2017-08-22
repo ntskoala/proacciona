@@ -10,20 +10,20 @@
 <p-dataTable [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)">
   <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template>
   <p-column expander="true" styleClass="col-icon"></p-column>
-  <p-column field="nombre" header="nombre" [editable]="true"></p-column>
-  <p-column field="fecha_prevista" header="fecha prevista" [editable]="true">
+  <p-column field="nombre" header="{{'planificaciones.nombre' | translate}}" [editable]="true"></p-column>
+  <p-column field="fecha_prevista" header="{{'planificaciones.fecha_prevista' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
       <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="fecha" header="fecha real" [editable]="true">
+  <p-column field="fecha" header="{{'planificaciones.fecha_real' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="responsable" header="responsable" [editable]="true"></p-column>
+  <p-column field="responsable" header="{{'planificaciones.responsable' | translate}}" [editable]="true"></p-column>
 
-  <p-column [style]="{'width':'190px'}" field="supervision" header="supervion" [editable]="true">
+  <p-column [style]="{'width':'190px'}" field="supervision" header="{{'planificaciones.supervision' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="float:left">
          <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
@@ -40,7 +40,7 @@
   </ng-template>
 
   </p-column>
-  <p-column field="idsupervisor" header="supervisor" [editable]="true"  [style]="{'width':'150px','overflow':'visible'}">
+  <p-column field="idsupervisor" header="{{'planificaciones.supervisor' | translate}}" [editable]="true"  [style]="{'width':'150px','overflow':'visible'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="position:relative">
     <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
@@ -51,33 +51,33 @@
   </div>
   </ng-template>
   </p-column>
-    <p-column field="fecha_supervision" header="fecha supervision" [editable]="true">
+    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
   <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
    <!--//************--> 
          <span class="plan_descripcion">
-            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Descripcion'">
+            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.descripcion' | translate}}">
                    <md-input-container class="full-width textareacontainer">
-      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="Descripcion" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="{{'planificaciones.descripcion' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
     </md-input-container> 
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>
     </span>
          <span class="plan_descripcion">
-            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Detalles supervisión'">
+            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.detalles_supervision' | translate}}">
                    <md-input-container class="full-width textareacontainer">
-      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="Detalles supervisión" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="{{'planificaciones.detalles_supervision' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
     </md-input-container> 
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>
     </span>
 
-      <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="'Imagen'">
+      <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.imagen' | translate}}">
      <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
     <!-- <img *ngIf="!images[i]" [src]="./assets/images/noimage.png" height="80px" (error)="image='assets/images/noimage.png'" (click)="verFoto('maquina')" /> -->
   
@@ -89,7 +89,7 @@
     
       </p-panel>
 
-        <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="'DOC'">
+        <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.doc' | translate}}">
                 <!-- <button *ngIf="empresasService.administrador" md-raised-button color="primary" (click)="cerrarModal()" type="button">
        ver pdf
       </button> -->
@@ -107,7 +107,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="actions">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}">
        <ng-template let-col let-item="rowData" pTemplate="body">
              <span class="cell">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">

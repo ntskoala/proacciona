@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Planificacion } from '../../models/planificacion';
 import { PlanRealizado } from '../../models/planrealizado';
 @Component({
@@ -8,6 +8,9 @@ import { PlanRealizado } from '../../models/planrealizado';
 })
 export class PlanificacionesComponent implements OnInit {
 //@Output() newPlanRealizado: EventEmitter<number> = new EventEmitter<number>();
+@ViewChild('sidenavCalendar') snCalendar: any;
+// @ViewChild('sidenavFamilias') snFamilias: any;
+// @ViewChild('sidenavPermisos') snPermisos: any;
 public calendario:boolean=false;
 public familia:boolean=false;
 public permiso:boolean=false;
@@ -20,15 +23,35 @@ public newPlanRealizado:number;
 
   ngOnInit() {
   }
-
+closeSideNav(){
+  console.log('cerrando... sideNav')
+  this.calendario=false;
+  this.familia=false;
+  this.permiso=false
+}
 calendarios(){
-this.calendario = !this.calendario;
+
+//this.calendario = !this.calendario;
+this.snCalendar.toggle().then(
+  (valor)=>{
+    if (valor.type="open") this.calendario=true;
+  }
+)
 }
 familias(){
-this.familia = !this.familia;
+
+this.snCalendar.toggle().then(
+  (valor)=>{
+    if (valor.type="open") this.familia=true;
+  }
+)
 }
 permisos(){
-this.permiso = !this.permiso;
+this.snCalendar.toggle().then(
+  (valor)=>{
+    if (valor.type="open") this.permiso=true;
+  }
+)
 }
 loadPlanes(planes){
 this.planes = planes;

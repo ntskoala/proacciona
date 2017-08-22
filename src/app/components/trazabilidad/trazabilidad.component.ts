@@ -245,7 +245,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                       "label":element.numlote,
                       "parent":nodo,
                       "expanded":true,
-                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad}
+                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen}
                         });
                         this.getParent(nodo.children[i],element.idloteinterno,'idorden',level);
                     //this.getOrdenes(nodo.children[i],element.idorden,"idorden",level);
@@ -341,6 +341,9 @@ return nivel;
        // console.log(indice_cliente,n_cliente,this.clientes)
 
         let procedencia =""
+        let cantidadProcedencia = 0;
+        //let cantidadRemanenteProcedencia = 0;
+
         // if (event.node.children){
         //  let index0= this.almacenes.findIndex((almacen)=>almacen.id==event.node.children[0].data.almacen);
         // let almacen0;
@@ -353,17 +356,23 @@ return nivel;
         //     procedencia += " y "+almacen1+": " + event.node.children[1].data.cantidad +"l."
         // }
         // }
+
             if(event.node.children){
+            //cantidadRemanenteProcedencia = event.node.data.cantidad;
             event.node.children.forEach( childNode => {
                 let almacen = this.getTanque(childNode.data.almacen)
                 if (procedencia.length > 1) procedencia += " y ";
                 procedencia += almacen + " : " + childNode.data.cantidad + "l." 
+                cantidadProcedencia += childNode.data.cantidad;
             } );
         }else{
             procedencia = "Proveedor"
         }
 
-        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia});
+        
+
+
+        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia,cantidad_remanente_origen:event.node.data.cantidad_remanente_origen});
         this.message="";
 
         // console.log(this.msgs);

@@ -1,7 +1,7 @@
 <!--[locale]="es" -->
 <md-card>
 <h2 class="center">{{'planificaciones.CalendarioGeneralPlanificaciones' | translate}}</h2>
-<p-schedule [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
+<p-schedule [style]="{'z-index': '9998 !important'}" [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
 <md-card>{{'leyenda' | translate}}
@@ -24,7 +24,7 @@
     [contentStyle]="{'overflow':'visible','height':'430px'}"
 [height]="500"
     -->
- <p-dialog header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+ <p-dialog appendTo="body" header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible','z-index':'9999 !important'}" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="planrealizado">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.nombre' | translate}}</label></div>
@@ -55,20 +55,25 @@
             <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.supervisor' | translate}}</label></div>
             <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="supervisor" /></div>
         </div>
-        <div class="ui-grid-row" *ngIf="planrealizado.supervision">
+
+        <!--**********        SUPERVISION ********-->
+        <div *ngIf="estado=='realizado'">
+        <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.supervision' | translate}}</label></div>
             <div class="ui-grid-col-8">
                 <p-dropdown (onChange)="setSupervision($event)" [style]="{'width':'173px'}" [options]="supervisar" [(ngModel)]="planrealizado.supervision"></p-dropdown>
                 </div>
         </div>
-        <div class="ui-grid-row" *ngIf="planrealizado.fecha_supervision">
+        <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.fecha_supervision' | translate}}</label></div>
             <div class="ui-grid-col-8"><p-calendar placeholder="Selecciona" id="fecha_supervision"  [(ngModel)]="planrealizado.fecha_supervision" dateFormat="dd/mm/yy"></p-calendar></div>
         </div>      
-        <div class="ui-grid-row" *ngIf="planrealizado.detalles_supervision || planrealizado.supervision != 1">
+        <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.detalles_supervision' | translate}}</label></div>
             <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="planrealizado.detalles_supervision" /></div>
         </div>
+        </div>
+        <!--**********    FIN  SUPERVISION ********-->
 
     </div>
     <p-footer>

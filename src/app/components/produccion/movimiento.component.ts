@@ -327,14 +327,14 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
         console.log("LOTE SELECTED",this.loteSelected);
         if (this.almacenDestinoSelected.level > 1){
             if(this.almacenOrigenSelected){
-            if (this.almacenOrigenSelected.level<=1){
-                this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
-            }else{
+            // if (this.almacenOrigenSelected.level<=1){
+            //     this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
+            // }else{
                  let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                     this.nuevaOrden.fecha_caducidad = caducidad;
         console.log("CADUCIDAD 1",this.almacenOrigenSelected.level, caducidad);
                     
-            }
+            // }
         }else if (this.loteSelected){
             console.log("CADUCIDAD 1.2",this.loteSelected,this.ordenDestino,this.nuevaOrden);
                 if (this.ordenDestino)

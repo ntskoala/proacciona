@@ -303,7 +303,8 @@
     "tanque":"Tanc",
     "origen":"Origen",
     "fecha orden":"Fecha orden",
-    "proveedor":"Proveedor"
+    "proveedor":"Proveedor",
+    "remanente_origen": "Cantidad remanente en origen"
   },
   "almacenes":{
     "nombre":"Nombre",
@@ -378,7 +379,9 @@
      "detalles_supervision":"Descrip. sup.",
      "correcta":"Correcta",
      "incorrecta":"Incorrecta",
-     "porSupervisar":"Por supervisar"
+     "porSupervisar":"Por supervisar",
+     "actions":"Acciones",
+     "doc":"Doc pdf"
   },
   "alergenos":"alérgenos",
   "lunes":"lunes",

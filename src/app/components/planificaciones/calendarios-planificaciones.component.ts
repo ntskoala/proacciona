@@ -45,6 +45,7 @@ public usuarios:Usuario[];
 public tipoevento:string[]=[];
 public event:any;
 public estado;
+public emptyDate: Date;
 //public localSupervisor: string;
 public supervisor: string;
 entidad:string="&entidad=planificaciones_realizadas";
@@ -95,7 +96,7 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                 (element.supervisor>0)? supervisor = this.findSupervisor(element.supervisor):supervisor =  '';
                 //console.log ('#',element.idsupervisor,supervisor);
                   this.events.push({"idplan":element.id,"title": element.nombre,"familia":element.familia,"start":fecha,"responsable":element.responsable,"periodicidad":element.periodicidad,
-                  "color":color,"descripcion":repeticion,"estado":"pendiente","idsupervisor":element.supervisor,"supervisor":supervisor});
+                  "color":color,"descripcion":element.descripcion,"estado":"pendiente","idsupervisor":element.supervisor,"supervisor":supervisor});
                 this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion, element.familia,
                  new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor));
 
@@ -198,7 +199,7 @@ handleEventClick(event){
         this.estado="pendiente";
         this.planrealizado = new PlanRealizado(null,event.calEvent.idplan,event.calEvent.idfamilia,this.empresasService.seleccionada,event.calEvent.title, 
         event.calEvent.descripcion,new Date(event.calEvent.start),new Date(),event.calEvent.responsable,this.empresasService.userId,
-        event.calEvent.idsupewrvisor,new Date());
+        event.calEvent.idsupervisor,this.emptyDate,0,'',event.calEvent.supervisor);
         this.supervisor = event.calEvent.supervisor
         try{
         this.periodicidad = JSON.parse(event.calEvent.periodicidad);
@@ -218,7 +219,7 @@ handleEventClick(event){
                 event.calEvent.supervision,event.calEvent.detalles_supervision,event.calEvent.supervisor,
                 event.calEvent.imagen,event.calEvent.doc);
                 this.supervisor = event.calEvent.supervisor
-        if (event.calEvent.supervision == 0) this.planrealizado.fecha_supervision = new Date();
+        if (event.calEvent.supervision == 0) this.planrealizado.fecha_supervision = this.emptyDate;
         this.dialogVisible = true;
       }
 }
@@ -377,6 +378,7 @@ if (this.checkPeriodo(this.event.periodicidad) == 'por uso') {
 setSupervision(evento){
 console.log(evento.value);
 this.event.supervision = evento.value;
+this.planrealizado.fecha_supervision = new Date();
 }
 
  supervisarMantenimiento() {
@@ -414,18 +416,20 @@ newPlanRealizado(){
     //let hoy = new Date();
     this.planrealizado.fecha = new Date(Date.UTC(this.planrealizado.fecha.getFullYear(), this.planrealizado.fecha.getMonth(), this.planrealizado.fecha.getDate()));
     this.planrealizado.idempresa = this.empresasService.seleccionada;
+    //this.planrealizado.idsupervisor = 
     let param = this.entidad;
     let supervisor = '';
     (this.planrealizado.idsupervisor>0)? supervisor = this.findSupervisor(this.planrealizado.idsupervisor):supervisor =  '';
     this.servidor.postObject(URLS.STD_ITEM, this.planrealizado,param).subscribe(
       response => {
         if (response.success) {
-          // console.log('Mantenimiento updated');
-          // this.events.push({"idlimpiezaelemento":response.id,"idlimpiezazona":this.planrealizado.nombre,"title":this.planrealizado.nombre,
-          // "descripcion":this.planrealizado.descripcion,"start":this.planrealizado.fecha,"prevista":this.planrealizado.fecha_prevista,
-          // "tipo":this.planrealizado.tipo,"usuario":this.planrealizado.idusuario,"responsable":this.planrealizado.responsable,
-          // "color":"#33cc33","estado":"realizado","idsupervisor":this.planrealizado.idsupervisor,"supervision":0,
-          //         "fecha_supervision":new Date()});
+          console.log('Mantenimiento updated');
+          this.events.push({"idlimpiezaelemento":response.id,"idlimpiezazona":this.planrealizado.nombre,"title":this.planrealizado.nombre,
+          "descripcion":this.planrealizado.descripcion,"start":this.planrealizado.fecha,"prevista":this.planrealizado.fecha_prevista,
+          "usuario":this.planrealizado.idusuario,"responsable":this.planrealizado.responsable,
+          "color":"#33cc33","estado":"realizado","idsupervisor":this.planrealizado.idsupervisor,"supervisor":this.planrealizado.supervisor,
+          "supervision":0,
+                  "fecha_supervision":this.emptyDate});
         this.nuevoPlanRealizado.emit(response.id);
         console.log('paso1',this.planrealizado.nombre);
       }

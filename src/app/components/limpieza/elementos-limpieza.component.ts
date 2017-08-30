@@ -81,7 +81,7 @@ public productos: prods[]=[];
 
 
   setItems(){
-      //console.log('setting items...')
+      console.log('setting items...')
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
@@ -93,6 +93,7 @@ public productos: prods[]=[];
                   this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor));
                   this.protocolo.push(false);
              }
+                console.log ('items',this.items);
             }
         },
         error=>console.log(error),

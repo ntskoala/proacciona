@@ -138,7 +138,7 @@ return user;
 
 
  saveItem(mantenimiento: LimpiezaRealizada) {
-   console.log ("evento",event);
+   //console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     delete mantenimiento.supervisor;
     if (!moment(mantenimiento.fecha_supervision).isValid()) mantenimiento.fecha_supervision = new Date();

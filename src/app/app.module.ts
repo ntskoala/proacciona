@@ -31,7 +31,7 @@ import {InputTextareaModule} from 'primeng/primeng';
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
-import { AlertasComponent} from './components/alertas.component';
+
 import { LoginComponent } from './components/login.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/empresasopcionespremium.component';
@@ -54,6 +54,7 @@ import {PeriodicidadComponent} from './components/programadorfechas/periodicidad
 import { PageNotFoundComponent } from './components/404.component';
 /********    GENERAL COMPONENTS */
 import { FilterDatesComponent } from './components/filterdates/filter-dates.component';
+import { AlertasComponent} from './components/alertas/alertas.component';
 
 /********    MAQUINARIA COMPONENTS */
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
@@ -165,7 +166,6 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     //CalendarComponent,
     NavComponent,
     MenuComponent,
-    AlertasComponent,
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,
@@ -184,6 +184,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     InformePeriodicidadComponent,
 //******GENERALES */
     FilterDatesComponent,
+    AlertasComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,

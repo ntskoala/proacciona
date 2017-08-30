@@ -50,7 +50,7 @@
   <div class="row" *ngFor="let resultado of tabla; let fila = index">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
     <span class="cell">
-      <span id="user-link" class="material-icons">perm_identity</span>
+      <span id="user-link" class="material-icons">perm_identity</span> {{resultado.usuario}} 
       <div id="usuario"><span>{{resultado.usuario}}</span></div>
       {{resultado.fecha}}
       </span>
@@ -67,7 +67,7 @@
         
       <span id="{{fila}}-{{i}}" class="material-icons green" *ngIf="resultado[columna.id]=='true'">check</span>
       <span id="{{fila}}-{{i}}" class="material-icons red" *ngIf="resultado[columna.id]=='false'">close</span>
-      <span id="{{fila}}-{{i}}" class="material-icons" *ngIf="resultado[columna.id]=='na'">offline_pin</span>
+      <span id="{{fila}}-{{i}}" class="" *ngIf="resultado[columna.id]=='na'">n.a.</span>
       <span id="{{fila}}-{{i}}" *ngIf="resultado[columna.id]!='false' && resultado[columna.id]!='true' && resultado[columna.id]!='na'">{{resultado[columna.id]}}</span>
     </span>
   </div>

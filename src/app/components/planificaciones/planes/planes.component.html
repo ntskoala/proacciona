@@ -2,7 +2,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <!--<div class="cabeceraItems">-->
 
-<div class="table">
+<div class="table planes">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
     <span class="cell">
@@ -11,12 +11,12 @@
     <span class="cell">
       <input type="text" [placeholder]="'planificaciones.descripcion' | translate" required [(ngModel)]="plan.descripcion" name="descripcion">
     </span>
-    <span *ngIf="familias"  class="medium cell small">
+    <!-- <span *ngIf="familias"  class="medium cell small">
         <select class="medium white-select small" required [(ngModel)]="plan.familia" name="familia">
           <option [disabled] value="null">{{'planificaciones.familia' | translate}}</option>
         <option *ngFor="let familia of familias" value="familia.id">{{familia.nombre}}</option>
       </select>
-    </span>
+    </span> -->
     <span class="medium cell">
       <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="plan.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
@@ -25,7 +25,7 @@
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="plan.fecha" [origen]="tipo"></periodicidad>
     </span>
       <span class="cell small">
-      <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsaable" name="responsable">
+      <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsable" name="responsable">
     </span>
       <span class="cell small">
         <app-permisos-limpieza [supervisor]="plan.supervisor"  (setSupervisor)="setSupervisor($event,plan)"></app-permisos-limpieza>
@@ -42,7 +42,7 @@
   <div class="header-row">
     <span class="header-cell">{{"planificaciones.nombre" | translate}}</span>
     <span class="medium header-cell">{{"planificaciones.descripcion" | translate}}</span>
-    <span *ngIf="familias" class="medium header-cell">{{"planificaciones.familia" | translate}}</span>
+    <!-- <span *ngIf="familias" class="medium header-cell">{{"planificaciones.familia" | translate}}</span> -->
     <span class="header-cell">{{"planificaciones.fecha" | translate}}</span>
     <span class="header-cell">{{"planificaciones.periodicidad" | translate}}</span>
      <span class="medium header-cell">{{"planificaciones.responsable" | translate}}</span>
@@ -60,11 +60,11 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)">
     </span>
-    <span *ngIf="familias" class="medium cell small">
+    <!-- <span *ngIf="familias" class="medium cell small">
         <select class="medium white-select small" required [(ngModel)]="item.familia" name="familia">
         <option  *ngFor="let familia of familias" value="familia.id">{{familia.nombre}}</option>
       </select>
-    </span>
+    </span> -->
     <span class="medium cell">
       <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
     </span>

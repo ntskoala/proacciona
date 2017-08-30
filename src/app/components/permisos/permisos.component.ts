@@ -68,7 +68,6 @@ public field:string="&field=idelementolimpieza&idItem=";
 
       break;
       case "checklists":
-
       break;
     }
 

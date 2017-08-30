@@ -126,5 +126,8 @@
 
 
 <div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
+         <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
+  <button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+  </div>
 <img   class="iframe"  [src]="foto">
 </div>

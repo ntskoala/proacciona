@@ -9,7 +9,7 @@ import { PermisosService } from '../services/permisos.service';
 export class MenuComponent implements OnInit{
 @Output() selectedMenu: EventEmitter<string>= new EventEmitter<string>();
 
-
+public subMenu:string=null;
   constructor(public empresasService: EmpresasService,public permisos: PermisosService) {}
 
   ngOnInit() {
@@ -17,6 +17,7 @@ export class MenuComponent implements OnInit{
 
 setSeleccion(opcionmenu){
 this.selectedMenu.emit(opcionmenu);
+this.subMenu = opcionmenu
 }
 
 }

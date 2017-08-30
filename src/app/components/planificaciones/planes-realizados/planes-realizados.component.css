@@ -60,6 +60,12 @@
     max-height: 220px;
     max-width: 280px;
 }
+.botonCerrar{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 9999;
+}
 .plan_descripcion{
     width:38%;
     float:left;

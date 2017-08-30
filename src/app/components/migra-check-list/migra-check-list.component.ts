@@ -179,6 +179,9 @@ calcPeriodicidad(tipoperiodo,periodicidad){
               case 'Año':
                 newPeriodicidad = '{"repeticion":"anual","dias":[{"nombre":"lunes","checked":false},{"nombre":"martes","checked":false},{"nombre":"miercoles","checked":false},{"nombre":"jueves","checked":false},{"nombre":"viernes","checked":false},{"nombre":"sabados","checked":false},{"nombre":"domingos","checked":false}],"frecuencia":'+periodicidad+',"tipo":"diames","numdia":28,"nomdia":"1","numsemana":1,"mes":"1"}';
                 break;
+              case 'Any':
+                newPeriodicidad = '{"repeticion":"anual","dias":[{"nombre":"lunes","checked":false},{"nombre":"martes","checked":false},{"nombre":"miercoles","checked":false},{"nombre":"jueves","checked":false},{"nombre":"viernes","checked":false},{"nombre":"sabados","checked":false},{"nombre":"domingos","checked":false}],"frecuencia":'+periodicidad+',"tipo":"diames","numdia":28,"nomdia":"1","numsemana":1,"mes":"1"}';
+                break;
             }
   return newPeriodicidad;
 }
@@ -364,7 +367,20 @@ creaLimpiezas(){
 
     }else{
       if (this.checklists[x].id){
-        this.creaElementoLimpìeza(this.checklists[x].id,x);
+      let param = "&entidad=limpieza_zona&field=idempresa&idItem="+this.empresasService.seleccionada+"&WHERE=descripcion=&valor=importado de checklist"+this.checklists[x].id;
+      this.servidor.getObjects(URLS.STD_SUBITEM,param).subscribe(
+      response => {
+        if (response.success) {
+          if (response.data.length == 1){
+          let id = response.data[0].id;
+          this.migrarList[x]['migrado'] = true;
+          this.creaElementoLimpìeza(id,x);
+          }else{
+            console.log('Posible error en el id de checklist');
+          }
+        }
+    });        
+        //this.creaElementoLimpìeza(this.checklists[x].id,x);
       }
     }
 }

@@ -9,5 +9,6 @@ export class ProduccionDetalle {
     public idloteinterno: number,
     public cantidad: number,
     public tipo_medida: string,
+    public cantidad_remanente_origen?: number
 ){}
 }

@@ -1,0 +1,106 @@
+
+
+<p-fieldset  [toggleable]="true">
+    <p-header>
+      {{planRealizado.nombre}}
+    </p-header>
+    <span class="ui-g">
+    <span class="ui-g-3">descripcion</span>
+    
+       <span class="ui-g-9">
+   {{planRealizado.descripcion}}
+       </span>
+       <span class="ui-g-3">fecha prevista</span>
+        <span class="ui-g-9">
+      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="planRealizado.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(planRealizado.id)"></p-calendar>    
+    </span>
+    <span class="ui-g-3">fecha real</span>
+    <span class="ui-g-9">
+      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="planRealizado.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(planRealizado.id)"></p-calendar>    
+    </span>
+    </span>
+</p-fieldset>
+
+
+
+<p-fieldset legend="Supervision"  [toggleable]="true">
+   <span class="ui-g">
+    <span class="ui-g-6"> 
+      <span class="ui-g">
+        <span class="ui-g-5">fecha supervision</span>
+        <span class="ui-g-7">
+          <p-calendar [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="planRealizado.fecha_supervision" [locale]="es" dateFormat="dd/mm/yy" name="fecha_supervision" (onSelect)="itemEdited(planRealizado.id)"></p-calendar>    
+        </span>
+        <span class="ui-g-5">supervision</span>
+        <span class="ui-g-7">
+          <p-dropdown (onChange)="itemEdited(planRealizado.id)" [style]="{'width':'100px'}" [options]="supervisar" [(ngModel)]="planRealizado.supervision" name="supervision"></p-dropdown>
+        </span> 
+   </span></span>
+<span class="ui-g-6"> 
+  <span class="ui-g">
+    <span class="ui-g-3">supervisor</span>
+    <span class="ui-g-9">
+      <input disabled class="medium" [placeholder]="'supervisor' | translate" type="text" [(ngModel)]="planRealizado.supervisor" [ngModelOptions]="{standalone: true}" (keyup)="itemEdited(planRealizado.id)">
+    </span>
+    <span class="ui-g3">detalles</span>
+     <span class="ui-g-9">
+        <input   [placeholder]="'detalles_supervision' | translate" type="text" [(ngModel)]="planRealizado.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(planRealizado.id)">
+     </span>
+      <!-- <span class="ui-g-3">documentos</span>
+       <span class="ui-g-9">
+      <button [disabled]="planRealizado.supervision==1" md-mini-fab  (click)="detalleSupervision(planRealizado.id,i)" type="button">
+         <span class="material-icons">info</span> 
+      </button> 
+       </span>-->
+    </span>
+    </span>
+   </span>
+</p-fieldset>
+
+<p-fieldset legend="Documentos"  [toggleable]="true">
+<span class="cell">
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabel" for="imagen">{{'subir foto' | translate}}</label>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="imagen" class="inputfile" type="file" (change)="uploadFunciones($event,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
+    </span>
+</span>
+    <span class="cell">
+    <img *ngIf="image" [src]="image" width="100" (error)="image='./assets/images/pixel.png'" (click)="verFoto('foto')" />
+    </span>
+<span class="cell">
+    <span  class="but but2">
+        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabel" for="pdf">{{'subir pdf' | translate}}</label>
+        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="pdf" class="inputfile" type="file" (change)="uploadFunciones($event)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+    </span>
+</span>
+      <span class="cell">
+      <button *ngIf="empresasService.administrador" md-raised-button color="accent" (click)="cerrarModal()" type="button">
+       ver pdf
+      </button>
+    </span>
+</p-fieldset>
+
+
+
+<p-fieldset legend="Acciones">
+
+      <span class="cell">
+      <button *ngIf="empresasService.administrador"  md-raised-button color="accent" (click)="cerrarModal()" type="button">
+       cerrar
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(planRealizado.id)" type="button">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+</p-fieldset>
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+<img   class="iframe" [src]="foto">
+</div>

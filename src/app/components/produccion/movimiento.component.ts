@@ -32,7 +32,7 @@ public  ordenDestino: ProduccionOrden;
 public nuevoDetalleOrden_Origen:  ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 public nuevoDetalleOrden_Destino:  ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 public passItem: ProduccionDetalle;
-
+public bloquearTraspaso:boolean=false;
 
 public estado:string='abierto';
 //*** ESPECIFIC VAR */
@@ -250,7 +250,7 @@ seleccionarDestino(valor:number){
 }
 
 traspasar(){
-
+    this.bloquearTraspaso = true;
     //console.log(this.controlarOrigen() , this.controlarDestino());
     if (this.controlarOrigen() && this.controlarDestino()){
 
@@ -327,14 +327,14 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
         console.log("LOTE SELECTED",this.loteSelected);
         if (this.almacenDestinoSelected.level > 1){
             if(this.almacenOrigenSelected){
-            if (this.almacenOrigenSelected.level<=1){
-                this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
-            }else{
+            // if (this.almacenOrigenSelected.level<=1){
+            //     this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
+            // }else{
                  let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                     this.nuevaOrden.fecha_caducidad = caducidad;
         console.log("CADUCIDAD 1",this.almacenOrigenSelected.level, caducidad);
                     
-            }
+            // }
         }else if (this.loteSelected){
             console.log("CADUCIDAD 1.2",this.loteSelected,this.ordenDestino,this.nuevaOrden);
                 if (this.ordenDestino)
@@ -398,6 +398,7 @@ let param = "&entidad=produccion_orden";
           //this.items.push(this.nuevoItem);
           this.prepareNewOrdenProduccionDetalle(response.id);
           this.nuevaOrden = new ProduccionOrden(0,0,'',new Date(),new Date());
+          this.bloquearTraspaso=false;
         }
     });
     });
@@ -415,12 +416,14 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Origen.numlote_proveedor = this.loteSelected.numlote_proveedor;
     this.nuevoDetalleOrden_Origen.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==this.idProveedorActual)].nombre;
     this.nuevoDetalleOrden_Origen.producto = this.productos[this.productos.findIndex((prod)=>prod.id==this.idProductoActual)].nombre;
+    this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.loteSelected.cantidad_remanente- this.cantidadTraspaso;    
     }
     if (!this.proveedor){
      this.nuevoDetalleOrden_Origen.idloteinterno = this.ordenOrigen.id;
     this.nuevoDetalleOrden_Origen.idmateriaprima = 0;
     this.nuevoDetalleOrden_Origen.proveedor = 'interno';
     this.nuevoDetalleOrden_Origen.producto = 'lote interno';
+    this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.almacenOrigenSelected.estado - this.cantidadTraspaso;        
     }
     console.log('origen');
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Origen,'origen');

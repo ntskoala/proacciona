@@ -1,0 +1,89 @@
+<!--[locale]="es" -->
+<md-card>
+<h2 class="center">{{'planificaciones.CalendarioGeneralPlanificaciones' | translate}}</h2>
+<p-schedule [style]="{'z-index': '9998 !important'}" [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
+ dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+<!--(onDayClick)="handleDayClick($event)"-->
+<md-card>{{'leyenda' | translate}}
+    <div class="leyenda">
+        {{'planificaciones.planificaciones' | translate}}
+        <md-chip-list>
+            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip  color="#33cc33" selected="true">{{'planificaciones.realizadas' | translate}}</md-chip>
+            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#33cc33" selected="true">{{'planificaciones.proximas' | translate}}</md-chip>
+            <!-- <figure style="display: block;background: #3333ff;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#33cc33" selected="true">{{'por uso' | translate}}</md-chip> -->
+            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <md-chip color="#33cc33" selected="true">{{'planificaciones.vencidas' | translate}}</md-chip>
+        </md-chip-list>
+    </div>
+</md-card>
+</md-card>
+<!--
+    [contentStyle]="{'overflow':'visible','height':'430px'}"
+[height]="500"
+    -->
+ <p-dialog appendTo="body" header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible','z-index':'9999 !important'}" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="planrealizado">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.nombre' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="planrealizado.nombre" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">{{'planificaciones.fecha_prevista' | translate}}</label></div>
+            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="planrealizado.fecha_prevista" dateFormat="dd/mm/yy"></p-calendar></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start">{{'planificaciones.fecha_real' | translate}}</label></div>
+            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="planrealizado.fecha" dateFormat="dd/mm/yy"></p-calendar></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.descripcion' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="planrealizado.descripcion" /></div>
+        </div>
+        <!--<div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'limpieza.tipo' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText id="tipo" [(ngModel)]="planrealizado.tipo" /></div>
+        </div>-->
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.responsable' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="planrealizado.responsable" /></div>
+        </div>
+
+        <div class="ui-grid-row" *ngIf="planrealizado.idsupervisor"> 
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.supervisor' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="supervisor" /></div>
+        </div>
+
+        <!--**********        SUPERVISION ********-->
+        <div *ngIf="estado=='realizado'">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.supervision' | translate}}</label></div>
+            <div class="ui-grid-col-8">
+                <p-dropdown (onChange)="setSupervision($event)" [style]="{'width':'173px'}" [options]="supervisar" [(ngModel)]="planrealizado.supervision"></p-dropdown>
+                </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.fecha_supervision' | translate}}</label></div>
+            <div class="ui-grid-col-8"><p-calendar placeholder="Selecciona" id="fecha_supervision"  [(ngModel)]="planrealizado.fecha_supervision" dateFormat="dd/mm/yy"></p-calendar></div>
+        </div>      
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'planificaciones.detalles_supervision' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="planrealizado.detalles_supervision" /></div>
+        </div>
+        </div>
+        <!--**********    FIN  SUPERVISION ********-->
+
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
+            <button *ngIf="estado=='pendiente'" type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+            <button *ngIf="estado=='realizado' && planrealizado.idsupervisor == empresasService.userId" type="button" pButton icon="fa-check" (click)="supervisarEvent()" label="Supervisar"></button>
+            
+        </div>
+    </p-footer>
+</p-dialog>
+
+

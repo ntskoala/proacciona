@@ -1,0 +1,19 @@
+<div class="modal" *ngIf="procesando">
+<md-spinner></md-spinner>
+</div>
+<md-toolbar color="accent">{{'Permisos' | translate}}
+</md-toolbar>
+<p-dataTable [value]="tabla">
+    <!-- <p-column field="usuario" header="usuario"></p-column> -->
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [frozen]="col.header == 'usuario'">
+         <ng-template let-col let-user="rowData" pTemplate="body">
+            <span *ngIf="col.header == 'usuario'">{{user[col.field]}}</span>
+            <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.header == 'usuario'"
+          [checked]="user['generalSwitch']">
+      </md-slide-toggle>
+            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.header != 'usuario'"
+          [checked]="user[col.field]">
+      </md-slide-toggle>
+        </ng-template> 
+    </p-column>
+</p-dataTable>

@@ -22,13 +22,16 @@ import {TreeModule,TreeNode} from 'primeng/primeng';
 import {MultiSelectModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/primeng';
+import {FieldsetModule} from 'primeng/primeng';
+import {PanelModule} from 'primeng/primeng';
+import {InputTextareaModule} from 'primeng/primeng';
 
 
 //**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
-import { AlertasComponent} from './components/alertas.component';
+
 import { LoginComponent } from './components/login.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/empresasopcionespremium.component';
@@ -51,6 +54,7 @@ import {PeriodicidadComponent} from './components/programadorfechas/periodicidad
 import { PageNotFoundComponent } from './components/404.component';
 /********    GENERAL COMPONENTS */
 import { FilterDatesComponent } from './components/filterdates/filter-dates.component';
+import { AlertasComponent} from './components/alertas/alertas.component';
 
 /********    MAQUINARIA COMPONENTS */
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
@@ -107,7 +111,18 @@ import { PermisosService } from './services/permisos.service';
 import { InformesControlComponent } from './components/informes-control/informes-control.component';
 import { MigraCheckListComponent } from './components/migra-check-list/migra-check-list.component';
 import { PermisosLimpiezaComponent } from './components/limpieza/permisos-limpieza/permisos-limpieza.component';
-import { PlanifiacionesComponent } from './components/planifiaciones/planifiaciones.component';
+
+/********     PLANIFICACIONES          */
+import { PlanificacionesComponent } from './components/planificaciones/planificaciones.component';
+import { CalendariosPlanificacionesComponent } from './components/planificaciones/calendarios-planificaciones.component';
+import { PlanesComponent } from './components/planificaciones/planes/planes.component';
+import { PlanesRealizadosComponent } from './components/planificaciones/planes-realizados/planes-realizados.component';
+import { FamiliasPlanesComponent } from './components/planificaciones/familias/familias.component';
+import { PlanesPermisosComponent } from './components/planificaciones/planes-permisos/planes-permisos.component';
+import { PermisosGeneralComponent } from './components/permisos/permisos.component';
+import { PlanRealizadoComponent } from './components/planificaciones/plan-realizado/plan-realizado.component';
+
+
 
 
 export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
@@ -130,7 +145,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     SharedModule,
     MultiSelectModule,
     DropdownModule,
-    MaterialModule.forRoot(),
+    FieldsetModule,
+    PanelModule,
+    InputTextareaModule,
+    MaterialModule,
    // MdSelectModule,
     DatePickerModule,
     TranslateModule.forRoot({
@@ -148,7 +166,6 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     //CalendarComponent,
     NavComponent,
     MenuComponent,
-    AlertasComponent,
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,
@@ -167,6 +184,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     InformePeriodicidadComponent,
 //******GENERALES */
     FilterDatesComponent,
+    AlertasComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,
@@ -218,7 +236,14 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     InformesControlComponent,
     MigraCheckListComponent,
     PermisosLimpiezaComponent,
-    PlanifiacionesComponent
+    PlanificacionesComponent,
+    CalendariosPlanificacionesComponent,
+    PlanesComponent,
+    PlanesRealizadosComponent,
+    FamiliasPlanesComponent,
+    PlanesPermisosComponent,
+    PermisosGeneralComponent,
+    PlanRealizadoComponent
   ],
   providers: [
     EmpresasService,

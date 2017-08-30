@@ -1,13 +1,17 @@
   .periods{
   position:absolute;
-  top:0px;
+  padding:25px;
+  top:3px;
   left:30px;
-  width:90%;
+  width:70%;
   height:300px;
-  min-height:300px;
+  min-height:400px;
   z-index:99;
   background-color:#fff;
   opacity:0.94;
+  border: black;
+    border-style: solid;
+    border-width: thin;
   }
 .form_period{
     background-color: #d2d2d2;

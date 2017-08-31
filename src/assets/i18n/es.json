@@ -38,6 +38,8 @@
   "periodicidad": "periodicidad",
   "borrarControlchecklistT": "¿Estás seguro de querer eliminar el control checklist?",
   "borrarControlchecklistST": "Se borrarán sus resultados asociados.",
+  "Supervisores":"Supervisores",
+  "Supervisor":"Supervisor",
   "Permisos":"Permisos",
   "Permiso": "Permiso",
   "Permitido": "Permitido",
@@ -79,7 +81,7 @@
     "clientes":"Módulo clientes",
     "produccion":"Módulo producción",
     "personal":"Módulo personal",
-    "planificaciones":"planificaciones"
+    "planificaciones":"Módulo planificaciones"
   },
   "premium":{
     "exportar informes":"Exportar informes",

@@ -121,6 +121,8 @@ import { FamiliasPlanesComponent } from './components/planificaciones/familias/f
 import { PlanesPermisosComponent } from './components/planificaciones/planes-permisos/planes-permisos.component';
 import { PermisosGeneralComponent } from './components/permisos/permisos.component';
 import { PlanRealizadoComponent } from './components/planificaciones/plan-realizado/plan-realizado.component';
+import { SupervisoresComponent } from './components/supervisores/supervisores.component';
+import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
 
 
 
@@ -243,7 +245,9 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     FamiliasPlanesComponent,
     PlanesPermisosComponent,
     PermisosGeneralComponent,
-    PlanRealizadoComponent
+    PlanRealizadoComponent,
+    SupervisoresComponent,
+    BocadilloComponent
   ],
   providers: [
     EmpresasService,

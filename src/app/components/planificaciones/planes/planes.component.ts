@@ -175,12 +175,13 @@ eliminaPlan(){
         if (response.success) {
           this.planes.push(new Planificacion(response.id,this.plan.idempresa,this.plan.nombre,this.plan.descripcion,this.plan.familia,
           this.plan.fecha,this.plan.periodicidad,this.plan.responsable,this.plan.supervisor));
+          this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
         }
     },
     error =>console.log(error),
     () =>  {}
     );
-   this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
+   
   }
 
 modificarItem(){

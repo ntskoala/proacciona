@@ -48,6 +48,8 @@
    <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
     -->
    <app-permisos *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+   <div  *ngIf="permiso" style="height:35px" ></div>
+   <app-supervisores *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-supervisores>
    
    <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas>
    

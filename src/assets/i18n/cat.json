@@ -38,6 +38,8 @@
   "periodicidad":"periodicitat",
   "borrarControlchecklistT":"Estàs segur de voler eliminar el control checklist?",
   "borrarControlchecklistST":"S'esborraran els resultats associats.",
+  "Supervisores":"Supervisors",
+  "Supervisor":"Supervisor",
   "Permisos":"Permisos",
   "Permiso":"Permí­s",
   "Permitido":"Permès",
@@ -79,7 +81,7 @@
     "clientes":"Mòdul clients",
     "produccion":"Mòdul producció",
     "personal":"Mòdul personal",
-    "planificaciones":"planificacions"
+    "planificaciones":"Mòdul planificacions"
   },
   "premium":{
     "exportar informes":"Exporta informes",

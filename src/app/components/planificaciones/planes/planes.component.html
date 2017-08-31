@@ -1,9 +1,11 @@
 
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <!--<div class="cabeceraItems">-->
-
+<div class="bocadilloarriba">
+Probando otro bocadillo con el triangulo arriba.
+</div>
 <div class="table planes">
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'planificaciones.nombre' | translate" required [(ngModel)]="plan.nombre" name="nombre">
@@ -27,9 +29,9 @@
       <span class="cell small">
       <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsable" name="responsable">
     </span>
-      <span class="cell small">
+      <!-- <span class="cell small">
         <app-permisos-limpieza [supervisor]="plan.supervisor"  (setSupervisor)="setSupervisor($event,plan)"></app-permisos-limpieza>
-    </span>
+    </span> -->
 
      <span  class="cell"></span><!--Borrar-->
     <span class="cell">
@@ -38,7 +40,7 @@
       </button>
     </span>
   </form>
-
+  <div style="height: 15px" ></div>
   <div class="header-row">
     <span class="header-cell">{{"planificaciones.nombre" | translate}}</span>
     <span class="medium header-cell">{{"planificaciones.descripcion" | translate}}</span>
@@ -46,7 +48,7 @@
     <span class="header-cell">{{"planificaciones.fecha" | translate}}</span>
     <span class="header-cell">{{"planificaciones.periodicidad" | translate}}</span>
      <span class="medium header-cell">{{"planificaciones.responsable" | translate}}</span>
-    <span class="medium header-cell">{{"planificaciones.supervisor" | translate}}</span>
+    <!-- <span class="medium header-cell">{{"planificaciones.supervisor" | translate}}</span> -->
     <span class="header-cell"></span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
@@ -74,9 +76,9 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
-      <span class="cell small">
+      <!-- <span class="cell small">
         <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>
-    </span>
+    </span> -->
     <span class="cell">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>

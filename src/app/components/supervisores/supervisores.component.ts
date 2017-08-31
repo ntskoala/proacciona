@@ -6,62 +6,46 @@ import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { Usuario } from '../../models/usuario';
-import { PermissionUserPlan } from '../../models/permissionuserplan';
-import { PermissionUserLimpieza } from '../../models/permissionuserlimpieza';
-import { PermissionUserControl } from '../../models/permissionusercontrol';
-import { PermissionUserChecklist } from '../../models/permissionuserchecklist';
 
-export class Permiso{
+export class Supervisor{
   constructor(
     public id: number,
-    public idplan: number,
-    public idusuario: number,
-    public idempresa: number
+    public supervisor: number
   ) {}
 }
-export class Control{
-  constructor(
-    public id: number,
-    public nombre: string,
-    public idfamilia: number,
-    public familia: string
-  ) {}
-}
+
+
 @Component({
-  selector: 'app-permisos',
-  templateUrl: './permisos.component.html',
-  styleUrls: ['./permisos.component.css']
+  selector: 'app-supervisores',
+  templateUrl: './supervisores.component.html',
+  styleUrls: ['./supervisores.component.css']
 })
-export class PermisosGeneralComponent implements OnInit {
-//@Input() limpieza: number;
-//@Input() supervisor: number;
+export class SupervisoresComponent implements OnInit {
 @Input() items;
 @Input() tipoControl;
 @Output() onPermisos:EventEmitter<number> =new EventEmitter<number>();
-//public observer: Observable<string>;
 
-public viewPermisos: boolean = false;
 public usuarios: Usuario[] = [];
 //public controles: Control[];
-public permisos: Permiso[] = [];
-public permiso: Permiso;
+public supervisores: Supervisor[] = [];
+public permiso: Supervisor;
 public haypermiso: number[]=[];
 public tabla: object[];
 public cols: object[];
-public procesando:boolean=true;
 public cargaData: boolean[]=[false,false];
-public entidad:string="&entidad=permissionlimpieza";
-public field:string="&field=idelementolimpieza&idItem=";
+public procesando:boolean=true;
+public entidad:string="&entidad=";
+public field:string="&field=";
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
-
-    switch(this.tipoControl){
+        switch(this.tipoControl){
       case "planes":
-      this.entidad="&entidad=permissionplanificaciones";
+      this.entidad="&entidad=planificaciones";
       break;
       case "limpiezas":
-      this.entidad="&entidad=permissionlimpieza";
+      this.entidad="&entidad=limpieza";
       break;
 
       case "conroles":
@@ -91,7 +75,7 @@ public field:string="&field=idelementolimpieza&idItem=";
        )
   }
 
-carga(){
+  carga(){
 return new Observable<string>((valor)=>{
     this.getUsuarios().then(
       (resultado)=>{
@@ -107,7 +91,7 @@ return new Observable<string>((valor)=>{
     //     }
     //   }
     // );
-    this.getPermisos().then(
+    this.getSupervisiones().then(
       (resultado)=>{
         if (resultado == 'permisos') {
           valor.next('permisos');
@@ -117,7 +101,7 @@ return new Observable<string>((valor)=>{
 })
 }
 
-getUsuarios(){
+  getUsuarios(){
   return new Promise((resolve, reject) => {
     let parametros = '&idempresa=' + this.empresasService.seleccionada;
     this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
@@ -128,7 +112,7 @@ getUsuarios(){
           for (let element of response.data) {
             this.usuarios.push(new Usuario(element.id, element.usuario, element.password,
               element.tipouser, element.email, element.idempresa));
-              this.haypermiso.push(this.permisos.findIndex((permiso)=>permiso.idusuario ==element.id));
+              this.haypermiso.push(this.supervisores.findIndex((supervisor)=>supervisor.supervisor ==element.id));
           }
           resolve('usuarios')
         }
@@ -137,19 +121,19 @@ getUsuarios(){
 }
 
 
-getPermisos(){
-      console.log('##########getPERMISOS########')
+getSupervisiones(){
+      console.log('##########getSupervisiones########')
     
       return new Promise((resolve, reject) => {
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
-            this.permisos = [];
+            this.supervisores = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
                 console.log(element);
-                  this.permisos.push(new Permiso(element.id,element.idplan,element.idusuario,element.idempresa));
-                  console.log("permisos",this.permisos);
+                  this.supervisores.push(new Supervisor(element.id,element.supervisor));
+                  console.log("permisos",this.supervisores);
              }
              resolve('permisos');   
             }
@@ -166,30 +150,6 @@ getPermisos(){
       );
 }
 
-
-// getControles(entidad:string){
-//   return new Promise((resolve, reject) => {
-// entidad = 'planificaciones'
-//     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad="+entidad+"&order=nombre";
-
-//         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
-//           response => {
-//             this.controles = [];
-//             if (response.success == 'true' && response.data) {
-//               for (let element of response.data) {
-//                 this.controles.push(new Control(element.id,element.nombre,element.familia,''));
-//               }
-//               resolve('controles');   
-//             }
-//           },
-//               (error) => {console.log(error);
-//               resolve(error);   },
-//               ()=>{
-//               }
-//         );
-//   });
-// }
-
 mergeData(){
   this.tabla=[];
   this.cols=[];
@@ -202,7 +162,7 @@ mergeData(){
     let generalSwitch = true;
     let row= '{"user":"'+user.usuario+'","iduser":"'+user.id+'"'
   this.items.forEach(control => {
-   let valor = this.permisos.findIndex((permiso)=>permiso.idusuario == user.id && permiso.idplan == control.id);
+   let valor = this.supervisores.findIndex((supervisor)=>supervisor.supervisor == user.id && supervisor.id == control.id);
    let check:boolean;
    if (valor<0){
      check=false;
@@ -218,11 +178,13 @@ row += ',"generalSwitch":'+generalSwitch+'}';
   })
   this.procesando=false;
 }
+
+
 setPermiso(user,event,col?){
-  this.procesando=true;
-  if (col){
-  let index = this.items.findIndex((control)=>control.nombre==col)
-  if (index >= 0){
+   this.procesando=true;
+   if (col){
+   let index = this.items.findIndex((control)=>control.nombre==col)
+   if (index >= 0){
   let idControl = this.items[index].id;
   console.log(user,col,idControl, event)
   if (event){
@@ -244,7 +206,7 @@ setPermiso(user,event,col?){
   }
   }else{
       this.items.forEach(control => {
-      let index = this.permisos.findIndex((permiso)=> permiso.idusuario == user && permiso.idplan == control.id);
+      let index = this.supervisores.findIndex((supervisor)=> supervisor.supervisor == user && supervisor.id == control.id);
       if (event){
       if (index == -1){
         this.addPermiso(user,control['id']).then(
@@ -265,24 +227,27 @@ setPermiso(user,event,col?){
       setTimeout(()=>{
         this.procesando=false;
       },900);
-  } 
+   } 
 }
 
 addPermiso(user,idControl){
       return new Promise((resolve, reject) => {
-      let permiso = new Permiso(null,idControl,user,this.empresasService.seleccionada)
+      let plan = new Supervisor(idControl,user)
 
 
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
-        this.servidor.postObject(URLS.STD_ITEM, permiso,parametros).subscribe(
+      let parametros = '?idempresa=' + this.empresasService.seleccionada+this.entidad+"&id="+plan.id; 
+        this.servidor.putObject(URLS.STD_ITEM,parametros,plan).subscribe(
           response => {
             if (response.success) {
-            this.permisos.push(new Permiso(response.id,permiso.idplan,permiso.idusuario,permiso.idempresa));  
-            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);    
+            //this.permisos.push(new Permiso(response.id,permiso.idplan,permiso.idusuario,permiso.idempresa));
+            let indexSupervisores = this.supervisores.findIndex((supervision)=>supervision.id==idControl);
+            this.supervisores[indexSupervisores].supervisor = user; 
+            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);
             let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
-            this.tabla[index][nombre]= true;        
-              console.log("permisos",permiso);
-             resolve('permisos ok');
+            this.tabla[index][nombre]= true;     
+            this.swithTheOthers(user,idControl); 
+             // console.log("permisos",permiso);
+              resolve('permisos ok');
             }else{
               console.log('no se asigno elpermiso', response)
             }
@@ -299,26 +264,35 @@ addPermiso(user,idControl){
 }
 
 deletePermiso(user,idControl){
-return new Promise((resolve, reject) => {
-    let valor = this.permisos.findIndex((permiso)=>permiso.idusuario == user && permiso.idplan == idControl);
-    let idPermiso = this.permisos[valor].id;
-      let parametros = '?id=' + idPermiso+this.entidad;
-      this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
-        response => {
-          if (response.success) {
-             let indice = this.permisos.findIndex((permiso) => permiso.id == idPermiso);
-             this.permisos.splice(indice, 1);
-            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);    
-            let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
-            this.tabla[index][nombre]= false; 
-            resolve('permisos ok');
+      return new Promise((resolve, reject) => {
+      let plan = new Supervisor(idControl,0)
 
-          }else{
-            console.log('no se cancelo elpermiso', response)
-            resolve('error');
-          }
-      });
-});
+
+      let parametros = '?idempresa=' + this.empresasService.seleccionada+this.entidad+"&id="+plan.id; 
+        this.servidor.putObject(URLS.STD_ITEM,parametros,plan).subscribe(
+          response => {
+            if (response.success) {
+            //this.permisos.push(new Permiso(response.id,permiso.idplan,permiso.idusuario,permiso.idempresa));  
+            let indexSupervisores = this.supervisores.findIndex((supervision)=>supervision.id==idControl);
+            this.supervisores[indexSupervisores].supervisor = 0; 
+            let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);
+            let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
+            this.tabla[index][nombre]= true;        
+             // console.log("permisos",permiso);
+              resolve('permisos ok');
+            }else{
+              console.log('no se asigno elpermiso', response)
+            }
+        },
+        error=>{
+          resolve(error);
+          console.log(error)
+        },
+        ()=>{   
+        }
+        );
+      }
+      );
 }
 
 switch(user,idControl,estado){
@@ -338,4 +312,17 @@ this.items.forEach(control => {
   console.log(this.tabla[index]['generalSwitch'],index,generalSwitch)
  this.tabla[index]['generalSwitch']=generalSwitch; 
 }
+
+swithTheOthers(user,idControl){
+  let x=0;
+  let nombreControl = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
+this.usuarios.forEach(usuario =>{
+  if (usuario.id != user){
+    this.tabla[x][nombreControl]=false;
+    this.tabla[x]['generalSwitch']=false;
+  }
+x++;
+});
+}
+//****** */
 }

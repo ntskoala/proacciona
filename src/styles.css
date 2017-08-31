@@ -552,6 +552,11 @@ gestion-informes {
   background-color: #eee;
 }
 
+.addItem {
+  background-color: #eee;
+}
+
+
 .cell {
   display: table-cell;
   padding: 3px 0 3px 8px;

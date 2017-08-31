@@ -111,7 +111,7 @@ public idBorrar;
 
 
  saveItem(mantenimiento: MantenimientoRealizado) {
-   console.log ("evento",event);
+  // console.log ("evento");
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))

@@ -569,6 +569,11 @@ gestion-informes {
 ***********************
 */
 
+.toolbar-principal{
+    padding-left: 15% !important;
+    font-size: 25px;
+}
+
 .material-icons {
   vertical-align: middle;
 }
@@ -633,7 +638,7 @@ width: 400px;
     margin-left: auto;
     margin-right: auto;
     position: absolute;
-    margin-left: 20%;
+    margin-left: 10%;
     margin-top: -15px;
 }
 .cabeceraItems button{

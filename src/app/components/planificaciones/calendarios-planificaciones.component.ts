@@ -59,6 +59,14 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
       this.headerCalendar = {left: 'prev,next today',center: 'title',right: 'month,basicWeek,basicDay,listMonth,listYear'};
        
        this.empresasService.idioma == "cat"?this.locale="ca":this.locale="es";
+       if (this.empresasService.idioma == "cat") {
+         this.locale="ca";
+          this.supervisar = [{"value":0,"label":"Per supervisar"},{"value":1,"label":"Correcte"},{"value":2,"label":"Incorrecte"}];
+       }else{
+          this.locale="es"
+          this.supervisar = [{"value":0,"label":"Por supervisar"},{"value":1,"label":"Correcta"},{"value":2,"label":"Incorrecta"}];
+       }
+
        
 }
   setEventsMantenimientos(){

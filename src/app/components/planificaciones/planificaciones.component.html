@@ -6,7 +6,9 @@
 </div>
 <md-card>
     <md-card-title>
-      <md-toolbar color="accent">{{'planificaciones.planificaciones' | translate}}
+      <md-toolbar color="accent" class="toolbar-principal">
+        
+        {{'menu.planificaciones' | translate}}
 
       </md-toolbar>
     </md-card-title>
@@ -31,17 +33,18 @@
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" md-mini-fab (click)="cambioMenu('permiso')"><md-icon>vpn_key</md-icon></button>
   </div>
 
-   <div class="tooltip" mdTooltip="{{'planificaciones.alertas' | translate}}" [mdTooltipPosition]="'after'">
+   <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('alerta')"><md-icon>notifications_active</md-icon></button>
   </div>
    </div>
  </md-card-subtitle>
 
  <div class="contenido">
+
    <md-sidenav-container class="example-container">
   <md-sidenav  #sidenavCalendar (close)="closeSideNav()" class="example-sidenav" [mode]="'over'">
-       <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
-  <button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
+  <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
   </div>
    <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
 <!-- 
@@ -58,7 +61,7 @@
    <div class="example-sidenav-content">
 <md-tab-group [dynamicHeight]="false">
 
-  <md-tab label="{{'planificaciones.planificaciones' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></md-tab>
+  <md-tab label="{{'planificaciones.planificaciones_programadas' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></md-tab>
   <!-- <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'normal'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>   -->
   <md-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="newPlanRealizado"  (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></md-tab>
 

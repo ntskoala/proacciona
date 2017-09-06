@@ -260,4 +260,10 @@ setSupervision($event){
       }
     )
   }
+
+  expandir(dt: any,row:number,event:any){
+    console.log(dt,row,event)
+
+    dt.toggleRow(row);
+  }
 }

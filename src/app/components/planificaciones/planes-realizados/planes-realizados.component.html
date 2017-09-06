@@ -4,12 +4,17 @@
   </div>
 </modal> -->
 
-
   <div>
 
-<p-dataTable [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)">
+<p-dataTable #DT [value]="items" [editable]="true" expandableRows="true" (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)">
   <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template>
-  <p-column expander="true" styleClass="col-icon"></p-column>
+  <p-column expander="true" styleClass="col-icon">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+         <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+        
+        </div>
+    </ng-template> 
+  </p-column>
   <p-column field="nombre" header="{{'planificaciones.nombre' | translate}}" [editable]="true"></p-column>
   <p-column field="fecha_prevista" header="{{'planificaciones.fecha_prevista' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
@@ -27,9 +32,9 @@
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="float:left">
          <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
-  <md-option value="0">por supervisar</md-option>
-   <md-option value="1">correcto</md-option>
-    <md-option value="2">incorrecto</md-option>
+  <md-option value="0">{{'planificaciones.porSupervisar' | translate}}</md-option>
+   <md-option value="1">{{'planificaciones.correcta' | translate}}</md-option>
+    <md-option value="2">{{'planificaciones.incorrecta' | translate}}</md-option>
 </md-select>
     <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
        </div>
@@ -47,7 +52,7 @@
           <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
   <md-option *ngFor="let usuario of usuarios" [value]="usuario.value">{{usuario.label}}</md-option>
 </md-select>      
-  
+
   </div>
   </ng-template>
   </p-column>
@@ -60,18 +65,22 @@
    <!--//************--> 
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.descripcion' | translate}}">
-                   <md-input-container class="full-width textareacontainer">
-      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="{{'planificaciones.descripcion' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
-    </md-input-container> 
+                   <!-- <md-input-container class="full-width textareacontainer">
+      <textarea mdInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important" placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+                     
+      </md-input-container>  -->
+    <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+    
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>
     </span>
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.detalles_supervision' | translate}}">
-                   <md-input-container class="full-width textareacontainer">
-      <textarea mdInput mdTextareaAutosize="true" rows="8" cols="54"  placeholder="{{'planificaciones.detalles_supervision' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
-    </md-input-container> 
+                   <!-- <md-input-container class="full-width textareacontainer">
+      <textarea mdInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important"  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+    </md-input-container> -->
+    <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>
@@ -109,12 +118,13 @@
   </ng-template>
   <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}">
        <ng-template let-col let-item="rowData" pTemplate="body">
-             <span class="cell">
+               <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell">
+     <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+      
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item)" type="submit">
         <span class="material-icons">check</span>
       </button>                

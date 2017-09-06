@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-
+import {MdSnackBar} from '@angular/material';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -36,10 +36,10 @@ public cargaData: boolean[]=[false,false];
 public entidad:string="&entidad=alertas";
 //public field:string="&field=idelementolimpieza&idItem=";
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public snack: MdSnackBar) { }
 
   ngOnInit() {
-    this.items = ['planificaciones'];
+    this.items = ['Planificaciones'];
     switch(this.tipoControl){
       case "planes":
       this.entidad="&entidad=permissionplanificaciones";
@@ -185,7 +185,7 @@ mergeData(){
   console.log('Inicio merge');
   this.tabla=[];
   this.cols=[];
-  this.cols.push({field:'user',header:'usuario'});
+  this.cols.push({field:'user',header:'Usuario'});
   this.items.forEach(modulo => {
   this.cols.push({field:modulo,header:modulo})
   });
@@ -214,6 +214,21 @@ row += ',"generalSwitch":'+generalSwitch+'}';
 }
 setPermiso(user,event,col?){
   this.procesando=true;
+  if (user==0){
+    let modulo = col;
+    let index = this.alertas.findIndex((alerta)=> alerta.modulo == modulo);
+        this.saveAlerta(this.alertas[index]).then(
+          (valor)=>{
+            if (valor == 'ok'){
+              console.log('ok')
+              this.procesando=false;
+            }else{
+              console.log(valor);
+              this.procesando=false;
+            }
+          }
+        );
+  }else{
   if (col){
   let modulo = this.items[col];
   console.log(user,col,modulo, event)
@@ -226,14 +241,15 @@ setPermiso(user,event,col?){
       }
     )
   }else{
-    this.deletePermiso(user,modulo).then(
+    this.deletePermiso(user,col).then(
       (response)=>{
+         console.log(response)
        // this.switchGeneral(user)
         this.procesando = false;
       }
     )
   }
-
+  }
   }
 // else{
 //       this.items.forEach(control => {
@@ -290,36 +306,40 @@ addPermiso(user,modulo){
 }
 
  deletePermiso(user,modulo){
-   console.log('quitar permiso');
+   console.log('quitar permiso',user,modulo);
  return new Promise((resolve, reject) => {
-//     let valor = this.alertas.findIndex((alerta)=>alerta.idusuario == user && alerta.idplan == idControl);
-//     let idPermiso = this.alertas[valor].id;
-//       let parametros = '?id=' + idPermiso+this.entidad;
-//       this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
-//         response => {
-//           if (response.success) {
-//              let indice = this.alertas.findIndex((alerta) => alerta.id == idPermiso);
-//              this.alertas.splice(indice, 1);
-//             let index = this.tabla.findIndex((usuario)=>usuario['iduser'] == user);    
-//             let nombre = this.items[this.items.findIndex((control)=>control.id==idControl)].nombre;
-//             this.tabla[index][nombre]= false; 
-//             resolve('alertas ok');
-
-//           }else{
-//             console.log('no se cancelo elpermiso', response)
-//             resolve('error');
-//           }
-//       });
+        let index = this.alertas.findIndex((alerta)=> alerta.modulo == modulo);
+        console.log('indice de alertas',index,this.alertas);
+        if (this.usuariosAlertas[index]){
+        let isUser = this.usuariosAlertas[index].indexOf(user);
+        if (isUser >-1){
+          this.usuariosAlertas[index].splice(isUser,1);
+        }
+        this.alertas[index].usuarios = JSON.stringify(this.usuariosAlertas[index]);
+        this.saveAlerta(this.alertas[index]).then(
+          (valor)=>{
+            if (valor == 'ok'){
+              console.log('ok');
+              resolve('ok')
+            }else{
+              console.log(valor);
+              resolve(valor);
+            }
+          }
+        );
+        }
 resolve ('alertas ok');
 });
  }
 saveAlerta(alerta: Alerta){
+  console.log('saving alerta',alerta);
   return new Promise((resolve, reject) => {
       let parametros = '?idempresa=' + this.empresasService.seleccionada+this.entidad+'&id=' + alerta.id; 
         this.servidor.putObject(URLS.STD_ITEM,parametros,alerta).subscribe(
           response => {
             if (response.success) {
               console.log("alertas",alerta);
+              this.snack.open('ok',null, {duration: 2000});
              resolve('ok');
             }else{
               console.log('no se asigno elpermiso', response)
@@ -384,7 +404,7 @@ resolve ('alertas ok');
 switchAlerta(event){
 console.log(event);
 if (event.checked){
-this.addAlerta('planificaciones').then(
+this.addAlerta('Planificaciones').then(
   (resultado)=>{
     if (resultado =='alertas ok'){
       console.log('ok, creado->lets call carga');
@@ -398,7 +418,7 @@ this.addAlerta('planificaciones').then(
   }
 )
 }else{
-this.deleteAlerta('planificaciones').then(
+this.deleteAlerta('Planificaciones').then(
   (resultado)=>{
     if (resultado=='alertas ok'){
       console.log('ok, borrado->lets descarga');

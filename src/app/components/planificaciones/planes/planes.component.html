@@ -1,9 +1,9 @@
 
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <!--<div class="cabeceraItems">-->
-<div class="bocadilloarriba">
+<!-- <div class="bocadilloarriba">
 Probando otro bocadillo con el triangulo arriba.
-</div>
+</div> -->
 <div class="table planes">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
@@ -34,7 +34,7 @@ Probando otro bocadillo con el triangulo arriba.
     </span> -->
 
      <span  class="cell"></span><!--Borrar-->
-    <span class="cell">
+    <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
@@ -79,12 +79,12 @@ Probando otro bocadillo con el triangulo arriba.
       <!-- <span class="cell small">
         <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>
     </span> -->
-    <span class="cell">
+    <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell">
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>

@@ -2,36 +2,45 @@
 <md-spinner></md-spinner>
 </div>
 
-<md-toolbar color="accent">{{'alertas' | translate}}
+<md-toolbar color="accent">{{'avisos' | translate}}
 
         <md-slide-toggle
           class="toggleAlertas"
           [color]="'primary'"
           [checked]="hayalerta"
           (change)="switchAlerta($event)">
-        {{hayalerta}}
+        <span *ngIf="hayalerta">{{'hayalertas' | translate}}</span>
+        <span *ngIf="!hayalerta">{{'nohayalertas' | translate}}</span>
       </md-slide-toggle>
 
 </md-toolbar>
-<div *ngIf="alertas[0]">
-Enviar alerta 
-      <md-input-container class="example-margin">
-        <input mdInput type="number" maxlength="3" style="width:25px" size="3" max="100"  [(ngModel)]="alertas[0].tiempo_alerta">
-      </md-input-container>
-días antes del evento.
 
-</div>
 <p-dataTable [value]="tabla">
     <!-- <p-column field="usuario" header="usuario"></p-column> -->
-    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [frozen]="col.header == 'usuario'">
-         <ng-template let-col let-user="rowData" pTemplate="body">
-            <span *ngIf="col.header == 'usuario'">{{user[col.field]}}</span>
+    <p-column *ngFor="let col of cols;let i = index" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'user'">
+    <!-- <ng-template let-col let-user="rowData" pTemplate="header">
+     {{cols[i]["field"] | translate }} |  {{cols[i]["field"] }}
+    </ng-template> -->
+      <ng-template let-col let-user="rowData" pTemplate="body">
+            <span *ngIf="col.field == 'user'">{{user[col.field]}}</span>
             <!-- <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.header == 'usuario'"
           [checked]="user['generalSwitch']">
       </md-slide-toggle> -->
-            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.header != 'usuario'"
+            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
           [checked]="user[col.field]">
       </md-slide-toggle>
         </ng-template> 
     </p-column>
 </p-dataTable>
+
+<div *ngIf="alertas[0]">
+{{'alertas.enviar' | translate}}
+      <md-input-container class="example-margin">
+        <input mdInput type="number" maxlength="3" style="width:25px" size="3" max="100"  [(ngModel)]="alertas[0].tiempo_alerta">
+      </md-input-container>
+{{'alertas.diasantes' | translate}}
+{{'alertas.nota' | translate}}
+  <span class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+  <button  color="accent" md-mini-fab (click)="setPermiso(0,true,'planificaciones')"><md-icon>check</md-icon></button>
+  </span>
+</div>

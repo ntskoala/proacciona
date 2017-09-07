@@ -14,7 +14,7 @@
         <option value="Operario">{{'Operario' | translate}}</option>
         <option value="Gerente">{{'Gerente' | translate}}</option>
         <option value="Mantenimiento">{{'Mantenimiento' | translate}}</option>
-        <option>Administrador</option>
+        <option *ngIf="empresasService.administrador" value="Administrador">Administrador</option>
       </select>
     </span>
     <span class="cell">
@@ -48,7 +48,7 @@
         <option value="Operario">{{'Operario' | translate}}</option>
         <option value="Gerente">{{'Gerente' | translate}}</option>
         <option value="Mantenimiento">{{'Mantenimiento' | translate}}</option>
-        <option>Administrador</option>
+        <option *ngIf="empresasService.administrador" value="Administrador">Administrador</option>
       </select>
     </span>
         <span class="cell">

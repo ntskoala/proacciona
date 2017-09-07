@@ -8,6 +8,7 @@ export class Planificacion {
     public fecha: any,
     public periodicidad: string,
     public responsable: string,
-    public supervisor?: number
+    public supervisor?: number,
+    public orden?:number
   ) {}
 }

@@ -43,6 +43,8 @@ export class PlanesComponent implements OnInit {
   public import: boolean=false;
   public es;
   public entidad:string="&entidad=planificaciones";
+  public ordenPosInicio:number;
+  public ordenPosFin:number;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -73,7 +75,7 @@ ngOnInit(){
             //this.planes.push(this.plan);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor));
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor,element.orden));
               }
             }
           },
@@ -109,11 +111,15 @@ loadFamilias(){
 
 
     itemEdited(idItem: number, fecha?: any) {
+
     this.guardar[idItem] = true;
-    //console.log (fecha.toString());
+    console.log ('valueChanged',idItem);
   }
 // ngOnChanges(changes:SimpleChange) {}
-
+onEdit(evento){
+  //console.log(evento)
+  this.guardar[evento.data.id]= true;
+}
 
 
 modificar(){
@@ -190,12 +196,13 @@ modificarItem(){
 }
 
  saveItem(item: Planificacion,i: number) {
+
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
     item.periodicidad = this.planes[i].periodicidad; 
-    item.supervisor = this.planes[i].supervisor;
-    console.log(item);
+    //item.supervisor = this.planes[i].supervisor;
+    console.log(item,i);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
@@ -232,5 +239,22 @@ item.supervisor = idUsuario;
 this.itemEdited(item.id);
 }
 
+///*******DRAG & DROP */
+dragStart(index:number){
+this.ordenPosInicio = index;
+console.log('dragStart',index);
+}
 
+dragEnd(){
+this.planes[this.ordenPosInicio].orden= this.ordenPosFin;
+this.planes[this.ordenPosFin].orden --; 
+this.ordenPosInicio = null;
+this.ordenPosFin = null;
+console.log('dragEnd');
+}
+drop(index:number){
+this.ordenPosFin = index;
+console.log('drop',index);
+}
+///*******DRAG & DROP */
 }

@@ -75,6 +75,7 @@ export class InformesControlComponent implements OnInit {
   }
 
 
+
 setColOptions(){
     //this.cols =this.columnas;
         this.columnOptions = [];

@@ -1,9 +1,6 @@
 
-<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<!--<div class="cabeceraItems">-->
-<!-- <div class="bocadilloarriba">
-Probando otro bocadillo con el triangulo arriba.
-</div> -->
+ <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">
 <div class="table planes">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
@@ -13,12 +10,7 @@ Probando otro bocadillo con el triangulo arriba.
     <span class="cell">
       <input type="text" [placeholder]="'planificaciones.descripcion' | translate" required [(ngModel)]="plan.descripcion" name="descripcion">
     </span>
-    <!-- <span *ngIf="familias"  class="medium cell small">
-        <select class="medium white-select small" required [(ngModel)]="plan.familia" name="familia">
-          <option [disabled] value="null">{{'planificaciones.familia' | translate}}</option>
-        <option *ngFor="let familia of familias" value="familia.id">{{familia.nombre}}</option>
-      </select>
-    </span> -->
+
     <span class="medium cell">
       <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="plan.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
@@ -29,11 +21,8 @@ Probando otro bocadillo con el triangulo arriba.
       <span class="cell small">
       <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsable" name="responsable">
     </span>
-      <!-- <span class="cell small">
-        <app-permisos-limpieza [supervisor]="plan.supervisor"  (setSupervisor)="setSupervisor($event,plan)"></app-permisos-limpieza>
-    </span> -->
 
-     <span  class="cell"></span><!--Borrar-->
+     <span  class="cell"></span>
     <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
@@ -41,16 +30,17 @@ Probando otro bocadillo con el triangulo arriba.
     </span>
   </form>
   <div style="height: 15px" ></div>
+</div>
+</span>
+<!--
   <div class="header-row">
     <span class="header-cell">{{"planificaciones.nombre" | translate}}</span>
     <span class="medium header-cell">{{"planificaciones.descripcion" | translate}}</span>
-    <!-- <span *ngIf="familias" class="medium header-cell">{{"planificaciones.familia" | translate}}</span> -->
     <span class="header-cell">{{"planificaciones.fecha" | translate}}</span>
     <span class="header-cell">{{"planificaciones.periodicidad" | translate}}</span>
      <span class="medium header-cell">{{"planificaciones.responsable" | translate}}</span>
-    <!-- <span class="medium header-cell">{{"planificaciones.supervisor" | translate}}</span> -->
-    <span class="header-cell"></span><!--Borrar-->
-    <span class="header-cell"></span><!--Guardar-->
+    <span class="header-cell"></span>
+    <span class="header-cell"></span>
   </div>
 
 <div class="divrow"  *ngFor="let item of planes; let i = index">
@@ -62,11 +52,7 @@ Probando otro bocadillo con el triangulo arriba.
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)">
     </span>
-    <!-- <span *ngIf="familias" class="medium cell small">
-        <select class="medium white-select small" required [(ngModel)]="item.familia" name="familia">
-        <option  *ngFor="let familia of familias" value="familia.id">{{familia.nombre}}</option>
-      </select>
-    </span> -->
+
     <span class="medium cell">
       <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
     </span>
@@ -76,9 +62,7 @@ Probando otro bocadillo con el triangulo arriba.
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
-      <!-- <span class="cell small">
-        <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>
-    </span> -->
+
     <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
@@ -92,4 +76,46 @@ Probando otro bocadillo con el triangulo arriba.
 
   </form>
 </div>
-</div>
+ </div>  -->
+
+ <p-dataTable [value]="planes"  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)">
+    <!-- <p-header>{{'planificaciones.planificaciones_progrmadas' | translate}}</p-header> -->
+    <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
+      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+      <div class="drop" [ngClass]="{'ui-state-highlight':ordenPosInicio}" dropEffect="move" pDroppable="dd" (onDrop)="drop(i)">
+      <div class="drag" dragEffect="move" pDraggable="dd" (onDragStart)="dragStart(i)" (onDragEnd)="dragEnd()">{{item.orden}}</div>        
+        </div>
+      </ng-template>
+    </p-column>
+    
+    <p-column field="nombre" header="nombre" [sortable]="true" [editable]="true" ></p-column>
+    <p-column field="descripcion" header="descripcion" [sortable]="true" [editable]="true"></p-column>
+    <p-column field="fecha" header="fecha" [sortable]="true">
+      <ng-template let-col let-item="rowData" pTemplate="body">      
+      <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+      </ng-template>
+    </p-column>
+    <p-column field="periodicidad" header="periodicidad" [sortable]="true">
+      <ng-template let-col let-item="rowData" pTemplate="body">
+      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
+      </ng-template>
+    </p-column>
+    <p-column field="responsable" header="responsable" [sortable]="true" [editable]="true"></p-column>
+
+    <p-column header="'acciones'">
+      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+        <span class="material-icons">check</span>
+      </button>
+    </span>
+      </ng-template>   
+    </p-column>
+    <!-- <p-column field="orden" header="orden" [sortable]="true"></p-column>     -->
+    <!-- <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer> -->
+</p-dataTable>

@@ -22,36 +22,36 @@
       <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="mantenimiento.mantenimiento" name="mantenimiento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell small">
-      <p-calendar class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+      <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" class="small" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
     <span class="cell">
-      <p-calendar [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
+      <p-calendar [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
     </span>
     <span class="cell small">
-     <input class="small" [readonly]="!empresasService.administrador" [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
+     <input class="small" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'elemento' | translate" type="text" [(ngModel)]="mantenimiento.elemento" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador  && empresasService.userTipo !== 'Gerente'" [placeholder]="'elemento' | translate" type="text" [(ngModel)]="mantenimiento.elemento" name="elemento" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
     </span>
     <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'causas' | translate" type="text" [(ngModel)]="mantenimiento.causas" name="causas" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-
-    <span class="cell">
-      <input [readonly]="!empresasService.administrador" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [placeholder]="'causas' | translate" type="text" [(ngModel)]="mantenimiento.causas" name="causas" (keyup)="itemEdited(mantenimiento.id)">
     </span>
 
+    <span class="cell">
+      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
+    </span>
+
 
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

@@ -177,7 +177,9 @@ onEdit(event){
 
 
  saveItem(mantenimiento: LimpiezaRealizada) {
+
    console.log ("evento");
+
     this.guardar[mantenimiento.id] = false;
     delete mantenimiento.supervisor;
     if (!moment(mantenimiento.fecha_supervision).isValid()) mantenimiento.fecha_supervision = new Date();

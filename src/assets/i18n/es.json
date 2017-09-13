@@ -406,7 +406,8 @@
       "avisos":"Avisos",
       "enviar":"Enviar avisos",
       "diasantes":"días antes del evento.",
-      "nota":"Siempre te llegará un aviso el mismo día del evento, adicionalmente puedes programar un día extra."
+      "nota":"Siempre te llegará un aviso el mismo día del evento, adicionalmente puedes programar un día extra.",
+      "nohaymail":"No tiene email"
     },
   "alergenos":"alérgenos",
   "lunes":"lunes",

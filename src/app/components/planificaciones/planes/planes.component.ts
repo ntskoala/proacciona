@@ -1,6 +1,8 @@
 import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { DataTable, Column } from 'primeng/primeng';
+
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
@@ -45,12 +47,14 @@ export class PlanesComponent implements OnInit {
   public entidad:string="&entidad=planificaciones";
   public ordenPosInicio:number;
   public ordenPosFin:number;
+  public procesando:boolean=false;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
+
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadplanes(this.empresasService.seleccionada.toString());
- this.loadFamilias();
+//  this.loadFamilias();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -63,7 +67,7 @@ ngOnInit(){
 
      loadplanes(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+"&entidad=planificaciones&order=nombre";
+    let parametros = '&idempresa=' + params+"&entidad=planificaciones&order=orden";
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
@@ -75,7 +79,7 @@ ngOnInit(){
             //this.planes.push(this.plan);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor,element.orden));
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
               }
             }
           },
@@ -86,28 +90,28 @@ ngOnInit(){
               }
         );
    }
-loadFamilias(){
-  return new Promise((resolve,reject)=>{
-    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=planificaciones_familias&order=nombre";
-        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
-          response => {
-            this.familias = [];
-            if (response.success == 'true' && response.data) {
-              for (let element of response.data) {
-                this.familias.push(new Familia(element.id,element.idempresa,element.nombre,element.descripcion));
-              }
-              resolve('ok');
-            }
-          },
-              (error) => {
-                console.log(error)
-                resolve(error)
-              },
-              ()=>{
-              }
-        );
-  });
-}
+// loadFamilias(){
+//   return new Promise((resolve,reject)=>{
+//     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=planificaciones_familias&order=nombre";
+//         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+//           response => {
+//             this.familias = [];
+//             if (response.success == 'true' && response.data) {
+//               for (let element of response.data) {
+//                 this.familias.push(new Familia(element.id,element.idempresa,element.nombre,element.descripcion));
+//               }
+//               resolve('ok');
+//             }
+//           },
+//               (error) => {
+//                 console.log(error)
+//                 resolve(error)
+//               },
+//               ()=>{
+//               }
+//         );
+//   });
+// }
 
 
     itemEdited(idItem: number, fecha?: any) {
@@ -173,6 +177,7 @@ eliminaPlan(){
     let param = this.entidad;
     this.plan.fecha = new Date(Date.UTC(this.plan.fecha.getFullYear(), this.plan.fecha.getMonth(), this.plan.fecha.getDate()))
     this.plan.idempresa = this.empresasService.seleccionada;
+    this.plan.orden = this.planes.length+1;
     //this.plan.periodicidad = this.mantenimientos[i].periodicidad;
     //this.addnewItem = this.nuevoItem;
 
@@ -180,8 +185,9 @@ eliminaPlan(){
       response => {
         if (response.success) {
           this.planes.push(new Planificacion(response.id,this.plan.idempresa,this.plan.nombre,this.plan.descripcion,this.plan.familia,
-          this.plan.fecha,this.plan.periodicidad,this.plan.responsable,this.plan.supervisor));
+          this.plan.fecha,this.plan.periodicidad,this.plan.responsable,this.plan.supervisor,this.plan.orden));
           this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
+          this.planes = this.planes.slice();
         }
     },
     error =>console.log(error),
@@ -240,21 +246,127 @@ this.itemEdited(item.id);
 }
 
 ///*******DRAG & DROP */
-dragStart(index:number){
-this.ordenPosInicio = index;
-console.log('dragStart',index);
+// dragStart(index:number){
+// this.ordenPosInicio = index;
+// console.log('dragStart',index);
+// }
+
+// dragEnd(){
+
+// console.log('dragEnd');
+// this.planes = this.planes.slice();
+// }
+// drop(index:number, dt:DataTable, evento:Event){
+//   console.log('drop',index);
+//   console.log('csv aplicado',dt.csvSeparator);
+// this.ordenPosFin = index;
+
+// // let miColumna:Column = new Column();//  = {'field':'orden','header':'orden','sortable':true,'sortField':'otro'}
+// // miColumna.field= 'orden';
+// // miColumna.header = 'orden';
+// // miColumna.sortable = true;
+// // miColumna.sortField = 'orden';
+// if (this.ordenPosInicio < this.ordenPosFin){
+//  this.planes[this.ordenPosInicio].orden= 1+this.ordenPosFin;
+//  this.reordenarUP(this.ordenPosInicio,this.ordenPosFin).then(
+//  )
+// }else{
+//  this.planes[this.ordenPosInicio].orden = 1+this.ordenPosFin;
+//  this.reordenarDown(this.ordenPosInicio,this.ordenPosFin).then(
+//  )
+// }
+// this.ordenPosInicio = null;
+// this.ordenPosFin = null;
+// }
+
+///*******DRAG & DROP */
+
+// setOrden(evento:Event, dt:DataTable){
+// let miColumna:Column = new Column();//  = {'field':'orden','header':'orden','sortable':true,'sortField':'otro'}
+// miColumna.field= 'orden';
+// miColumna.header = 'orden';
+// miColumna.sortable = true;
+// miColumna.sortField = 'orden';
+// //dt.reset();
+// dt.sort(evento,miColumna);
+// }
+
+goUp(index:number,evento:Event,dt:DataTable){
+if (index >0){
+    this.planes[index].orden--;
+    this.saveItem(this.planes[index],index);
+    this.planes[index-1].orden++;
+    this.saveItem(this.planes[index-1],index-1);
+    let temp1:any = this.planes.splice(index-1,1);
+    console.log(this.planes);
+    this.planes.splice(index,0,temp1[0]);
+    console.log(this.planes);
+    
+   this.planes = this.planes.slice();
+  //   setTimeout(()=>{
+  //     this.setOrden(evento,dt);
+  //   },500);
+}else{
+  console.log('primer elemento');
+}
 }
 
-dragEnd(){
-this.planes[this.ordenPosInicio].orden= this.ordenPosFin;
-this.planes[this.ordenPosFin].orden --; 
-this.ordenPosInicio = null;
-this.ordenPosFin = null;
-console.log('dragEnd');
+goDown(index:number,evento:Event,dt:DataTable){
+  if (index < this.planes.length-1){
+    this.planes[index].orden++;
+    this.saveItem(this.planes[index],index);
+    this.planes[index+1].orden--;
+    this.saveItem(this.planes[index+1],index+1);
+    let temp1:any = this.planes.splice(index,1);
+    
+    console.log(this.planes);
+    this.planes.splice(index+1,0,temp1[0]);
+    console.log(this.planes);
+  this.planes = this.planes.slice();
+
+    // setTimeout(()=>{
+    //   this.setOrden(evento,dt);
+    // },500);
+  }else{
+    console.log('ultimo elemento');
+  }
 }
-drop(index:number){
-this.ordenPosFin = index;
-console.log('drop',index);
-}
-///*******DRAG & DROP */
+
+// reordenarUP(inicio:number,fin:number){
+//   return new Promise((resolve,reject)=>{
+//   let x=fin;
+//     while (x > inicio){
+//     this.planes[x].orden --;
+//     x--;
+//   }
+// let temp1:any = this.planes.splice(inicio,1);
+// console.log(this.planes);
+// this.planes.splice(fin,0,temp1[0])
+
+// console.log(this.planes,temp1);
+// resolve(true);
+//   });
+// }
+
+// reordenarDown(inicio:number,fin:number){
+//   return new Promise((resolve,reject)=>{
+//   let x=fin;
+//     while (x < inicio){
+//     this.planes[x].orden ++
+//     x++;
+//   }
+// let temp1:any = this.planes.splice(inicio,1);
+// console.log(this.planes);
+// this.planes.splice(fin,0,temp1[0])
+
+// console.log(this.planes,temp1);
+// resolve(true);
+//   });
+// }
+
+
+// mouseUp(evento:Event){
+//   console.log('mouse Up' , evento);
+// }
+
 }

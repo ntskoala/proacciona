@@ -1,6 +1,9 @@
 
  <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">
+ <div class="modal" *ngIf="procesando">
+<md-spinner></md-spinner>
+</div>
+<span class="cell tooltip" mdTooltip="{{'planificaciones.nueva' | translate}}" [mdTooltipPosition]="'above'">
 <div class="table planes">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
@@ -16,6 +19,7 @@
     </span>
 
     <span class="cell">
+       <input type="hidden" [(ngModel)]="plan.periodicidad" name="periodicidad" required>
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="plan.fecha" [origen]="tipo"></periodicidad>
     </span>
       <span class="cell small">
@@ -78,29 +82,38 @@
 </div>
  </div>  -->
 
- <p-dataTable [value]="planes"  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)">
+ <p-dataTable #dt [value]="planes" [loading]="true"  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1">
     <!-- <p-header>{{'planificaciones.planificaciones_progrmadas' | translate}}</p-header> -->
-    <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
+    <!-- <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-      <div class="drop" [ngClass]="{'ui-state-highlight':ordenPosInicio}" dropEffect="move" pDroppable="dd" (onDrop)="drop(i)">
-      <div class="drag" dragEffect="move" pDraggable="dd" (onDragStart)="dragStart(i)" (onDragEnd)="dragEnd()">{{item.orden}}</div>        
-        </div>
+       <div class="drop" [ngClass]="{'ui-state-highlight':ordenPosInicio}" dropEffect="move" pDroppable="dd" (onDrop)="drop(i,dt,$event)">
+      <div class="drag" dragEffect="move" pDraggable="dd" (onDragStart)="dragStart(i)" (onDragEnd)="dragEnd()" (mouseUp)="mouseUo()">{{item.orden}}</div>        
+        </div> 
       </ng-template>
-    </p-column>
-    
-    <p-column field="nombre" header="nombre" [sortable]="true" [editable]="true" ></p-column>
-    <p-column field="descripcion" header="descripcion" [sortable]="true" [editable]="true"></p-column>
-    <p-column field="fecha" header="fecha" [sortable]="true">
+    </p-column> -->
+     <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
+      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
+      <md-icon>import_export</md-icon>
+      </ng-template>
+      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+       <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
+      <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
+      <div class="orden" >{{item.orden}}</div>        
+      </ng-template>
+    </p-column>   
+    <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
+    <p-column field="descripcion" header="descripcion"  [editable]="true"></p-column>
+    <p-column field="fecha" header="fecha" >
       <ng-template let-col let-item="rowData" pTemplate="body">      
       <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
       </ng-template>
     </p-column>
-    <p-column field="periodicidad" header="periodicidad" [sortable]="true">
+    <p-column field="periodicidad" header="periodicidad" >
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>
     </p-column>
-    <p-column field="responsable" header="responsable" [sortable]="true" [editable]="true"></p-column>
+    <p-column field="responsable" header="responsable" [editable]="true"></p-column>
 
     <p-column header="'acciones'">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
@@ -119,3 +132,4 @@
     <!-- <p-column field="orden" header="orden" [sortable]="true"></p-column>     -->
     <!-- <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer> -->
 </p-dataTable>
+

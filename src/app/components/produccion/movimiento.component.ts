@@ -316,6 +316,7 @@ let param = "&entidad=proveedores_entradas_producto"+"&field=idproveedor&idItem=
 }
 //crear Nueva Orden de Producción ojo (si loteSelected or si almacenOrigenSelected)
 //si almacenOrigenSelected --> Orden del almacenOrigenSelected
+
 setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
     this.contador= 0;
     let contadorF=0;
@@ -330,7 +331,15 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
             // if (this.almacenOrigenSelected.level<=1){
             //     this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
             // }else{
-                 let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                console.log("ORDEN FUENTE",ordenFuente);
+                console.log("ORDEN ORIGEN",this.ordenOrigen);
+                console.log("ORDEN DESTINO",this.ordenDestino);
+                let caducidad;
+                if (this.ordenDestino){
+                  caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                }else{
+                      caducidad = moment().add(7,'days').toDate();
+                }
                     this.nuevaOrden.fecha_caducidad = caducidad;
         console.log("CADUCIDAD 1",this.almacenOrigenSelected.level, caducidad);
                     

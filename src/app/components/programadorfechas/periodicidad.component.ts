@@ -100,6 +100,7 @@ ok(){
     this.period = false;
   //  console.log(this.periodoactual);
   //  console.log(JSON.stringify(this.periodoactual));
+  this.alert = false;
   this.periodo.emit(JSON.stringify(this.periodoactual));
   return false;
 }

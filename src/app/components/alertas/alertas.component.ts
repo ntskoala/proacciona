@@ -410,7 +410,7 @@ this.addAlerta('Planificaciones').then(
       console.log('ok, creado->lets call carga');
       this.cargaData[1] = true;
       if (this.cargaData[0]){
-        this.mergeData();
+       this.mergeData();
       }else{
         this.inicializa();
       }
@@ -421,6 +421,8 @@ this.addAlerta('Planificaciones').then(
 this.deleteAlerta('Planificaciones').then(
   (resultado)=>{
     if (resultado=='alertas ok'){
+      this.cargaData = [false,false];
+
       console.log('ok, borrado->lets descarga');
     }
   }

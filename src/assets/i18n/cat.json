@@ -406,7 +406,8 @@
       "avisos":"Avisos",
       "enviar":"Enviar avisos",
       "diasantes":"díes avans de l'event.",
-      "nota":"Sempre t'arribarà un avis el día de l'event, adicionalment pots programar un día extra."
+      "nota":"Sempre t'arribarà un avis el día de l'event, adicionalment pots programar un día extra.",
+      "nohaymail":"No té email"
     },
   "alergenos":"Al·lergògens",
   "lunes":"dilluns",

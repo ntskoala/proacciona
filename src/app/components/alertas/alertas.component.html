@@ -21,25 +21,30 @@
     <!-- <ng-template let-col let-user="rowData" pTemplate="header">
      {{cols[i]["field"] | translate }} |  {{cols[i]["field"] }}
     </ng-template> -->
-      <ng-template let-col let-user="rowData" pTemplate="body">
+      <ng-template let-col let-user="rowData" let-ri="rowIndex" pTemplate="body">
             <span *ngIf="col.field == 'user'">{{user[col.field]}}</span>
             <!-- <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.header == 'usuario'"
           [checked]="user['generalSwitch']">
       </md-slide-toggle> -->
             <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
-          [checked]="user[col.field]">
+          [checked]="user[col.field]" [disabled]="!usuarios[ri].email">
+          <span *ngIf="usuarios[ri].email"> {{usuarios[ri].email}}</span>
+            <span *ngIf="!usuarios[ri].email">{{'alertas.nohaymail' | translate}}</span>
       </md-slide-toggle>
         </ng-template> 
     </p-column>
 </p-dataTable>
 
+
 <div *ngIf="alertas[0]">
+        {{'alertas.nota' | translate}}<BR>
 {{'alertas.enviar' | translate}}
       <md-input-container class="example-margin">
         <input mdInput type="number" maxlength="3" style="width:25px" size="3" max="100"  [(ngModel)]="alertas[0].tiempo_alerta">
       </md-input-container>
+
 {{'alertas.diasantes' | translate}}
-{{'alertas.nota' | translate}}
+
   <span class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
   <button  color="accent" md-mini-fab (click)="setPermiso(0,true,'planificaciones')"><md-icon>check</md-icon></button>
   </span>

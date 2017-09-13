@@ -120,3 +120,7 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+
+a .ui-paginator .ui-paginator-page, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev {
+background-color: purple !important;
+}

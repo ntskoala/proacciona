@@ -330,7 +330,13 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
             // if (this.almacenOrigenSelected.level<=1){
             //     this.nuevaOrden.fecha_caducidad = moment().add(7,'days').toDate();
             // }else{
-                 let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                let caducidad;
+             if (this.ordenDestino){
+                  caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
+                }else{
+                      caducidad = moment().add(7,'days').toDate();
+                }
+                // let caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                     this.nuevaOrden.fecha_caducidad = caducidad;
         console.log("CADUCIDAD 1",this.almacenOrigenSelected.level, caducidad);
                     

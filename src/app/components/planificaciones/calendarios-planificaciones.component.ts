@@ -295,6 +295,7 @@ handleEventClick(event){
       }
 
       this.newdate = moment(proximaFecha).toDate();
+      console.log (this.newdate);
       return this.newdate = new Date(Date.UTC(this.newdate.getFullYear(), this.newdate.getMonth(), this.newdate.getDate()))
 }
 
@@ -432,7 +433,7 @@ newPlanRealizado(){
       response => {
         if (response.success) {
           console.log('Mantenimiento updated');
-          this.events.push({"idlimpiezaelemento":response.id,"idlimpiezazona":this.planrealizado.nombre,"title":this.planrealizado.nombre,
+          this.events.push({"id":response.id,"idlimpiezaelemento":response.id,"idlimpiezazona":this.planrealizado.nombre,"title":this.planrealizado.nombre,
           "descripcion":this.planrealizado.descripcion,"start":this.planrealizado.fecha,"prevista":this.planrealizado.fecha_prevista,
           "usuario":this.planrealizado.idusuario,"responsable":this.planrealizado.responsable,
           "color":"#33cc33","estado":"realizado","idsupervisor":this.planrealizado.idsupervisor,"supervisor":this.planrealizado.supervisor,

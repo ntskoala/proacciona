@@ -11,7 +11,7 @@ export class PlanRealizado {
     public responsable: string,
     public idusuario?:number,
     public idsupervisor?:number,
-    public fecha_supervision?:Date,
+    public fecha_supervision?:any,
     public supervision?:number,
     public detalles_supervision?:string,
     public supervisor?:string,

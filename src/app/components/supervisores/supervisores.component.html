@@ -5,13 +5,13 @@
 </md-toolbar>
 <p-dataTable [value]="tabla">
     <!-- <p-column field="usuario" header="usuario"></p-column> -->
-    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.header == 'Usuario'">
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'user'">
          <ng-template let-col let-user="rowData" pTemplate="body">
-            <span *ngIf="col.header == 'Usuario'">{{user[col.field]}}</span>
-            <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.header == 'Usuario'"
+            <span *ngIf="col.field == 'user'">{{user[col.field]}}</span>
+            <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.field == 'user'"
           [checked]="user['generalSwitch']">
       </md-slide-toggle>
-            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.header != 'Usuario'"
+            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
           [checked]="user[col.field]">
       </md-slide-toggle>
         </ng-template> 

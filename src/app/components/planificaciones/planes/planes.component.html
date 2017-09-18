@@ -82,7 +82,7 @@
 </div>
  </div>  -->
 
- <p-dataTable #dt [value]="planes" [loading]="true"  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1">
+ <p-dataTable #dt [value]="planes"   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1">
     <!-- <p-header>{{'planificaciones.planificaciones_progrmadas' | translate}}</p-header> -->
     <!-- <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    

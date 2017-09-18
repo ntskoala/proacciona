@@ -50,7 +50,9 @@ public foto;
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
   }
 
-
+cerrarFoto(){
+  this.verdoc = false;
+}
 
 
 udateMaquina(valor:any){
@@ -74,7 +76,12 @@ udateMaquina(valor:any){
     this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquinaria', this.maquina.id.toString(), this.empresasService.seleccionada.toString(),field).subscribe(
       response => {
         console.log('doc subido correctamente');
-        if (field == 'fotomaquina') this.image= this.baseurl + this.maquina.id+"_"+this.maquina.id+".jpg";
+        if (field == 'fotomaquina') {
+          this.image= this.baseurl + this.maquina.id+"_"+this.maquina.id+".jpg";
+        }else{
+          this.maquina.doc = files[0].name;
+          this.url = this.baseurl + this.maquina.id +'_'+this.maquina.doc;          
+        }
         // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
         // activa.logo = '1';
       }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import {DataTable} from 'primeng/primeng';
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
@@ -268,4 +268,23 @@ setSupervision($event){
 
     dt.toggleRow(row);
   }
+
+
+exportData(tabla: DataTable){
+  console.log(tabla);
+  let origin_Value = tabla._value;
+
+  tabla._value = tabla.dataToRender;
+  tabla._value.map((planificacion)=>{
+      (moment(planificacion.fecha_prevista).isValid())?planificacion.fecha_prevista = moment(planificacion.fecha_prevista).format("DD/MM/YYYY"):'';
+      (moment(planificacion.fecha).isValid())?planificacion.fecha = moment(planificacion.fecha).format("DD/MM/YYYY"):'';
+      (moment(planificacion.fecha_supervision).isValid())?planificacion.fecha_supervision= moment(planificacion.fecha_supervision).format("DD/MM/YYYY"):'';    
+      });
+
+  tabla.csvSeparator = ";";
+  tabla.exportFilename = "ejemplo";
+  tabla.exportCSV();
+  tabla._value = origin_Value;
+}
+
 }

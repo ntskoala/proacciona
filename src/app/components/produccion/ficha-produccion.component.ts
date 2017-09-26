@@ -51,6 +51,9 @@ cambiarTab(){}
 updateItem(orden: ProduccionOrden){
  orden.id =this.orden.id;
  orden.idempresa = this.empresasService.seleccionada;
+ orden.fecha_inicio = new Date(Date.UTC(orden.fecha_fin.getUTCFullYear(),orden.fecha_fin.getMonth(),orden.fecha_fin.getDate()));
+ orden.fecha_fin = new Date(Date.UTC(orden.fecha_fin.getUTCFullYear(),orden.fecha_fin.getMonth(),orden.fecha_fin.getDate()));
+ orden.fecha_caducidad = new Date(Date.UTC(orden.fecha_caducidad.getUTCFullYear(),orden.fecha_caducidad.getMonth(),orden.fecha_caducidad.getDate()));
 let param = "&entidad=produccion_orden";
 let parametros = '?id=' + orden.id+param;     
     this.servidor.putObject(URLS.STD_ITEM,parametros, orden).subscribe(

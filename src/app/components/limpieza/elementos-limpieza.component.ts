@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter, OnChanges } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -23,6 +23,7 @@ export class prods{
 
 export class ElementosLimpiezaComponent implements OnInit, OnChanges{
 @Input() limpieza: LimpiezaZona;
+@Output() onElementosLimpieza: EventEmitter<LimpiezaElemento[]> = new EventEmitter<LimpiezaElemento[]>();
 public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
 public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
 public items: LimpiezaElemento[];
@@ -46,6 +47,8 @@ public productosSeleccionadosItem:Object[]=[];
 public productosSeleccionados: string[]=[];
 public producto:myprods;
 public productos: prods[]=[];
+public procesando:boolean=false;
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -88,11 +91,19 @@ public productos: prods[]=[];
             this.items = [];
             this.protocolo =[];
             if (response.success && response.data) {
-              for (let element of response.data) { 
+              let orden = 0;
+              for (let element of response.data) {
+
                 let app = element.app== "1"? true:false;
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor));
+                  if (element.orden == 0){
+                  this.itemEdited(element.id);
+                  orden++;
+                  }else{orden=element.orden;}
+                  
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor,orden));
                   this.protocolo.push(false);
              }
+                this.onElementosLimpieza.emit(this.items);
                 console.log ('items',this.items);
             }
         },
@@ -144,6 +155,10 @@ setProdsElemtento(idElemento){
       }
 }
 
+
+onEdit(evento){
+this.itemEdited(evento.data.id);
+}
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
     //console.log (fecha.toString());
@@ -228,7 +243,8 @@ this.newItemprotocolo = false;
  }else{
   this.items[i].protocol = protocol;
   this.protocolo[i] = false;
-  this.itemEdited(itemId);
+  //this.itemEdited(itemId);
+this.saveItem(this.items[i],i);
  }
 }
 verProtocolo(i){
@@ -293,5 +309,46 @@ this.itemEdited(item.id);
 // }else{return false}
 // }
 
+
+goUp(index:number,evento:Event){
+if (index >0){
+    this.items[index].orden--;
+    this.saveItem(this.items[index],index);
+    this.items[index-1].orden++;
+    this.saveItem(this.items[index-1],index-1);
+    let temp1:any = this.items.splice(index-1,1);
+    console.log(this.items);
+    this.items.splice(index,0,temp1[0]);
+    console.log(this.items);
+    
+   this.items = this.items.slice();
+  //   setTimeout(()=>{
+  //     this.setOrden(evento,dt);
+  //   },500);
+}else{
+  console.log('primer elemento');
+}
+}
+
+goDown(index:number,evento:Event){
+  if (index < this.items.length-1){
+    this.items[index].orden++;
+    this.saveItem(this.items[index],index);
+    this.items[index+1].orden--;
+    this.saveItem(this.items[index+1],index+1);
+    let temp1:any = this.items.splice(index,1);
+    
+    console.log(this.items);
+    this.items.splice(index+1,0,temp1[0]);
+    console.log(this.items);
+  this.items = this.items.slice();
+
+    // setTimeout(()=>{
+    //   this.setOrden(evento,dt);
+    // },500);
+  }else{
+    console.log('ultimo elemento');
+  }
+}
 
 }

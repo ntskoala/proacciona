@@ -1,7 +1,15 @@
 
 .contenido{
-  display:block;
-  clear:both;
+  /* display:block;
+  clear:both; */
+      margin-left:50px;
+    min-height: 500px;
+    overflow: auto;
+}
+
+.tituloLimpieza{
+    position: absolute;
+    left:50%;
 }
 .space{
   display:block;
@@ -118,7 +126,8 @@ md-grid-tile-header{
 
 .protocol{
     position: absolute;
-    right: 100px;
+    left: 0px;
+    margin-top: 17px;
     z-index: 10;    
     background-color: gainsboro;
     display: table-row;
@@ -184,3 +193,90 @@ md-grid-tile-header{
     padding: 5px;
 }
 
+.divrow{
+    display: table-row-group;
+}
+
+.up{
+ background-color: #fff;
+ width:25px;
+ height: 20px;
+    
+}
+.up :hover{
+cursor: pointer;
+}
+
+.down{
+ background-color: #fff;
+ width:25px;
+ height: 20px;
+ margin-top: 5px;
+}
+.down :hover{
+cursor: pointer;
+}
+
+ .orden{
+    background-color: #fff;
+    width:25px;
+    height:25px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: -35px;
+    margin-right: 25px;
+    float:right;
+}
+
+.botonera{
+    margin-left: -24px;
+    margin-top: -20px;
+    width: 55px;
+    min-width: 40px;
+    height: 100vh;
+    float: left;
+    background-color: grey;
+}
+.opcionBoton{
+    margin-left:6px;
+    margin-top:25px;
+}
+
+.selected{
+    background-color: #a77af7;
+}
+.botonCerrar{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+}
+
+.sidenav-container {
+  width: 100%;
+  height: 100%;
+  border: 0px solid rgba(0, 0, 0, 0);
+   /* overflow: scroll; */
+  /* overflow: auto !important; */
+}
+.panel-sidenav {
+  width:900px;
+  height:600px;
+  padding-left: 50px;
+  padding-right: 50px;
+  z-index:9997 !important;
+   /* overflow: auto !important; */
+   /* overflow: scroll; */
+}
+
+.sidenav-content {
+  display: flex;
+  height: 100vh;
+  min-height: 700px;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+   /* overflow: scroll; */
+   /* overflow: auto !important; */
+}

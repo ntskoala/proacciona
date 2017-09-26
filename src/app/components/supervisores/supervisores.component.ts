@@ -22,6 +22,7 @@ export class Supervisor{
 })
 export class SupervisoresComponent implements OnInit {
 @Input() items;
+
 @Input() tipoControl;
 @Output() onPermisos:EventEmitter<number> =new EventEmitter<number>();
 
@@ -36,6 +37,7 @@ public cargaData: boolean[]=[false,false];
 public procesando:boolean=true;
 public entidad:string="&entidad=";
 public field:string="&field=";
+public idItem:number;
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
@@ -43,13 +45,13 @@ public field:string="&field=";
         switch(this.tipoControl){
       case "planes":
       this.entidad="&entidad=planificaciones";
+      this.field = "&field=idempresa&idItem="+this.empresasService.seleccionada;
       break;
       case "limpiezas":
-      this.entidad="&entidad=limpieza";
+      this.entidad="&entidad=limpieza_elemento";
+      this.field = "&field=idlimpiezazona&idItem="+this.items[0].idlimpiezazona;
       break;
-
       case "conroles":
-
       break;
       case "checklists":
       break;
@@ -123,10 +125,14 @@ return new Observable<string>((valor)=>{
 
 getSupervisiones(){
       console.log('##########getSupervisiones########')
-    
+      this.idItem = this.items[0].idlimpiezazona;
       return new Promise((resolve, reject) => {
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
-        this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+      //let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada +this.entidad + this.field; 
+
+        //this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+          
           response => {
             this.supervisores = [];
             if (response.success && response.data) {

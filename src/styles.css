@@ -534,6 +534,10 @@ gestion-informes {
   font-size: 0.9rem;
   font-weight: 500;
   padding: 8px 0 8px 11px;
+  border-left: #fff;
+    border-left-style: solid;
+    border-right: #fff;
+    border-right-style: solid;
 }
 
 .header-cell:last-child {

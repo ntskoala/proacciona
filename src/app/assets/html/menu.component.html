@@ -12,16 +12,17 @@
         <span  class="material-icons">settings</span>
       </button>
       </div>
-       <div class="tooltip" mdTooltip="{{'menu.planificaciones' | translate}}" [mdTooltipPosition]="'before'">      
-        <button [ngClass]="{'selected': subMenu == 'planificaciones'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('planificaciones')" class="opcion" md-mini-fab color="accent" >
-        <span  class="material-icons">date_range</span>
-      </button>
-      </div> 
+
       <div class="tooltip" mdTooltip="{{'menu.informes' | translate}}" [mdTooltipPosition]="'before'">
         <button [ngClass]="{'selected': subMenu == 'informes'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('informes')" class="opcion" md-mini-fab color="accent" >
         <span  class="material-icons">show_chart</span>
       </button>
       </div>
+       <div class="tooltip" mdTooltip="{{'menu.planificaciones' | translate}}" [mdTooltipPosition]="'before'">      
+        <button [ngClass]="{'selected': subMenu == 'planificaciones'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('planificaciones')" class="opcion" md-mini-fab color="accent" >
+        <span  class="material-icons">date_range</span>
+      </button>
+      </div> 
       <div class="tooltip" mdTooltip="{{'menu.maquinaria' | translate}}" [mdTooltipPosition]="'before'">
         <button [ngClass]="{'selected': subMenu == 'maquinaria'}" [disabled]="!empresasService.empresaActiva || !permisos.fichas_maquinaria" (click)="setSeleccion('maquinaria')" class="opcion" md-mini-fab color="accent" >
         <span class="material-icons">build</span>

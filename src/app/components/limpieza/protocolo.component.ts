@@ -17,7 +17,8 @@ export class ProtocoloComponent implements OnInit, OnChanges{
 @Input() parentProtocol:string;
 @Output() protocolEmitter:EventEmitter<string>=new EventEmitter<string>();
 public protocolo:Object[]=[];
-nuevoProcedimiento:string='';
+public nuevoProcedimiento:string=null;
+public hayCambios:boolean=false;
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -36,10 +37,12 @@ nuevoProcedimiento:string='';
   }
 addProcedimiento(){
 this.protocolo.push({"descripcion":this.nuevoProcedimiento});
-this.nuevoProcedimiento='';
+this.nuevoProcedimiento=null;
+this.hayCambios=true;
 }
 removeProcedimiento(i){
     this.protocolo.splice(i,1);
+    this.hayCambios=true;
 }
 setProtocolo(){
     this.protocolEmitter.emit(JSON.stringify(this.protocolo));

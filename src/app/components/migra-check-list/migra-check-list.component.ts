@@ -399,6 +399,8 @@ creaElementoLimpìeza(idZona: number, pos:number){
   limpieza = this.limpiezas[pos]['Alimpiezas'][x];
   limpieza.idlimpiezazona = idZona;
   limpieza.app = true;
+  limpieza.orden = x+1;
+
     let param = "&entidad=limpieza_elemento"+"&field=idlimpiezazona&idItem="+idZona;
     limpieza.fecha = new Date(Date.UTC(limpieza.fecha.getFullYear(), limpieza.fecha.getMonth(), limpieza.fecha.getDate()))
 

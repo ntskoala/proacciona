@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -13,7 +13,7 @@ import { Modal } from '../../models/modal';
 })
 
 export class ProductosLimpiezaComponent implements OnInit {
-
+@Output() onProductosReady:EventEmitter<LimpiezaProducto[]>=new EventEmitter<LimpiezaProducto[]>();
 public nuevoItem: LimpiezaProducto = new LimpiezaProducto(0,this.empresasService.seleccionada,'');
 public items: LimpiezaProducto[];
 public guardar = [];
@@ -28,15 +28,22 @@ public entidad:string="&entidad=limpieza_producto";
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
   ngOnInit() {
-      this.setItems();
+      this.setItems().then(
+      (resultado)=>{
+        if (resultado){
+          this.onProductosReady.emit(this.items);
+        }
+      }
+      );
   }
   photoURL(i,tipo,file) {
+    console.log(i,tipo,file)
   //  this.verdoc=!this.verdoc;
   //  this.foto = this.baseurl+this.items[i].id+"_"+file;
 
     let extension = file.substr(file.length-3);
     let url = this.baseurl+this.items[i].id+"_"+file;
-    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
+    if (extension == 'jpg' || extension == 'peg' || extension == 'gif' || extension == 'png'){
     this.verdoc=!this.verdoc;
     this.foto = url
     }else{
@@ -48,6 +55,7 @@ public entidad:string="&entidad=limpieza_producto";
   }
 
   setItems(){
+    return new Promise((resolve, reject) => {
   //  let params = this.maquina.id;
   //  let parametros = '&idmaquina=' + params;
       let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
@@ -59,9 +67,14 @@ public entidad:string="&entidad=limpieza_producto";
                   this.items.push(new LimpiezaProducto(element.id,element.idempresa,element.nombre,element.marca,element.desinfectante,element.dosificacion, element.doc, element.ficha));
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
+                resolve(true);
+                
+            }else{
+              resolve(false);
             }
              console.log("mantenimientos",this.items);
         });
+    });
        
   }
 
@@ -75,7 +88,9 @@ public entidad:string="&entidad=limpieza_producto";
         if (response.success) {
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
+          this.items = this.items.slice();
           this.nuevoItem = new LimpiezaProducto(0,this.empresasService.seleccionada,'');
+          this.onProductosReady.emit(this.items);
         }
     });
   }
@@ -92,6 +107,7 @@ public entidad:string="&entidad=limpieza_producto";
       response => {
         if (response.success) {
           console.log('item updated');
+          this.onProductosReady.emit(this.items);
         }
     });
 
@@ -117,6 +133,8 @@ checkBorrar(idBorrar: number) {
             let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.items = this.items.slice();
+            this.onProductosReady.emit(this.items);
           }
       });
     }

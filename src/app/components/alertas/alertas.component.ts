@@ -213,6 +213,7 @@ row += ',"generalSwitch":'+generalSwitch+'}';
   this.procesando=false;
 }
 setPermiso(user,event,col?){
+  console.log('###',col,this.items);
   this.procesando=true;
   if (user==0){
     let modulo = col;

@@ -123,6 +123,7 @@ import { PermisosGeneralComponent } from './components/permisos/permisos.compone
 import { PlanRealizadoComponent } from './components/planificaciones/plan-realizado/plan-realizado.component';
 import { SupervisoresComponent } from './components/supervisores/supervisores.component';
 import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
+import { ProductosCuadroComponent } from './components/limpieza/productos-cuadro/productos-cuadro.component';
 
 
 
@@ -248,7 +249,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PermisosGeneralComponent,
     PlanRealizadoComponent,
     SupervisoresComponent,
-    BocadilloComponent
+    BocadilloComponent,
+    ProductosCuadroComponent
   ],
   providers: [
     EmpresasService,

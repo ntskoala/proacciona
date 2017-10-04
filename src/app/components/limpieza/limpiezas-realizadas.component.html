@@ -1,6 +1,5 @@
-<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div class="table">
-  <!--</div>-->
+<!-- <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal> -->
+<!-- <div class="table">
   <div class="header-row">
     <span class="header-cell">{{"limpieza.limpieza" | translate}}</span>
     <span class="medium header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
@@ -18,7 +17,6 @@
 
 
   <form class="row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
-    <!--<span class="detalle" *ngIf="mantenimiento.detalles_supervision">?<span class="reason">{{mantenimiento.detalles_supervision}}</span></span>-->
     <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
     <span class="cell">
       <input [readonly]="true" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="itemEdited(mantenimiento.id)">
@@ -68,5 +66,120 @@
 
   </form>
 
-</div>
+</div> -->
 
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+
+  <div>
+
+<p-dataTable #DT [value]="items" [editable]="true" expandableRows="true" 
+(onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
+[rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
+[csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'">
+    <p-header>
+        <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
+        </div>
+    </p-header>
+
+  <!-- <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template> -->
+  <p-column expander="true" styleClass="col-icon">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+         <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+        
+        </div>
+    </ng-template> 
+  </p-column>
+  <p-column field="nombre" header="{{'limpieza.nombre' | translate}}" [editable]="true"></p-column>
+  <p-column field="fecha_prevista" header="{{'limpieza.fecha_prevista' | translate}}" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
+</ng-template>
+  </p-column>
+  <p-column field="fecha" header="{{'limpieza.fecha_real' | translate}}" [editable]="true">
+     <ng-template let-col let-item="rowData" pTemplate="body">
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+</ng-template>
+  </p-column>
+
+  <p-column field="tipo" header="{{'limpieza.tipo' | translate}}" [editable]="false"></p-column>
+
+  <p-column field="responsable" header="{{'limpieza.responsable' | translate}}" [editable]="true"></p-column>
+
+  <p-column [style]="{'width':'190px'}" field="supervision" header="{{'limpieza.supervision' | translate}}" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+       <div style="float:left">
+         <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
+  <md-option value="0">{{'planificaciones.porSupervisar' | translate}}</md-option>
+   <md-option value="1">{{'planificaciones.correcta' | translate}}</md-option>
+    <md-option value="2">{{'planificaciones.incorrecta' | translate}}</md-option>
+</md-select>
+    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
+       </div>
+  <div style="float:right">
+        <figure *ngIf="item.supervision==1" style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+        <figure *ngIf="item.supervision==2" style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+  </div>
+  </ng-template>
+
+  </p-column>
+  <p-column field="idsupervisor" header="{{'limpieza.supervisor' | translate}}" [editable]="true"  [style]="{'width':'150px','overflow':'visible'}">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+       <div style="position:relative">
+    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
+          <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
+  <md-option *ngFor="let usuario of usuarios" [value]="usuario.id">{{usuario.usuario}}</md-option>
+</md-select>      
+
+  </div>
+  </ng-template>
+  </p-column>
+    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true">
+     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+</ng-template>
+  </p-column>
+  <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
+   <!--//************--> 
+         <span class="plan_descripcion">
+            <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'limpieza.descripcion' | translate}}">
+            <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+    </p-panel>
+    </span>
+    <span class="plan_descripcion">
+      <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'limpieza.detalles_supervision' | translate}}">
+    <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+    </p-panel>
+    </span>
+
+ 
+
+
+
+   <!--//************-->
+  </ng-template>
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}">
+       <ng-template let-col let-item="rowData" pTemplate="body">
+               <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+        <span class="material-icons">close</span>
+      </button>
+    </span>
+     <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+      
+      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item)" type="submit">
+        <span class="material-icons">check</span>
+      </button>                
+    </span>
+</ng-template>  
+  </p-column>  
+</p-dataTable>
+  </div>
+
+
+<div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
+         <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
+  <button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+  </div>
+<img   class="iframe"  [src]="foto">
+</div>

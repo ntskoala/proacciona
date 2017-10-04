@@ -1,21 +1,23 @@
 <!--[locale]="es" -->
 <md-card>
 <h2 class="center">{{'limpieza.CalendarioGeneralLimpieza' | translate}}</h2>
-<p-schedule [events]="events" [header]="headerCalendar" [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
+<p-schedule [height]="350"  [contentHeight]="300"  [aspectRatio]="3" [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card>{{'leyenda' | translate}}
+<md-card>
     <div class="leyenda">
-        {{'limpieza.limpiezas' | translate}}
+        {{'leyenda' | translate}}
+    </div>
+    <div class="leyenda">
         <md-chip-list>
-            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip  color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</md-chip>
-            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'limpieza.proximas' | translate}}</md-chip>
-            <figure style="display: block;background: #3333ff;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'por uso' | translate}}</md-chip>
-            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'limpieza.vencidas' | translate}}</md-chip>
+            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</md-chip>
+            <figure class="chip" style="display: block;background: #F67E1F;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.proximas' | translate}}</md-chip>
+            <figure class="chip" style="display: block;background: #3333ff;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+            <md-chip class="chip" color="#33cc33" selected="true">{{'por uso' | translate}}</md-chip>
+            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.vencidas' | translate}}</md-chip>
         </md-chip-list>
     </div>
 </md-card>
@@ -24,7 +26,7 @@
     [contentStyle]="{'overflow':'visible','height':'430px'}"
 [height]="500"
     -->
- <p-dialog header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+ <p-dialog appendTo="body" header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="limpiezarealizada">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'limpieza.nombre' | translate}}</label></div>
@@ -32,11 +34,11 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_prevista' | translate}}</label></div>
-            <div class="ui-grid-col-8"><p-calendar [disabled] id="start"  [(ngModel)]="limpiezarealizada.fecha_prevista" dateFormat="dd/mm/yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar appendTo="body" [disabled] id="start"  [(ngModel)]="limpiezarealizada.fecha_prevista" dateFormat="dd/mm/yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_real' | translate}}</label></div>
-            <div class="ui-grid-col-8"><p-calendar  id="fechareal"  [(ngModel)]="limpiezarealizada.fecha" dateFormat="dd/mm/yy"></p-calendar></div>
+            <div class="ui-grid-col-8"><p-calendar  appendTo="body" id="fechareal"  [(ngModel)]="limpiezarealizada.fecha" dateFormat="dd/mm/yy"></p-calendar></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'limpieza.descripcion' | translate}}</label></div>

@@ -45,6 +45,7 @@ md-grid-tile-header{
 .inputfile{
     width: 0.1px;
     opacity: 0;
+    display:none;
 }
 
 .inputlabel {
@@ -279,4 +280,24 @@ cursor: pointer;
   justify-content: center;
    /* overflow: scroll; */
    /* overflow: auto !important; */
+}
+
+.plan_descripcion{
+    /* width:38%; */
+    float:left;
+    height: 250px;
+    min-height: 250px;
+    width: 400px;
+}
+.textareacontainer{
+    height:170px;
+}
+
+.expander{
+    width: 35px;
+    min-height: 45px;
+    position:absolute;
+    left: 25px;
+    margin-top: -15px;
+    background-color: rgba(255, 255, 255, 0.1);
 }

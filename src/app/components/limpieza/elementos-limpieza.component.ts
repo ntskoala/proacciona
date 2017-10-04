@@ -6,7 +6,7 @@ import { EmpresasService } from '../../services/empresas.service';
 import { LimpiezaElemento } from '../../models/limpiezaelemento';
 import { LimpiezaZona } from '../../models/limpiezazona';
 import { Modal } from '../../models/modal';
-import { myprods } from '../../models/limpiezamyprods';
+import { LimpiezaProducto } from '../../models/limpiezaproducto';
 
 export class prods{
   constructor(
@@ -45,9 +45,10 @@ public es;
 public cantidad:number=1;
 public productosSeleccionadosItem:Object[]=[];
 public productosSeleccionados: string[]=[];
-public producto:myprods;
-public productos: prods[]=[];
+public misproductos:LimpiezaProducto[]=[];
+public productos: prods[][]=[];
 public procesando:boolean=false;
+public display:boolean[];
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
@@ -64,7 +65,13 @@ public procesando:boolean=false;
         }; 
   }
   ngOnChanges(){
-      this.setItems();
+    this.getProductos().then(
+      (resultado)=>{
+        if (resultado){
+          console.log(this.misproductos)
+           this.setItems();
+        }
+      });
   }
 
   photoURL(i,tipo) {
@@ -90,8 +97,10 @@ public procesando:boolean=false;
           response => {
             this.items = [];
             this.protocolo =[];
+            this.productos=[];
             if (response.success && response.data) {
               let orden = 0;
+              let index=0;
               for (let element of response.data) {
 
                 let app = element.app== "1"? true:false;
@@ -102,6 +111,8 @@ public procesando:boolean=false;
                   
                   this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor,orden));
                   this.protocolo.push(false);
+                  this.getProdsElemtento(element.id,index);
+                  index++;
              }
                 this.onElementosLimpieza.emit(this.items);
                 console.log ('items',this.items);
@@ -130,7 +141,7 @@ public procesando:boolean=false;
         if (response.success) {
           this.items.push(this.addnewItem);
           this.items[this.items.length-1].id= response.id;
-          this.setProdsElemtento(response.id);
+          //this.setProdsElemtento(response.id);
         }
     },
     error =>console.log(error),
@@ -143,18 +154,54 @@ public procesando:boolean=false;
    this.nuevoItem = new LimpiezaElemento(0,0,'','');
   }
 
-setProdsElemtento(idElemento){
-    let parametros = "&entidad=limpieza_productos_elemento";
-    for (let x=0;x<=this.productosSeleccionados.length-1;x++){
-    this.producto = new myprods(0,this.empresasService.seleccionada,parseInt(this.productosSeleccionados[x]),idElemento);
-      this.servidor.postObject(URLS.STD_ITEM, this.producto, parametros).subscribe(
-        response => {
-          if (response.success) {
-          }
-      });
-      }
-}
+// setProdsElemtento(idElemento){
+//     let parametros = "&entidad=limpieza_productos_elemento";
+//     for (let x=0;x<=this.productosSeleccionados.length-1;x++){
+//     this.producto = new myprods(0,this.empresasService.seleccionada,parseInt(this.productosSeleccionados[x]),idElemento);
+//       this.servidor.postObject(URLS.STD_ITEM, this.producto, parametros).subscribe(
+//         response => {
+//           if (response.success) {
+//           }
+//       });
+//       }
+// }
+getProdsElemtento(idElemento:number,index:number){
+  let parametros = "&entidad=limpieza_productos_elemento"+"&field=idelemento&idItem="+idElemento;
+    this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+      response => {
+        this.productos[index] = [];
+        if (response.success && response.data) {
+          for (let element of response.data) {
 
+            let indice = this.misproductos.findIndex((producto)=>producto.id==element.idproducto);
+            console.log('indice',indice);
+            if (indice >= 0){
+            let nombre = this.misproductos[indice].nombre;
+            this.productos[index].push(new prods(element.id,nombre));
+            }
+          }
+          
+        }
+    });
+}
+getProductos(){
+  return new Promise((resolve,reject)=>{
+  let parametros = "&entidad=limpieza_producto&idempresa="+this.empresasService.seleccionada;
+  this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+    response => {
+      this.misproductos = [];
+      this.display = [];
+      if (response.success && response.data) {
+        for (let element of response.data) {
+          this.display.push(false);
+          this.misproductos.push(new LimpiezaProducto(element.id,element.idempresa,element.nombre,element.marca,element.desinfectante,element.dosificacion));
+        }
+        resolve(true);
+      }else
+      {resolve(true)}
+  });
+});
+}
 
 onEdit(evento){
 this.itemEdited(evento.data.id);
@@ -169,7 +216,7 @@ this.itemEdited(evento.data.id);
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
     item.periodicidad = this.items[i].periodicidad; 
-    item.productos = this.items[i].productos;
+   // item.productos = this.items[i].productos;
     item.protocol = this.items[i].protocol;
     item.supervisor = this.items[i].supervisor;
     console.log(item);

@@ -282,7 +282,8 @@ exportData(tabla: DataTable){
       });
 
   tabla.csvSeparator = ";";
-  tabla.exportFilename = "ejemplo";
+    tabla.exportFilename = "Planes_Realizadas_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+
   tabla.exportCSV();
   tabla._value = origin_Value;
 }

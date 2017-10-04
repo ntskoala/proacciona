@@ -28,7 +28,7 @@ public selectedMenu:string='home';
         this.permiso = true;
         console.log('Seleccion automática de empresa, empresas component');
         this.empresasService.seleccionarEmpresa(new Empresa('','',2));
-        this.selectedMenu = "planificaciones";
+        this.selectedMenu = "limpieza";
         //this.selectedMenu = "empresas";
         break;
       case "Mantenimiento":

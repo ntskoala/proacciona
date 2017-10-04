@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import {DataTable} from 'primeng/primeng';
+
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -104,7 +106,10 @@ let user = this.usuarios[index].usuario;
 return user;
 }
 
-
+onEdit(event){
+  console.log(event);
+  this.itemEdited(event.data.id);
+}
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
   }
@@ -138,6 +143,7 @@ return user;
 
 
  saveItem(mantenimiento: LimpiezaRealizada) {
+   
    //console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     delete mantenimiento.supervisor;
@@ -160,6 +166,30 @@ this.motivo[index] = !this.motivo[index];
 }
 setSupervision($event){
 
+}
+
+
+  expandir(dt: any,row:number,event:any){
+    console.log(dt,row,event)
+
+    dt.toggleRow(row);
+  }
+
+exportData(tabla: DataTable){
+  console.log(tabla);
+  let origin_Value = tabla._value;
+
+  tabla._value = tabla.dataToRender;
+  tabla._value.map((limpieza)=>{
+      (moment(limpieza.fecha_prevista).isValid())?limpieza.fecha_prevista = moment(limpieza.fecha_prevista).format("DD/MM/YYYY"):'';
+      (moment(limpieza.fecha).isValid())?limpieza.fecha = moment(limpieza.fecha).format("DD/MM/YYYY"):'';
+      (moment(limpieza.fecha_supervision).isValid())?limpieza.fecha_supervision= moment(limpieza.fecha_supervision).format("DD/MM/YYYY"):'';    
+      });
+
+  tabla.csvSeparator = ";";
+  tabla.exportFilename = "Limpiezas_Realizadas_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+  tabla.exportCSV();
+  tabla._value = origin_Value;
 }
 
 }

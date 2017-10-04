@@ -41,7 +41,9 @@
           <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
   <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
   </div>
-   <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
+ <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
+
+   <!-- <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones> -->
 <!-- 
    <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
     -->
@@ -50,7 +52,10 @@
     <app-supervisores *ngIf="permiso" [tipoControl]="'limpiezas'"  [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-supervisores> 
    <div  *ngIf="permiso" style="height:35px" ></div>
    <!-- <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas> -->
-   <productos-limpieza *ngIf="productos"></productos-limpieza>
+   <productos-limpieza *ngIf="productos" (onProductosReady)="setProductos($event)"></productos-limpieza>
+   <div  *ngIf="productos" style="height:35px" ></div>
+   <app-productos-cuadro *ngIf="productos" [items]="elementosLimpieza" [productos]="misProdusctosLimpieza"></app-productos-cuadro>
+   <div  *ngIf="productos" style="height:35px" ></div>
   </md-sidenav> 
 
 

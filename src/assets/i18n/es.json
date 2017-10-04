@@ -187,6 +187,7 @@
     "limpiezas_realizadas":"Limpiezas realizadas",
     "calendarios": "Calendario",
     "productos":"Productos",
+    "nuevoProd":"Añadir nuevo producto",
     "imagen":"Imagen",
     "proximafecha":"Próxima fecha",
     "periodicidad":"Periodicidad",
@@ -436,5 +437,7 @@
   "dias":"dias",
   "dia":"dia",
   "por uso": "Por uso",
-  "leyenda":"Leyenda"
+  "leyenda":"Leyenda",
+  "verFoto":"Ver Foto",
+  "subirArchivo":"Subir archivo"
 }

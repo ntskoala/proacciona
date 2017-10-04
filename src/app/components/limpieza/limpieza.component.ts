@@ -5,6 +5,7 @@ import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { LimpiezaZona } from '../../models/limpiezazona';
   import { LimpiezaElemento } from '../../models/limpiezaelemento';
+import { LimpiezaProducto } from '../../models/limpiezaproducto';
 
 @Component({
   selector: 'limpieza',
@@ -16,6 +17,7 @@ export class LimpiezaComponent implements OnInit {
 
 public limpieza: LimpiezaZona;
 public elementosLimpieza: LimpiezaElemento[];
+public misProdusctosLimpieza: LimpiezaProducto[];
 public calendario: boolean = false;
 public productosLimpieza: boolean = false;
 public limpiezas: LimpiezaZona[];
@@ -57,6 +59,9 @@ nuevaLimpiezaRealizada(event){
 
 setElementosLimpieza(elementosLimpiezaRecibidos){
   this.elementosLimpieza=elementosLimpiezaRecibidos;
+}
+setProductos(productosLimpiezaRecibidos){
+  this.misProdusctosLimpieza = productosLimpiezaRecibidos;
 }
 
 actulizaPermisos(permisos){

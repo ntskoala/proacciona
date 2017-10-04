@@ -187,6 +187,7 @@
     "limpiezas_realizadas":"Neteges realitzades",
     "calendarios":"Calendari",
     "productos":"Productes",
+    "nuevoProd":"Afegir nou producte",
     "imagen":"Imatge",
     "proximafecha":"Propera data",
     "periodicidad":"Periodicitat",
@@ -436,5 +437,7 @@
   "dias":"dies",
   "dia":"dia",
   "por uso": "Per ús",
-  "leyenda":"Llegenda"
+  "leyenda":"Llegenda",
+  "verFoto":"Veure Foto",
+  "subirArchivo":"Pujar arxiu"
 }	

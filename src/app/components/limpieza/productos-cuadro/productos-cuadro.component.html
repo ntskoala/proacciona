@@ -1,0 +1,18 @@
+<div class="modal" *ngIf="procesando">
+<md-spinner></md-spinner>
+</div>
+<md-toolbar color="accent">{{'cuadroProductos' | translate}}
+</md-toolbar>
+<p-dataTable [value]="tabla">
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'producto'">
+         <ng-template let-col let-i="rowIndex" let-producto="rowData" pTemplate="body">
+            <span *ngIf="col.field == 'producto'">{{producto[col.field]}}</span>
+            <md-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],i,$event.checked)" *ngIf="col.field == 'producto'"
+          [checked]="producto['generalSwitch']">
+      </md-slide-toggle>
+            <md-slide-toggle class="option" (change)="setPermiso(producto['idproducto'],$event.checked,i,col['header'])" *ngIf="col.field != 'producto'"
+          [checked]="producto[col.field]">
+      </md-slide-toggle>
+        </ng-template> 
+    </p-column>
+</p-dataTable>

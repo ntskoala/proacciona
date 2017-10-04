@@ -263,8 +263,15 @@
       <!-- </p-panel> -->
 
  <span class="cell">
-    <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos>
- </span>
+    <!-- <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos> -->
+    <md-list>
+        <md-list-item *ngFor="let prod of productos[rowIndex]" (mouseover)="display[rowIndex]=true" (mouseout)="display[rowIndex]=false">{{prod.nombre}}
+        <p-dialog header="{{prod.nombre}}" [(visible)]="display[rowIndex]">
+            {{prod.nombre}}{{prod.id}}
+        </p-dialog>
+      </md-list-item>
+      </md-list>
+  </span>
 
 
 

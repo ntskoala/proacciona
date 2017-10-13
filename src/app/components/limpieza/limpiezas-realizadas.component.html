@@ -76,11 +76,13 @@
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
 [csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'">
-    <p-header>
-        <div class="ui-helper-clearfix">
-            <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
-        </div>
-    </p-header>
+<p-header>
+    <div class="ui-helper-clearfix">
+        <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
+        </span>
+      </div>
+</p-header>
 
   <!-- <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template> -->
   <p-column expander="true" styleClass="col-icon">

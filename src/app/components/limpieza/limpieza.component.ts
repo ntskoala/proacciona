@@ -6,6 +6,7 @@ import { Empresa } from '../../models/empresa';
  import { LimpiezaZona } from '../../models/limpiezazona';
   import { LimpiezaElemento } from '../../models/limpiezaelemento';
 import { LimpiezaProducto } from '../../models/limpiezaproducto';
+import { Protocolo } from '../../models/limpiezaprotocolo';
 
 @Component({
   selector: 'limpieza',
@@ -18,6 +19,7 @@ export class LimpiezaComponent implements OnInit {
 public limpieza: LimpiezaZona;
 public elementosLimpieza: LimpiezaElemento[];
 public misProdusctosLimpieza: LimpiezaProducto[];
+public misProtocolosLimpieza: Protocolo[];
 public calendario: boolean = false;
 public productosLimpieza: boolean = false;
 public limpiezas: LimpiezaZona[];
@@ -25,6 +27,7 @@ public nuevaLimpiezaR: number;
 public migrandoEstat: boolean= false;
 public permiso:boolean=false;
 public productos:boolean=false;
+public protocolos:boolean=false;
 public estadoSideNav:string="cerrado";
 public subMenu:string=null;
   constructor(public empresasService: EmpresasService) {}
@@ -63,7 +66,9 @@ setElementosLimpieza(elementosLimpiezaRecibidos){
 setProductos(productosLimpiezaRecibidos){
   this.misProdusctosLimpieza = productosLimpiezaRecibidos;
 }
-
+setProtocolos(protocolosLimpiezaRecibidos){
+  this.misProtocolosLimpieza = protocolosLimpiezaRecibidos;
+}
 actulizaPermisos(permisos){
 console.log(permisos);
 }
@@ -95,6 +100,9 @@ cambioMenu(opcion: string){
             case "productos":
               this.productos=true;
               break;
+            case "protocolos":
+              this.protocolos=true;
+            break;
           }
            this.subMenu = opcion;   
         });
@@ -117,6 +125,9 @@ cambioMenu(opcion: string){
             case "productos":
               this.productos=true;
               break;
+            case "protocolos":
+              this.protocolos=true;
+              break;
           }
             this.subMenu = opcion;
             this.snCalendar.toggle();
@@ -135,6 +146,7 @@ closeSideNav(){
   this.calendario=false;
   this.permiso=false;
   this.productos=false;
+  this.protocolos = false;
    resolve('ok')
     });
 }

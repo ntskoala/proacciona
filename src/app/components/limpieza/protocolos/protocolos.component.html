@@ -1,0 +1,90 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div  class="tooltip" mdTooltip="{{'protocolo.nuevoProtocolo' | translate}}" [mdTooltipPosition]="'after'">    
+    <button md-mini-fab color="accent" type="button" (click)="newItem()">
+        <span class="material-icons">add</span>
+        </button>
+    </div>
+<div class="listOfProtocolos" [ngStyle]="{'width': widthLista, 'overflow-y':'scroll'}">
+<div class="protocolo" *ngFor="let protocol of items;let i = index">
+<md-card >
+    <md-card-header>
+<div  class="tooltip" mdTooltip="{{'protocolo.nombre' | translate}}" [mdTooltipPosition]="'after'">            
+        <input type="text"  [placeholder]="'nombre' | translate" [(ngModel)]="protocol.nombre" (keydown)="itemEdited(i)">
+</div>
+    </md-card-header>
+
+<hr>
+<div class="table prot">
+    <div class="row">
+        <span class="cell">
+    <input type="text" [(ngModel)]="nuevoProcedimiento[i]" >
+    </span>
+        <span class="cell small">
+<div  class="tooltip" mdTooltip="{{'protocolo.anadirElemento' | translate}}" [mdTooltipPosition]="'after'">                    
+      <button md-mini-fab color="accent" type="button" [disabled]="!nuevoProcedimiento" (click)="addProcedimiento(i)">
+        <span class="material-icons">add</span>
+        </button>
+</div>
+        </span>
+    </div>
+    <div class="divrow yellow">
+        <span class="cell">{{"limpieza.descripcion" | translate}}</span>
+    </div>
+    <div class="row" *ngFor="let procedimiento of protocolo[i];let n = index">
+        <span class="cell">
+    {{procedimiento.descripcion}}
+    </span>
+        <span class="cell small">
+<div  class="tooltip" mdTooltip="{{'protocolo.quitarElemento' | translate}}" [mdTooltipPosition]="'after'">                            
+            <button md-mini-fab color="primary" type="button" (click)="removeProcedimiento(n,i)">
+                <span class="material-icons">remove</span>
+            </button>
+</div>
+        </span>
+    </div>
+</div>
+<md-card-actions>
+<div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'after'">        
+    <span class="cell small">
+            <div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'after'">                                        
+        <button md-mini-fab color="primary" [disabled]="!hayCambios[i]" type="button" (click)="setProtocolo(i)">
+          <span class="material-icons">check</span>
+          </button>
+            </div>
+          </span>
+</div>
+<div  class="tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'after'">        
+    <span class="cell small">
+        <button md-mini-fab color="primary" type="button" (click)="checkBorrar(protocol.id)">
+          <span class="material-icons">delete</span>
+          </button>
+          </span>
+</div>
+
+<!--*****  subir/ver FOTO  *********-->
+    <div  class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipPosition]="'after'">        
+        <span class="cell small"> 
+   <button [disabled]="!protocol.doc" class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"  md-mini-fab color="primary" (click)="photoURL(i,'doc')" type="button">
+     <span class="material-icons">photo_camera</span>
+   </button>
+        </span>
+    </div>
+<div  class="tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipPosition]="'after'">        
+    <span class="cell small">
+     <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
+     <br><input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, protocol.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
+    </span>
+    </div>
+<!--****** FIN ********************-->
+</md-card-actions>
+</md-card>
+</div>
+
+</div>
+
+
+
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+    <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+  <img class="iframe" [src]="foto">
+  </div>

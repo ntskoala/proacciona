@@ -156,9 +156,12 @@ getClientes(){
     //console.log (fecha.toString());
   }
 
- saveItem(item: ProveedorLoteProducto,i: number) {
+ saveItem(item: Distribucion,i: number) {
     this.guardar[item.id] = false;
-    let parametros = '?id=' + item.id+this.entidad;    
+    let parametros = '?id=' + item.id+this.entidad;  
+    item.fecha_caducidad =  new Date(Date.UTC(item.fecha_caducidad.getFullYear(), item.fecha_caducidad.getMonth(), item.fecha_caducidad.getDate()));
+    item.fecha =  new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()));
+console.log(item.fecha,item.fecha_caducidad);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {

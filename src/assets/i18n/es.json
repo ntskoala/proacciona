@@ -179,6 +179,8 @@
   "limpieza": {
     "CalendarioGeneralLimpieza":"Calendario general limpieza",
     "nueva": "Nueva area limpieza",
+    "nuevoElemento": "Nuevo elemento de limpieza",
+    "anadir":"Añadir",
     "areadelimpieza": "Area de limpieza",
     "limpieza": "Limpieza",
     "planlimpieza": "Plan de limpieza",
@@ -194,6 +196,7 @@
     "fecha":"Fecha",
     "descripcion":"Descripción",
     "protocolo":"Protocolo",
+    "protocolos":"Protocolos",
     "responsable":"Responsable",
     "supervisor":"Supervisor",
     "fecha_prevista":"Fecha prevista",
@@ -219,6 +222,12 @@
      "correcta":"Correcta",
      "incorrecta":"Incorrecta",
      "porSupervisar":"Por supervisar"
+  },
+  "protocolo":{
+      "nuevoProtocolo": "Nuevo protocolo",
+      "nombre":"Nombre protocolo",
+      "anadirElemento":"Añadir procedimiento del protocolo",
+      "quitarElemento": "Quitar procedimiento del protocolo"
   },
   "proveedores":{
     "proveedores":"Proveedores",
@@ -439,5 +448,6 @@
   "por uso": "Por uso",
   "leyenda":"Leyenda",
   "verFoto":"Ver Foto",
-  "subirArchivo":"Subir archivo"
+  "subirArchivo":"Subir archivo",
+  "subirFoto": "Subir foto"
 }

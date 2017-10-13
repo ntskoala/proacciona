@@ -26,6 +26,9 @@
      <div class="tooltip" mdTooltip="{{'limpieza.productos' | translate}}" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'productos'}" color="accent" md-mini-fab (click)="cambioMenu('productos')"><md-icon>widgets</md-icon></button>
   </div>
+  <div class="tooltip" mdTooltip="{{'limpieza.protocolos' | translate}}" [mdTooltipPosition]="'after'">
+      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'protocolos'}" color="accent" md-mini-fab (click)="cambioMenu('protocolos')"><md-icon>description</md-icon></button>
+      </div>
    <!-- <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('alerta')"><md-icon>notifications_active</md-icon></button>
   </div> -->
@@ -56,6 +59,11 @@
    <div  *ngIf="productos" style="height:35px" ></div>
    <app-productos-cuadro *ngIf="productos" [items]="elementosLimpieza" [productos]="misProdusctosLimpieza"></app-productos-cuadro>
    <div  *ngIf="productos" style="height:35px" ></div>
+
+   <app-protocolos *ngIf="protocolos" (onProtocolosReady)="setProtocolos($event)"></app-protocolos>
+   <div  *ngIf="protocolos" style="height:35px" ></div>
+   <app-protocolos-cuadro *ngIf="protocolos" [items]="elementosLimpieza" [protocolos]="misProtocolosLimpieza"></app-protocolos-cuadro>
+   <div  *ngIf="protocolos" style="height:35px" ></div>
   </md-sidenav> 
 
 

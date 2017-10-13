@@ -20,6 +20,7 @@
 .tabs{
   min-height: 430px;
     display: flex;
+    min-width: 1200px;
 }
 
 .campo{

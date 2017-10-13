@@ -26,6 +26,7 @@ import {FieldsetModule} from 'primeng/primeng';
 import {PanelModule} from 'primeng/primeng';
 import {InputTextareaModule} from 'primeng/primeng';
 import {DragDropModule} from 'primeng/primeng';
+import {AccordionModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
@@ -124,6 +125,8 @@ import { PlanRealizadoComponent } from './components/planificaciones/plan-realiz
 import { SupervisoresComponent } from './components/supervisores/supervisores.component';
 import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
 import { ProductosCuadroComponent } from './components/limpieza/productos-cuadro/productos-cuadro.component';
+import { ProtocolosComponent } from './components/limpieza/protocolos/protocolos.component';
+import { ProtocolosCuadroComponent } from './components/limpieza/protocolos-cuadro/protocolos-cuadro.component';
 
 
 
@@ -140,6 +143,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     JsonpModule,
     MomentModule,
     ScheduleModule,
+/**********PRIME NG MODULES */
     CalendarModule,
     DialogModule,
     LightboxModule,
@@ -152,6 +156,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PanelModule,
     InputTextareaModule,
     DragDropModule,
+    AccordionModule,
+/**********MATERIAL */
     MaterialModule,
    // MdSelectModule,
     DatePickerModule,
@@ -250,7 +256,9 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PlanRealizadoComponent,
     SupervisoresComponent,
     BocadilloComponent,
-    ProductosCuadroComponent
+    ProductosCuadroComponent,
+    ProtocolosComponent,
+    ProtocolosCuadroComponent
   ],
   providers: [
     EmpresasService,

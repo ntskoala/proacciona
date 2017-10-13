@@ -179,6 +179,8 @@
     "limpieza": {
     "CalendarioGeneralLimpieza":"Calendari general neteja",
     "nueva":"Nova àrea neteja",
+    "anadir":"Afegir",
+    "nuevoElemento": "Nou element de neteja",    
     "areadelimpieza":"Àrea de neteja",
     "limpieza":"Neteja",
     "planlimpieza":"Pla de neteja",
@@ -194,6 +196,7 @@
     "fecha":"Data",
     "descripcion":"Descripció",
     "protocolo":"Protocol",
+    "protocolos":"Protocolos",
     "responsable":"Responsable",
     "supervisor":"Supervisor",
     "fecha_prevista":"Data prevista",
@@ -220,6 +223,12 @@
      "incorrecta":"Incorrecte",
      "porSupervisar":"Per supervisar"
   },
+  "protocolo":{
+    "nuevoProtocolo": "Nou protocol",
+    "nombre":"Nom protocol",
+    "anadirElemento":"Afegir procedimient del protocol",
+    "quitarElemento": "Quita procedimient del protocol"
+},
  "proveedores":{
     "proveedores":"Proveïdors",
     "proveedor":"Proveïdor",
@@ -439,5 +448,6 @@
   "por uso": "Per ús",
   "leyenda":"Llegenda",
   "verFoto":"Veure Foto",
-  "subirArchivo":"Pujar arxiu"
+  "subirArchivo":"Pujar arxiu",
+  "subirFoto": "Pujar foto"
 }	

@@ -11,7 +11,7 @@
 <md-spinner></md-spinner>
 </div>
 
-<span class="cell tooltip" mdTooltip="{{'limpiezas.nueva' | translate}}" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" mdTooltip="{{'limpieza.nuevoElemento' | translate}}" [mdTooltipPosition]="'above'">
 
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -32,10 +32,9 @@
     <span class="cell">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo"></periodicidad>
     </span>
-     <span class="cell">
-    <!--<p-multiSelect [options]="productos" [(ngModel)]="productosSeleccionados" name="productos"></p-multiSelect>-->
+     <!-- <span class="cell">
     <select-productos name="productos" [elementoLimpieza]="0" (selectedProductsChange)="setProducts($event)"></select-productos>
- </span>
+ </span> -->
     <span class="medium cell">
       <input class="medium" type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
     </span>
@@ -47,11 +46,11 @@
         <span class="material-icons">phonelink_lock</span>
       </button>  -->
     </span>
-    <span class="cell medium">
+    <!-- <span class="cell medium">
              <button md-mini-fab class="camera" (click)="verProtocolo(-1)" type="button">
         <span class="material-icons">list</span>
       </button>    
-      </span><!--protocolo-->
+      </span> -->
     <span class="cell small">num.
       <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
         <option value="1">1</option>
@@ -69,9 +68,12 @@
       </select>
       </span><!--Borrar-->
     <span class="cell">
+<span class="cell tooltip" mdTooltip="{{'limpieza.anadir' | translate}}" [mdTooltipPosition]="'above'">
+    
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
+</span>
     </span>
   </form>
   </div>
@@ -169,17 +171,24 @@
  <!-- </div>
  </div>  -->
 
-<div style="position:absolute; left:0px; top:110px">
-  <p-dataTable #dt [value]="items"  expandableRows="true"  rowExpandMode="single"
-  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1">
+<div style="position:absolute; left:0px; top:110px; min-width:1000px">
+  <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single"
+  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
+  [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
+  <p-header>
+      <div class="ui-helper-clearfix">
+          <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+          <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
+          </span>
+        </div>
+  </p-header>
   <p-column expander="true" styleClass="col-icon">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
          <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
-        
         </div>
     </ng-template> 
   </p-column>
-      <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
+      <p-column field="orden" header="orden" [sortable]="true" [editable]="false">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
       <md-icon>import_export</md-icon>
       </ng-template>
@@ -243,34 +252,43 @@
    <!--//************    [disabled]="!item.protocolo"--> 
 
 
-      <!-- <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.imagen' | translate}}"> -->
-<!--*****  subir/ver FOTO  *********-->
-     <span class="cell">
-       <button md-mini-fab class="camera" (click)="verProtocolo(rowIndex)" type="button">
-        <span class="material-icons">list</span>
-      </button>    
-      <div class="protocol"  *ngIf="protocolo[rowIndex]">
- <protocolo class="cell" (protocolEmitter)="setProtocol($event,rowIndex,item.id)" [parentProtocol]="item.protocol"></protocolo>
-  </div>
-      <button [disabled]="!item.protocolo" class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"  md-mini-fab color="color" (click)="photoURL(rowIndex,'protocolo')" type="button">
-        <span class="material-icons">photo_camera</span>
-      </button>
+<!--*****  PROTOCOLOS  *********-->
 
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'protocolo'+rowIndex}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'protocolo'+rowIndex}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,rowIndex,'protocolo')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
-    </span> 
+<span class="cell">
+
+      <p-accordion (onOpen)="openTabProtocolo($event,rowIndex)">
+          <p-accordionTab header="{{ protocolos[prot].nombre}}"  *ngFor="let prot of protocolo[rowIndex]" onOpen="openTabProtocolo(prot)">
+            <div style="float:left" *ngIf="fotoProt" (click)="photoURL(fotoProt)">
+                <img [src]="fotoProt" height="60px">
+            </div>
+            <div style="min-height:65px;margin-left: 15px;display:inline-block">
+              <span *ngFor="let elemProt of elemsProtocolo[prot]">
+                {{elemProt.descripcion}}<BR>
+              </span>
+            </div>
+          </p-accordionTab>
+      </p-accordion>
+  </span>
+
 <!--****** FIN ********************-->
-      <!-- </p-panel> -->
-
+    
+<!--*****  PRODUCTOS  *********-->
  <span class="cell">
     <!-- <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos> -->
-    <md-list>
-        <md-list-item *ngFor="let prod of productos[rowIndex]" (mouseover)="display[rowIndex]=true" (mouseout)="display[rowIndex]=false">{{prod.nombre}}
-        <p-dialog header="{{prod.nombre}}" [(visible)]="display[rowIndex]">
-            {{prod.nombre}}{{prod.id}}
-        </p-dialog>
-      </md-list-item>
-      </md-list>
+
+      <p-accordion (onOpen)="openTabProducto($event,rowIndex)">
+          <p-accordionTab header="{{prod.nombre}}"  *ngFor="let prod of productos[rowIndex]" onOpen="openTabProducto(prod.doc,prod.id)">
+            <div style="float:left" *ngIf="misproductos[prod.id].doc" (click)="photoURL(fotoProd)">
+                <img [src]="fotoProd" height="60px">
+                <!-- <img [src]="test" alt="Smiley face" height="60" width="60">    -->
+            </div>
+            <div style="min-height:65px;margin-left: 55px;">
+              {{'limpieza.marca' | translate}}:{{misproductos[prod.id].marca}}<BR>
+              {{'limpieza.desinfectante' | translate}}:{{misproductos[prod.id].desinfectante}}<BR>
+              {{'limpieza.dosificacion' | translate}}:{{misproductos[prod.id].dosificacion}}<BR>
+            </div>
+          </p-accordionTab>
+      </p-accordion>
   </span>
 
 

@@ -17,6 +17,7 @@
 
     <span class="cell">
     <select class="smallselect" [(ngModel)]="nuevoItem.proveedor" name="proveedor" (change)="getProductos($event.target.value)">
+        <option [disabled]="true" [value]="null">selecciona</option>
       <option *ngFor="let prov of proveedores; let i = index" [value]="prov.id">
         {{prov.nombre}}
       </option>
@@ -25,6 +26,7 @@
 
     <span class="cell">
     <select class="smallselect" [(ngModel)]="nuevoItem.producto" name="producto" (change)="getEntradasProducto($event.target.value)">
+        <option [disabled]="true" [value]="null">selecciona</option>
       <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
         {{prod.nombre}}
       </option>
@@ -33,6 +35,7 @@
 
      <span class="cell">
     <select class="smallselect"  [(ngModel)]="nuevoItem.idmateriaprima" name="idmateriaprima" (change)="setMaxCantidad($event.target.value)">
+        <option [disabled]="true" [value]="null">selecciona</option>
       <option *ngFor="let lote of entrada_productos; let i = index" [value]="lote.id">
         {{lote.lote}} #{{lote.cantidad}}
       </option>
@@ -102,7 +105,7 @@
 
 
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>

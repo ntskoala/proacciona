@@ -82,7 +82,16 @@
 </div>
  </div>  -->
 
- <p-dataTable #dt [value]="planes"   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1">
+ <p-dataTable #dt [value]="planes"   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" 
+ sortField="orden" [sortOrder]="1"
+ [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
+ <p-header>
+     <div class="ui-helper-clearfix">
+         <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+         <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(dt)" style="float:left"></button>
+         </span>
+       </div>
+ </p-header>
     <!-- <p-header>{{'planificaciones.planificaciones_progrmadas' | translate}}</p-header> -->
     <!-- <p-column field="orden" header="orden" [sortable]="true" [editable]="false" >
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    

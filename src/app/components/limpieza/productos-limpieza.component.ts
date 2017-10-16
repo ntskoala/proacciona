@@ -95,7 +95,10 @@ public entidad:string="&entidad=limpieza_producto";
     });
   }
 
-
+  onEdit(event){
+    console.log(event);
+    this.itemEdited(event.data.id);
+  }
     itemEdited(idItem: number) {
     this.guardar[idItem] = true;
     //console.log (fecha.toString());

@@ -25,7 +25,7 @@ export class alerg{
 
 export class MateriasPrimasComponent implements OnInit, OnChanges{
 @Input() orden: ProduccionOrden;
-public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
+public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,null,null,null,null,0,0,'');
 public passItem: ProduccionDetalle;
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProduccionDetalle[];
@@ -87,6 +87,9 @@ getProductos(idProveedor:number){
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.productos = [];
+            this.entrada_productos = [];
+            this.nuevoItem.producto=null;
+            this.nuevoItem.idmateriaprima=null;
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.productos.push({"id":element.id,"nombre":element.nombre});
@@ -98,6 +101,9 @@ getProductos(idProveedor:number){
         ); 
   }else{
     this.productos =[];
+    this.entrada_productos = [];
+    this.nuevoItem.producto=null;
+    this.nuevoItem.idmateriaprima=null;
     this.productos.push({"id":0,"nombre":"lote interno"});
   }
 }
@@ -108,6 +114,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];
+            this.nuevoItem.idmateriaprima=null;
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
@@ -124,7 +131,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
+                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.remanente,"tipo_medida":element.tipo_medida});
              }
             }
         },
@@ -139,6 +146,7 @@ getProveedores(){
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.proveedores = [];
+            // this.proveedores.push({"id":null,"nombre":"Selecciona"})
             this.proveedores.push({"id":0,"nombre":"Interno"})
             if (response.success && response.data) {
               for (let element of response.data) { 
@@ -173,15 +181,18 @@ getProveedores(){
         if (response.success) {
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
-          this.passItem.id = response.id
+          this.passItem.id = response.id;
           this.setRemanente(this.passItem);
+          this.nuevoItem = new ProduccionDetalle(0,0,null,null,null,null,0,0,'');
+          this.productos=[];
+          this.entrada_productos=[];
         }
     },
     error =>console.log(error),
     () =>this.setItems()   
     );
 
-   this.nuevoItem =  new ProduccionDetalle(0,0,'','','',0,0,0,'');
+   
   }
 
 setRemanente(detalleProduccion: ProduccionDetalle){
@@ -199,6 +210,16 @@ setRemanente(detalleProduccion: ProduccionDetalle){
         ()=>{}
         ); 
   }else{
+    let value = "*`remanente`- "+detalleProduccion.cantidad;
+     let  orden = {'remanente':value}
+      let param = "&entidad=produccion_orden";
+      let parametros = '?id=' + detalleProduccion.idloteinterno+param;     
+          this.servidor.putObject(URLS.STD_ITEM,parametros, orden).subscribe(
+            response => {
+             if (response.success) {
+              console.log('updated');
+             }
+          });
 
   }
 }
@@ -213,6 +234,7 @@ setRemanente(detalleProduccion: ProduccionDetalle){
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          alert('Si se ha modificdo la cantidad, no se ve reflejada en el remanente del lote de proveedor, Eliminar la entrada y crear una nueva, si actualiza los remanentes.');
         }
     });
 
@@ -223,11 +245,12 @@ checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'proveedores.borrarProduccionDetalleT';
-    this.modal.subtitulo = 'proveedores.borrarProduccionDetalleST';
+    this.modal.titulo = 'produccion.borrarMateriaPrimaT';
+    this.modal.subtitulo = 'produccion.borrarMateriaPrimaST';
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
+
   cerrarModal(event: boolean) {
     this.modal.visible = false;
     if (event) {
@@ -237,14 +260,82 @@ checkBorrar(idBorrar: number) {
           if (response.success) {
             let controlBorrar = this.items.find(prod => prod.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
+            this.retornarRemanente(this.items[indice]);
             this.items.splice(indice, 1);
+
           }
       });
     }
   }
 
+retornarRemanente(entradaMP: ProduccionDetalle ){
+if (entradaMP.idloteinterno>0){
+  this.retornoRemanenteLI(entradaMP.cantidad,entradaMP.idloteinterno).then(
+    (resultado)=>{
+      if (resultado){
+        console.log('remanente retornado al lote de producto del proveedor')
+      }else{
+        alert('Atención! No se ha podido devolver el remanente al lote de producto del proveedor')
+      }
+    }
+  )
+}
+
+if (entradaMP.idmateriaprima>0){
+  this.retornoRemanenteMP(entradaMP.cantidad,entradaMP.idmateriaprima).then(
+    (resultado)=>{
+      if (resultado){
+        console.log('remanente retornado al lote de producto del proveedor')
+      }else{
+        alert('Atención! No se ha podido devolver el remanente al lote de producto del proveedor')
+      }
+    }
+  )
+}
+}
+
+retornoRemanenteLI(valor,idLote){
+  return new Promise((resolve, reject) => {
+    let value = "*`remanente`+"+valor;
+ 
+  let  orden = {'remanente':value}
+
+   let param = "&entidad=produccion_orden";
+   let parametros = '?id=' + idLote+param;     
+       this.servidor.putObject(URLS.STD_ITEM,parametros, orden).subscribe(
+         response => {
+          if (response.success) {
+            resolve(true);
+          }
+          else{
+            resolve(false);
+          }
+       });
+  });
+}
+
+retornoRemanenteMP(valor,idLote){
+  return new Promise((resolve, reject) => {
+    let EPentidad:string="&entidad=proveedores_entradas_producto";
+    let value = "*`cantidad_remanente` +" +  valor;
+    let EPitem= {'cantidad_remanente':value};
+    let i: number
+      let parametros = '?id=' + idLote+EPentidad;    
+      this.servidor.putObject(URLS.STD_ITEM, parametros, EPitem).subscribe(
+        response => {
+          if (response.success) {
+            resolve(true);
+          }
+          else{
+            resolve(false);
+          }
+      });
+    
+  });
+}
+
 setMaxCantidad(idLote:number){
-  
+
   let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==idLote);
     this.nuevoItem.cantidad = this.entrada_productos[index_entrada_productos].cantidad;
     this.nuevoItem.tipo_medida = this.entrada_productos[index_entrada_productos].tipo_medida;

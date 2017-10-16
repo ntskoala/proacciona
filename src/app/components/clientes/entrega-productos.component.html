@@ -36,6 +36,7 @@
     </span>
     <span class="cell">
     <select class="medium" [(ngModel)]="nuevoItem.idordenproduccion" name="idordenproduccion" (change)="setCaducidad($event.target.value)">
+        <option [disabled]="true" [value]="null">selecciona</option>
       <option *ngFor="let lote of ordenes; let i = index" [value]="lote.id">
         {{lote.numlote}}
       </option>

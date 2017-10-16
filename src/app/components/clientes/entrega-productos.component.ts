@@ -102,7 +102,7 @@ public es;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new Distribucion(element.id,element.idempresa,element.idcliente,element.idproductopropio,element.idordenProduccion,element.numlote,new Date(element.fecha),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.alergenos));
+                  this.items.push(new Distribucion(element.id,element.idempresa,element.idcliente,element.idproductopropio,element.idordenproduccion,element.numlote,new Date(element.fecha),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.alergenos));
              }
             }
         },
@@ -146,13 +146,14 @@ getProductos(){
           this.items.push(this.nuevoItem);
           this.items[this.items.length-1].id= response.id;
           this.saveRemanente(orden);
+          this.nuevoItem =  new Distribucion(null,0,0,null,null,'',new Date(),new Date(),'',null,null,'');
         }
     },
     error =>console.log(error),
     () =>this.setDates(this.fechas_inicio) 
     );
 
-   this.nuevoItem =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
+   
     }
   }
 
@@ -167,24 +168,49 @@ saveRemanente(idOrden:number){
     });
 }
 
+updateRemanente(valor,idOrden){
+
+  let value = "*`remanente`+"+valor;
+   let  orden = {'remanente':value}
+  
+    let parametros = '?id=' + idOrden+"&entidad=produccion_orden";    
+    this.servidor.putObject(URLS.STD_ITEM, parametros, orden).subscribe(
+      response => {
+        if (response.success) {
+          
+        }
+    });
+}
+
+
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
     //console.log (fecha.toString());
   }
- saveItem(item: ProveedorLoteProducto,i: number) {
-    this.guardar[item.id] = false;
-    let parametros = '?id=' + item.id+this.entidad;  
-    item.fecha_caducidad =  new Date(Date.UTC(item.fecha_caducidad.getFullYear(), item.fecha_caducidad.getMonth(), item.fecha_caducidad.getDate()));
-    item.fecha_entrada =  new Date(Date.UTC(item.fecha_entrada.getFullYear(), item.fecha_entrada.getMonth(), item.fecha_entrada.getDate()));
+//  saveItem(item: ProveedorLoteProducto,i: number) {
+//     this.guardar[item.id] = false;
+//     let parametros = '?id=' + item.id+this.entidad;  
+//     item.fecha_caducidad =  new Date(Date.UTC(item.fecha_caducidad.getFullYear(), item.fecha_caducidad.getMonth(), item.fecha_caducidad.getDate()));
+//     item.fecha_entrada =  new Date(Date.UTC(item.fecha_entrada.getFullYear(), item.fecha_entrada.getMonth(), item.fecha_entrada.getDate()));
     
-    this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
-      response => {
-        if (response.success) {
-        }
-    });
-
-  }
-
+//     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
+//       response => {
+//         if (response.success) {
+//         }
+//     });
+//   }
+saveItem(item: Distribucion,i: number) {
+  this.guardar[item.id] = false;
+  let parametros = '?id=' + item.id+this.entidad;  
+  item.fecha_caducidad =  new Date(Date.UTC(item.fecha_caducidad.getFullYear(), item.fecha_caducidad.getMonth(), item.fecha_caducidad.getDate()));
+  item.fecha =  new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()));
+  
+  this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
+    response => {
+      if (response.success) {
+      }
+  });
+}
 
 checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
@@ -204,6 +230,8 @@ checkBorrar(idBorrar: number) {
           if (response.success) {
             let controlBorrar = this.items.find(prod => prod.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
+            console.log(controlBorrar,indice,this.items[indice])
+            this.updateRemanente(this.items[indice].cantidad,this.items[indice].idordenproduccion);
             this.items.splice(indice, 1);
           }
       });
@@ -231,6 +259,7 @@ getLotesProducto(idProducto: any){
           }
         ); 
 }
+
 setCaducidad(idLote: number){
 console.log(idLote);
 let index = this.ordenes.findIndex((orden) => orden.id== idLote);

@@ -332,6 +332,32 @@ goDown(index:number,evento:Event,dt:DataTable){
   }
 }
 
+
+
+
+exportData(tabla: DataTable){
+  console.log(tabla);
+  let origin_Value = tabla._value;
+
+  tabla._value = tabla.dataToRender;
+  tabla._value.map((plan)=>{
+      (moment(plan.fecha).isValid())?plan.fecha = moment(plan.fecha).format("DD/MM/YYYY"):'';
+      plan.periodicidad=this.checkPeriodo(plan.periodicidad);
+      });
+
+  tabla.csvSeparator = ";";
+  tabla.exportFilename = "Planificaciones";
+  tabla.exportCSV();
+  tabla._value = origin_Value;
+}
+
+checkPeriodo(periodicidad: string): string{
+  let valor:string;
+  let periodo = JSON.parse(periodicidad);
+  return periodo.repeticion;
+  }
+
+
 // reordenarUP(inicio:number,fin:number){
 //   return new Promise((resolve,reject)=>{
 //   let x=fin;

@@ -11,7 +11,7 @@
 <md-spinner></md-spinner>
 </div>
 
-<span class="cell tooltip" mdTooltip="{{'limpieza.nuevoElemento' | translate}}" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" mdTooltip="{{'limpieza.nuevoElemento' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
 
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -68,7 +68,7 @@
       </select>
       </span><!--Borrar-->
     <span class="cell">
-<span class="cell tooltip" mdTooltip="{{'limpieza.anadir' | translate}}" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" mdTooltip="{{'limpieza.anadir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
     
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
@@ -177,14 +177,14 @@
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
   <p-header>
       <div class="ui-helper-clearfix">
-          <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+          <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
           <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
           </span>
         </div>
   </p-header>
   <p-column expander="true" styleClass="col-icon">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-         <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+         <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
         </div>
     </ng-template> 
   </p-column>
@@ -215,7 +215,7 @@
 
     <p-column field="app" header="app">
       <ng-template  pTemplate="header">
- <span class="cell tooltip" mdTooltip="{{'limpiezas.app' | translate}}" [mdTooltipPosition]="'above'">  
+ <span class="cell tooltip" mdTooltip="{{'limpiezas.app' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">  
    app   
  </span> 
 
@@ -227,12 +227,12 @@
 
     <p-column header="'acciones'">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
         <span class="material-icons">check</span>
       </button>

@@ -400,7 +400,7 @@
     "interno":"Intern",
     "externo":"Extern",
     "realizadas":"Realitzades",
-    "proximas":"Proximes",
+    "proximas":"Pròximes",
     "vencidas":"Vençudes",
     "ficha":"Fitxa",
     "borrarPlanR":"Esborra plan",
@@ -418,8 +418,8 @@
     {
       "avisos":"Avisos",
       "enviar":"Enviar avisos",
-      "diasantes":"díes avans de l'event.",
-      "nota":"Sempre t'arribarà un avis el día de l'event, adicionalment pots programar un día extra.",
+      "diasantes":"dies abans de l'event.",
+      "nota":"Sempre t'arribarà un avís el dia de l'event, addicionalment pots programar un dia extra.",
       "nohaymail":"No té email"
     },
   "alergenos":"Al·lergògens",

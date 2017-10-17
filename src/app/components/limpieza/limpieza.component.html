@@ -15,21 +15,21 @@
 
   <div class="botonera"  *ngIf="!migrandoEstat">
     
-     <div  class="tooltip" mdTooltip="{{'limpieza.calendarios' | translate}}" [mdTooltipPosition]="'after'">
+     <div  class="tooltip" mdTooltip="{{'limpieza.calendarios' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" md-mini-fab (click)="cambioMenu('calendario')"><md-icon>date_range</md-icon></button> 
       </div>
 
-   <div class="tooltip" mdTooltip="{{'planificaciones.permisos' | translate}}" [mdTooltipPosition]="'after'">
+   <div class="tooltip" mdTooltip="{{'planificaciones.permisos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" md-mini-fab (click)="cambioMenu('permiso')"><md-icon>vpn_key</md-icon></button>
   </div>
 
-     <div class="tooltip" mdTooltip="{{'limpieza.productos' | translate}}" [mdTooltipPosition]="'after'">
+     <div class="tooltip" mdTooltip="{{'limpieza.productos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'productos'}" color="accent" md-mini-fab (click)="cambioMenu('productos')"><md-icon>widgets</md-icon></button>
   </div>
-  <div class="tooltip" mdTooltip="{{'limpieza.protocolos' | translate}}" [mdTooltipPosition]="'after'">
+  <div class="tooltip" mdTooltip="{{'limpieza.protocolos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'protocolos'}" color="accent" md-mini-fab (click)="cambioMenu('protocolos')"><md-icon>description</md-icon></button>
       </div>
-   <!-- <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipPosition]="'after'">
+   <!-- <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('alerta')"><md-icon>notifications_active</md-icon></button>
   </div> -->
    </div>
@@ -41,7 +41,7 @@
  <div class="contenido">
  <md-sidenav-container class="sidenav-container">
   <md-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipPosition]="'before'">
+          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
   <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
   </div>
  <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>

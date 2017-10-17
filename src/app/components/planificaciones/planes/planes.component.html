@@ -3,7 +3,7 @@
  <div class="modal" *ngIf="procesando">
 <md-spinner></md-spinner>
 </div>
-<span class="cell tooltip" mdTooltip="{{'planificaciones.nueva' | translate}}" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" mdTooltip="{{'planificaciones.nueva' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
 <div class="table planes">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
@@ -27,7 +27,7 @@
     </span>
 
      <span  class="cell"></span>
-    <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">
+    <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
@@ -67,12 +67,12 @@
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
     </span>
 
-    <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+    <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>
@@ -87,7 +87,7 @@
  [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
  <p-header>
      <div class="ui-helper-clearfix">
-         <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+         <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
          <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(dt)" style="float:left"></button>
          </span>
        </div>
@@ -126,12 +126,12 @@
 
     <p-column header="'acciones'">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
         <span class="material-icons">check</span>
       </button>

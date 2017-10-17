@@ -15,6 +15,7 @@ export class EmpresasService {
   userTipo: string="";
   empresaActiva: number =0;
   exportar: boolean;
+  noTooltips: boolean = true;
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
 

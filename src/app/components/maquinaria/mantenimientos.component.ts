@@ -27,6 +27,7 @@ public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0
 public guardar =[];
 public idBorrar;
 public es:any;
+
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}

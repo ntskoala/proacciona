@@ -5,7 +5,7 @@
 
   <div class="logo-empresa">
   <div class="userlogged" *ngIf="empresasService.userId"> 
-  <div class="tooltip" mdTooltip="{{'menu.login' | translate}}" [mdTooltipPosition]="'before'">    
+  <div class="tooltip" mdTooltip="{{'menu.login' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">    
     <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
         <span class="material-icons">account_circle</span>
   </button>

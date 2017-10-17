@@ -22,6 +22,7 @@ export class ListadoMaquinasComponent implements OnInit {
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   public subscription: Subscription;
   maquinaActiva: number = 0;
+  myItem: number = null;
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
   maquinas: Maquina[] = [];
   novaMaquina: Maquina;// = new Maquina(0,'',0);
@@ -65,14 +66,32 @@ ngOnInit(){
 
 
 
-seleccionarMaquina(event:any){
+seleccionarMaquina(event:any | number){
 //  console.log("changelist",valor,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
-  this.maquinaSeleccionada.emit(this.maquinas[event.value]);
-  this.maquinaActiva = this.maquinas[event.value].id;
+  this.myItem = typeof(event) == "number" ? event : event.value;
+  console.log(this.myItem,this.maquinas[this.myItem].id);
+  this.maquinaSeleccionada.emit(this.maquinas[this.myItem]);
+  this.maquinaActiva = this.maquinas[this.myItem].id;
   this.unExpand();
 }
-
+seleccionaSiguiente(){
+  let indice = this.maquinas.findIndex((maquina)=>maquina.id==this.maquinaActiva);
+  console.log(indice,this.maquinaActiva);
+  if (indice < this.maquinas.length) {
+    indice++;
+    this.seleccionarMaquina(indice);
+    this.Choicer.writeValue(indice);
+  }
+}
+  seleccionaAnterior(){
+    let indice = this.maquinas.findIndex((maquina)=>maquina.id==this.maquinaActiva);
+    if (indice > 0) {
+      indice--;
+      this.seleccionarMaquina(indice);
+      this.Choicer.writeValue(indice);
+    }
+}
 
 // ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 

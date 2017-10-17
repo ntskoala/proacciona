@@ -16,6 +16,8 @@
   "cancelar":"Cancel·lar",
   "Importar":"Importar",
   "modificar":"Modificar",
+  "siguiente": "Següent",
+  "anterior": "Anterior",
   "borrarEmpresaT":"Estàs segur de voler eliminar l'empresa?",
   "borrarEmpresaST":"S'esborraran tots els usuaris, controls, checklists associats i els resultats dels mateixos.",
   "Tablas":"Configuració",

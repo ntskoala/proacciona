@@ -51,24 +51,41 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="cabeceraItems">
   <!--{{'clientes.clientes' | translate}}<br>-->
+  <span class="cell tooltip" mdTooltip="{{'anterior' | translate}}" [mdTooltipPosition]="'above'">    
+      <button [disabled]="myItem <= 1 || maquinaActiva == 0" md-mini-fab color="primary" (click)="seleccionaAnterior()" type="button">
+                <span class="material-icons">chevron_left</span>
+              </button>
+      </span>
   <form>
     <md-select  class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarMaquina($event)">
       <md-option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
       </md-option>
     </md-select>
+
   </form>
+  <span class="cell tooltip" mdTooltip="{{'siguiente' | translate}}" [mdTooltipPosition]="'above'">    
+      <button  [disabled]="myItem>=maquinas.length-1  || maquinaActiva == 0" md-mini-fab color="primary" (click)="seleccionaSiguiente()" type="button">
+                <span class="material-icons">chevron_right</span>
+              </button>
+      </span>
 <!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
 <button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
-        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="primary" (click)="addItem()" type="button">
+<span class="cell tooltip" mdTooltip="{{'maquinas.nueva' | translate}}" [mdTooltipPosition]="'above'">    
+<button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
+</span>
+<span class="cell tooltip" mdTooltip="{{'modificar' | translate}}" [mdTooltipPosition]="'above'">    
         <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(maquinaActiva > 0)">
           <span class="material-icons">edit</span>
         </button>
+</span>
+<span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'above'">        
         <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento')" md-mini-fab color="warn" (click)="eliminaMaquina()" type="button" [disabled]="!(maquinaActiva > 0)">
           <span class="material-icons">delete_forever</span>
         </button>
+</span>
 </div>
 <div class="modal" *ngIf="modificaMaquina || novaMaquina">
   <div class="modal-window modificar">

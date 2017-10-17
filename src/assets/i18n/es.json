@@ -16,6 +16,8 @@
   "cancelar": "Cancelar",
   "Importar": "Importar",
   "modificar":"Modificar",
+  "siguiente": "Siguiente",
+  "anterior": "Anterior",
   "borrarEmpresaT": "¿Estás seguro de querer eliminar la empresa?",
   "borrarEmpresaST": "Se borrarán todos sus usuarios, controles, checklists asociados y los resultados de los mismos.",
   "Tablas": "Configuración",

@@ -80,7 +80,7 @@ public es;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new Distribucion(element.id,element.idempresa,element.idcliente,element.idproductopropio,element.idordenProduccion,element.numlote,new Date(element.fecha),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.alergenos));
+                  this.items.push(new Distribucion(element.id,element.idempresa,element.idcliente,element.idproductopropio,element.idordenproduccion,element.numlote,new Date(element.fecha),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.tipo_medida,element.alergenos));
              }
             }
         },
@@ -179,6 +179,20 @@ saveRemanente(){
     });
 }
 
+updateRemanente(valor,idOrden){
+
+  let value = "*`remanente`+"+valor;
+   let  orden = {'remanente':value}
+  
+    let parametros = '?id=' + idOrden+"&entidad=produccion_orden";    
+    this.servidor.putObject(URLS.STD_ITEM, parametros, orden).subscribe(
+      response => {
+        if (response.success) {
+          
+        }
+    });
+}
+
 checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
@@ -197,6 +211,7 @@ checkBorrar(idBorrar: number) {
           if (response.success) {
             let controlBorrar = this.items.find(prod => prod.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
+            this.updateRemanente(this.items[indice].cantidad,this.items[indice].idordenproduccion);            
             this.items.splice(indice, 1);
           }
       });

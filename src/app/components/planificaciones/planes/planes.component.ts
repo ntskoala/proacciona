@@ -352,9 +352,13 @@ exportData(tabla: DataTable){
 }
 
 checkPeriodo(periodicidad: string): string{
-  let valor:string;
-  let periodo = JSON.parse(periodicidad);
-  return periodo.repeticion;
+  if (periodicidad){
+    let valor:string;
+    let periodo = JSON.parse(periodicidad);
+    return periodo.repeticion;
+    }else{
+      return 'Nul';
+    }
   }
 
 

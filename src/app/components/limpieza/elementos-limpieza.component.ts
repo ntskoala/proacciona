@@ -439,6 +439,7 @@ goDown(index:number,evento:Event){
     this.items[index].orden++;
     this.saveItem(this.items[index],index);
     this.items[index+1].orden--;
+
     this.saveItem(this.items[index+1],index+1);
     let temp1:any = this.items.splice(index,1);
     
@@ -454,7 +455,6 @@ goDown(index:number,evento:Event){
     console.log('ultimo elemento');
   }
 }
-
 
 exportData(tabla: DataTable){
   console.log(tabla);
@@ -473,9 +473,13 @@ exportData(tabla: DataTable){
 }
 
 checkPeriodo(periodicidad: string): string{
-  let valor:string;
-  let periodo = JSON.parse(periodicidad);
-  return periodo.repeticion;
+  if (periodicidad){
+    let valor:string;
+    let periodo = JSON.parse(periodicidad);
+    return periodo.repeticion;
+    }else{
+      return 'Nul';
+    }
   }
 
 

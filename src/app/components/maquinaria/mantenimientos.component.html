@@ -1,4 +1,6 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+
+<span class="cell tooltip" mdTooltip="{{'maquinas.nueva' | translate}}" [mdTooltipPosition]="'above'">    
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
@@ -23,12 +25,17 @@
     </span>
     <span class="cell"></span>
     <span class="cell">
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipPosition]="'above'">            
       <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
+        </span>
     </span>
   </form>
-  <div class="header-row">
+</div>
+</span>
+
+  <!-- <div class="header-row">
     <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
     <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
     <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
@@ -69,6 +76,66 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
-  </form>
+  </form> -->
+
+
+
+<div style="position:absolute; left:0px; top:110px; min-width:1000px">
+    <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
+    [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
+    [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'">
+    <p-header>
+        <div class="ui-helper-clearfix">
+            <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipPosition]="'left'">              
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
+            </span>
+          </div>
+    </p-header>
+
+    <!--************ ORDEN ***************************-->
+        <p-column field="orden" header="orden" [sortable]="true" [editable]="false">
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
+        <md-icon>import_export</md-icon>
+        </ng-template>
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+         <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
+        <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
+        <div class="orden" >{{item.orden}}</div>        
+        </ng-template>
+      </p-column>   
+    <!--************ FIN ORDEN ***************************--> 
+
+      <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
+      <p-column field="fecha" header="fecha" >
+        <ng-template let-col let-item="rowData" pTemplate="body">      
+        <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+        </ng-template>
+      </p-column>
+      <p-column field="tipo" header="tipo" [editable]="true" >
+      </p-column>
+      <p-column field="periodicidad" header="periodicidad" >
+        <ng-template let-col let-item="rowData" pTemplate="body">
+        <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
+        </ng-template>
+      </p-column>
+      <p-column field="responsable" header="responsable" [editable]="true"></p-column>
+
+  
+      <p-column header="'acciones'">
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+            <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipPosition]="'left'">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+          <span class="material-icons">close</span>
+        </button>
+      </span>
+      <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipPosition]="'right'">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+          <span class="material-icons">check</span>
+        </button>
+      </span>
+        </ng-template>   
+      </p-column>
+
+  </p-dataTable>
 
 </div>

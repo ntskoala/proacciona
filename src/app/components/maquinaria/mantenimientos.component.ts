@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 //import { DatePickerOptions, DateModel } from 'ng2-datepicker';
+import {DataTable} from 'primeng/primeng';
+
+
+import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -15,7 +19,7 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 })
 export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
-moment: any;
+momento: any;
 //  date: DateModel[]=[];
  // options: DatePickerOptions;
 public mantenimientos: MantenimientosMaquina[] =[]; 
@@ -23,6 +27,7 @@ public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0
 public guardar =[];
 public idBorrar;
 public es:any;
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
@@ -52,15 +57,24 @@ ngOnChanges(){
             this.mantenimientos = [];
             let i=0;
             
-            this.moment = Date();
+            this.momento = Date();
             if (response.success && response.data) {
+              let orden:number = 0;
               for (let element of response.data) {
+                if (element.orden == 0){
+                  this.itemEdited(element.id);
+                  orden++;
+                  }else{
+                    orden=parseInt(element.orden);
+                    this.guardar[element.id] = false;
+                  }
                 this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
-                  element.tipoperiodo, element.doc,element.usuario,element.responsable));
-                this.guardar[element.id] = false;
+                  element.tipoperiodo, element.doc,element.usuario,element.responsable,0+orden));
+                
 //                this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
                 i++;
               }
+             // console.log(this.guardar)
             // let widz = 430 + (this.mantenimientos.length*50);
             // if ( document.getElementById("testid") !== null)
             // document.getElementById("testid").style.minHeight= widz+"px";
@@ -77,12 +91,19 @@ ngOnChanges(){
   }
 
 
-    modificarMantenimiento(idMantenimiento: number, fecha?: any) {
-    this.guardar[idMantenimiento] = true;
-    //console.log (fecha.toString());
-  }
- actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number, event: any) {
-
+  //   modificarMantenimiento(idMantenimiento: number, fecha?: any) {
+  //   this.guardar[idMantenimiento] = true;
+  //   //console.log (fecha.toString());
+  // }
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
+        itemEdited(idItem: number, fecha?: any) {
+        this.guardar[idItem] = true;
+        console.log (idItem);
+      }
+//  actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number, event: any) {
+  saveItem(mantenimiento: MantenimientosMaquina, i: number, event?: any) {
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento);
@@ -101,6 +122,11 @@ ngOnChanges(){
     console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;
     this.nuevoMantenimiento.fecha = new Date(Date.UTC(this.nuevoMantenimiento.fecha.getFullYear(), this.nuevoMantenimiento.fecha.getMonth(), this.nuevoMantenimiento.fecha.getDate()))
+    if ( this.mantenimientos[this.mantenimientos.length-1].orden >0){
+      this.nuevoMantenimiento.orden=this.mantenimientos[this.mantenimientos.length-1].orden++;
+    }else{
+      this.nuevoMantenimiento.orden=0;
+    }
     this.servidor.postObject(URLS.MANTENIMIENTOS, this.nuevoMantenimiento).subscribe(
       response => {
         if (response.success) {
@@ -143,9 +169,81 @@ setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
 
   }else{
     console.log(idmantenimiento,i);
-    this.modificarMantenimiento(idmantenimiento);
+    this.itemEdited(idmantenimiento);
     this.mantenimientos[i].periodicidad = periodicidad;
 
   }
 }
+
+goUp(index:number,evento:Event){
+  if (index >0){
+      this.mantenimientos[index].orden--;
+      this.saveItem(this.mantenimientos[index],index);
+      this.mantenimientos[index-1].orden++;
+      this.saveItem(this.mantenimientos[index-1],index-1);
+      let temp1:any = this.mantenimientos.splice(index-1,1);
+      console.log(this.mantenimientos);
+      this.mantenimientos.splice(index,0,temp1[0]);
+      console.log(this.mantenimientos);
+      
+     this.mantenimientos = this.mantenimientos.slice();
+    //   setTimeout(()=>{
+    //     this.setOrden(evento,dt);
+    //   },500);
+  }else{
+    console.log('primer elemento');
+  }
+  }
+  
+  goDown(index:number,evento:Event){
+    if (index < this.mantenimientos.length-1){
+      this.mantenimientos[index].orden++;
+      this.saveItem(this.mantenimientos[index],index);
+      this.mantenimientos[index+1].orden--;
+  
+      this.saveItem(this.mantenimientos[index+1],index+1);
+      let temp1:any = this.mantenimientos.splice(index,1);
+      
+      console.log(this.mantenimientos);
+      this.mantenimientos.splice(index+1,0,temp1[0]);
+      console.log(this.mantenimientos);
+    this.mantenimientos = this.mantenimientos.slice();
+  
+      // setTimeout(()=>{
+      //   this.setOrden(evento,dt);
+      // },500);
+    }else{
+      console.log('ultimo elemento');
+    }
+  }
+
+
+exportData(tabla: DataTable){
+  console.log(tabla);
+  let origin_Value = tabla._value;
+
+  tabla._value = tabla.dataToRender;
+  tabla._value.map((maquina)=>{
+      (moment(maquina.fecha).isValid())?maquina.fecha = moment(maquina.fecha).format("DD/MM/YYYY"):'';
+      maquina.periodicidad=this.checkPeriodo(maquina.periodicidad);
+      });
+
+  tabla.csvSeparator = ";";
+  tabla.exportFilename = "Mantenimietos_preventivos_ "+this.maquina.nombre;
+  tabla.exportCSV();
+  tabla._value = origin_Value;
+}
+
+checkPeriodo(periodicidad: string): string{
+  if (periodicidad){
+  let valor:string;
+  let periodo = JSON.parse(periodicidad);
+  return periodo.repeticion;
+  }else{
+    return 'Nul';
+  }
+  }
+
+
+
 }

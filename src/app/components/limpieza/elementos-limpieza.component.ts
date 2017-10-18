@@ -110,6 +110,7 @@ public fotoProt:string;
       window.open(url,'_blank');
     }
   }
+  
   openTabProducto(evento,rowIndex){
     let indice = evento.index;
     let index = this.misproductos.findIndex((producto)=> producto.nombre == this.productos[rowIndex][indice].nombre);
@@ -158,7 +159,7 @@ public fotoProt:string;
                   index++;
              }
                 this.onElementosLimpieza.emit(this.items);
-                console.log ('items',this.items,this.protocolo);
+                //console.log ('items',this.items,this.protocolo);
             }
         },
         error=>console.log(error),

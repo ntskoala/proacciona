@@ -200,13 +200,13 @@
     </p-column>    
     <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
     <p-column field="descripcion" header="descripcion"  [editable]="true"></p-column>
-    <p-column field="fecha" header="fecha" >
+    <p-column field="fecha" header="fecha" [sortable]="true">
       <ng-template let-col let-item="rowData" pTemplate="body">      
       <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
       </ng-template>
     </p-column>
-    <p-column field="tipo" header="tipo" [editable]="true"></p-column>
-    <p-column field="periodicidad" header="periodicidad" >
+    <p-column field="tipo" header="tipo" [editable]="true" ></p-column>
+    <p-column field="periodicidad" header="periodicidad" [style]="{'width':'140px'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>

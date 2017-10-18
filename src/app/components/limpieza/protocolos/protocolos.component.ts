@@ -157,6 +157,9 @@ cerrarModal(event: boolean) {
   }
 }
 
+
+
+
 uploadImg(event, idItem,i,field) {
   console.log(idItem,i)
   var target = event.target || event.srcElement; //if target isn't there then take srcElement

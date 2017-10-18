@@ -662,3 +662,7 @@ width: 400px;
   float:left;
   margin-left: 30px;
 }
+
+.ui-column-title{
+  font-size: 14px; 
+}

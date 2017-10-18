@@ -3,7 +3,7 @@
     </div>
     <md-toolbar color="accent">{{'cuadroProtocolo' | translate}}
     </md-toolbar>
-    <p-dataTable [value]="tabla">
+    <p-dataTable [value]="tabla" [responsive]="true">
         <p-column *ngFor="let col of cols; let x = index" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'protocolo'">
              <ng-template let-col let-i="rowIndex" let-protocolo="rowData" pTemplate="body">
                 <span *ngIf="col.field == 'protocolo'">{{protocolo[col.field]}}</span>

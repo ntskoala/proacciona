@@ -9,7 +9,15 @@
 </div>
 <h2 class="center">{{"limpieza.productoslimpieza" | translate}}</h2>
 <div class="table">
-<span class="cell tooltip" mdTooltip="{{'limpieza.nuevoProd' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+    <span class="tooltip row" mdTooltip="{{'limpieza.nuevoProd' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+        
+    <div class="header-row">
+        <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
+        <span class="header-cell">{{"limpieza.marca" | translate}}</span>
+        <span class="header-cell">{{"limpieza.desinfectante" | translate}}</span>
+        <span class="header-cell">{{"limpieza.dosificacion" | translate}}</span>
+        <span class="header-cell"></span>
+      </div><div class="row"></div>
   
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
@@ -29,13 +37,7 @@
         <span class="cell">
       <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="nuevoItem.dosificacion" name="dosificacion">
     </span>
-    <span class="cell">
-    </span>
-    <span class="cell">
-    </span>
-    <span class="cell"></span>
-    <span class="cell"></span>
-    <span class="cell"></span>
+
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
@@ -44,18 +46,9 @@
   </form>
 </span>
 </div>
-  <!-- <div class="header-row">
-    <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
-    <span class="header-cell">{{"limpieza.marca" | translate}}</span>
-    <span class="header-cell">{{"limpieza.desinfectante" | translate}}</span>
-    <span class="header-cell">{{"limpieza.dosificacion" | translate}}</span>
-    <span class="header-cell">{{"limpieza.imagen" | translate}}</span>
-    <span class="header-cell"></span>
-        <span class="header-cell">{{"limpieza.ficha" | translate}}</span>
-            <span class="header-cell"></span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
-  </div>
+
+<div class="space"></div>
+  <!-- 
 
   <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index">
     <input type="hidden" [(ngModel)]="item.id" name="id">
@@ -118,12 +111,12 @@
 
 <div>
   <p-dataTable #dt [value]="items" 
-  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)">
+  [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)">
    
-    <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
+    <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
     <p-column field="marca" header="marca"  [editable]="true"></p-column>
    
-    <p-column field="desinfectante" header="desinfectante" [editable]="true">
+    <p-column field="desinfectante" header="desinfectante" [editable]="true" [style]="{'width':'180px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
           <span class="cell">
        <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.desinfectante" name="desinfectante" (change)="itemEdited(item.id)">
@@ -135,7 +128,7 @@
     </p-column>
 
 
-    <p-column field="dosificcion" header="dosificacion">
+    <p-column field="dosificcion" header="dosificacion" [style]="{'width':'180px'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
         <span class="cell">
       <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="item.dosificacion" name="dosificacion" (keyup)="itemEdited(item.id)">
@@ -143,7 +136,7 @@
       </ng-template>
     </p-column>
 
-    <p-column field="doc" header="foto">
+    <p-column field="doc" header="foto" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
@@ -161,7 +154,7 @@
       </span>
       </ng-template>
     </p-column>
-    <p-column field="ficha" header="ficha">
+    <p-column field="ficha" header="ficha" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex"  pTemplate="body">
 <!-- *****  subir/ver Ficha  ********* -->
     <span class="cell small">

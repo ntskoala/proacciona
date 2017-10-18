@@ -103,13 +103,18 @@ ngOnChanges(){
         this.guardar[idItem] = true;
         console.log (idItem);
       }
+
+
+
 //  actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number, event: any) {
   saveItem(mantenimiento: MantenimientosMaquina, i: number, event?: any) {
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
-    console.log ("actualizar_mantenimiento",mantenimiento);
+    console.log ("actualizar_mantenimiento",mantenimiento,this.mantenimientos[i].periodicidad);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
     mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
+
+
     let parametros = '?id=' + mantenimiento.id;        
     this.servidor.putObject(URLS.MANTENIMIENTOS, parametros, mantenimiento).subscribe(
       response => {
@@ -117,8 +122,8 @@ ngOnChanges(){
           console.log('Mantenimiento updated');
         }
     });
-
   }
+
   crearMantenimiento() {
     console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;

@@ -111,7 +111,10 @@
         <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
         </ng-template>
       </p-column>
-      <p-column field="tipo" header="tipo" [editable]="true" >
+      <p-column field="tipo" header="tipo">
+          <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+          <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
+        </ng-template>
       </p-column>
       <p-column field="periodicidad" header="periodicidad" >
         <ng-template let-col let-item="rowData" pTemplate="body">

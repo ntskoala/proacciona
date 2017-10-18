@@ -32,6 +32,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
   ngOnChanges() {
+    console.log('CAMBIO PROTOCOLO');
     this.procesando = true;
     let x = 0;
     let i=0;
@@ -39,7 +40,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
     if (this.protocolos && this.items){
     this.items.forEach((elementoLimpieza)=>{
       //console.log(x,i,elementoLimpieza)
-      this.getMisProductos(elementoLimpieza.id,x).then(
+      this.checkProtocolos(elementoLimpieza.protocolo,x).then(
         (response) =>{
           //console.log(x,i)
           i++;
@@ -63,33 +64,18 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
     //   });
     }
   }
-  getMisProductos(idElementoLimpieza,x){
+
+  checkProtocolos(prots,x){
     return new Promise((resolve, reject) => {
-  //   this.hayproducto[x] = [];
-  //   this.misproductos[x] = [];
-  // if (this.items ){
-  //         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=limpieza_productos_elemento"+"&field=idelemento&idItem="+idElementoLimpieza; 
-  //       this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
-  //         response => {
-             
-  //           if (response.success && response.data) {
-  //             for (let element of response.data) {  
-  //               this.misproductos[x].push(element.id)
-  //                 this.hayproducto[x].push(element.idproducto);
-  //            }
-  //               resolve(x);
-  //           }else{
-  //             resolve(x);
-  //           }
-  //       },
-  //       error=>console.log(error),
-  //       ()=>{
-          
-  //       }
-  //       );
-  // }else{
+      let myProts = JSON.parse(prots)
+      myProts.forEach(prot => {
+       let existe = this.protocolos.findIndex(Aprot=>Aprot.id==prot)
+        if (existe == -1)
+          {
+            this.deletePermiso(prot,this.items[x].id,x)
+          }
+      });
      resolve(x);
-  // }
     });
 }
 

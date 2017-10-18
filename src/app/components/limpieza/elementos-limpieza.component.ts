@@ -77,7 +77,9 @@ public fotoProt:string;
         }; 
   }
   ngOnChanges(){
-    this.getProtocolos();
+    this.getProtocolos().then(
+      (resultado)=>{
+        console.log("******PROTOCOLOS",this.protocolos);
     this.getProductos().then(
       (resultado)=>{
         if (resultado){
@@ -85,6 +87,7 @@ public fotoProt:string;
            this.setItems();
         }
       });
+    });
   }
 
   // photoURL(i,tipo) {
@@ -155,7 +158,7 @@ public fotoProt:string;
                   index++;
              }
                 this.onElementosLimpieza.emit(this.items);
-                console.log ('items',this.items);
+                console.log ('items',this.items,this.protocolo);
             }
         },
         error=>console.log(error),

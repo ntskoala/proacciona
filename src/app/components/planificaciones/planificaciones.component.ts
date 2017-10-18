@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+
+import { EmpresasService } from '../../services/empresas.service';
 import { Planificacion } from '../../models/planificacion';
 import { PlanRealizado } from '../../models/planrealizado';
 @Component({
@@ -21,7 +23,7 @@ public planes: Planificacion[] = [];
 public plan: Planificacion;
 public planRealizado: PlanRealizado;
 public newPlanRealizado:number;
-  constructor() { }
+  constructor(public empresasService: EmpresasService) { }
 
   ngOnInit() {
   }

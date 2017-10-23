@@ -67,7 +67,9 @@ public modal2: Modal;
     });
   }
 
-
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
     //console.log (fecha.toString());

@@ -140,6 +140,9 @@
     </div>
 </form>
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-<span class="close material-icons" (click)="cerrarFoto()">close</span>
+<!-- <span class="close material-icons" (click)="cerrarFoto()">
+        <md-icon>close</md-icon></span> -->
+        <button  class="close" color="accent" md-mini-fab (click)="cerrarFoto()"><md-icon>close</md-icon></button>
+
 <img   class="iframe" [src]="foto">
 </div>

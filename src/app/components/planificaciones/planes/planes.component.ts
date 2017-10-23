@@ -202,11 +202,11 @@ modificarItem(){
 }
 
  saveItem(item: Planificacion,i: number) {
-
+  let indice = this.planes.findIndex((myitem)=>myitem.id==item.id);
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
-    item.periodicidad = this.planes[i].periodicidad; 
+    item.periodicidad = this.planes[indice].periodicidad; 
     //item.supervisor = this.planes[i].supervisor;
     console.log(item,i);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
@@ -232,10 +232,13 @@ setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
   console.log(this.plan.periodicidad);
 
   }else{
-    console.log(idItem,i,periodicidad);
+    // console.log(idItem,i,periodicidad);
+    // this.itemEdited(idItem);
+    // this.planes[i].periodicidad = periodicidad;
+    // console.log(this.planes[i]);
     this.itemEdited(idItem);
-    this.planes[i].periodicidad = periodicidad;
-    console.log(this.planes[i]);
+    let indice = this.planes.findIndex((item)=>item.id==idItem);
+    this.planes[indice].periodicidad = periodicidad;
   }
 }
 

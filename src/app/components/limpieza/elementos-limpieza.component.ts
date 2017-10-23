@@ -61,6 +61,9 @@ public procesando:boolean=false;
 public display:boolean[];
 public fotoProd:string;
 public fotoProt:string;
+public fotourl:string;
+public currentExpandedId: number;
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
@@ -110,7 +113,7 @@ public fotoProt:string;
       window.open(url,'_blank');
     }
   }
-  
+
   openTabProducto(evento,rowIndex){
     let indice = evento.index;
     let index = this.misproductos.findIndex((producto)=> producto.nombre == this.productos[rowIndex][indice].nombre);
@@ -118,15 +121,32 @@ public fotoProt:string;
    this.fotoProd = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_producto/'+this.misproductos[index].id +"_"+this.misproductos[index].doc;
     console.log(evento,this.fotoProd)
   }
+  setExpanded(evento){
+    console.log(evento)
+    this.currentExpandedId = evento.data.id;
+  }
   openTabProtocolo(evento,index){
     this.fotoProt = null;
-    console.log(evento.index,this.protocolo[index][evento.index]);
-    let indice = this.protocolo[index][evento.index];
+    console.log(this.protocolo);
+    //let indice = this.protocolo[index][evento.index];
+    
+    let indice = this.protocolo[this.currentExpandedId][evento.index]
+
+    let extension = this.protocolos[indice].doc.substr(-3,3);
     //let index = this.misproductos.findIndex((producto)=> producto.nombre == this.productos[rowIndex][indice].nombre);
     if (this.protocolos[indice].doc){
-   this.fotoProt = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_protocolos/'+indice +"_"+this.protocolos[indice].doc;
+      if (extension == 'jpg' || extension == 'peg' || extension == 'png' || extension == 'gif'){
+        this.fotoProt = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_protocolos/'+indice +"_"+this.protocolos[indice].doc;        
+       this.fotourl=this.fotoProt;
+        console.log('imagen',this.fotoProt,this.protocolos[indice].doc.substr(-3,3));
+      }else{
+        this.fotoProt = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_protocolos/'+indice +"_"+this.protocolos[indice].doc;                
+        this.fotourl="./assets/images/viewpdf.jpeg";
+        //this.fotoProt = "./assets/images/viewpdf.jpeg";
+   console.log('doc',this.fotoProt);
     }
-   console.log(this.protocolos[indice],this.fotoProt);
+  }
+   
   }
 
 
@@ -151,9 +171,9 @@ public fotoProt:string;
                   
                   this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor,0+orden));
                   try{
-                    this.protocolo[index]=JSON.parse(element.protocolo)
+                    this.protocolo[element.id]=JSON.parse(element.protocolo)
                   }catch(e){
-                    this.protocolo[index]=[];
+                    this.protocolo[element.id]=[];
                   }
                   this.getProdsElemtento(element.id,index);
                   index++;
@@ -273,14 +293,16 @@ this.itemEdited(evento.data.id);
     //console.log (fecha.toString());
   }
  saveItem(item: LimpiezaElemento,i: number) {
+  let indice = this.items.findIndex((myitem)=>myitem.id==item.id);
+  console.log('item ',this.items[indice]);
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
-    item.periodicidad = this.items[i].periodicidad; 
+    item.periodicidad = this.items[indice].periodicidad; 
    // item.productos = this.items[i].productos;
    // item.protocol = this.items[i].protocol;
-    item.supervisor = this.items[i].supervisor;
+   // item.supervisor = this.items[i].supervisor;
     console.log(item);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
@@ -335,13 +357,14 @@ checkBorrar(idBorrar: number) {
 setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
   if (!idItem){
   this.nuevoItem.periodicidad = periodicidad;
-  console.log(this.nuevoItem.periodicidad);
+  // console.log(this.nuevoItem.periodicidad);
 
   }else{
-    console.log(idItem,i,periodicidad);
+    // console.log(idItem,i,periodicidad);
     this.itemEdited(idItem);
-    this.items[i].periodicidad = periodicidad;
-    console.log(this.items[i]);
+    let indice = this.items.findIndex((item)=>item.id==idItem);
+    this.items[indice].periodicidad = periodicidad;
+    // console.log(this.items[indice]);
   }
 }
 // setProtocol(protocol:string,i:number,itemId:number){

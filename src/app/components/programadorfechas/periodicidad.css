@@ -17,6 +17,7 @@
     background-color: #d2d2d2;
     margin: -25px;
     padding: 20px;
+    height:300px;
 }
 .tipos{
     min-width: 155px;
@@ -27,19 +28,46 @@
     width: 55px;
   }
   .dias{
-      margin-left: 55px;
+
+  }
+  .cadaseana{
+   height: 100px;
+}
+  .selector{
+      height:60px;
   }
   .section{
       width: 100%;
       margin-left: 30px;
-      margin-top: 30px;
+      margin-top: 0px;
   }
   .section2{
       width: 100%;
       margin-top: 30px;
   }
+  .mensual{
+    position: absolute;
+    display: block;
+    float: right;
+    margin-left: 330px;
+    margin-top: -0px;
+  }
+  .mensual2{
+    margin-top: -60px;
+  }
+  .anual{
+    position: absolute;
+    display: block;
+    float: right;
+    margin-left: 330px;
+    margin-top: -60px;
+  }
   .dia{
       margin: 0 7px;
+  }
+  .buttons{
+      position: absolute;
+      bottom: 50px;
   }
 
   .hr{

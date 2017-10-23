@@ -6,7 +6,7 @@
 
   <div>
 
-<p-dataTable #DT [value]="items" [editable]="true" expandableRows="true" 
+<p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"  [responsive]="false" 
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
 [csvSeparator]="';'" [exportFilename]="'Planes_Realizados'">
@@ -17,25 +17,25 @@
     </p-header>
 
   <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template>
-  <p-column expander="true" styleClass="col-icon">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'50px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
          <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
         
         </div>
     </ng-template> 
   </p-column>
-  <p-column field="nombre" header="{{'planificaciones.nombre' | translate}}" [editable]="true"></p-column>
-  <p-column field="fecha_prevista" header="{{'planificaciones.fecha_prevista' | translate}}" [editable]="true">
+  <p-column field="nombre" header="{{'planificaciones.nombre' | translate}}" [editable]="true" [style]="{'width':'100px'}"></p-column>
+  <p-column field="fecha_prevista" header="{{'planificaciones.fecha_prevista' | translate}}" [editable]="true" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
+      <p-calendar appendTo="body" [inputStyle]="{'width':'90px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="fecha" header="{{'planificaciones.fecha_real' | translate}}" [editable]="true">
+  <p-column field="fecha" header="{{'planificaciones.fecha_real' | translate}}" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" pTemplate="body">
-      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'90px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="responsable" header="{{'planificaciones.responsable' | translate}}" [editable]="true"></p-column>
+  <p-column field="responsable" header="{{'planificaciones.responsable' | translate}}" [editable]="true" [style]="{'width':'90px'}"></p-column>
 
   <p-column [style]="{'width':'190px'}" field="supervision" header="{{'planificaciones.supervision' | translate}}" [editable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
@@ -65,9 +65,9 @@
   </div>
   </ng-template>
   </p-column>
-    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true">
+    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'90px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
   <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
@@ -100,11 +100,12 @@
     <!-- <img *ngIf="!images[i]" [src]="./assets/images/noimage.png" height="80px" (error)="image='assets/images/noimage.png'" (click)="verFoto('maquina')" /> -->
   
     <hr>
+    <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">        
     <span  class="but but2">
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
-    
+    </span>
       </p-panel>
 
         <p-panel [style]="{'width':'10%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.doc' | translate}}">
@@ -114,7 +115,9 @@
      <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
          <hr>
     <span  class="but but2 altPanel">
+    <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">                
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
+    </span>
         <br>
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="{{'pdf'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
       
@@ -125,7 +128,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'100px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">

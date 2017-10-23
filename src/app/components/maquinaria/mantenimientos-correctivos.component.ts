@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { DataTable } from 'primeng/primeng';
+
+import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -29,6 +32,8 @@ public date = new Date();
 public url:string[]=[];
 public verdoc: boolean = false;
 public foto:string;
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
@@ -94,7 +99,9 @@ public foto:string;
     });
   }
 
-
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
     //console.log (fecha.toString());
@@ -133,5 +140,21 @@ checkBorrar(){}
       }
     )
   }
+
+  exportData(tabla: DataTable) {
+    console.log(tabla);
+    let origin_Value = tabla._value;
+
+    tabla._value = tabla.dataToRender;
+    tabla._value.map((mentenimientos) => {
+      (moment(mentenimientos.fecha).isValid()) ? mentenimientos.fecha = moment(mentenimientos.fecha).format("DD/MM/YYYY") : '';
+    });
+
+    tabla.csvSeparator = ";";
+    tabla.exportFilename = "Mantenimientos_correctivos" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+    tabla.exportCSV();
+    tabla._value = origin_Value;
+  }
+
 
 }

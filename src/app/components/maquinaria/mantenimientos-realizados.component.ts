@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { DataTable } from 'primeng/primeng';
+
+import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -26,6 +29,7 @@ public mantenimientos: MantenimientoRealizado[];
 public es:any;
  public guardar = [];
 public idBorrar;
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 
   modal: Modal = new Modal();
 // public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
@@ -77,7 +81,9 @@ public idBorrar;
         ()=> console.log("mantenimientos",this.mantenimientos)
         );
   }
-
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
   }
@@ -125,6 +131,36 @@ public idBorrar;
         }
     });
   }
+
+
+  exportData(tabla: DataTable) {
+    console.log(tabla);
+    let origin_Value = tabla._value;
+
+    tabla._value = tabla.dataToRender;
+    tabla._value.map((mentenimientos) => {
+      (moment(mentenimientos.fecha_prevista).isValid()) ? mentenimientos.fecha_prevista = moment(mentenimientos.fecha_prevista).format("DD/MM/YYYY") : '';
+      (moment(mentenimientos.fecha).isValid()) ? mentenimientos.fecha = moment(mentenimientos.fecha).format("DD/MM/YYYY") : '';
+      
+     // mentenimientos.periodicidad = this.checkPeriodo(mentenimientos.periodicidad);
+    });
+
+    tabla.csvSeparator = ";";
+    tabla.exportFilename = "Mantenimientos_realizados" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+    tabla.exportCSV();
+    tabla._value = origin_Value;
+  }
+
+  checkPeriodo(periodicidad: string): string {
+    if (periodicidad) {
+      let valor: string;
+      let periodo = JSON.parse(periodicidad);
+      return periodo.repeticion;
+    } else {
+      return 'Nul';
+    }
+  }
+
 
 // checkBorrar(){}
 //   uploadImg(event, idItem,i) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit,OnChanges, Input, Output, EventEmitter  } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
 
@@ -20,7 +20,7 @@ export class Supervisor{
   templateUrl: './supervisores.component.html',
   styleUrls: ['./supervisores.component.css']
 })
-export class SupervisoresComponent implements OnInit {
+export class SupervisoresComponent implements OnInit, OnChanges {
 @Input() items;
 
 @Input() tipoControl;
@@ -42,6 +42,8 @@ public idItem:number;
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
+  }
+  ngOnChanges(){
         switch(this.tipoControl){
       case "planes":
       this.entidad="&entidad=planificaciones";

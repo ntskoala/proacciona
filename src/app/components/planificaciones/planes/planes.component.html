@@ -5,6 +5,14 @@
 </div>
 <span class="cell tooltip" mdTooltip="{{'planificaciones.nueva' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
 <div class="table planes">
+    <div class="header-row">
+        <span class="header-cell">{{"planificaciones.nombre" | translate}}</span>
+        <span class="medium header-cell">{{"planificaciones.descripcion" | translate}}</span>
+        <span class="header-cell">{{"planificaciones.fecha" | translate}}</span>
+        <span class="header-cell">{{"planificaciones.periodicidad" | translate}}</span>
+         <span class="medium header-cell">{{"planificaciones.responsable" | translate}}</span>
+         <span class="medium header-cell">{{"add" | translate}}</span>
+      </div>
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="plan.id" name="id">
     <span class="cell">
@@ -26,7 +34,6 @@
       <input type="text" [placeholder]="'planificaciones.responsable' | translate" required [(ngModel)]="plan.responsable" name="responsable">
     </span>
 
-     <span  class="cell"></span>
     <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
@@ -110,21 +117,21 @@
       <div class="orden" >{{item.orden}}</div>        
       </ng-template>
     </p-column>   
-    <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
-    <p-column field="descripcion" header="descripcion"  [editable]="true"></p-column>
-    <p-column field="fecha" header="fecha" >
+    <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
+    <p-column field="descripcion" header="{{'descripcion' | translate}}"  [editable]="true"></p-column>
+    <p-column field="fecha" header="{{'fecha' | translate}}" >
       <ng-template let-col let-item="rowData" pTemplate="body">      
-      <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+      <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
       </ng-template>
     </p-column>
-    <p-column field="periodicidad" header="periodicidad" >
+    <p-column field="periodicidad" header="{{'periodicidad' | translate}}" >
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>
     </p-column>
-    <p-column field="responsable" header="responsable" [editable]="true"></p-column>
+    <p-column field="responsable" header="{{'responsable' | translate}}" [editable]="true"></p-column>
 
-    <p-column header="'acciones'">
+    <p-column header="{{'acciones' | translate}}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
           <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">

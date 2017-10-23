@@ -36,13 +36,13 @@
       </select>
       {{writesemana | translate}}
     </section>
-        <section class="mensual section" *ngIf="periodoactual.repeticion=='anual'" name="mes">
+        <section class="anual section" *ngIf="periodoactual.repeticion=='anual'" name="mes">
         {{'maquinas.en' | translate}} &nbsp;
         <select  class="tipos pos2" required [(ngModel)]="periodoactual.mes" name="mes">
         <option *ngFor="let mes of meses;let i = index" value="{{i+1}}">{{mes | translate}}</option>
       </select>
         </section>
-    <section class="mensual section" *ngIf="periodoactual.repeticion == 'mensual' || periodoactual.repeticion=='anual'" name="mensual">
+    <section class="mensual section" [ngClass]="{'mensual2' : periodoactual.repeticion == 'mensual'}" *ngIf="periodoactual.repeticion == 'mensual' || periodoactual.repeticion=='anual'" name="mensual">
     {{'maquinas.por' | translate}} 
     <select class="tipos pos1" required [(ngModel)]="periodoactual.tipo" name="tipo_periodo">
         <option value="diames">{{"maquinas.diames"| translate}}</option>
@@ -92,9 +92,11 @@
       </section>
 
     </section>
+    <div class="buttons">
     <hr class="hr">
     <button type="button" md-raised-button (click)="ok()">{{'aceptar' || translate}}</button>
     <button type="button" md-raised-button (click)="notok()">{{'cancelar' || translate}}</button>
+    </div>
         </div>
     </md-card>
 </div>

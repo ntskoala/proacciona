@@ -27,6 +27,8 @@ import {PanelModule} from 'primeng/primeng';
 import {InputTextareaModule} from 'primeng/primeng';
 import {DragDropModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';
+import {SpinnerModule} from 'primeng/primeng';
+
 
 //**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
@@ -157,6 +159,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     InputTextareaModule,
     DragDropModule,
     AccordionModule,
+    SpinnerModule,
 /**********MATERIAL */
     MaterialModule,
    // MdSelectModule,

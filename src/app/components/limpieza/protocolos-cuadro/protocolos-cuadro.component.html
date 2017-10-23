@@ -1,7 +1,7 @@
 <div class="modal" *ngIf="procesando">
     <md-spinner></md-spinner>
     </div>
-    <md-toolbar color="accent">{{'cuadroProtocolo' | translate}}
+    <md-toolbar color="accent">{{'protocolo.cuadroProtocolo' | translate}}
     </md-toolbar>
     <p-dataTable [value]="tabla" [responsive]="true">
         <p-column *ngFor="let col of cols; let x = index" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'protocolo'">

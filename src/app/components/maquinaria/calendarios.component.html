@@ -1,28 +1,28 @@
 <md-card>
 <h2 class="center">{{'maquinas.CalendarioGeneralMantenimiento' | translate}}</h2>
-<p-schedule [events]="events" [header]="headerCalendar"  [locale]="locale" [contentHeight]="600" [eventLimit]="4" [editable]="false"
- dateFormat="dd-mm-yy"
-  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+<p-schedule [height]="400"  [contentHeight]="300"  [aspectRatio]="3" [events]="events" [header]="headerCalendar"  [locale]="locale" 
+ [eventLimit]="4" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar>
+</p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
 <md-card>{{'leyenda' | translate}}
     <div class="leyenda">
        {{'maquinas.mantenimientos' | translate}}
         <md-chip-list>
-            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
-            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip color="#F67E1F" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
-            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
         <br>
         {{'maquinas.calibraciones' | translate}}
         <md-chip-list>
-            <figure style="display: block;background: #88ee88;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: #88ee88;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
-            <figure style="display: block;background: #673AB7;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: #673AB7;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip color="#33cc33" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
-            <figure style="display: block;background: red;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
+            <figure style="display: block;background: red;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
     </div>

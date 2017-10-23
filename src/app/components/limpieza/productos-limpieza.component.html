@@ -114,9 +114,9 @@
   [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)">
    
     <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
-    <p-column field="marca" header="marca"  [editable]="true"></p-column>
+    <p-column field="marca" header="{{'limpieza.marca' | translate}}"  [editable]="true"></p-column>
    
-    <p-column field="desinfectante" header="desinfectante" [editable]="true" [style]="{'width':'180px'}">
+    <p-column field="desinfectante" header="{{'limpieza.desinfectante' | translate}}" [editable]="true" [style]="{'width':'180px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
           <span class="cell">
        <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.desinfectante" name="desinfectante" (change)="itemEdited(item.id)">
@@ -128,15 +128,15 @@
     </p-column>
 
 
-    <p-column field="dosificcion" header="dosificacion" [style]="{'width':'180px'}">
+    <p-column field="dosificcion" header="{{'limpieza.dosificacion' | translate}}" [style]="{'width':'180px'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
         <span class="cell">
-      <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="item.dosificacion" name="dosificacion" (keyup)="itemEdited(item.id)">
+      <input type="text" [placeholder]="dosificcion" [(ngModel)]="item.dosificacion" name="dosificacion" (keyup)="itemEdited(item.id)">
     </span>
       </ng-template>
     </p-column>
 
-    <p-column field="doc" header="foto" [style]="{'width':'130px'}">
+    <p-column field="doc" header="{{'foto' | translate}}" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
@@ -154,7 +154,7 @@
       </span>
       </ng-template>
     </p-column>
-    <p-column field="ficha" header="ficha" [style]="{'width':'130px'}">
+    <p-column field="ficha" header="{{'limpieza.ficha' | translate}}" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex"  pTemplate="body">
 <!-- *****  subir/ver Ficha  ********* -->
     <span class="cell small">
@@ -176,7 +176,7 @@
 
 
 
-    <p-column header="'acciones'">
+    <p-column header="{{'acciones' | translate}}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
           <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">

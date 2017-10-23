@@ -85,20 +85,20 @@
 </p-header>
 
   <!-- <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template> -->
-  <p-column expander="true" styleClass="col-icon">
+  <p-column expander="true" styleClass="col-icon"  [style]="{'width':'40px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
          <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
         
         </div>
     </ng-template> 
   </p-column>
-  <p-column field="nombre" header="{{'limpieza.nombre' | translate}}" [editable]="true"></p-column>
-  <p-column field="fecha_prevista" header="{{'limpieza.fecha_prevista' | translate}}" [editable]="true">
+  <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"></p-column>
+  <p-column field="fecha_prevista" header="{{'limpieza.fecha_prevista' | translate}}" [editable]="true" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
       <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="fecha" header="{{'limpieza.fecha_real' | translate}}" [editable]="true">
+  <p-column field="fecha" header="{{'limpieza.fecha_real' | translate}}" [editable]="true" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
@@ -136,7 +136,7 @@
   </div>
   </ng-template>
   </p-column>
-    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true">
+    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true" [style]="{'width':'120px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>

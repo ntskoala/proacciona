@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges , Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -32,7 +32,7 @@ export class Control {
   templateUrl: './permisos.component.html',
   styleUrls: ['./permisos.component.css']
 })
-export class PermisosGeneralComponent implements OnInit {
+export class PermisosGeneralComponent implements OnInit, OnChanges {
   //@Input() limpieza: number;
   //@Input() supervisor: number;
   @Input() items;
@@ -58,6 +58,8 @@ export class PermisosGeneralComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+    ngOnChanges(){
     switch (this.tipoControl) {
       case "planes":
         this.entidad = "&entidad=permissionplanificaciones";

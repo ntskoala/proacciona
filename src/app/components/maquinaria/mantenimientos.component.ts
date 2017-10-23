@@ -108,11 +108,13 @@ ngOnChanges(){
 
 //  actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number, event: any) {
   saveItem(mantenimiento: MantenimientosMaquina, i: number, event?: any) {
+    let indice = this.mantenimientos.findIndex((myitem)=>myitem.id==mantenimiento.id);
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento,this.mantenimientos[i].periodicidad);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
-    mantenimiento.periodicidad = this.mantenimientos[i].periodicidad;
+   
+    mantenimiento.periodicidad = this.mantenimientos[indice].periodicidad;
 
 
     let parametros = '?id=' + mantenimiento.id;        
@@ -140,6 +142,8 @@ ngOnChanges(){
           this.mantenimientos.push(this.nuevoMantenimiento);
  //         this.date.push({"day":"","month":"","year":"","formatted":this.nuevoMantenimiento.fecha,"momentObj":this.moment});
           this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'','');
+          this.mantenimientos = this.mantenimientos.slice();
+          
         }
     });
   }
@@ -164,6 +168,8 @@ ngOnChanges(){
             let controlBorrar = this.mantenimientos.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.mantenimientos.indexOf(controlBorrar);
             this.mantenimientos.splice(indice, 1);
+          this.mantenimientos = this.mantenimientos.slice();
+          
           }
       });
     }
@@ -174,10 +180,12 @@ setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
   console.log(this.nuevoMantenimiento.periodicidad);
 
   }else{
-    console.log(idmantenimiento,i);
+    // console.log(idmantenimiento,i);
+    // this.itemEdited(idmantenimiento);
+    // this.mantenimientos[i].periodicidad = periodicidad;
     this.itemEdited(idmantenimiento);
-    this.mantenimientos[i].periodicidad = periodicidad;
-
+    let indice = this.mantenimientos.findIndex((item)=>item.id==idmantenimiento);
+    this.mantenimientos[indice].periodicidad = periodicidad;
   }
 }
 

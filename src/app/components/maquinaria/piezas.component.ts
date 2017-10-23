@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
+import {DataTable} from 'primeng/primeng';
+
+import * as moment from 'moment';
+
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -59,11 +63,14 @@ ngOnChanges(){
         );
   }
 
-    modificarItem(idItem: number) {
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
+    itemEdited(idItem: number) {
     this.guardar[idItem] = true;
   }
 
- actualizarItem(pieza: PiezasMaquina) {
+ saveItem(pieza: PiezasMaquina) {
     this.guardar[pieza.id] = false;
 
     let parametros = '?id=' + pieza.id;        
@@ -133,5 +140,15 @@ ngOnChanges(){
     )
   }
 
+  exportData(tabla: DataTable){
+    console.log(tabla);
+    let origin_Value = tabla._value;
+    tabla._value = tabla.dataToRender;
+    //tabla._value.map((maquina)=>{});
+    tabla.csvSeparator = ";";
+    tabla.exportFilename = "Mantenimietos_preventivos_ "+this.maquina.nombre;
+    tabla.exportCSV();
+    tabla._value = origin_Value;
+  }
 
 }

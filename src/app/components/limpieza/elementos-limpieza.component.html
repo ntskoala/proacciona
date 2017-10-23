@@ -14,6 +14,17 @@
 <span class="cell tooltip" mdTooltip="{{'limpieza.nuevoElemento' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
 
 <div class="table">
+    <div class="header-row">
+        <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
+        <span class="medium header-cell">{{"limpieza.fecha" | translate}}</span>
+        <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
+        <span class="header-cell">{{"limpieza.periodicidad" | translate}}</span>
+        <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
+         <span class="header-cell">App</span>
+        <span class="header-cell medium">{{"cantidad" | translate}}</span>
+        <span class="header-cell">{{"add" | translate}}</span>
+      </div>
+      
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
@@ -32,25 +43,14 @@
     <span class="cell">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo"></periodicidad>
     </span>
-     <!-- <span class="cell">
-    <select-productos name="productos" [elementoLimpieza]="0" (selectedProductsChange)="setProducts($event)"></select-productos>
- </span> -->
+
     <span class="medium cell">
       <input class="medium" type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
     </span>
     <span class="cell small">
         <md-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></md-checkbox>
     </span>
-      <span class="cell small">
-        <!--<button md-mini-fab class="camera" (click)="verPermisos(-1)" type="button">
-        <span class="material-icons">phonelink_lock</span>
-      </button>  -->
-    </span>
-    <!-- <span class="cell medium">
-             <button md-mini-fab class="camera" (click)="verProtocolo(-1)" type="button">
-        <span class="material-icons">list</span>
-      </button>    
-      </span> -->
+
     <span class="cell small">num.
       <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
         <option value="1">1</option>
@@ -77,9 +77,11 @@
     </span>
   </form>
   </div>
- <div style="height: 15px" ></div>
+ 
 
 </span>
+<div class="space" ></div>
+
 <!-- 
   <div class="protocol" *ngIf="newItemprotocolo">
  <protocolo class="cell" (protocolEmitter)="setProtocol($event,-1,0)" [parentProtocol]="" ></protocolo>
@@ -171,10 +173,12 @@
  <!-- </div>
  </div>  -->
 
-<div style="position:absolute; left:0px; top:110px; min-width:1000px">
-  <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single"
+<div style="position:absolute; left:0px; top:120px; min-width:1000px">
+  <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
-  [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
+  [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
+  [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,20,30,50,100]"
+  [scrollable]="true"  [style]="{'min-height':'600px'}">
   <p-header>
       <div class="ui-helper-clearfix">
           <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
@@ -182,7 +186,7 @@
           </span>
         </div>
   </p-header>
-  <p-column expander="true" styleClass="col-icon">
+  <p-column expander="true" styleClass="col-icon" [style]="{'width':'40px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
          <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
         </div>
@@ -197,23 +201,27 @@
       <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
       <div class="orden" >{{item.orden}}</div>        
       </ng-template>
-    </p-column>    
-    <p-column field="nombre" header="nombre" [editable]="true" ></p-column>
-    <p-column field="descripcion" header="descripcion"  [editable]="true"></p-column>
-    <p-column field="fecha" header="fecha" [sortable]="true">
+    </p-column>
+    <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
+    <p-column field="descripcion" header="{{'descripcion' | translate}}"  [editable]="true"></p-column>
+    <p-column  field="fecha" header="{{'fecha' | translate}}" [sortable]="true">
       <ng-template let-col let-item="rowData" pTemplate="body">      
-      <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
       </ng-template>
     </p-column>
-    <p-column field="tipo" header="tipo" [editable]="true" ></p-column>
-    <p-column field="periodicidad" header="periodicidad" [style]="{'width':'140px'}">
+    <p-column field="tipo" header="{{'tipo' | translate}}" [editable]="true" >
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+            <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
+          </ng-template>
+    </p-column>
+    <p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'140px'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>
     </p-column>
-    <p-column field="responsable" header="responsable" [editable]="true"></p-column>
+    <p-column field="responsable" header="{{'responsable' | translate}}" [editable]="true"></p-column>
 
-    <p-column field="app" header="app">
+    <p-column field="app" header="App">
       <ng-template  pTemplate="header">
  <span class="cell tooltip" mdTooltip="{{'limpiezas.app' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">  
    app   
@@ -225,7 +233,7 @@
       </ng-template>
     </p-column>
 
-    <p-column header="'acciones'">
+    <p-column header="{{'acciones' | translate}}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
           <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
@@ -255,11 +263,10 @@
 <!--*****  PROTOCOLOS  *********-->
 
 <span class="cell">
-
       <p-accordion (onOpen)="openTabProtocolo($event,rowIndex)">
-          <p-accordionTab header="{{ protocolos[prot].nombre}}"  *ngFor="let prot of protocolo[rowIndex]" onOpen="openTabProtocolo(prot)">
+          <p-accordionTab header="{{ protocolos[prot].nombre}}"  *ngFor="let prot of protocolo[item.id]" onOpen="openTabProtocolo($event,index,item.id)">
             <div style="float:left" *ngIf="fotoProt" (click)="photoURL(fotoProt)">
-                <img [src]="fotoProt" height="60px">
+                <img [src]="fotourl" height="60px" (error)="fotourl='./assets/images/noimage.png'">
             </div>
             <div style="min-height:65px;margin-left: 15px;display:inline-block">
               <span *ngFor="let elemProt of elemsProtocolo[prot]">

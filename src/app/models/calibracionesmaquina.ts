@@ -9,6 +9,7 @@ export class CalibracionesMaquina {
     public tipo_periodo?: string,
     public doc?: string,
     public usuario?:number,
-    public responsable?: string
+    public responsable?: string,
+    public orden?: number
   ) {}
 }

@@ -8,8 +8,8 @@
   "descripcion":"Descripción",
   "fecha":"Fecha",
   "tipo":"Tipo",
-  "perdiodicidad":"Periodicidad",
-  "responsble":"Responsable",
+  "periodicidad":"Periodicidad",
+  "responsable":"Responsable",
   "acciones":"Acciones",
   "exportar":"Exportar",
   "expand":"Expandir",
@@ -51,7 +51,6 @@
   "borrarChecklistT": "¿Estás seguro de querer eliminar la checklist?",
   "borrarChecklistST": "Se borrarán los resultados asociados a la checklist y los permisos de los usuarios.",
   "Periodicidad": "Periodicidad",
-  "periodicidad": "periodicidad",
   "borrarControlchecklistT": "¿Estás seguro de querer eliminar el control checklist?",
   "borrarControlchecklistST": "Se borrarán sus resultados asociados.",
   "Supervisores":"Supervisores",
@@ -121,6 +120,7 @@
     "nueva": "Nueva máquina",
     "nuevaCalibracion":"Nueva calibración",
     "nuevaPieza":"Nueva pieza de máquina",
+    "nuevoLubricante":"Nuevo lubricante",
     "maquinaria": "Mantenimiento",
     "maquinas": "Maquinas",
     "mantenimientos": "Mantenimientos",
@@ -239,7 +239,8 @@
      "correcta":"Correcta",
      "incorrecta":"Incorrecta",
      "porSupervisar":"Por supervisar",
-     "cuadroProductos":"Asignar productos"
+     "cuadroProductos":"Asignar productos",
+     "app":"Mostrar en el móvil"
   },
   "protocolo":{
       "cuadroProtocolo":"Asignar protocolos",

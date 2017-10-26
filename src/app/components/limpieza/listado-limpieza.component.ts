@@ -19,6 +19,7 @@ export class ListadoLimpiezasComponent implements OnInit {
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
   @Output() migrando: EventEmitter<boolean>=new EventEmitter<boolean>();
+  public myItem: number = null;
   
   public subscription: Subscription;
   public limpiezaActiva: number = 0;
@@ -65,12 +66,30 @@ ngOnInit(){
         );
    }
 
-seleccionarZona(event:any){
-  this.zonaSeleccionada.emit(this.limpiezas[event.value]);
-  this.limpiezaActiva = this.limpiezas[event.value].id;
+seleccionarZona(event:any | number){
+  this.myItem = typeof(event) == "number" ? event : event.value;
+  this.zonaSeleccionada.emit(this.limpiezas[this.myItem]);
+  this.limpiezaActiva = this.limpiezas[this.myItem].id;
   this.unExpand();
 }
 
+seleccionaSiguiente(){
+  let indice = this.limpiezas.findIndex((maquina)=>maquina.id==this.limpiezaActiva);
+  console.log(indice,this.limpiezaActiva);
+  if (indice < this.limpiezas.length) {
+    indice++;
+    this.seleccionarZona(indice);
+    this.Choicer.writeValue(indice);
+  }
+}
+  seleccionaAnterior(){
+    let indice = this.limpiezas.findIndex((maquina)=>maquina.id==this.limpiezaActiva);
+    if (indice > 0) {
+      indice--;
+      this.seleccionarZona(indice);
+      this.Choicer.writeValue(indice);
+    }
+}
 
 // ngOnChanges(changes:SimpleChange) {}
 

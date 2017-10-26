@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { DataTable } from 'primeng/primeng';
 
@@ -25,16 +26,24 @@ export class MantenimientosCorrectivosComponent implements OnInit {
 
 
 public mantenimientos: MantenimientoRealizado[];
+public images: string[];
+public docs: string[];
 public es:any;
 public guardar = [];
 public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
 public date = new Date();
-public url:string[]=[];
-public verdoc: boolean = false;
-public foto:string;
-public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+//public url:string[]=[];
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+//******IMAGENES */
+//public url; 
+public baseurl;
+public verdoc:boolean=false;
+public image;
+public foto;
+public top = '50px';
+//************** */
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
 
 
 
@@ -42,6 +51,8 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
 
   ngOnInit() {
     //  this.setMantenimientos();
+    this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
+    
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -51,11 +62,13 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
             firstDayOfWeek: 1
         }; 
   }
-  photoURL(i) {
-    this.verdoc=!this.verdoc;
-    this.foto = this.url[i];
-  }
+  // photoURL(i) {
+  //   this.verdoc=!this.verdoc;
+  //   this.foto = this.url[i];
+  // }
   ngOnChanges(){
+    this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
+    
     this.setMantenimientos();
 
 }
@@ -68,11 +81,19 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {
             this.mantenimientos = [];
+            this.images=[];
+            this.docs=[];
             if (response.success && response.data) {
               for (let element of response.data) {  
-                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,element.idusuario,element.responsable,element.id,element.tipo_evento,element.idempresa))
-                   this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' + element.id +'_'+element.doc);
-             }
+                  this.mantenimientos.push(new MantenimientoRealizado(element.idmantenimiento,element.idmaquina,
+                    element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),
+                    new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,
+                    element.idusuario,element.responsable,element.id,element.tipo_evento,element.idempresa,
+                    element.imagen))
+            //       this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' + element.id +'_'+element.doc);
+            this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
+            this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
+                  }
             }
         },
         error=>console.log(error),
@@ -124,21 +145,88 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
 
 checkBorrar(){}
 
-  uploadImg(event, idItem,i) {
-    console.log(event)
-    var target = event.target || event.srcElement; //if target isn't there then take srcElement
-    let files = target.files;
-    //let files = event.srcElement.files;
-    let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'mantenimientos_realizados',idItem, this.empresasService.seleccionada.toString()).subscribe(
-      response => {
-        console.log('doc subido correctamente',files[0].name);
-        this.mantenimientos[i].doc = files[0].name;
-        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' +  idItem +'_'+files[0].name;
-        // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
-        // activa.logo = '1';
+  // uploadImg(event, idItem,i) {
+  //   console.log(event)
+  //   var target = event.target || event.srcElement; //if target isn't there then take srcElement
+  //   let files = target.files;
+  //   //let files = event.srcElement.files;
+  //   let idEmpresa = this.empresasService.seleccionada.toString();
+  //   this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'mantenimientos_realizados',idItem, this.empresasService.seleccionada.toString()).subscribe(
+  //     response => {
+  //       console.log('doc subido correctamente',files[0].name);
+  //       this.mantenimientos[i].doc = files[0].name;
+  //       this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' +  idItem +'_'+files[0].name;
+  //       // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
+  //       // activa.logo = '1';
+  //     }
+  //   )
+  // }
+
+
+
+
+//*******IMAGENES */
+
+verFoto(foto:string,idItem){
+  
+  let calc = window.scrollY;
+    this.top = calc + 'px';
+  
+  let index = this.mantenimientos.findIndex((item)=>item.id==idItem);
+
+if (foto=="doc"){
+  if (this.mantenimientos[index].doc){
+if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
+  window.open(this.docs[idItem],"_blank")
+}else{
+  this.verdoc =  true;
+  this.foto = this.docs[idItem];
+}
+  }
+}else{
+  
+  if (this.mantenimientos[index].imagen){
+  this.verdoc =  true;
+  this.foto = this.images[idItem];
+}
+}
+}
+
+photoURL(url){
+return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
+
+uploadFunciones(event:any,idItem: number,field?:string) {
+  console.log( event)
+  var target = event.target || event.srcElement; //if target isn't there then take srcElement
+  let files = target.files;
+  //let files = event.srcElement.files;
+  let idEmpresa = this.empresasService.seleccionada.toString();
+   let index = this.mantenimientos.findIndex((item)=>item.id==idItem);
+  this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'mantenimientos_realizados',idItem.toString(), this.empresasService.seleccionada.toString(),field).subscribe(
+    response => {
+      console.log('doc subido correctamente');
+      if (field == 'imagen'){
+        console.log('##',this.baseurl + idItem + "_"+event.srcElement.files[0].name)
+        this.images[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+        this.mantenimientos[index].imagen=event.srcElement.files[0].name;
+       //this.image= this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+      }else{
+         this.docs[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+         this.mantenimientos[index].doc=event.srcElement.files[0].name;
       }
-    )
+      // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
+      // activa.logo = '1';
+    }
+  )
+}
+
+
+
+
+  expandir(dt: any,row:number,event:any){
+    console.log(dt,row,event)
+    dt.toggleRow(row);
   }
 
   exportData(tabla: DataTable) {

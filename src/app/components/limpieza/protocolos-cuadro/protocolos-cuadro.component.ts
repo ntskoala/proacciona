@@ -33,6 +33,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     console.log('CAMBIO PROTOCOLO');
+    if (this.items){
     this.procesando = true;
     let x = 0;
     let i=0;
@@ -63,6 +64,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
     //     this.mergeData();
     //   });
     }
+  }
   }
 
   checkProtocolos(prots,x){

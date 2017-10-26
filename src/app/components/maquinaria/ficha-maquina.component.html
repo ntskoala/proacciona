@@ -1,4 +1,4 @@
-
+<div class="fichaMaquina">
 <form (ngSubmit)="udateMaquina(myMachine.value)" #myMachine="ngForm">
     <md-grid-list cols="3" rowHeight="65px">
         <md-grid-tile>
@@ -139,6 +139,7 @@
     <img [src]="image" width="100" (error)="image='./assets/images/pixel.png'" (click)="verFoto('maquina')" />
     </div>
 </form>
+</div>
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
 <!-- <span class="close material-icons" (click)="cerrarFoto()">
         <md-icon>close</md-icon></span> -->

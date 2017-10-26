@@ -18,7 +18,7 @@
         <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
           
     <input type="hidden" [(ngModel)]="nuevoCalibracion.id" name="id">
     <span class="cell">
@@ -41,9 +41,11 @@
       <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
     </span>
     <span class="cell">
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">            
       <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
+        </span>
     </span>
 
   </form>
@@ -83,7 +85,7 @@
   </form> 
  expandableRows="true"  rowExpandMode="single"-->
 
- <div style="position:absolute; left:0px; top:125px; min-width:1000px">
+ <div style="position:absolute; left:0px; top:140px; min-width:900px">
   <p-dataTable #DT [value]="calibraciones" 
   [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Maquinaria_calibraciones'" [tableStyle]="{'width':'900px'}">
@@ -93,7 +95,7 @@
           <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
           </span>
           <span class="cell tooltip" mdTooltip="{{'guardarTodo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
-              <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar(calibraciones)" style="float:left"></button>
+              <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()" style="float:left"></button>
               </span>
         </div>
   </p-header>

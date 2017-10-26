@@ -15,7 +15,7 @@
         <span class="header-cell">{{'maquinas.material' | translate}}</span>
         <span class="header-cell">{{'maquinas.imagen' | translate}}</span>
       </div>
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #creaForm="ngForm" (ngSubmit)="crearItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #creaForm="ngForm" (ngSubmit)="crearItem()">
     <input type="hidden" [(ngModel)]="nuevoPieza.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
@@ -28,9 +28,11 @@
       <input type="text" placeholder="material" required [(ngModel)]="nuevoPieza.material" name="material">
     </span>
     <span class="cell">
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">            
       <button md-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
+        </span>
     </span>
   </form>
 </div>
@@ -70,7 +72,7 @@
     </span>
   </form> -->
 
-<div style="position:absolute; left:0px; top:125px; min-width:1000px">
+<div style="position:absolute; left:0px; top:140px; min-width:1000px">
 <p-dataTable #DT [value]="piezas" 
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="0" 
 [csvSeparator]="';'" [exportFilename]="'PiezasMaquinaria'" [tableStyle]="{'width':'600px'}"

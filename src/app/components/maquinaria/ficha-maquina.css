@@ -1,4 +1,7 @@
-
+.fichaMaquina{
+width:auto;
+height:700px;
+}
 .campo{
   background-color: #fff9c4;
   border: 1px solid #fbc02d;
@@ -21,6 +24,7 @@ md-grid-tile-header{
 .inputfile{
     width: 0px;
     opacity: 0;
+    display:none;
 }
 .inputlabel {
     margin-top: 0px;
@@ -37,7 +41,8 @@ md-grid-tile-header{
     border-bottom-style: solid;
 }
 .inputlabelRound {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    margin-top: 6px;
     margin-left: 5px;
     display: block;
     width: 40px;
@@ -84,4 +89,27 @@ md-grid-tile-header{
 
 .but2{
     width:170px;
+}
+
+.textareacontainer{
+    height:170px;
+}
+
+.disabled{
+    opacity: 0.2;
+}
+
+.expander{
+    width: 35px;
+    min-height: 45px;
+    position:absolute;
+    left: 25px;
+    margin-top: -15px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.plan_descripcion{
+    width:37%;
+    float:left;
+    height: 80px;
 }

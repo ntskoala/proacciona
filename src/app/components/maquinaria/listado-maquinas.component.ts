@@ -22,7 +22,7 @@ export class ListadoMaquinasComponent implements OnInit {
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   public subscription: Subscription;
   maquinaActiva: number = 0;
-  myItem: number = null;
+  public myItem: number = null;
   maquina1: Maquina = new Maquina(0, 'Seleccionar máquina',0);
   maquinas: Maquina[] = [];
   novaMaquina: Maquina;// = new Maquina(0,'',0);

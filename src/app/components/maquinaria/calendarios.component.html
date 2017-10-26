@@ -1,10 +1,12 @@
 <md-card>
 <h2 class="center">{{'maquinas.CalendarioGeneralMantenimiento' | translate}}</h2>
 <p-schedule [height]="400"  [contentHeight]="300"  [aspectRatio]="3" [events]="events" [header]="headerCalendar"  [locale]="locale" 
- [eventLimit]="4" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar>
+ [eventLimit]="4" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar
+ [style]="{'width':'900px'}">
 </p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card>{{'leyenda' | translate}}
+<md-card style="height:66px">
+    <span class="titleLeyenda">{{'leyenda' | translate}}</span>
     <div class="leyenda">
        {{'maquinas.mantenimientos' | translate}}
         <md-chip-list>
@@ -15,7 +17,8 @@
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
             <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
         </md-chip-list>
-        <br>
+    </div>
+    <div class="leyenda2">
         {{'maquinas.calibraciones' | translate}}
         <md-chip-list>
             <figure style="display: block;background: #88ee88;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>

@@ -34,8 +34,9 @@
 }
 
 .tabs{
-  min-height: 430px;
+  min-height: 1500px;
     display: flex;
+    min-width: 1000px;
 }
 
 .w80{
@@ -82,18 +83,18 @@
 }
 .panel-sidenav {
   width:1100px;
-  height:600px;
+  height:1450px;
   padding-left: 50px;
   padding-right: 50px;
   z-index:9997 !important;
-   /* overflow: auto !important; */
+  overflow: auto !important;
    /* overflow: scroll; */
 }
 
 .sidenav-content {
   display: flex;
-  height: 100vh;
-  min-height: 700px;
+  height: 300vh;
+  min-height: 1500px;
   width: 100%;
   align-items: flex-start;
   justify-content: center;

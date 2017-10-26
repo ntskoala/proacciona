@@ -25,7 +25,7 @@
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
       
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'limpieza.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
@@ -68,7 +68,7 @@
       </select>
       </span><!--Borrar-->
     <span class="cell">
-<span class="cell tooltip" mdTooltip="{{'limpieza.anadir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
     
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
@@ -173,7 +173,7 @@
  <!-- </div>
  </div>  -->
 
-<div style="position:absolute; left:0px; top:120px; min-width:1000px">
+<div style="position:absolute; left:0px; top:140px; min-width: 900px">
   <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
@@ -192,7 +192,7 @@
         </div>
     </ng-template> 
   </p-column>
-      <p-column field="orden" header="orden" [sortable]="true" [editable]="false">
+      <p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [editable]="false">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
       <md-icon>import_export</md-icon>
       </ng-template>
@@ -203,7 +203,7 @@
       </ng-template>
     </p-column>
     <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
-    <p-column field="descripcion" header="{{'descripcion' | translate}}"  [editable]="true"></p-column>
+    <!-- <p-column field="descripcion" header="{{'descripcion' | translate}}"  [editable]="true"></p-column> -->
     <p-column  field="fecha" header="{{'fecha' | translate}}" [sortable]="true">
       <ng-template let-col let-item="rowData" pTemplate="body">      
       <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
@@ -223,8 +223,8 @@
 
     <p-column field="app" header="App">
       <ng-template  pTemplate="header">
- <span class="cell tooltip" mdTooltip="{{'limpiezas.app' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">  
-   app   
+ <span class="cell tooltip" mdTooltip="{{'limpieza.app' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">  
+   App   
  </span> 
 
       </ng-template>
@@ -254,15 +254,17 @@
   <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
 
       <div class="header-row">
+          <!-- <span class="header-cell">{{"limpieza.descripcion" | translate}}</span> -->
     <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
     <span class="header-cell">{{"limpieza.productos" | translate}}</span>
   </div>
    <!--//************    [disabled]="!item.protocolo"--> 
+   <div class="row">
 
 
 <!--*****  PROTOCOLOS  *********-->
 
-<span class="cell">
+<span class="cell top">
       <p-accordion (onOpen)="openTabProtocolo($event,rowIndex)">
           <p-accordionTab header="{{ protocolos[prot].nombre}}"  *ngFor="let prot of protocolo[item.id]" onOpen="openTabProtocolo($event,index,item.id)">
             <div style="float:left" *ngIf="fotoProt" (click)="photoURL(fotoProt)">
@@ -280,7 +282,7 @@
 <!--****** FIN ********************-->
     
 <!--*****  PRODUCTOS  *********-->
- <span class="cell">
+ <span class="cell top">
     <!-- <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos> -->
 
       <p-accordion (onOpen)="openTabProducto($event,rowIndex)">
@@ -297,7 +299,7 @@
           </p-accordionTab>
       </p-accordion>
   </span>
-
+   </div>
 
 
    <!--//************-->

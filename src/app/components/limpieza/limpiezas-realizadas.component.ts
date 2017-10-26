@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+
 import {DataTable} from 'primeng/primeng';
 
 
@@ -21,6 +23,8 @@ export class LimpiezasRealizadasComponent implements OnInit, OnChanges {
 @Input() limpieza: LimpiezaZona;
 @Input() nueva: number;
 public items: LimpiezaRealizada[];
+public images: string[];
+public docs: string[];
 public usuarios:Usuario[];
  public guardar = [];
 public idBorrar;
@@ -30,11 +34,22 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
 entidad:string="&entidad=limpieza_realizada";
 field:string="&field=idlimpiezazona&idItem=";
 es
+//******IMAGENES */
+//public url; 
+public baseurl;
+public verdoc:boolean=false;
+public image;
+public foto;
+public top = '50px';
+//************** */
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 
  ngOnInit() {
       //this.loadSupervisores();
+      this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_realizada/';
+      
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -46,6 +61,8 @@ es
   }
 
   ngOnChanges(){
+    this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_realizada/';
+    
       this.loadSupervisores();
       console.log('paso3',this.nueva);
   }
@@ -58,6 +75,8 @@ es
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
+            this.images=[];
+            this.docs=[];
             if (response.success && response.data) {
               for (let element of response.data) {  
                 let fecha;
@@ -66,10 +85,13 @@ es
                 (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
                   this.items.push(new LimpiezaRealizada(element.idelemento,element.idlimpiezazona,element.nombre,element.descripcion,
                   new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.usuario,element.responsable,element.id,
-                  element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,supervisor));
+                  element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
+                  supervisor,element.doc,element.imagen));
                   this.motivo.push(false);
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
-             }
+                  this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
+                  this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
+                }
             }
 
         });
@@ -167,6 +189,66 @@ this.motivo[index] = !this.motivo[index];
 setSupervision($event){
 
 }
+
+
+
+
+//*******IMAGENES */
+
+verFoto(foto:string,idItem){
+  
+  let calc = window.scrollY;
+    this.top = calc + 'px';
+  
+  let index = this.items.findIndex((item)=>item.id==idItem);
+
+if (foto=="doc"){
+  if (this.items[index].doc){
+if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
+  window.open(this.docs[idItem],"_blank")
+}else{
+  this.verdoc =  true;
+  this.foto = this.docs[idItem];
+}
+  }
+}else{
+  
+  if (this.items[index].imagen){
+  this.verdoc =  true;
+  this.foto = this.images[idItem];
+}
+}
+}
+
+// photoURL(url){
+// //return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+// }
+
+uploadFunciones(event:any,idItem: number,field?:string) {
+  console.log( event)
+  var target = event.target || event.srcElement; //if target isn't there then take srcElement
+  let files = target.files;
+  //let files = event.srcElement.files;
+  let idEmpresa = this.empresasService.seleccionada.toString();
+   let index = this.items.findIndex((item)=>item.id==idItem);
+  this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'limpieza_realizada',idItem.toString(), this.empresasService.seleccionada.toString(),field).subscribe(
+    response => {
+      console.log('doc subido correctamente');
+      if (field == 'imagen'){
+        console.log('##',this.baseurl + idItem + "_"+event.srcElement.files[0].name)
+        this.images[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+        this.items[index].imagen=event.srcElement.files[0].name;
+       //this.image= this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+      }else{
+         this.docs[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+         this.items[index].doc=event.srcElement.files[0].name;
+      }
+      // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
+      // activa.logo = '1';
+    }
+  )
+}
+
 
 
   expandir(dt: any,row:number,event:any){

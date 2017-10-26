@@ -62,6 +62,7 @@ export class ProductosCuadroComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
+    if (this.items){
     this.procesando = true;
     let x = 0;
     let i=0;
@@ -90,6 +91,7 @@ export class ProductosCuadroComponent implements OnInit, OnChanges {
     //     this.mergeData();
     //   });
     }
+  }
   }
 
 

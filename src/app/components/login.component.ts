@@ -13,11 +13,10 @@ import { Modal } from '../models/modal';
   templateUrl: '../assets/html/login.component.html'
 })
 export class LoginComponent implements OnInit {
- //public usuario: Object = {"user":"","password":"","idioma":null};
-
- public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
+ public usuario: Object = {"user":"","password":"","idioma":null};
 
  //public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
+
  //public  usuario: Object = {"user":"admin","password":"admin$2017","idioma":null};
 
  public  modal: Modal = new Modal();
@@ -36,7 +35,7 @@ ngOnInit(){
       this.translate.use(this.idioma);
     }
    this.gallery = "https://source.unsplash.com/1200x200/?food";
-
+    //this.login(this.usuario);
 }
 
   login(usuario) {

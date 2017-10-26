@@ -643,7 +643,7 @@ width: 400px;
     margin-left: auto;
     margin-right: auto;
     position: absolute;
-    margin-left: 10%;
+    margin-left: 5%;
     margin-top: -15px;
 }
 .cabeceraItems button{
@@ -657,12 +657,15 @@ width: 400px;
   background-color: #fff9c4;
   border: 1px solid orange;
   margin-left: 5px;
+  width: 200px;
 }
 .left{
   float:left;
   margin-left: 30px;
 }
-
+.top{
+  vertical-align: top;
+}
 .ui-column-title{
   font-size: 14px; 
 }

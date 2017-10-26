@@ -3,51 +3,53 @@
     <div class="header-row">
         <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
         <span class="header-cell">{{"maquinas.fecha" | translate}}</span>
-        <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+        <span class="header-cell  medium">{{"maquinas.tipo" | translate}}</span>
         <span class="header-cell">{{"maquinas.elemento" | translate}}</span>
-        <span class="header-cell">{{"maquinas.descripcion" | translate}}</span>
-        <span class="header-cell">{{"maquinas.causa" | translate}}</span>
-        <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
-        <span class="header-cell">{{"add" | translate}}</span>
+        <span class="header-cell medium">{{"maquinas.descripcion" | translate}}</span>
+        <span class="header-cell medium">{{"maquinas.causa" | translate}}</span>
+        <span class="header-cell  medium">{{"maquinas.responsable" | translate}}</span>
+        <span class="header-cell small">{{"add" | translate}}</span>
       </div>
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
   <!--<div  *ngIf="empresasService.administrador"  class="row">-->
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoMantenimiento.mantenimiento" name="mantenimiento">
     </span>
     <span class="cell">
-      <p-calendar placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      <p-calendar [inputStyle]="{'width':'100px'}" appendTo="body" placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
-    <span class="cell">
-        <select class="white-select" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
+    <span class="cell small">
+        <select class="white-select  medium" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
         <option value="interno">{{'maquinas.interno' | translate}}</option>
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
     <span class="cell">
-      <input type="text" [placeholder]="'maquinas.elemento' | translate" [(ngModel)]="nuevoMantenimiento.elemento" name="elemento">
+      <input type="text"  size="12" [placeholder]="'maquinas.elemento' | translate" [(ngModel)]="nuevoMantenimiento.elemento" name="elemento">
     </span>
-    <span class="cell">
-      <input type="text" [placeholder]="'maquinas.descripcion' | translate" [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion">
+    <span class="cell medium">
+      <input type="text" size="12" [placeholder]="'maquinas.descripcion' | translate" [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion">
     </span>
-    <span class="cell">
-      <input type="text" [placeholder]="'maquinas.causa' | translate" [(ngModel)]="nuevoMantenimiento.causas" name="causas">
+    <span class="cell medium">
+      <input type="text" size="12" [placeholder]="'maquinas.causa' | translate" [(ngModel)]="nuevoMantenimiento.causas" name="causas">
     </span>
-    <span class="cell">
-      <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
+    <span class="cell medium">
+      <input type="text" size="12" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
     </span>
 
-    <span class="cell">
+    <span class="cell small">
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <!--<button md-mini-fab color="accent" (click)="crearMantenimiento()">-->
         <span class="material-icons">add</span>
       </button>
+        </span>
     </span>
   </form>
   <!--</div>-->
 </div>
-
+</span>
 <!-- 
   <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of mantenimientos;let i = index">
 
@@ -96,7 +98,7 @@
   </form> -->
 
 
-  <div style="position:absolute; left:0px; top:125px; min-width:1000px">
+  <div style="position:absolute; left:0px; top:140px; min-width:800px">
       <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
       [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="1" 
       [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Correctivos'">
@@ -108,7 +110,13 @@
             </div>
       </p-header>
   
-
+      <p-column expander="true" styleClass="col-icon" [style]="{'width':'50px'}">
+          <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
+              <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+             
+             </div>
+         </ng-template> 
+       </p-column>
   
         <p-column field="mantenimiento" header="{{'Mantenimiento' | translate }}" [editable]="true" ></p-column>
         <p-column field="fecha" header="{{'fecha' | translate }}" [sortable]="true">
@@ -123,11 +131,11 @@
         </p-column>
 
         <p-column field="elemento" header="{{'maquinas.elemento' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
-        <p-column field="descripcion" header="{{'maquinas.descripcion' | translate }}" [editable]="true" [style]="{'width':'100px'}"></p-column>
-        <p-column field="causas" header="{{'maquinas.causa' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+        <!-- <p-column field="descripcion" header="{{'maquinas.descripcion' | translate }}" [editable]="true" [style]="{'width':'100px'}"></p-column>
+        <p-column field="causas" header="{{'maquinas.causa' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
         <p-column field="responsable" header="{{'maquinas.responsable' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
         
-        <p-column field="doc" header="{{'doc' | translate }}">
+        <!-- <p-column field="doc" header="{{'doc' | translate }}">
             <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
                 <span class="cell">
                     <span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                              
@@ -144,7 +152,7 @@
                     </span>
 
           </ng-template>
-        </p-column>
+        </p-column> -->
         
 
 
@@ -162,16 +170,68 @@
         </span>
           </ng-template>   
         </p-column>
+ 
+ <!--//************ EXPANSION     --> 
+ <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
+    
+           <span class="plan_descripcion">
+              <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'maquinas.descripcion' | translate}}">
+     <textarea [rows]="7" [cols]="33" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+     </p-panel>
+      </span>
+   
+      
+           <span class="plan_descripcion">
+              <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'maquinas.causa' | translate}}">
+      <textarea [rows]="7" [cols]="33" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.causas" name="causas" (keyup)="itemEdited(item.id)"></textarea>
+      </p-panel>
+      </span>
+  <!--//************ FOTO     --> 
+        <p-panel [style]="{'width':'11%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.imagen' | translate}}">
+       <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
+    
+      <hr>
+      <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">        
+      <span  class="but but2">
+          <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
+          <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
+      </span>
+      </span>
+        </p-panel>
   
-    </p-dataTable>
-  
+        <!--//************ PDF     --> 
+          <p-panel [style]="{'width':'11%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.doc' | translate}}">
+
+       <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
+           <hr>
+      <span  class="but but2 altPanel">
+      <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">                
+          <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
+      </span>
+          <br>
+          <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="{{'pdf'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+        
+        </span>
+          </p-panel>
+
+    </ng-template>
+  <!--//************ EXPANSION     --> 
+</p-dataTable>
+
+
+<div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
+   <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
+<button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+</div>
+<img   class="iframe"  [src]="foto">
+</div>
   </div>
 
 
 
 
-
+<!-- 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
   <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
 <img   class="iframe" [src]="foto">
-</div>
+</div> -->

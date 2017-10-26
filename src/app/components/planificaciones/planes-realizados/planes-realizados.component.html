@@ -8,8 +8,8 @@
 
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"  [responsive]="false" 
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
-[rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
-[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'">
+[rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50]"
+[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1000px'}">
     <p-header>
         <div class="ui-helper-clearfix">
             <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
@@ -78,7 +78,7 @@
       <textarea mdInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important" placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
                      
       </md-input-container>  -->
-    <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+    <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
     
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
@@ -89,7 +89,7 @@
                    <!-- <md-input-container class="full-width textareacontainer">
       <textarea mdInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important"  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
     </md-input-container> -->
-    <textarea [rows]="9" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+    <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
     </p-panel>

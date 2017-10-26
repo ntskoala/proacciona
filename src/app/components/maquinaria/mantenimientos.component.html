@@ -10,7 +10,7 @@
         <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoMantenimiento.nombre" name="nombre">
@@ -87,7 +87,7 @@
 
 
 
-<div style="position:absolute; left:0px; top:125px; min-width:1000px">
+<div style="position:absolute; left:0px; top:140px; min-width:900px">
     <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
     [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
     [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'">

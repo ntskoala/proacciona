@@ -151,7 +151,7 @@ cerrarModal(event: boolean) {
           this.nuevoProcedimiento.splice(indice,1)
           this.items = this.items.slice();
           this.onProtocolosReady.emit(this.items);
-          this.widthLista = (285 * this.items.length) + 'px';
+          this.widthLista = (300 * this.items.length) + 'px';
         }
     });
   }

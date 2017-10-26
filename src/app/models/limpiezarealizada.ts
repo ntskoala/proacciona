@@ -15,6 +15,8 @@ export class LimpiezaRealizada {
     public fecha_supervision?:Date,
     public supervision?:number,
     public detalles_supervision?:string,
-    public supervisor?:string
+    public supervisor?:string,
+    public doc?:string,
+    public imagen?:string
   ) {}
 }

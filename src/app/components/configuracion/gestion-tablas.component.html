@@ -14,6 +14,8 @@
         (click)="cambiarTab(3); permisos.seleccionarPermisos()">Permisos</button>
       <button md-button color="primary" [attr.md-raised-button]="tabs[4]"
         (click)="cambiarTab(4);">{{'Opciones' | translate}}</button>
+        <button md-button color="primary" [attr.md-raised-button]="tabs[4]"
+        (click)="cambiarTab(5);">{{'Opciones2' | translate}}</button>
     </md-card-subtitle>
     <md-card-content>
       <tab-usuarios class="tab" [class.active]="tabActivo == 0"></tab-usuarios>
@@ -21,6 +23,7 @@
       <tab-checklists class="tab" [class.active]="tabActivo == 2"></tab-checklists>
       <tab-permisos #permisos class="tab" [class.active]="tabActivo == 3"></tab-permisos>
       <tab-opciones class="tab" [class.active]="tabActivo == 4"></tab-opciones>
+      <tab-opciones2 class="tab" [class.active]="tabActivo == 5"></tab-opciones2>
     </md-card-content>
   </md-card>
 </div>

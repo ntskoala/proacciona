@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import {DataTable} from 'primeng/primeng';
-
+import {DataTable,Column} from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -27,6 +28,7 @@ public images: string[];
 public docs: string[];
 public usuarios:Usuario[];
  public guardar = [];
+ public alertaGuardar:boolean=false;
 public idBorrar;
 public motivo:boolean[]=[];
 public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"label":"correcto"},{"value":2,"label":"incorrecto"}];
@@ -43,7 +45,8 @@ public foto;
 public top = '50px';
 //************** */
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
 
  ngOnInit() {
@@ -134,8 +137,22 @@ onEdit(event){
 }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
 
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
 
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
@@ -168,6 +185,7 @@ onEdit(event){
    
    //console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
+    this.alertaGuardar = false;
     delete mantenimiento.supervisor;
     if (!moment(mantenimiento.fecha_supervision).isValid()) mantenimiento.fecha_supervision = new Date();
     console.log ("actualizar_mantenimiento",mantenimiento);
@@ -260,18 +278,40 @@ uploadFunciones(event:any,idItem: number,field?:string) {
 exportData(tabla: DataTable){
   console.log(tabla);
   let origin_Value = tabla._value;
-
+  tabla.columns.push(new Column())
+  tabla.columns[tabla.columns.length-1].field='descripcion';
+  tabla.columns[tabla.columns.length-1].header='descripcion';
+  tabla.columns.push(new Column())
+  tabla.columns[tabla.columns.length-1].field='detalles_supervision';
+  tabla.columns[tabla.columns.length-1].header='detalles_supervision';
   tabla._value = tabla.dataToRender;
   tabla._value.map((limpieza)=>{
       (moment(limpieza.fecha_prevista).isValid())?limpieza.fecha_prevista = moment(limpieza.fecha_prevista).format("DD/MM/YYYY"):'';
       (moment(limpieza.fecha).isValid())?limpieza.fecha = moment(limpieza.fecha).format("DD/MM/YYYY"):'';
       (moment(limpieza.fecha_supervision).isValid())?limpieza.fecha_supervision= moment(limpieza.fecha_supervision).format("DD/MM/YYYY"):'';    
-      });
+      
+      switch (limpieza.supervision){
+        case "0":
+        limpieza.supervision = "Sin supervisar";
+        break;
+        case "1":
+        limpieza.supervision = "Correcte";
+        break;
+        case "2":
+        limpieza.supervision = "Incorrecte";        
+        break;       
+      }
+      limpieza.idsupervisor = limpieza.supervisor;
+      // planificacion.descripcion = 'test';
+      limpieza.detalles_supervision = limpieza.detalles_supervision;
+    
+    });
 
   tabla.csvSeparator = ";";
   tabla.exportFilename = "Limpiezas_Realizadas_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
   tabla.exportCSV();
   tabla._value = origin_Value;
+  tabla.columns.splice(tabla.columns.length-2,2);
 }
 
 }

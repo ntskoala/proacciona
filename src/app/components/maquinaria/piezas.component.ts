@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 import {DataTable} from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -21,6 +23,8 @@ export class PiezasComponent implements OnInit, OnChanges {
 public piezas: PiezasMaquina[] =[]; 
 public nuevoPieza: PiezasMaquina = new PiezasMaquina(0,0,'');
 public guardar =[];
+public alertaGuardar:boolean=false;
+public cantidad:number=1;
 public idBorrar;
 public fotoSrc: string;
 public modal2: boolean = false;;
@@ -28,7 +32,8 @@ public verdoc: boolean = false;
 public url=[];
 public foto:string;
   modal: Modal = new Modal();
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
@@ -68,11 +73,25 @@ ngOnChanges(){
     }
     itemEdited(idItem: number) {
     this.guardar[idItem] = true;
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
+  }
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
   }
 
  saveItem(pieza: PiezasMaquina) {
     this.guardar[pieza.id] = false;
-
+    this.alertaGuardar = false;
     let parametros = '?id=' + pieza.id;        
     this.servidor.putObject(URLS.PIEZAS, parametros, pieza).subscribe(
       response => {
@@ -83,14 +102,40 @@ ngOnChanges(){
   }
   crearItem() {
     this.nuevoPieza.idmaquina = this.maquina.id;
-    this.servidor.postObject(URLS.PIEZAS, this.nuevoPieza).subscribe(
+    let nombreOrigen = this.nuevoPieza.nombre;
+    for (let x=0;x<this.cantidad;x++){
+      if (x>0) this.nuevoPieza.nombre= nombreOrigen + x;
+      this.addItem(this.nuevoPieza,this.nuevoPieza.nombre).then(
+        (valor)=>{
+          this.cantidad--;
+          console.log(this.cantidad,valor,typeof(valor))
+          if (valor && this.cantidad == 0){
+            this.nuevoPieza = new PiezasMaquina(0,0,'');
+            this.piezas = this.piezas.slice();
+          }
+        }
+      )
+  }
+  }
+
+  addItem(item: PiezasMaquina, nombre){
+    return new Promise((resolve,reject)=>{
+      this.servidor.postObject(URLS.PIEZAS, this.nuevoPieza).subscribe(
       response => {
         if (response.success) {
-          this.nuevoPieza.id = response.id;
-          this.piezas.push(this.nuevoPieza);
-          this.nuevoPieza = new PiezasMaquina(0,0,'');
+          item.id = response.id;
+          this.piezas.push(new PiezasMaquina(response.id,item.idmaquina,nombre,item.cantidad,item.material));
+          this.url.push('');
+          resolve(true);
         }
-    });
+    },
+    error =>{
+      console.log(error);
+      resolve(true);
+    },
+    () =>  {}
+    );
+  });
   }
 
   checkBorrar(idBorrar: number) {
@@ -123,13 +168,13 @@ ngOnChanges(){
     this.modal2 = true;
   }
 
-  uploadImg(event, idItem,i) {
+  uploadImg(event, idItem,i,tipo) {
     console.log(event)
     var target = event.target || event.srcElement; //if target isn't there then take srcElement
     let files = target.files;
     //let files = event.srcElement.files;
     let idEmpresa = this.empresasService.seleccionada.toString();
-    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquina_piezas',idItem, this.empresasService.seleccionada.toString()).subscribe(
+    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquina_piezas',idItem, this.empresasService.seleccionada.toString(),tipo).subscribe(
       response => {
         console.log('doc subido correctamente',files[0].name);
         this.piezas[i].doc = files[0].name;

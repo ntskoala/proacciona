@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 //import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {DataTable} from 'primeng/primeng';
-
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -25,12 +26,16 @@ momento: any;
 public mantenimientos: MantenimientosMaquina[] =[]; 
 public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0,'','');
 public guardar =[];
+public alertaGuardar:boolean=false;
+public cantidad:number=1;  
+
 public idBorrar;
 public es:any;
 
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
@@ -63,7 +68,8 @@ ngOnChanges(){
               let orden:number = 0;
               for (let element of response.data) {
                 if (element.orden == 0){
-                  this.itemEdited(element.id);
+                  //this.itemEdited(element.id);
+                  this.guardar[element.id] = true;
                   orden++;
                   }else{
                     orden=parseInt(element.orden);
@@ -101,7 +107,21 @@ ngOnChanges(){
     }
         itemEdited(idItem: number, fecha?: any) {
         this.guardar[idItem] = true;
-        console.log (idItem);
+        if (!this.alertaGuardar){
+          this.alertaGuardar = true;
+          this.setAlerta('alertas.guardar');
+          }
+
+      }
+      setAlerta(concept:string){
+        let concepto;
+        this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+        this.messageService.add(
+          {severity:'warn', 
+          summary:'Info', 
+          detail: concepto
+          }
+        );
       }
 
 
@@ -111,6 +131,7 @@ ngOnChanges(){
     let indice = this.mantenimientos.findIndex((myitem)=>myitem.id==mantenimiento.id);
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
+    this.alertaGuardar = false;
     console.log ("actualizar_mantenimiento",mantenimiento,this.mantenimientos[i].periodicidad);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
    
@@ -130,30 +151,60 @@ ngOnChanges(){
     console.log (this.nuevoMantenimiento);
     this.nuevoMantenimiento.idmaquina = this.maquina.id;
     this.nuevoMantenimiento.fecha = new Date(Date.UTC(this.nuevoMantenimiento.fecha.getFullYear(), this.nuevoMantenimiento.fecha.getMonth(), this.nuevoMantenimiento.fecha.getDate()))
-    if ( this.mantenimientos[this.mantenimientos.length-1].orden >0){
-      this.nuevoMantenimiento.orden=this.mantenimientos[this.mantenimientos.length-1].orden++;
-    }else{
-      this.nuevoMantenimiento.orden=0;
+    let nombreOrigen = this.nuevoMantenimiento.nombre;
+    let orden;
+
+    for (let x=0;x<this.cantidad;x++){
+      if ( this.mantenimientos.length && this.mantenimientos[this.mantenimientos.length-1].orden >0){
+       orden = this.nuevoMantenimiento.orden=this.mantenimientos[this.mantenimientos.length-1].orden+1+x;
+      }else{
+       orden = this.nuevoMantenimiento.orden=0;
+      }
+      if (x>0) this.nuevoMantenimiento.nombre= nombreOrigen + x;
+      this.addItem(this.nuevoMantenimiento,nombreOrigen + x,orden).then(
+        (valor)=>{
+          this.cantidad--;
+          console.log(this.cantidad,valor,typeof(valor))
+          if (valor && this.cantidad == 0){
+            this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'','');
+            this.mantenimientos = this.mantenimientos.slice();
+          }
+        }
+      )
+  }
+
     }
-    this.servidor.postObject(URLS.MANTENIMIENTOS, this.nuevoMantenimiento).subscribe(
+
+  addItem(item: MantenimientosMaquina, nombre,orden){
+    return new Promise((resolve,reject)=>{
+    this.servidor.postObject(URLS.MANTENIMIENTOS, item).subscribe(
       response => {
         if (response.success) {
-          this.nuevoMantenimiento.id = response.id;
-          this.mantenimientos.push(this.nuevoMantenimiento);
- //         this.date.push({"day":"","month":"","year":"","formatted":this.nuevoMantenimiento.fecha,"momentObj":this.moment});
-          this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'','');
-          this.mantenimientos = this.mantenimientos.slice();
-          
+          item.id = response.id;
+          this.mantenimientos.push(new MantenimientosMaquina(response.id,item.idmaquina,nombre,item.fecha,item.tipo,
+          item.periodicidad,item.tipo_periodo,item.doc,item.usuario,item.responsable,orden));
+          resolve(true);
         }
-    });
+    },
+    error =>{
+      console.log(error);
+      resolve(true);
+    },
+    () =>  {}
+    );
+  });
   }
+
+
+
+
 
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'borrarControlT';
-    this.modal.subtitulo = 'borrarControlST';
+    this.modal.titulo = 'borrarT';
+    this.modal.subtitulo = 'borrarST';
     this.modal.eliminar = true;
     this.modal.visible = true;
   }

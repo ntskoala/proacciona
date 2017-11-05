@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
@@ -20,6 +22,7 @@ export class ProtocolosComponent implements OnInit {
   public nuevoItem: Protocolo = new Protocolo(null,this.empresasService.seleccionada,'','','');
   public items: Protocolo[];
   public protocolo:Object[][]=[];
+  public alertaGuardar:boolean=false;
   public nuevoProcedimiento:string[]=[];
   public hayCambios:boolean[]=[];
   public idBorrar:number;
@@ -33,7 +36,8 @@ export class ProtocolosComponent implements OnInit {
 
 
 
-    constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+    constructor(public servidor: Servidor,public empresasService: EmpresasService
+      , public translate: TranslateService, private messageService: MessageService) {}
   
     ngOnInit() {
       this.setItems().then(
@@ -111,11 +115,24 @@ newItem(){
     itemEdited(x: number) {
     this.hayCambios[x] = true;
     //console.log (fecha.toString());
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
-
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
  saveItem(item: Protocolo,x:number) {
     //this.guardar[item.id] = false;
-    
+    this.alertaGuardar = false;
     let parametros = '?id=' + item.id+this.entidad;        
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
@@ -158,8 +175,6 @@ cerrarModal(event: boolean) {
 }
 
 
-
-
 uploadImg(event, idItem,i,field) {
   console.log(idItem,i)
   var target = event.target || event.srcElement; //if target isn't there then take srcElement
@@ -191,11 +206,11 @@ photoURL(i,tipo) {
       console.log(x,this.protocolo);
       this.protocolo[x].push({"descripcion":this.nuevoProcedimiento[x]});
       this.nuevoProcedimiento[x]=null;
-      this.hayCambios[x]=true;
+      this.itemEdited(x);
       }
       removeProcedimiento(n,i){
           this.protocolo[i].splice(n,1);
-          this.hayCambios[i]=true;
+          this.itemEdited(i);
       }
       setProtocolo(indice:number){
         //let json = {'protocolo': this.protocolo[indice]};

@@ -28,6 +28,8 @@ import {InputTextareaModule} from 'primeng/primeng';
 import {DragDropModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';
 import {SpinnerModule} from 'primeng/primeng';
+import {GrowlModule} from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 
 //**********MY COMPONENTS */
@@ -37,17 +39,18 @@ import { MenuComponent} from './components/menu.component';
 
 import { LoginComponent } from './components/login.component';
 import { EmpresasComponent } from './components/empresas.component';
-import { OpcionesPremium } from './components/empresasopcionespremium.component';
+import { OpcionesPremium } from './components/configuracion/empresasopcionespremium.component';
+import { Opciones } from './components/configuracion/opciones';
 import { SeleccionarEmpresaComponent } from './components/seleccionar-empresa.component';
 import { ListadoEmpresasComponent } from './components/listado-empresas.component';
 import { NuevaEmpresaComponent } from './components/nueva-empresa.component';
-import { GestionTablasComponent } from './components/gestion-tablas.component';
+import { GestionTablasComponent } from './components/configuracion/gestion-tablas.component';
 import { GestionInformesComponent } from './components/gestion-informes.component';
-import { UsuariosComponent } from './components/usuarios.component';
-import { ControlesComponent } from './components/controles.component';
-import { ChecklistsComponent } from './components/checklists.component';
+import { UsuariosComponent } from './components/configuracion/usuarios.component';
+import { ControlesComponent } from './components/configuracion/controles.component';
+import { ChecklistsComponent } from './components/configuracion/checklists.component';
 import { ListadoChecklistsComponent } from './components/listado-checklists.component';
-import { PermisosComponent } from './components/permisos.component';
+import { PermisosComponent } from './components/configuracion/permisos.component';
 import { InformeControlesComponent } from './components/informe-controles.component';
 import { InformeChecklistsComponent } from './components/informe-checklists.component';
 import { InformePeriodicidadComponent } from './components/informe-periodicidad.component';
@@ -69,7 +72,6 @@ import { MantenimientosComponent } from './components/maquinaria/mantenimientos.
 import { CalibracionesComponent } from './components/maquinaria/calibraciones.component';
 import { MantenimientosRealizadosComponent } from './components/maquinaria/mantenimientos-realizados.component';
 import { MantenimientosCorrectivosComponent } from './components/maquinaria/mantenimientos-correctivos.component';
-import { CalibracionesRealizadas } from './components/maquinaria/calibraciones-realizadas.component';
 import { PiezasComponent } from './components/maquinaria/piezas.component';
 
 /********    LIMPIEZA COMPONENTS */
@@ -129,6 +131,7 @@ import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
 import { ProductosCuadroComponent } from './components/limpieza/productos-cuadro/productos-cuadro.component';
 import { ProtocolosComponent } from './components/limpieza/protocolos/protocolos.component';
 import { ProtocolosCuadroComponent } from './components/limpieza/protocolos-cuadro/protocolos-cuadro.component';
+import { ComponentsComponent } from './components/components.component';
 
 
 
@@ -160,6 +163,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     DragDropModule,
     AccordionModule,
     SpinnerModule,
+    GrowlModule,
 /**********MATERIAL */
     MaterialModule,
    // MdSelectModule,
@@ -182,6 +186,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,
+    Opciones,
     SeleccionarEmpresaComponent,
     ListadoEmpresasComponent,
     NuevaEmpresaComponent,
@@ -261,12 +266,14 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     BocadilloComponent,
     ProductosCuadroComponent,
     ProtocolosComponent,
-    ProtocolosCuadroComponent
+    ProtocolosCuadroComponent,
+    ComponentsComponent
   ],
   providers: [
     EmpresasService,
     Servidor,
-    PermisosService
+    PermisosService,
+    MessageService
   ],
   
   bootstrap: [AppComponent],

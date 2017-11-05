@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { DataTable } from 'primeng/primeng';
+import { DataTable,Column } from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -13,6 +15,7 @@ import { Empresa } from '../../models/empresa';
  import { CalendarioMantenimiento } from '../../models/calendariomantenimiento';
  import { MantenimientoRealizado } from '../../models/mantenimientorealizado';
  import { Periodicidad } from '../../models/periodicidad';
+ import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'mantenimientos-correctivos',
@@ -30,6 +33,9 @@ public images: string[];
 public docs: string[];
 public es:any;
 public guardar = [];
+public alertaGuardar:boolean=false;
+public idBorrar;
+  modal: Modal = new Modal();
 public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
 public date = new Date();
 //public url:string[]=[];
@@ -43,7 +49,8 @@ public image;
 public foto;
 public top = '50px';
 //************** */
-  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer
+    , public translate: TranslateService, private messageService: MessageService) {}
 
 
 
@@ -116,6 +123,7 @@ public top = '50px';
           this.nuevoMantenimiento.id = response.id;
           this.mantenimientos.push(this.nuevoMantenimiento);
           this.nuevoMantenimiento = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());
+          this.mantenimientos = this.mantenimientos.slice();
         }
     });
   }
@@ -125,10 +133,25 @@ public top = '50px';
     }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
-    //console.log (fecha.toString());
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
- saveItem(mantenimiento: MantenimientoRealizado) {
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
 
+  
+ saveItem(mantenimiento: MantenimientoRealizado) {
+  this.alertaGuardar = false;
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento);
@@ -143,7 +166,31 @@ public top = '50px';
 
   }
 
-checkBorrar(){}
+  checkBorrar(idBorrar: number) {
+    // Guardar el id del control a borrar
+    this.idBorrar = idBorrar;
+    // Crea el modal
+    this.modal.titulo = 'maquinas.borrarMantenimientoR';
+    this.modal.subtitulo = 'maquinas.borrarMantenimientoR';
+    this.modal.eliminar = true;
+    this.modal.visible = true;
+  }
+
+  cerrarModal(event: boolean) {
+    this.modal.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.idBorrar;
+      this.servidor.deleteObject(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let controlBorrar = this.mantenimientos.find(mantenimiento => mantenimiento.id == this.idBorrar);
+            let indice = this.mantenimientos.indexOf(controlBorrar);
+            this.mantenimientos.splice(indice, 1);
+            this.mantenimientos = this.mantenimientos.slice();
+          }
+      });
+    }
+  }
 
   // uploadImg(event, idItem,i) {
   //   console.log(event)
@@ -232,7 +279,12 @@ uploadFunciones(event:any,idItem: number,field?:string) {
   exportData(tabla: DataTable) {
     console.log(tabla);
     let origin_Value = tabla._value;
-
+    tabla.columns.push(new Column())
+    tabla.columns[tabla.columns.length-1].field='descripcion';
+    tabla.columns[tabla.columns.length-1].header='descripcion';
+    tabla.columns.push(new Column())
+    tabla.columns[tabla.columns.length-1].field='causas';
+    tabla.columns[tabla.columns.length-1].header='causas';
     tabla._value = tabla.dataToRender;
     tabla._value.map((mentenimientos) => {
       (moment(mentenimientos.fecha).isValid()) ? mentenimientos.fecha = moment(mentenimientos.fecha).format("DD/MM/YYYY") : '';
@@ -242,6 +294,7 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     tabla.exportFilename = "Mantenimientos_correctivos" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
     tabla.exportCSV();
     tabla._value = origin_Value;
+    tabla.columns.splice(tabla.columns.length-2,2);
   }
 
 

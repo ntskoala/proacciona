@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { EmpresasService } from '../services/empresas.service';
-import { Servidor } from '../services/servidor.service';
-import { Empresa } from '../models/empresa';
-import { URLS } from '../models/urls';
-import { Checklist } from '../models/checklist';
-import { ControlChecklist } from '../models/controlchecklist';
-import { Modal } from '../models/modal';
+import { EmpresasService } from '../../services/empresas.service';
+import { Servidor } from '../../services/servidor.service';
+import { Empresa } from '../../models/empresa';
+import { URLS } from '../../models/urls';
+import { Checklist } from '../../models/checklist';
+import { ControlChecklist } from '../../models/controlchecklist';
+import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'tab-checklists',
-  templateUrl: '../assets/html/checklists.component.html'
+  templateUrl: './checklists.component.html'
 })
 export class ChecklistsComponent implements OnInit{
 @ViewChild ('listaChecklist') lista: ElementRef;
@@ -190,6 +190,9 @@ export class ChecklistsComponent implements OnInit{
     }
   }
 
+  onEditCCL(evento){
+    this.modificarCCL(evento.data.id);
+    } 
   modificarCCL(idControlchecklist: number) {
     this.guardar[idControlchecklist] = true;
   }

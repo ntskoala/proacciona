@@ -16,6 +16,7 @@ export class PermisosService {
     clientes:boolean;
     produccion:boolean;
     traspasos:boolean;
+    planificaciones:boolean;
     constructor(private servidor: Servidor){}
 
 
@@ -26,7 +27,7 @@ export class PermisosService {
 
     setOpciones(valor: boolean, opcion) {
         console.log(opcion);
-        switch (opcion) {
+        switch (opcion) {//OPCION = ID opcion
             case "1"://"exportar informes":
                 // this.exportarFuente.next(valor);
                 this.exportar = valor;
@@ -49,7 +50,10 @@ export class PermisosService {
                 break;
              case "7"://"Traspasos Vaquería":
                 this.traspasos = valor;
-                break;               
+                break;  
+                case "8"://"Planificaciones":
+                this.planificaciones = valor;
+                break;                 
             // case ://"personal":
             //     this.personal = valor;
             //     break;

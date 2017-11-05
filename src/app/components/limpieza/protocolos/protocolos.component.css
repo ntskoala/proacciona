@@ -14,11 +14,12 @@
 .protocolo{
     width: 270px;
     padding-right: 15px;
+    min-height: 350px;
     float: left;
 }
 
 listOfProtocolos{
-    
+    width: 1025px;
 }
 
 .inputfile{

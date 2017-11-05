@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -17,6 +19,7 @@ export class LubricantesComponent implements OnInit {
 public nuevoItem: Lubricante = new Lubricante(0,this.empresasService.seleccionada);
 public items: Lubricante[];
 public guardar = [];
+public alertaGuardar:boolean=false;
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -25,14 +28,31 @@ public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/lubricantes/'
 public modal: Modal = new Modal();
 public modal2: Modal;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
       this.setItems();
   }
-  photoURL(i,tipo) {
+
+  // photoURL(i,tipo) {
+
+  //   this.verdoc=!this.verdoc;
+  //   this.foto = this.url[i][tipo];
+  // }
+
+  photoURL(i,tipo,file) {
+    
+    //let extension = this.url[i][tipo].substr(this.items[i][tipo].length-3);
+    let extension = file.substr(file.length-3);
+   // let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
+   console.log(file,extension);
+    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
     this.verdoc=!this.verdoc;
     this.foto = this.url[i][tipo];
+    }else{
+      window.open(this.url[i][tipo],'_blank');
+    }
   }
 
   setItems(){
@@ -62,7 +82,9 @@ public modal2: Modal;
         if (response.success) {
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
+          this.url.push({"imgficha":"","imgcertificado":""});
           this.nuevoItem = new Lubricante(0,this.empresasService.seleccionada);
+          this.items = this.items.slice();
         }
     });
   }
@@ -72,10 +94,25 @@ public modal2: Modal;
     }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
-    //console.log (fecha.toString());
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
+
  saveItem(item: Lubricante) {
     this.guardar[item.id] = false;
+    this.alertaGuardar = false;
     let parametros = '?id=' + item.id;        
     this.servidor.putObject(URLS.LUBRICANTES, parametros, item).subscribe(
       response => {
@@ -91,8 +128,8 @@ checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'borrarControlT';
-    this.modal.subtitulo = 'borrarControlST';
+    this.modal.titulo = 'borrarT';
+    this.modal.subtitulo = 'borrarST';
     this.modal.eliminar = true;
     this.modal.visible = true;
 }
@@ -106,6 +143,8 @@ checkBorrar(idBorrar: number) {
             let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.url.splice(indice,1)
+            this.items = this.items.slice();
           }
       });
     }
@@ -120,8 +159,9 @@ checkBorrar(idBorrar: number) {
     this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'lubricantes',idItem, this.empresasService.seleccionada.toString(),field).subscribe(
       response => {
         console.log('doc subido correctamente',files[0].name);
-        this.items[i].imgficha = files[0].name;
-        this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/lubricantes/' +  idItem +'_'+files[0].name;
+        this.items[i][field] = files[0].name;
+        this.url[i][field]= URLS.DOCS + this.empresasService.seleccionada + '/lubricantes/' +  idItem +'_'+field+'_'+files[0].name;
+        console.log(this.url);
         // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
         // activa.logo = '1';
       }

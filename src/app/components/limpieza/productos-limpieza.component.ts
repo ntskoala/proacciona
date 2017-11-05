@@ -1,4 +1,6 @@
 import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -17,6 +19,7 @@ export class ProductosLimpiezaComponent implements OnInit {
 public nuevoItem: LimpiezaProducto = new LimpiezaProducto(0,this.empresasService.seleccionada,'');
 public items: LimpiezaProducto[];
 public guardar = [];
+public alertaGuardar:boolean=false;
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -25,7 +28,8 @@ public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_prod
 public modal: Modal = new Modal();
 public modal2: Modal;
 public entidad:string="&entidad=limpieza_producto";
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
       this.setItems().then(
@@ -101,10 +105,24 @@ public entidad:string="&entidad=limpieza_producto";
   }
     itemEdited(idItem: number) {
     this.guardar[idItem] = true;
-    //console.log (fecha.toString());
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
+  }
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
   }
  saveItem(item: LimpiezaProducto) {
     this.guardar[item.id] = false;
+    this.alertaGuardar = false;
     let parametros = '?id=' + item.id+this.entidad;        
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {

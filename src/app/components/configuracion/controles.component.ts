@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { EmpresasService } from '../services/empresas.service';
-import { Servidor } from '../services/servidor.service';
-import { Empresa } from '../models/empresa';
-import { URLS } from '../models/urls';
-import { Control } from '../models/control';
-import { Modal } from '../models/modal';
+import { EmpresasService } from '../../services/empresas.service';
+import { Servidor } from '../../services/servidor.service';
+import { Empresa } from '../../models/empresa';
+import { URLS } from '../../models/urls';
+import { Control } from '../../models/control';
+import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'tab-controles',
-  templateUrl: '../assets/html/controles.component.html'
+  templateUrl: './controles.component.html'
 })
 
 export class ControlesComponent implements OnInit {

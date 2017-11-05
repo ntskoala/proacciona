@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
+
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -15,13 +18,16 @@ import { Empresa } from '../../models/empresa';
 export class FichaMaquinaComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
 public camposArray: string[] =[];
+public guardar:boolean=false;
+public alertaGuardar:boolean=false;
 public url; 
 public baseurl;
 public verdoc:boolean=false;
 public image;
 public foto;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
    // this.campos2Array();
@@ -54,6 +60,24 @@ cerrarFoto(){
   this.verdoc = false;
 }
 
+itemEdited() {
+  this.guardar = true;
+  if (!this.alertaGuardar){
+  this.alertaGuardar = true;
+  this.setAlerta('alertas.guardar_Ficha');
+  }
+}
+setAlerta(concept:string){
+  let concepto;
+  this.translate.get(concept).subscribe((valor)=>concepto=valor) 
+  this.messageService.add(
+    {severity:'warn', 
+    summary:'Info', 
+    detail: concepto
+    }
+  );
+}
+
 
 udateMaquina(valor:any){
   console.log('myMachine',this.maquina);
@@ -62,6 +86,8 @@ udateMaquina(valor:any){
       response => {
         if (response.success) {
           console.log('Maquina updated');
+          this.guardar = false;
+          this.alertaGuardar = false;
         }
     });
 }

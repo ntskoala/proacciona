@@ -19,7 +19,7 @@
       </button>
       </div>
        <div class="tooltip" mdTooltip="{{'menu.planificaciones' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">      
-        <button [ngClass]="{'selected': subMenu == 'planificaciones'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('planificaciones')" class="opcion" md-mini-fab color="accent" >
+        <button [ngClass]="{'selected': subMenu == 'planificaciones'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.planificaciones" (click)="setSeleccion('planificaciones')" class="opcion" md-mini-fab color="accent" >
         <span  class="material-icons">date_range</span>
       </button>
       </div> 

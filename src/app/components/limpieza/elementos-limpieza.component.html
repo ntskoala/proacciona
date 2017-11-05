@@ -18,10 +18,10 @@
         <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
         <span class="medium header-cell">{{"limpieza.fecha" | translate}}</span>
         <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
-        <span class="header-cell">{{"limpieza.periodicidad" | translate}}</span>
+        <span class="header-cell" style="padding-right: 10px">{{"limpieza.periodicidad" | translate}}</span>
         <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
-         <span class="header-cell">App</span>
-        <span class="header-cell medium">{{"cantidad" | translate}}</span>
+         <span class="header-cell"  style="min-width: 40px ; padding-right: 5px">App</span>
+        <span class="header-cell medium" style="width:120px;padding-right: 5px">{{"cantidad" | translate}}</span>
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
       
@@ -40,18 +40,19 @@
         <option value="externo">{{'externo' | translate}}</option>
       </select>
     </span>
-    <span class="cell">
+    <span class="cell center">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo"></periodicidad>
     </span>
 
     <span class="medium cell">
       <input class="medium" type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
     </span>
-    <span class="cell small">
+    <span class="cell small center">
         <md-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></md-checkbox>
     </span>
 
-    <span class="cell small">num.
+    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+    <span class="cell">num.
       <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -66,7 +67,8 @@
         <option value="11">11</option>
         <option value="12">12</option>
       </select>
-      </span><!--Borrar-->
+      </span>
+    </span>
     <span class="cell">
 <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
     
@@ -214,14 +216,14 @@
             <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
           </ng-template>
     </p-column>
-    <p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'140px'}">
+    <p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'100px','text-align': 'center'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>
     </p-column>
     <p-column field="responsable" header="{{'responsable' | translate}}" [editable]="true"></p-column>
 
-    <p-column field="app" header="App">
+    <p-column field="app" header="App" [style]="{'min-width':'40px','width':'50px','text-align': 'center'}">
       <ng-template  pTemplate="header">
  <span class="cell tooltip" mdTooltip="{{'limpieza.app' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">  
    App   

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 
 import { DataTable } from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -24,6 +26,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   public calibraciones: CalibracionesMaquina[] = [];
   public nuevoCalibracion: CalibracionesMaquina = new CalibracionesMaquina(0, 0, '', this.nuevaFecha);
   public guardar = [];
+  public alertaGuardar:boolean=false;
+  public cantidad:number=1;
   public idBorrar;
   public modal2: boolean = false;
   public es: any;
@@ -33,7 +37,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
 
   public tipos: object[] = [{ label: 'interno', value: 'interno' }, { label: 'externo', value: 'externo' }];
 
-  constructor(public servidor: Servidor, public empresasService: EmpresasService) { }
+  constructor(public servidor: Servidor, public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) { }
 
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
@@ -62,7 +67,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
           let orden: number = 0;
           for (let element of response.data) {
             if (element.orden == 0) {
-              this.itemEdited(element.id);
+              //this.itemEdited(element.id);
+              this.guardar[element.id] = true;
               orden++;
             } else {
               orden = parseInt(element.orden);
@@ -88,7 +94,23 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   }
   itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
+
+
   saveItem(mantenimiento: CalibracionesMaquina, i: number) {
     let indice = this.calibraciones.findIndex((myitem) => myitem.id == mantenimiento.id);
     mantenimiento.periodicidad = this.calibraciones[indice].periodicidad;
@@ -100,22 +122,56 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       response => {
         if (response.success) {
           console.log('Mantenimiento updated');
+          this.alertaGuardar = false;
         }
       });
   }
   crearMantenimiento() {
     this.nuevoCalibracion.idmaquina = this.maquina.id;
     this.nuevoCalibracion.fecha = new Date(Date.UTC(this.nuevoCalibracion.fecha.getFullYear(), this.nuevoCalibracion.fecha.getMonth(), this.nuevoCalibracion.fecha.getDate()))
-    this.nuevoCalibracion.orden = this.newOrden(this.calibraciones);
-    this.servidor.postObject(URLS.CALIBRACIONES, this.nuevoCalibracion).subscribe(
+    //this.nuevoCalibracion.orden = this.newOrden(this.calibraciones);
+    let nombreOrigen = this.nuevoCalibracion.nombre;
+    let orden;
+
+    for (let x=0;x<this.cantidad;x++){
+      orden = this.newOrden(x);
+      // if ( this.calibraciones.length && this.calibraciones[this.calibraciones.length-1].orden >0){
+      //  orden = this.nuevoCalibracion.orden=this.calibraciones[this.calibraciones.length-1].orden+1+x;
+      // }else{
+      //  orden = this.nuevoCalibracion.orden=0;
+      // }
+      if (x>0) this.nuevoCalibracion.nombre= nombreOrigen + x;
+      this.addItem(this.nuevoCalibracion,this.nuevoCalibracion.nombre,orden).then(
+        (valor)=>{
+          this.cantidad--;
+          console.log(this.cantidad,valor,typeof(valor))
+          if (valor && this.cantidad == 0){
+            this.nuevoCalibracion = new CalibracionesMaquina(0, 0, '', this.nuevaFecha);
+            this.calibraciones = this.calibraciones.slice();
+          }
+        }
+      )
+  }
+  }
+
+  addItem(item: CalibracionesMaquina, nombre,orden){
+    return new Promise((resolve,reject)=>{
+    this.servidor.postObject(URLS.CALIBRACIONES, item).subscribe(
       response => {
         if (response.success) {
-          this.nuevoCalibracion.id = response.id;
-          this.calibraciones.push(this.nuevoCalibracion);
-          this.calibraciones = this.calibraciones.slice();
-          this.nuevoCalibracion = new CalibracionesMaquina(0, 0, '', this.nuevaFecha);
+          item.id = response.id;
+          this.calibraciones.push(new CalibracionesMaquina(response.id,item.idmaquina,nombre,item.fecha,item.tipo,
+          item.periodicidad,item.tipo_periodo,item.doc,item.usuario,item.responsable,orden));
+          resolve(true);
         }
-      });
+    },
+    error =>{
+      console.log(error);
+      resolve(true);
+    },
+    () =>  {}
+    );
+  });
   }
 
   checkBorrar(idBorrar: number) {
@@ -244,11 +300,11 @@ export class CalibracionesComponent implements OnInit, OnChanges {
     }
   }
 
-  newOrden(items): number {
+  newOrden(i): number {
     let x: number;
-    if (this.dt._value[this.dt._value.length - 1].orden > 0) {
+    if (this.dt._value.length  && this.dt._value[this.dt._value.length - 1].orden > 0) {
       let valor = this.dt._value[this.dt._value.length - 1].orden;
-      x = ++valor;
+      x = ++valor +i;
     } else {
       x = 0;
     }
@@ -256,12 +312,15 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   }
 
   ordenar() {
+    console.log('ORDENANDO')
     this.procesando = true;
     this.calibraciones.forEach((item) => {
       this.saveItem(item, 0);
     });
+    this.calibraciones = this.calibraciones.slice();
     this.procesando = false;
   }
+
 
   reordenar(indice) {
     this.procesando = true;

@@ -1,5 +1,9 @@
-<button [disabled]="!fechaPrevista" color="accent" type="button" [ngClass]="{'alert': alert }" md-raised-button (click)="seleccion()">{{'maquinas.periodicidad' | translate}}</button>
-
+<span class="cell tooltip" mdTooltip="{{'maquinas.periodicidad' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">        
+<button [disabled]="!fechaPrevista" color="accent" type="button" [ngClass]="{'alert': alert }" md-mini-fab (click)="seleccion()">
+    <!-- {{'maquinas.periodicidad' | translate}} -->
+    <span class="material-icons">event</span>
+</button>
+</span>
 <div *ngIf="period" class="periods">
     <md-card>
         <md-card-title>
@@ -94,8 +98,8 @@
     </section>
     <div class="buttons">
     <hr class="hr">
-    <button type="button" md-raised-button (click)="ok()">{{'aceptar' || translate}}</button>
-    <button type="button" md-raised-button (click)="notok()">{{'cancelar' || translate}}</button>
+    <button type="button" md-raised-button (click)="ok()">{{'aceptar' | translate}}</button>
+    <button type="button" md-raised-button (click)="notok()">{{'cancelar' | translate}}</button>
     </div>
         </div>
     </md-card>

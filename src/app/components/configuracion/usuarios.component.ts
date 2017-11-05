@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { EmpresasService } from '../services/empresas.service';
-import { Servidor } from '../services/servidor.service';
-import { URLS } from '../models/urls';
-import { Usuario } from '../models/usuario';
-import { Empresa } from '../models/empresa';
-import { Modal } from '../models/modal';
+import { EmpresasService } from '../../services/empresas.service';
+import { Servidor } from '../../services/servidor.service';
+import { URLS } from '../../models/urls';
+import { Usuario } from '../../models/usuario';
+import { Empresa } from '../../models/empresa';
+import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'tab-usuarios',
-  templateUrl: '../assets/html/usuarios.component.html'
+  templateUrl: './usuarios.component.html'
 })
 export class UsuariosComponent implements OnInit {
 
@@ -20,7 +20,8 @@ export class UsuariosComponent implements OnInit {
   nuevoUsuario: Object = {tipouser: 'Operario'};
   idBorrar: number;
   modal: Modal = new Modal();
-
+  public tipos:object[]=[{label:'Operario', value:'Operario'},{label:'Gerente', value:'Gerente'},{label:'Mantenimiento', value:'Mantenimiento'}];
+  
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -95,7 +96,10 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
-  modificarUsuario(idUsuario: number) {
+  onEdit(evento){
+    this.itemEdited(evento.data.id);
+    }
+    itemEdited(idUsuario: number) {
     this.guardar[idUsuario] = true;
   }
 

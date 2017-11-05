@@ -92,23 +92,23 @@
         </div>
     </ng-template> 
   </p-column>
-  <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"></p-column>
-  <p-column field="fecha_prevista" header="{{'limpieza.fecha_prevista' | translate}}" [editable]="true" [style]="{'width':'120px'}">
+  <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" [sortable]="true"></p-column>
+  <p-column field="fecha_prevista" header="{{'limpieza.fecha_prevista' | translate}}" [editable]="true" [style]="{'width':'120px'}" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
       <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" placeholder="Fecha prevista" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista"></p-calendar>          
 </ng-template>
   </p-column>
-  <p-column field="fecha" header="{{'limpieza.fecha_real' | translate}}" [editable]="true" [style]="{'width':'110px'}">
+  <p-column field="fecha" header="{{'limpieza.fecha_real' | translate}}" [editable]="true" [style]="{'width':'110px'}" [sortable]="true">
      <ng-template let-col let-item="rowData" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'90px'}" placeholder="Fecha real" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>
   </p-column>
 
-  <p-column field="tipo" header="{{'limpieza.tipo' | translate}}" [editable]="false"></p-column>
+  <p-column field="tipo" header="{{'limpieza.tipo' | translate}}" [editable]="false" [sortable]="true"></p-column>
 
-  <p-column field="responsable" header="{{'limpieza.responsable' | translate}}" [editable]="true"></p-column>
+  <p-column field="responsable" header="{{'limpieza.responsable' | translate}}" [editable]="true" [sortable]="true"></p-column>
 
-  <p-column [style]="{'width':'180px'}" field="supervision" header="{{'limpieza.supervision' | translate}}" [editable]="true">
+  <p-column [style]="{'width':'180px'}" field="supervision" header="{{'limpieza.supervision' | translate}}" [editable]="true" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="float:left">
          <md-select  [(ngModel)]="item[col.field]" name="item[col.header]">
@@ -125,7 +125,7 @@
   </ng-template>
 
   </p-column>
-  <p-column field="idsupervisor" header="{{'limpieza.supervisor' | translate}}" [editable]="true"  [style]="{'width':'130px','overflow':'visible'}">
+  <p-column field="idsupervisor" header="{{'limpieza.supervisor' | translate}}" [editable]="true"  [style]="{'width':'130px','overflow':'visible'}" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="position:relative">
     <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
@@ -136,7 +136,7 @@
   </div>
   </ng-template>
   </p-column>
-    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true" [style]="{'width':'110px'}">
+    <p-column field="fecha_supervision" header="{{'planificaciones.fecha_supervision' | translate}}" [editable]="true" [style]="{'width':'110px'}" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
       <p-calendar  appendTo="body" [inputStyle]="{'width':'90px'}" placeholder="{{'planificaciones.fecha_supervision' | translate}}" [(ngModel)]="item[col.field]" [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>          
 </ng-template>

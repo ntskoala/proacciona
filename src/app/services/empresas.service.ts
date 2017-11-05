@@ -16,6 +16,7 @@ export class EmpresasService {
   empresaActiva: number =0;
   exportar: boolean;
   noTooltips: boolean = false;
+  showAlerts:boolean = true;
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
 

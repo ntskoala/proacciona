@@ -14,8 +14,9 @@
         <span class="header-cell">{{"maquinas.calibracion" | translate}}</span>
         <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
         <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
-        <span class="header-cell">{{"maquinas.periodicidad" | translate}}</span>
+        <span class="header-cell" style="padding-right: 10px">{{"maquinas.periodicidad" | translate}}</span>
         <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
+        <span class="header-cell medium" style="min-width:100px;padding-right: 5px">{{"cantidad" | translate}}</span>                         
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #crearMantenimientoForm="ngForm" (ngSubmit)="crearMantenimiento()">
@@ -26,7 +27,7 @@
     </span>
     <span class="cell">
       <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoCalibracion.fecha"></ng2-datepicker>-->
-      <p-calendar [(ngModel)]="nuevoCalibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      <p-calendar [placeholder]="'fecha' | translate"  [(ngModel)]="nuevoCalibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
         <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
@@ -34,12 +35,30 @@
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
-    <span class="cell">
+    <span class="cell center">
       <periodicidad (periodo)="setPeriodicidad($event)" [fechaPrevista]="nuevoCalibracion.fecha" [miperiodo]="false"></periodicidad>
     </span>
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoCalibracion.responsable" name="responsable">
     </span>
+    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+        <span class="cell">num.
+          <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          </span>
+        </span>
     <span class="cell">
         <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">            
       <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
@@ -95,7 +114,7 @@
           <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
           </span>
           <span class="cell tooltip" mdTooltip="{{'guardarTodo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
-              <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()" style="float:left"></button>
+              <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
               </span>
         </div>
   </p-header>
@@ -104,11 +123,11 @@
       <p-column field="orden" header="orden" [sortable]="true" [editable]="false" [style]="{'width':'110px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
       <md-icon>import_export</md-icon>
-    <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+    <!-- <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
       <button (click)="ordenar(calibraciones)" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary"  type="button">
           <span class="material-icons">check</span>
         </button>    
-      </span> 
+      </span>  -->
       </ng-template>
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
        <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
@@ -133,7 +152,7 @@
         <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
       </ng-template>
     </p-column>
-    <p-column field="periodicidad" header="{{'periodicidad' | translate }}" [style]="{'width':'130px'}">
+    <p-column field="periodicidad" header="{{'periodicidad' | translate }}" [style]="{'width':'100px','text-align': 'center'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
       <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>

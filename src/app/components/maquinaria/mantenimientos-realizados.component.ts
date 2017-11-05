@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { DataTable } from 'primeng/primeng';
+import { DataTable,Column } from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -31,6 +33,7 @@ public images: string[];
 public docs: string[];
 public es:any;
  public guardar = [];
+ public alertaGuardar:boolean=false;
 public idBorrar;
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 
@@ -49,7 +52,8 @@ public foto;
 public top = '50px';
 //************** */
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer
+    , public translate: TranslateService, private messageService: MessageService) {}
 
 
 
@@ -109,8 +113,21 @@ public top = '50px';
     }
     itemEdited(idMantenimiento: number) {
     this.guardar[idMantenimiento] = true;
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
-
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
 
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
@@ -132,6 +149,7 @@ public top = '50px';
             let controlBorrar = this.mantenimientos.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.mantenimientos.indexOf(controlBorrar);
             this.mantenimientos.splice(indice, 1);
+            this.mantenimientos = this.mantenimientos.slice();
           }
       });
     }
@@ -142,7 +160,7 @@ public top = '50px';
  saveItem(mantenimiento: MantenimientoRealizado) {
 
   // console.log ("evento");
-
+  this.alertaGuardar = false;
     this.guardar[mantenimiento.id] = false;
     console.log ("actualizar_mantenimiento",mantenimiento);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
@@ -222,7 +240,12 @@ uploadFunciones(event:any,idItem: number,field?:string) {
   exportData(tabla: DataTable) {
     console.log(tabla);
     let origin_Value = tabla._value;
-
+    tabla.columns.push(new Column())
+    tabla.columns[tabla.columns.length-1].field='descripcion';
+    tabla.columns[tabla.columns.length-1].header='descripcion';
+    tabla.columns.push(new Column())
+    tabla.columns[tabla.columns.length-1].field='causas';
+    tabla.columns[tabla.columns.length-1].header='causas';
     tabla._value = tabla.dataToRender;
     tabla._value.map((mentenimientos) => {
       (moment(mentenimientos.fecha_prevista).isValid()) ? mentenimientos.fecha_prevista = moment(mentenimientos.fecha_prevista).format("DD/MM/YYYY") : '';
@@ -235,6 +258,7 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     tabla.exportFilename = "Mantenimientos_realizados" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
     tabla.exportCSV();
     tabla._value = origin_Value;
+    tabla.columns.splice(tabla.columns.length-2,2);
   }
 
   checkPeriodo(periodicidad: string): string {

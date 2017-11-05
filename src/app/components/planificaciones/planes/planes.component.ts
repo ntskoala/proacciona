@@ -2,6 +2,8 @@ import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } f
 import { Subscription } from 'rxjs/Subscription';
 
 import { DataTable, Column } from 'primeng/primeng';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
@@ -9,7 +11,7 @@ import { URLS } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
 import { Planificacion } from '../../../models/planificacion';
 import { Modal } from '../../../models/modal';
-import {MdSelect} from '@angular/material';
+import {MdSelect,MdSnackBar} from '@angular/material';
 import * as moment from 'moment';
 export class Familia{
   constructor(
@@ -26,7 +28,8 @@ export class Familia{
 })
 export class PlanesComponent implements OnInit {
   @ViewChild('choicer') Choicer: MdSelect;
-  @Output() planSeleccionado: EventEmitter<Planificacion>=new EventEmitter<Planificacion>();
+  //@ViewChild('saveTT') saveTT: MdTooltip;
+  //@Output() planSeleccionado: EventEmitter<Planificacion>=new EventEmitter<Planificacion>();
   @Output() listaPlanes: EventEmitter<Planificacion[]>=new EventEmitter<Planificacion[]>();
 
   
@@ -35,7 +38,11 @@ export class PlanesComponent implements OnInit {
   public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'','',0);
   public planes: Planificacion[] = [];
   public guardar = [];
+  public alertaGuardar:boolean=false;
+  public idBorrar:number;
+  public cantidad:number=1;  
   public familias: Familia[];
+  public alertas: object[]=[];
   public tipo:string="planificacion";
   public novoPlan: Planificacion;// = new Planificacion(0,0,'');
   public modal: Modal = new Modal();
@@ -48,7 +55,8 @@ export class PlanesComponent implements OnInit {
   public ordenPosInicio:number;
   public ordenPosFin:number;
   public procesando:boolean=false;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
 ngOnInit(){
 
@@ -117,14 +125,35 @@ ngOnInit(){
     itemEdited(idItem: number, fecha?: any) {
 
     this.guardar[idItem] = true;
-    console.log ('valueChanged',idItem);
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
 // ngOnChanges(changes:SimpleChange) {}
 onEdit(evento){
   //console.log(evento)
+  if (!this.alertaGuardar){
+    this.alertaGuardar = true;
+    this.setAlerta('alertas.guardar');
+    }
   this.guardar[evento.data.id]= true;
 }
 
+setAlerta(concept:string){
+  let concepto;
+  this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+  this.messageService.add(
+    {severity:'warn', 
+    summary:'Info', 
+    detail: concepto
+    }
+  );
+}
+
+noMostrar(evento){
+console.log(evento);
+}
 
 modificar(){
   let index = this.planes.findIndex((plan)=>plan.id == this.planActivo);
@@ -146,25 +175,33 @@ let parametros = '?id=' + this.planActivo+param;
 }
 
 
-checkBorrar(){
-this.modal.visible = true;
+checkBorrar(idBorrar: number) {
+  // Guardar el id del control a borrar
+  this.idBorrar = idBorrar;
+  // Crea el modal
+  this.modal.titulo = 'borrarPlanT';
+  this.modal.subtitulo = 'borrarPlanST';
+  this.modal.eliminar = true;
+  this.modal.visible = true;
 }
   cerrarModal(event: boolean) {
     this.modal.visible = false;
     if (event) {
-      let parametros = '?id=' + this.planActivo+'&entidad=planificaciones';
+      let parametros = '?id=' + this.idBorrar+'&entidad=planificaciones';
       this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
         response => {
           if (response.success) {
-            let indice = this.planes.findIndex((plan) => plan.id == this.planActivo);
+            let indice = this.planes.findIndex((plan) => plan.id == this.idBorrar);
            // let indice = this.mantenimientos.indexOf(controlBorrar);
-            this.planes.splice(indice, 1);
+           this.planes.splice(indice, 1);
             this.planActivo = 0;
-            this.planSeleccionado.emit(this.planes[0]);
+            this.planes = this.planes.slice();
+            //this.planSeleccionado.emit(this.planes[0]);
           }
       });
     }
   }
+
 eliminaPlan(){
       this.modal.titulo = 'borrarControlT';
     this.modal.subtitulo = 'borrarControlST';
@@ -174,27 +211,51 @@ eliminaPlan(){
 
   newItem() {
     console.log (this.plan);
-    let param = this.entidad;
+   
     this.plan.fecha = new Date(Date.UTC(this.plan.fecha.getFullYear(), this.plan.fecha.getMonth(), this.plan.fecha.getDate()))
     this.plan.idempresa = this.empresasService.seleccionada;
     this.plan.orden = this.planes.length+1;
+    let nombreOrigen = this.plan.nombre;
     //this.plan.periodicidad = this.mantenimientos[i].periodicidad;
     //this.addnewItem = this.nuevoItem;
+    
+    for (let x=0;x<this.cantidad;x++){
+      this.plan.orden = this.planes.length+1+x;
+      if (x>0) this.plan.nombre= nombreOrigen + x;
+      this.addItem(this.plan,this.plan.nombre,this.planes.length+1+x).then(
+        (valor)=>{
+          this.cantidad--;
+          console.log(this.cantidad,valor,typeof(valor))
+          if (valor && this.cantidad == 0){
+            this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
+            console.log(this.planes);
+            this.planes = this.planes.slice();
+          }
+        }
+      )
+  }
+  }
 
-    this.servidor.postObject(URLS.STD_ITEM, this.plan,param).subscribe(
+  addItem(plan: Planificacion, nombre,orden){
+    return new Promise((resolve,reject)=>{
+    let param = this.entidad;
+    this.servidor.postObject(URLS.STD_ITEM, plan,param).subscribe(
       response => {
         if (response.success) {
-          this.planes.push(new Planificacion(response.id,this.plan.idempresa,this.plan.nombre,this.plan.descripcion,this.plan.familia,
-          this.plan.fecha,this.plan.periodicidad,this.plan.responsable,this.plan.supervisor,this.plan.orden));
-          this.plan = new Planificacion(null,null,null,null,0,new Date(),'','',0);
-          this.planes = this.planes.slice();
+          this.planes.push(new Planificacion(response.id,plan.idempresa,nombre,plan.descripcion,plan.familia,
+          plan.fecha,plan.periodicidad,plan.responsable,plan.supervisor,orden));
+          resolve(true);
         }
     },
-    error =>console.log(error),
+    error =>{
+      console.log(error);
+      resolve(true);
+    },
     () =>  {}
     );
-   
+  });
   }
+
 
 modificarItem(){
   this.nuevoNombre = this.planes[this.planes.findIndex((plan)=>plan.id==this.planActivo)].nombre;
@@ -202,6 +263,7 @@ modificarItem(){
 }
 
  saveItem(item: Planificacion,i: number) {
+  this.alertaGuardar = false;
   let indice = this.planes.findIndex((myitem)=>myitem.id==item.id);
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
@@ -219,11 +281,6 @@ modificarItem(){
   }
 
 
-addItem(){
-  this.nuevoNombre='';
-  this.modificaPlan=false;
-  this.novoPlan = new Planificacion(null,null,null,null,null,moment(new Date()), null,null);
-}
 
 
 setPeriodicidad(periodicidad: string, idItem?: number, i?: number){

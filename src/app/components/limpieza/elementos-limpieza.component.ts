@@ -1,7 +1,8 @@
 import { Component, OnInit, Input,Output,EventEmitter, OnChanges } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
 import {DataTable} from 'primeng/primeng';
-
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from 'ng2-translate';
 
 import * as moment from 'moment';
 
@@ -35,6 +36,7 @@ public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
 public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
 public items: LimpiezaElemento[];
 public guardar = [];
+public alertaGuardar:boolean=false;
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -65,7 +67,8 @@ public fotourl:string;
 public currentExpandedId: number;
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService
+    , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
      // this.setItems();
@@ -290,12 +293,26 @@ this.itemEdited(evento.data.id);
 }
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
-    //console.log (fecha.toString());
+    if (!this.alertaGuardar){
+      this.alertaGuardar = true;
+      this.setAlerta('alertas.guardar');
+      }
+  }
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
   }
  saveItem(item: LimpiezaElemento,i: number) {
   let indice = this.items.findIndex((myitem)=>myitem.id==item.id);
   console.log('item ',this.items[indice]);
     this.guardar[item.id] = false;
+    this.alertaGuardar = false;
     let parametros = '?id=' + item.id+this.entidad;    
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))

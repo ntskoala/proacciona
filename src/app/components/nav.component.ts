@@ -12,6 +12,7 @@ import { URLS } from '../models/urls';
 export class NavComponent implements OnInit{
   logoEmpresa: string;
   subscription: Subscription;
+  public alertOptions:boolean=false;
 
   constructor(public router: Router,public servidor: Servidor, public empresasService: EmpresasService) {}
 
@@ -24,7 +25,16 @@ export class NavComponent implements OnInit{
       },
       error => console.log(error)
     )
-
+    if(localStorage.getItem("noTooltips")=="true"){
+      this.empresasService.noTooltips=true;
+    }else{
+      this.empresasService.noTooltips=false;
+    }
+    if(localStorage.getItem("showAlerts")=="true"){
+      this.empresasService.noTooltips=true;
+    }else{
+      this.empresasService.noTooltips=false;
+    }
   }
 
 closeSession(){
@@ -32,4 +42,20 @@ closeSession(){
        this.router.navigate(['login']);
 }
 
+showAlertOptions(){
+  this.alertOptions=true;
+  console.log('activando opciones');
+  setTimeout(()=>{
+  this.alertOptionsChanged()
+  }
+  ,4000
+  );
+}
+alertOptionsChanged(){
+  console.log(this.empresasService.noTooltips);
+  this.alertOptions=false;
+  if (this.empresasService.noTooltips){
+    localStorage.setItem("noTooltips","true");
+  }
+}
 }

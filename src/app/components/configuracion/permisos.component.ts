@@ -1,18 +1,18 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { EmpresasService } from '../services/empresas.service';
-import { Servidor } from '../services/servidor.service';
-import { URLS } from '../models/urls';
-import { Usuario } from '../models/usuario';
-import { Control } from '../models/control';
-import { Checklist } from '../models/checklist';
-import { PermissionUserControl } from '../models/permissionusercontrol';
-import { PermissionUserChecklist } from '../models/permissionuserchecklist';
+import { EmpresasService } from '../../services/empresas.service';
+import { Servidor } from '../../services/servidor.service';
+import { URLS } from '../../models/urls';
+import { Usuario } from '../../models/usuario';
+import { Control } from '../../models/control';
+import { Checklist } from '../../models/checklist';
+import { PermissionUserControl } from '../../models/permissionusercontrol';
+import { PermissionUserChecklist } from '../../models/permissionuserchecklist';
 
 @Component({
   selector: 'tab-permisos',
-  templateUrl: '../assets/html/permisos.component.html'
+  templateUrl: './permisos.component.html'
 })
 export class PermisosComponent {
 @ViewChild ('listUsuarios') lista: ElementRef;

@@ -3,19 +3,19 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription';
 
 
-import { EmpresasService } from '../services/empresas.service';
-import { PermisosService } from '../services/permisos.service';
-import { Servidor } from '../services/servidor.service';
-import { Empresa } from '../models/empresa';
-import { Opciones } from '../models/opciones';
-import { OpcionesEmpresa } from '../models/opcionesempresa';
-import { URLS } from '../models/urls';
+import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
+import { Servidor } from '../../services/servidor.service';
+import { Empresa } from '../../models/empresa';
+import { Opciones } from '../../models/opciones';
+import { OpcionesEmpresa } from '../../models/opcionesempresa';
+import { URLS } from '../../models/urls';
 
 
 
 @Component({
   selector: 'tab-opciones',
-  templateUrl: '../assets/html/empresasopcionespremium.component.html'
+  templateUrl: './empresasopcionespremium.component.html'
 })
 
 export class OpcionesPremium implements OnInit {

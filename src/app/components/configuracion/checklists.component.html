@@ -23,7 +23,7 @@
 <div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-checklist">
   <h2>{{'Nueva' | translate}} checklist</h2>
   <div class="table">
-    <form class="row" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
+    <form class="row addItem" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
       <span class="cell">
         <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="cl.nombrechecklist" name="nombrechecklist">
       </span>
@@ -52,28 +52,33 @@
   </div>
 </div>
 
+
+
 <!-- Mostrar control checklists -->
-<div class="mostrar-checklist">
+ <div class="mostrar-checklist">
   <div *ngIf="checklistActiva != 0">
     <h2>Control checklists</h2>
     <div class="table">
-      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  class="row" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
+        <span class="cell tooltip" mdTooltip="{{'configuracion.nuevoCCL' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                     
+        <div class="header-row">
+            <span class="header-cell">{{'Nombre' | translate}}</span>
+            <span class="header-cell"></span>
+          </div>
+      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  class="row addItem" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
         <span class="cell">
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="ccl.nombre" name="nombre">
         </span>
-        <span class="cell"></span>
         <span class="cell">
+        <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                                 
           <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
             <span class="material-icons">add</span>
           </button>
         </span>
+        </span>
       </form>
-      <div class="header-row">
-        <span class="header-cell">{{'Nombre' | translate}}</span>
-        <span class="header-cell"></span>
-        <span class="header-cell"></span>
-      </div>
-      <form class="row" *ngFor="let controlchecklist of controlchecklists"
+        </span>
+    </div>
+<!--      <form class="row" *ngFor="let controlchecklist of controlchecklists"
         #actualizarCCLf="ngForm" (ngSubmit)="actualizarCCL(controlchecklist.id)">
         <span class="cell">
           <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
@@ -88,10 +93,38 @@
             <span class="material-icons">check</span>
           </button>                
         </span>
-      </form>
-    </div>
-  </div>
+      </form>-->
+
+<div style="margin-top:40px">
+    
+<p-dataTable #dt [value]="controlchecklists" 
+[editable]="true"  [responsive]="false" (onEditInit)="onEditCCL($event)"
+[tableStyle]="{'width':'320px'}">
+
+<p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'190px'}"></p-column>
+
+<p-column header="{{'acciones' | translate}}" [style]="{'width':'120px'}">
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+      <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+    <span class="material-icons">close</span>
+  </button>
+</span>
+<span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarCCL(item.id,i)" type="button">
+    <span class="material-icons">check</span>
+  </button>
+</span>
+  </ng-template>   
+</p-column>
+
+</p-dataTable>
 </div>
+
+</div>
+</div> 
+
+
 
 <!-- Modificar checklist -->
 <div class="modificar-checklist" *ngIf="modificar">

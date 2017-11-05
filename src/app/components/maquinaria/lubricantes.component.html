@@ -12,8 +12,8 @@
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{"maquinas.nombre" | translate}}</span>
-        <span class="header-cell">{{"maquinas.marca" | translate}}</span>
-        <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+        <span class="header-cell"style="min-width:90px;padding-right: 5px">{{"maquinas.marca" | translate}}</span>
+        <span class="header-cell" style="min-width:70px;padding-right: 5px">{{"maquinas.tipo" | translate}}</span>
         <span class="header-cell">{{"add" | translate}}</span>
       </div>
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -23,8 +23,9 @@
     </span>
 
     <span class="cell">
-      <input type="text" [placeholder]="'maquinas.marca' | translate" required [(ngModel)]="nuevoItem.marca" name="marca">
+      <input type="text" style="width:90px" [placeholder]="'maquinas.marca' | translate" required [(ngModel)]="nuevoItem.marca" name="marca">
     </span>
+
     <span class="cell">
       <input class="small" type="text" [placeholder]="'maquinas.tipo' | translate" required [(ngModel)]="nuevoItem.tipo" name="tipo">
     </span>

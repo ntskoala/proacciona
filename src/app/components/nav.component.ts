@@ -31,9 +31,9 @@ export class NavComponent implements OnInit{
       this.empresasService.noTooltips=false;
     }
     if(localStorage.getItem("showAlerts")=="true"){
-      this.empresasService.noTooltips=true;
+      this.empresasService.showAlerts=true;
     }else{
-      this.empresasService.noTooltips=false;
+      this.empresasService.showAlerts=false;
     }
   }
 
@@ -51,11 +51,13 @@ showAlertOptions(){
   ,4000
   );
 }
+
 alertOptionsChanged(){
-  console.log(this.empresasService.noTooltips);
+  console.log(this.empresasService.showAlerts);
   this.alertOptions=false;
-  if (this.empresasService.noTooltips){
-    localStorage.setItem("noTooltips","true");
+  if (!this.empresasService.showAlerts){
+    localStorage.setItem("showAlerts","false");
   }
 }
+
 }

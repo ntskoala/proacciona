@@ -1,4 +1,5 @@
-<span class="cell tooltip" mdTooltip="{{'maquinas.periodicidad' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">        
+<span class="tooltip" mdTooltip="{{'maquinas.periodicidad' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips"
+    [mdTooltipPosition]="'right'">        
 <button [disabled]="!fechaPrevista" color="accent" type="button" [ngClass]="{'alert': alert }" md-mini-fab (click)="seleccion()">
     <!-- {{'maquinas.periodicidad' | translate}} -->
     <span class="material-icons">event</span>
@@ -11,74 +12,80 @@
             </md-toolbar>
         </md-card-title>
         <div class="form_period">
-    <section class="selector section">
-    <label class="l" for="tipo_periodo">{{'maquinas.repeticion' | translate}}</label>
-    <select class="tipos" required [(ngModel)]="periodoactual.repeticion" name="tipo_periodo" (change)="cambio($event.target.value)">
+
+            <!-- <div class="opciones_cal"> -->
+            <section class="selector section">
+                <label class="l" for="tipo_periodo">{{'maquinas.repeticion' | translate}}</label>
+                <select class="tipos" required [(ngModel)]="periodoactual.repeticion" name="tipo_periodo" (change)="cambio($event.target.value)">
         <option *ngFor="let opcion of periodos" value="{{opcion}}">{{opcion| translate}}</option>
       </select>
-    </section>
+                </section>
 
-    <section class="dias section" *ngIf="periodoactual.repeticion == 'diaria'" name="dias">
-        <label class="l" for="dias">{{'maquinas.todos los' | translate}}</label>
-          </section>
-      <section class="section"  *ngIf="periodoactual.repeticion == 'diaria'" >
-        <md-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre | translate}} </md-checkbox>
-    </section>
-        <!--<section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
+                <section class="dias section" *ngIf="periodoactual.repeticion == 'diaria'" name="dias">
+                    <label class="l" for="dias">{{'maquinas.todos los' | translate}}</label>
+                </section>
+                <section class="section" *ngIf="periodoactual.repeticion == 'diaria'">
+                    <md-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre | translate}} </md-checkbox>
+                </section>
+                <!--<section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
         Los  {{dias[diasemana-1].nombre}}
     <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
         <option *ngFor="let dia of dias; let i = index" value="{{i}}">{{dia.nombre}}</option>
       </select>
         </section>-->
-    <section class="cadasemana section"  *ngIf="periodoactual.repeticion == 'semanal'">
-    {{'maquinas.cada' | translate}}
-        <select class="numlist" required [(ngModel)]="periodoactual.frecuencia" name="cadasemana" (change)="setSemana($event.target.value)">
+                <section class="cadasemana section" *ngIf="periodoactual.repeticion == 'semanal'">
+                    {{'maquinas.cada' | translate}}
+                    <select class="numlist" required [(ngModel)]="periodoactual.frecuencia" name="cadasemana" (change)="setSemana($event.target.value)">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
-      </select>
-      {{writesemana | translate}}
-    </section>
-        <section class="anual section" *ngIf="periodoactual.repeticion=='anual'" name="mes">
-        {{'maquinas.en' | translate}} &nbsp;
-        <select  class="tipos pos2" required [(ngModel)]="periodoactual.mes" name="mes">
+      </select> {{writesemana | translate}}
+                </section>
+                <section class="anual section" *ngIf="periodoactual.repeticion=='anual'" name="mes">
+                    {{'maquinas.en' | translate}} &nbsp;
+                    <select class="tipos pos2" required [(ngModel)]="periodoactual.mes" name="mes">
         <option *ngFor="let mes of meses;let i = index" value="{{i+1}}">{{mes | translate}}</option>
       </select>
-        </section>
-    <section class="mensual section" [ngClass]="{'mensual2' : periodoactual.repeticion == 'mensual'}" *ngIf="periodoactual.repeticion == 'mensual' || periodoactual.repeticion=='anual'" name="mensual">
-    {{'maquinas.por' | translate}} 
-    <select class="tipos pos1" required [(ngModel)]="periodoactual.tipo" name="tipo_periodo">
+                </section>
+                <section class="mensual section" [ngClass]="{'mensual2' : periodoactual.repeticion == 'mensual'}" *ngIf="periodoactual.repeticion == 'mensual' || periodoactual.repeticion=='anual'"
+                    name="mensual">
+                    <div name="Por" style="margin-left:-50px">
+                    {{'maquinas.por' | translate}}
+                    <select class="tipos pos1" required [(ngModel)]="periodoactual.tipo" name="tipo_periodo">
         <option value="diames">{{"maquinas.diames"| translate}}</option>
         <option value="diasemana">{{"maquinas.diasemana"| translate}}</option>
       </select>
-      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') ">
-          El día {{diames}}
-      </section>
-      <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
-          El día 
-    <select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
+                    </div>
+                    <div name="opcionesMes" class="opcionesMes">
+                    <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'mensual') ">
+                        El día {{diames}}
+                    </section>
+                    <section class="section2" *ngIf="(periodoactual.tipo == 'diames' && periodoactual.repeticion == 'anual') ">
+                        El día
+                        <select class="numlist pos2" required [(ngModel)]="periodoactual.numdia" name="diames">
         <option *ngFor="let i of numdias" value="{{i}}">{{i}}</option>
-      </select> 
-      </section>
+      </select>
+                    </section>
 
-    <section class="section2" *ngIf="(periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'mensual')  || (periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'anual') ">
-        El 
-              <select class="tipos" required [(ngModel)]="periodoactual.numsemana" name="numsemana">
+                    <section class="section2" *ngIf="(periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'mensual')  || (periodoactual.tipo == 'diasemana' && periodoactual.repeticion == 'anual') ">
+                        El &nbsp;
+                        <select class="tipos" required [(ngModel)]="periodoactual.numsemana" name="numsemana">
         <option value="1">{{"maquinas.primer"| translate}}</option>
         <option value="2">{{"maquinas.segundo"| translate}}</option>
         <option value="3">{{"maquinas.tercer"| translate}}</option>
         <option value="4">{{"maquinas.cuarto"| translate}}</option>
         <option value="5">{{"maquinas.ultimo"| translate}}</option>
       </select>
-    <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
+      &nbsp;
+                        <select class="tipos pos2" required [(ngModel)]="periodoactual.nomdia" name="diasemana">
         <option *ngFor="let dia of dias; let i =index" value="{{i+1}}">{{dia.nombre  | translate}}</option>
       </select>
-    </section>
+                    </section>
 
-      <section class="section2">
-          {{'maquinas.cada' | translate}}
-        <select class="numlist pos2" required [(ngModel)]="periodoactual.frecuencia" (change)="setMes($event.target.value)" name="cadames">
+                    <section class="section2">
+                        {{'maquinas.cada' | translate}}&nbsp;
+                        <select class="numlist pos2" required [(ngModel)]="periodoactual.frecuencia" (change)="setMes($event.target.value)" name="cadames">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -91,16 +98,17 @@
         <option value="10">10</option>
         <option value="11">11</option>
         <option value="12">12</option>
-      </select>
-      {{writemes |translate}}
-      </section>
+      </select> &nbsp;{{writemes |translate}}
+                    </section>
+                    </div>
+                </section>
+           <!-- </div>--><!--OPCIONES_CAL-->
+            <div class="buttons">
+                <hr class="hr">
+                <button type="button" md-raised-button (click)="ok()">{{'aceptar' | translate}}</button>
+                <button type="button" md-raised-button (click)="notok()">{{'cancelar' | translate}}</button>
+            </div>
 
-    </section>
-    <div class="buttons">
-    <hr class="hr">
-    <button type="button" md-raised-button (click)="ok()">{{'aceptar' | translate}}</button>
-    <button type="button" md-raised-button (click)="notok()">{{'cancelar' | translate}}</button>
-    </div>
-        </div>
+        </div><!--form_period-->
     </md-card>
 </div>

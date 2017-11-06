@@ -31,6 +31,7 @@ public modal2: boolean = false;;
 public verdoc: boolean = false;
 public url=[];
 public foto:string;
+public top:string;
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -41,6 +42,10 @@ public foto:string;
     
   }
   photoURL(i) {
+   
+    let calc = window.scrollY;
+    this.top = calc + 'px';
+    console.log(this.url[i],this.top)
     this.verdoc=!this.verdoc;
     this.foto = this.url[i];
   }

@@ -35,7 +35,7 @@ ngOnInit(){
       this.translate.use(this.idioma);
     }
    this.gallery = "https://source.unsplash.com/1200x200/?food";
-   // this.login(this.usuario);
+    this.login(this.usuario);
 }
 
   login(usuario) {

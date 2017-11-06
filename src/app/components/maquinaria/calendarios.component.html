@@ -32,7 +32,7 @@
 </md-card>
 </md-card>
 
- <p-dialog header="Detalles" [(visible)]="dialogVisible" [responsive]="false" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+ <p-dialog appendTo="body" header="Detalles" [(visible)]="dialogVisible" [responsive]="false" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimientorealizado">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.titulo' | translate}}</label></div>

@@ -18,6 +18,7 @@ export class ProductosLimpiezaComponent implements OnInit {
 @Output() onProductosReady:EventEmitter<LimpiezaProducto[]>=new EventEmitter<LimpiezaProducto[]>();
 public nuevoItem: LimpiezaProducto = new LimpiezaProducto(0,this.empresasService.seleccionada,'');
 public items: LimpiezaProducto[];
+public sino:object[]=[{label:'Si', value:'si'},{label:'No', value:'no'}];
 public guardar = [];
 public alertaGuardar:boolean=false;
 public idBorrar;

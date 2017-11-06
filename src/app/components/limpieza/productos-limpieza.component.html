@@ -33,6 +33,7 @@
         <option value="si">{{'si' | translate}}</option>
         <option value="no">{{'no' | translate}}</option>
       </select>
+    
     </span>
         <span class="cell">
       <input type="text" [placeholder]="'limpieza.dosificacion' | translate" [(ngModel)]="nuevoItem.dosificacion" name="dosificacion">
@@ -48,6 +49,7 @@
 </div>
 
 <div class="space"></div>
+
   <!-- 
 
   <form class=" row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index">
@@ -111,19 +113,21 @@
 
 <div>
   <p-dataTable #dt [value]="items" 
-  [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)">
+  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)">
    
     <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
     <p-column field="marca" header="{{'limpieza.marca' | translate}}"  [editable]="true"></p-column>
    
-    <p-column field="desinfectante" header="{{'limpieza.desinfectante' | translate}}" [editable]="true" [style]="{'width':'180px'}">
-       <ng-template let-col let-item="rowData" pTemplate="body">
-          <span class="cell">
+    <p-column field="desinfectante" header="{{'limpieza.desinfectante' | translate}}" [style]="{'width':'180px'}">
+       <ng-template  #desinfectant let-col let-item="rowData" pTemplate="body">
+          <!-- <span class="cell">
        <select class="small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.desinfectante" name="desinfectante" (change)="itemEdited(item.id)">
         <option value="si">{{'si' | translate}}</option>
         <option value="no">{{'no' | translate}}</option>
       </select>
-    </span>
+    </span> -->
+    <p-dropdown [options]="sino" [(ngModel)]="item.desinfectante" appendTo="body" [style]="{'width':'80px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
+    
        </ng-template>
     </p-column>
 

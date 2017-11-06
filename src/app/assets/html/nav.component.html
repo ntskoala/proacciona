@@ -23,5 +23,5 @@
 </nav>
 <p-growl *ngIf="empresasService.showAlerts" [life]="5000" [style]="{'position':'fixed','top':'0px','right':'400px','Z-Index':'99999'}" (onHover)="showAlertOptions()"></p-growl>
 <div *ngIf="alertOptions"  style="position:fixed;top:0px;right:770px;height:60px;background-color:#ffd740;width: 120px;padding-top: 7px;padding-left: 7px;Z-Index:99999">
-    <md-checkbox [(ngModel)]="empresasService.noTooltips" (change)="alertOptionsChanged()">{{'alertas.noTooltips' | translate}}</md-checkbox>
+    <md-checkbox [(ngModel)]="empresasService.showAlerts" (change)="alertOptionsChanged()">{{'alertas.showAlerts' | translate}}</md-checkbox>
 </div>

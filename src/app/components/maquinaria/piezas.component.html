@@ -150,7 +150,7 @@
 
 
 
-<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
+<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc" [ngStyle]="{'top':top}">
     <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
   <img   class="iframe" [src]="foto">
   </div>

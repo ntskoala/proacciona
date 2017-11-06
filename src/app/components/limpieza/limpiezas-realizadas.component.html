@@ -187,7 +187,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'120px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">

@@ -19,7 +19,7 @@
   "Cerrar":"Tancar",
   "cerrar":"Tancar",
   "guardar":"Desar",
-  "guardarOrden":"Desar ordre",
+  "guardarOrden":"Desar nou ordre",
   "guardarTodo":"Desar tots els registres",
   "eliminar":"Eliminar",
   "add":"Afegir",
@@ -449,7 +449,8 @@
       "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desar' per confirmar els canvis",
       "noTooltips":"No mostrar tooltips",
       "verTooltips":"Tooltips visibles",
-      "showAlerts":"Mostrar alertes"
+      "showAlerts":"Mostrar alertes",
+      "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició"      
     },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",

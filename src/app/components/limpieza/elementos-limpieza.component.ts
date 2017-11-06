@@ -36,7 +36,7 @@ public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
 public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
 public items: LimpiezaElemento[];
 public guardar = [];
-public alertaGuardar:boolean=false;
+public alertaGuardar:object={'guardar':false,'ordenar':false};
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -293,8 +293,8 @@ this.itemEdited(evento.data.id);
 }
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
-    if (!this.alertaGuardar){
-      this.alertaGuardar = true;
+    if (!this.alertaGuardar['guardar']){
+      this.alertaGuardar['guardar'] = true;
       this.setAlerta('alertas.guardar');
       }
   }
@@ -312,7 +312,7 @@ this.itemEdited(evento.data.id);
   let indice = this.items.findIndex((myitem)=>myitem.id==item.id);
   console.log('item ',this.items[indice]);
     this.guardar[item.id] = false;
-    this.alertaGuardar = false;
+    this.alertaGuardar['guardar'] = false;
     let parametros = '?id=' + item.id+this.entidad;    
     item.idlimpiezazona = this.limpieza.id;  
     item.fecha = new Date(Date.UTC(item.fecha.getFullYear(), item.fecha.getMonth(), item.fecha.getDate()))
@@ -498,6 +498,24 @@ goDown(index:number,evento:Event){
   }else{
     console.log('ultimo elemento');
   }
+}
+
+ordenar() {
+  console.log('ORDENANDO')
+  this.procesando = true;
+  this.alertaGuardar['ordenar'] = false;
+  this.items.forEach((item) => {
+    this.saveItem(item, 0);
+  });
+  this.items = this.items.slice();
+  this.procesando = false;
+}
+
+editOrden(){
+  if (!this.alertaGuardar['ordenar']){
+    this.alertaGuardar['ordenar'] = true;
+    this.setAlerta('alertas.nuevoOrden');
+    }
 }
 
 exportData(tabla: DataTable){

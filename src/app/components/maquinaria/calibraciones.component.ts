@@ -26,7 +26,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   public calibraciones: CalibracionesMaquina[] = [];
   public nuevoCalibracion: CalibracionesMaquina = new CalibracionesMaquina(0, 0, '', this.nuevaFecha);
   public guardar = [];
-  public alertaGuardar:boolean=false;
+  public alertaGuardar:object={'guardar':false,'ordenar':false};
   public cantidad:number=1;
   public idBorrar;
   public modal2: boolean = false;
@@ -94,8 +94,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   }
   itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
-    if (!this.alertaGuardar){
-      this.alertaGuardar = true;
+    if (!this.alertaGuardar['guardar']){
+      this.alertaGuardar['guardar'] = true;
       this.setAlerta('alertas.guardar');
       }
   }
@@ -122,7 +122,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       response => {
         if (response.success) {
           console.log('Mantenimiento updated');
-          this.alertaGuardar = false;
+          this.alertaGuardar['guardar'] = false;
         }
       });
   }
@@ -314,13 +314,20 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   ordenar() {
     console.log('ORDENANDO')
     this.procesando = true;
+    this.alertaGuardar['ordenar'] = false;
     this.calibraciones.forEach((item) => {
       this.saveItem(item, 0);
     });
     this.calibraciones = this.calibraciones.slice();
     this.procesando = false;
   }
-
+  editOrden(){
+    if (!this.alertaGuardar['ordenar']){
+      this.alertaGuardar['ordenar'] = true;
+      this.setAlerta('alertas.nuevoOrden');
+      }
+  }
+  
 
   reordenar(indice) {
     this.procesando = true;

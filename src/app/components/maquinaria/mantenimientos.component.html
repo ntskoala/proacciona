@@ -1,4 +1,5 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="procesando"><md-spinner></md-spinner></div>
 
 <span class="cell tooltip" mdTooltip="{{'maquinas.nueva' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">    
 <div class="table">
@@ -115,6 +116,9 @@
             <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
             <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
             </span>
+            <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
+                <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
+                </span>
           </div>
     </p-header>
 
@@ -126,7 +130,10 @@
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
          <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
         <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
-        <div class="orden" >{{item.orden}}</div>        
+        <!-- <div class="orden" >{{item.orden}}</div>         -->
+        <div class="orden" >
+            <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="mantenimientos.length"  (onChange)="editOrden()"></p-spinner> 
+        </div>  
         </ng-template>
       </p-column>   
     <!--************ FIN ORDEN ***************************--> 

@@ -19,7 +19,7 @@
   "Cerrar": "Cerrar",
   "cerrar": "Cerrar",
   "guardar":"Guardar",
-  "guardarOrden":"Guargar orden",
+  "guardarOrden":"Guargar nuevo orden",
   "guardarTodo":"Guardar todos los registros",
   "eliminar":"Eliminar",
   "add":"Añadir",
@@ -449,7 +449,8 @@
       "guardar_Ficha":"Se ha modificado la ficha, es necesario pulsar el botón 'Guardar' para confirmar los cambios",
       "noTooltips":"No mostrar tooltips",
       "verTooltips":"Tooltips visibles",
-      "showAlerts":"Mostrar alertas"
+      "showAlerts":"Mostrar alertas",
+      "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición"
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

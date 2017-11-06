@@ -26,11 +26,12 @@ momento: any;
 public mantenimientos: MantenimientosMaquina[] =[]; 
 public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0,'','');
 public guardar =[];
-public alertaGuardar:boolean=false;
+public alertaGuardar:object={'guardar':false,'ordenar':false};
 public cantidad:number=1;  
 
 public idBorrar;
 public es:any;
+public procesando: boolean = false;
 
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
@@ -107,8 +108,8 @@ ngOnChanges(){
     }
         itemEdited(idItem: number, fecha?: any) {
         this.guardar[idItem] = true;
-        if (!this.alertaGuardar){
-          this.alertaGuardar = true;
+        if (!this.alertaGuardar['guardar']){
+          this.alertaGuardar['guardar'] = true;
           this.setAlerta('alertas.guardar');
           }
 
@@ -131,7 +132,7 @@ ngOnChanges(){
     let indice = this.mantenimientos.findIndex((myitem)=>myitem.id==mantenimiento.id);
   // console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
-    this.alertaGuardar = false;
+    this.alertaGuardar['guardar'] = false;
     console.log ("actualizar_mantenimiento",mantenimiento,this.mantenimientos[i].periodicidad);
     mantenimiento.fecha = new Date(Date.UTC(mantenimiento.fecha.getFullYear(), mantenimiento.fecha.getMonth(), mantenimiento.fecha.getDate()))
    
@@ -309,6 +310,22 @@ checkPeriodo(periodicidad: string): string{
   }
   }
 
+  ordenar() {
+    console.log('ORDENANDO')
+    this.procesando = true;
+    this.alertaGuardar['ordenar'] = false;
+    this.mantenimientos.forEach((item) => {
+      this.saveItem(item, 0);
+    });
+    this.mantenimientos = this.mantenimientos.slice();
+    this.procesando = false;
+  }
 
+  editOrden(){
+    if (!this.alertaGuardar['ordenar']){
+      this.alertaGuardar['ordenar'] = true;
+      this.setAlerta('alertas.nuevoOrden');
+      }
+  }
 
 }

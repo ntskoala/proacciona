@@ -38,7 +38,7 @@ export class PlanesComponent implements OnInit {
   public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'','',0);
   public planes: Planificacion[] = [];
   public guardar = [];
-  public alertaGuardar:boolean=false;
+  public alertaGuardar:object={'guardar':false,'ordenar':false};
   public idBorrar:number;
   public cantidad:number=1;  
   public familias: Familia[];
@@ -125,16 +125,16 @@ ngOnInit(){
     itemEdited(idItem: number, fecha?: any) {
 
     this.guardar[idItem] = true;
-    if (!this.alertaGuardar){
-      this.alertaGuardar = true;
+    if (!this.alertaGuardar['guardar']){
+      this.alertaGuardar['guardar'] = true;
       this.setAlerta('alertas.guardar');
       }
   }
 // ngOnChanges(changes:SimpleChange) {}
 onEdit(evento){
   //console.log(evento)
-  if (!this.alertaGuardar){
-    this.alertaGuardar = true;
+  if (!this.alertaGuardar['guardar']){
+    this.alertaGuardar['guardar'] = true;
     this.setAlerta('alertas.guardar');
     }
   this.guardar[evento.data.id]= true;
@@ -263,7 +263,7 @@ modificarItem(){
 }
 
  saveItem(item: Planificacion,i: number) {
-  this.alertaGuardar = false;
+  this.alertaGuardar['guardar'] = false;
   let indice = this.planes.findIndex((myitem)=>myitem.id==item.id);
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
@@ -392,8 +392,23 @@ goDown(index:number,evento:Event,dt:DataTable){
   }
 }
 
+ordenar() {
+  console.log('ORDENANDO')
+  this.procesando = true;
+  this.alertaGuardar['ordenar'] = false;
+  this.planes.forEach((item) => {
+    this.saveItem(item, 0);
+  });
+  this.planes = this.planes.slice();
+  this.procesando = false;
+}
 
-
+editOrden(){
+  if (!this.alertaGuardar['ordenar']){
+    this.alertaGuardar['ordenar'] = true;
+    this.setAlerta('alertas.nuevoOrden');
+    }
+}
 
 exportData(tabla: DataTable){
   console.log(tabla);

@@ -10,6 +10,9 @@ export class Control {
     public critico: number,
     public periodicidad: number,
     public tipoperiodo: string,
-    public idempresa: number
+    public idempresa: number,
+    public periodicidad2?: string,
+    public fecha?: Date,
+    public orden?: number
   ) {}
 }

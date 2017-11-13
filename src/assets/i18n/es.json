@@ -20,7 +20,7 @@
   "cerrar": "Cerrar",
   "guardar":"Guardar",
   "guardarOrden":"Guargar nuevo orden",
-  "guardarTodo":"Guardar todos los registros",
+  "guardarTodo":"Guardar todos los cambios",
   "eliminar":"Eliminar",
   "add":"Añadir",
   "aceptar": "Aceptar",
@@ -36,6 +36,7 @@
   "Controles": "Controles",
   "Opciones": "Opciones premium",
   "Opciones2":"Opciones",
+  "Modulos":"Módulos activos",
   "Operario": "Operario",
   "Gerente": "Gerente",
   "Idioma": "Idioma",
@@ -109,6 +110,13 @@
     "produccion":"Módulo producción",
     "personal":"Módulo personal",
     "planificaciones":"Módulo planificaciones"
+  },
+  "configuracion":{
+    "nuevoUsuario":"Nuevo usuario",
+    "nuevoControl":"Nuevo control",
+    "nuevoChecklist":"Nuevo checklist",
+    "nuevoCCL":"Nuevo control del checklist",
+    "selecciona":"Selecciona checklist para editar la lista de controles"
   },
   "premium":{
     "exportar informes":"Exportar informes",
@@ -447,9 +455,12 @@
       "nohaymail":"No tiene email",
       "guardar":"Se ha modificado un registro, es necesario pulsar el botón <span class='material-icons'>check</span> para guardar los cambios",
       "guardar_Ficha":"Se ha modificado la ficha, es necesario pulsar el botón 'Guardar' para confirmar los cambios",
-      "noTooltips":"No mostrar tooltips",
+      "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertas",
+      "tituloAlertaInfo":"Información",
+      "saveOk":"Se ha guardado correctamente",
+      "saveNotOk":"Se ha producido un error al guardar",
       "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición"
     },
   "alergenos":"alérgenos",

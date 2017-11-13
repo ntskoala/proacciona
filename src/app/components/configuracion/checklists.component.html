@@ -1,11 +1,45 @@
 <modal [modal]="modalCL" (onCerrar)="cerrarModalCL($event)"></modal>
 <modal [modal]="modalCCL" (onCerrar)="cerrarModalCCL($event)"></modal>
 <modal [modal]="modalImportCL" (onImportar)="cerrarModalImportCL($event)" (onCerrar)="cerrarModalImportCL($event)"></modal>
+<div class="modal" *ngIf="procesando">
+  <md-spinner></md-spinner>
+  </div>
+<!-- Nueva checklist -->
+<div name="CHECKLISTS"  style="width:600px">
+<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-checklist">
+    <h2>{{'Nueva' | translate}} checklist</h2>
+    <span class="cell tooltip" mdTooltip="{{'configuracion.nuevoChecklist' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                           
+    <div class="table">
+      <form class="row addItem" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
+        <span class="cell">
+          <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="cl.nombrechecklist" name="nombrechecklist">
+        </span>
+        <span class="medium cell">
+            <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="cl.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+          </span>
+        <span class="cell center">
+            <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="cl.fecha" [origen]="tipo"></periodicidad>
+          </span>
 
+  
+        <span class="cell">
+        <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                                 
+          <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
+            <span class="material-icons">add</span>
+          </button>
+        </span>
+        </span>
+      </form>
+    </div>
+    </span>
+  </div>
+
+
+
+  
 <!-- Seleccionar checklist -->
-<div class="seleccionar-checklist">
+<!-- <div class="seleccionar-checklist">
   <h2>Checklist</h2>
-  <!--<listado-checklists [empresa]="empresaSeleccionada"></listado-checklists>-->
   <form>
     <select #listaChecklist (change)="mostrarCCL($event.target.value)">
       <option *ngFor="let checklist of checklists" [value]="checklist.id">
@@ -17,59 +51,105 @@
   <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-button color="primary" (click)="modificarCL()" type="submit">Modificar</button>
   <button *ngIf="empresasService.administrador" md-button color="primary" (click)="import()" type="submit">Importar</button>
   
+</div> -->
+<div style="margin-top:40px">  
+<p-dataTable #dt [value]="checklists" [csvSeparator]="';'" [exportFilename]="'Checklists'" 
+[editable]="true"  [responsive]="false" (onEditInit)="onEditCL($event)"
+ sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'600px'}"
+[(selection)]="selectedChecklist" (onRowSelect)="onChecklistSelect($event)"
+[rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
+
+<!-- ********** HEADER  ORDEN    -->
+<p-header>
+  <div class="ui-helper-clearfix">
+      <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+      <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
+      </span>
+      <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('ckecklist')"  style="float:left"></button>
+          </span>
+    </div>
+</p-header>
+<!-- **********  FIN HEADER ORDEN    -->
+<!-- **********  ORDEN    -->
+<p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'60px'}">
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
+  <md-icon>import_export</md-icon>
+  </ng-template>
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+   <!-- <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
+  <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
+  <!-- <div class="orden" >{{item.orden}}</div>         -->
+  <div class="orden" >
+      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="editOrden()"></p-spinner> 
+  </div>  
+  </ng-template>
+</p-column>
+<!-- **********  FIN ORDEN    -->
+
+
+<p-column [style]="{'width':'38px'}" selectionMode="single" >
+    <ng-template  pTemplate="header">
+        <span class="tooltip" mdTooltip="{{'configuracion.selecciona' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                           
+          Sel.
+        </span>   
+    </ng-template>
+</p-column>
+<p-column field="nombrechecklist" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'150px'}"></p-column>
+<p-column  field="fecha_" header="{{'fecha' | translate}}" [sortable]="true" [style]="{'width':'120px'}">
+    <ng-template let-col let-item="rowData" pTemplate="body" >      
+    <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha_"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarCL(item.id)" name="fecha_"></p-calendar>
+    </ng-template>
+  </p-column>
+<p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'90px','text-align': 'center'}">
+    <ng-template let-col let-item="rowData" pTemplate="body">
+    <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad2" [fechaPrevista]="item.fecha_" [origen]="tipo" name="periodicidad"></periodicidad>
+    </ng-template>
+  </p-column>
+<p-column header="{{'acciones' | translate}}" [style]="{'width':'140px'}">
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+      <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrarCL(item.id)" type="button">
+    <span class="material-icons">close</span>
+  </button>
+</span>
+<span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardarCL[item.id]" (click)="actualizarCL(item)" type="button">
+    <span class="material-icons">check</span>
+  </button>
+</span>
+<span class="cell tooltip" mdTooltip="{{'importar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+    <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="item.id!=checklistActiva" (click)="import(item.id)" type="button">
+        <span class="material-icons">get_app</span>
+    </button>
+  </span>
+  </ng-template>   
+</p-column>
+
+</p-dataTable>
 </div>
 
-<!-- Nueva checklist -->
-<div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-checklist">
-  <h2>{{'Nueva' | translate}} checklist</h2>
-  <div class="table">
-    <form class="row addItem" (ngSubmit)="nuevaChecklist(nuevaCLf.value)" #nuevaCLf="ngForm">
-      <span class="cell">
-        <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="cl.nombrechecklist" name="nombrechecklist">
-      </span>
-      <span class="cell">
-        <input [placeholder]="'Periodicidad' | translate" type="text" required [(ngModel)]="cl.periodicidad" name="periodicidad">
-      </span>
-      <span class="cell">
-        <select class="white-select" required [(ngModel)]="cl.tipoperiodo" name="tipoperiodo">
-          <option value="Día">{{'Día' | translate}}</option>
-          <option value="Semana">{{'Semana' | translate}}</option>
-          <option>Mes</option>
-          <option value="Any">{{'Año' | translate}}</option>
-        </select>
-      </span>
-        <!--<span class="cell">
-          <button md-mini-fab color="accent" (click)="import()">
-            <span class="material-icons">archive</span>
-          </button>
-        </span>-->
-      <span class="cell">
-        <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
-          <span class="material-icons">add</span>
-        </button>
-      </span>
-    </form>
-  </div>
 </div>
 
 
 
+<div name="CONTROLESchecklist" style="margin-top:-25px;margin-left:30px">
 <!-- Mostrar control checklists -->
- <div class="mostrar-checklist">
+ <div class="mostrar-checklist" style="margin-top:40px">
   <div *ngIf="checklistActiva != 0">
-    <h2>Control checklists</h2>
+    <h2>Item checklist</h2>
     <div class="table">
-        <span class="cell tooltip" mdTooltip="{{'configuracion.nuevoCCL' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                     
-        <div class="header-row">
+        <span class="cell tooltip" mdTooltip="{{'configuracion.nuevoCCL' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                     
+        <!-- <div class="header-row">
             <span class="header-cell">{{'Nombre' | translate}}</span>
             <span class="header-cell"></span>
-          </div>
+          </div> -->
       <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  class="row addItem" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
         <span class="cell">
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="ccl.nombre" name="nombre">
         </span>
         <span class="cell">
-        <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                                 
+        <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                                 
           <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
             <span class="material-icons">add</span>
           </button>
@@ -97,20 +177,50 @@
 
 <div style="margin-top:40px">
     
-<p-dataTable #dt [value]="controlchecklists" 
+<p-dataTable #dt [value]="controlchecklists"  [csvSeparator]="';'" [exportFilename]="'items'" 
 [editable]="true"  [responsive]="false" (onEditInit)="onEditCCL($event)"
-[tableStyle]="{'width':'320px'}">
+ sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'320px'}">
 
-<p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'190px'}"></p-column>
+
+<!-- ********** HEADER  ORDEN    -->
+<p-header>
+  <div class="ui-helper-clearfix">
+      <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+      <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
+      </span>
+      <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('controlChecklist')"  style="float:left"></button>
+          </span>
+    </div>
+</p-header>
+<!-- **********  FIN HEADER ORDEN    -->
+<!-- **********  ORDEN    -->
+<p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'70px'}">
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
+  <md-icon>import_export</md-icon>
+  </ng-template>
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+   <!-- <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
+  <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
+  <!-- <div class="orden" >{{item.orden}}</div>         -->
+  <div class="orden" >
+      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controlchecklists.length"  (onChange)="editOrden()"></p-spinner> 
+  </div>  
+  </ng-template>
+</p-column>
+<!-- **********  FIN ORDEN    -->
+
+
+<p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'150px'}"></p-column>
 
 <p-column header="{{'acciones' | translate}}" [style]="{'width':'120px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-      <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+      <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrarCCL(item.id)" type="button">
     <span class="material-icons">close</span>
   </button>
 </span>
-<span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+<span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
   <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarCCL(item.id,i)" type="button">
     <span class="material-icons">check</span>
   </button>
@@ -121,13 +231,13 @@
 </p-dataTable>
 </div>
 
-</div>
-</div> 
-
+</div> <!-- checklisgtActiva != 0 -->
+</div> <!-- mostrar-checklist-->
+</div> <!-- CONTROLES checklist-->
 
 
 <!-- Modificar checklist -->
-<div class="modificar-checklist" *ngIf="modificar">
+<!-- <div class="modificar-checklist" *ngIf="modificar">
   <h2>Modificar Checklist</h2>
   <div class="table">
     <form class="row" #actCLf="ngForm" (ngSubmit)="actualizarCL()">
@@ -152,5 +262,5 @@
       </span>
     </form>
   </div>
-</div>
+</div> -->
 <!--<app-migra-check-list></app-migra-check-list>-->

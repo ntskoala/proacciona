@@ -26,7 +26,7 @@ import { Empresa } from '../../models/empresa';
 export class MantenimientosRealizadosComponent implements OnInit {
 
 @Input() maquina:Maquina;
-
+@Input() nuevo: number;
 
 public mantenimientos: MantenimientoRealizado[];
 public images: string[];
@@ -121,7 +121,7 @@ public top = '50px';
   setAlerta(concept:string){
     let concepto;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
-    this.messageService.add(
+    this.messageService.clear();this.messageService.add(
       {severity:'warn', 
       summary:'Info', 
       detail: concepto
@@ -271,7 +271,9 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     }
   }
 
-
+cerrarFoto(){
+  this.verdoc=false;
+}
 // checkBorrar(){}
 //   uploadImg(event, idItem,i) {
 //     console.log(event)

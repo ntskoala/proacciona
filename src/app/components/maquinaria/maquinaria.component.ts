@@ -16,7 +16,7 @@ public maquina: Maquina;
 public calendario: boolean = false;
 public lubricante: boolean = false;
 public maquinas: Maquina[];
-
+public nuevoMantenimientoR: number;
 
 public permiso:boolean=false;
 public alerta:boolean=false;
@@ -112,5 +112,9 @@ calendarios(){
 lubricantes(){
   this.calendario = false;
   this.lubricante = !this.lubricante;
+}
+
+nuevoMantenimientoRealizado(evento){
+this.nuevoMantenimientoR = evento;
 }
 }

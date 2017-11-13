@@ -23,19 +23,19 @@
    
   <div class="botonera">
     
-     <div  class="tooltip" mdTooltip="{{'planificaciones.calendario' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+     <div  class="tooltip" mdTooltip="{{'planificaciones.calendario' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" md-mini-fab (click)="cambioMenu('calendario')"><md-icon>date_range</md-icon></button> 
       </div>
 
-   <!-- <div class="tooltip" mdTooltip="{{'planificaciones.familias' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+   <!-- <div class="tooltip" mdTooltip="{{'planificaciones.familias' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" md-mini-fab (click)="cambioMenu('familia')"><md-icon>group</md-icon></button>
 </div> -->
 
-   <div class="tooltip" mdTooltip="{{'planificaciones.permisos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+   <div class="tooltip" mdTooltip="{{'planificaciones.permisos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" md-mini-fab (click)="cambioMenu('permiso')"><md-icon>vpn_key</md-icon></button>
   </div>
 
-   <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+   <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('alerta')"><md-icon>notifications_active</md-icon></button>
   </div>
    </div>
@@ -45,7 +45,7 @@
 
    <md-sidenav-container class="example-container">
   <md-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
+          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
   <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
   </div>
    <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>

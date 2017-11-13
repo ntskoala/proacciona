@@ -14,10 +14,10 @@
   </div> -->
   <div class="botonera">
       
-       <div  class="tooltip" mdTooltip="{{'maquinas.calendarios' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+       <div  class="tooltip" mdTooltip="{{'maquinas.calendarios' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
         <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" md-mini-fab (click)="cambioMenu('calendario')"><md-icon>date_range</md-icon></button> 
         </div>
-     <div class="tooltip" mdTooltip="{{'maquinas.lubricantes' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">
+     <div class="tooltip" mdTooltip="{{'maquinas.lubricantes' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
     <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('lubricante')"><md-icon>opacity</md-icon></button>
     </div>
      </div>
@@ -28,11 +28,11 @@
  <div class="contenido">
     <md-sidenav-container class="example-container">
         <md-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-                <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
+                <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
         <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
         </div>
 
-   <calendarios *ngIf="calendario" [maquinas]="maquinas"></calendarios>
+   <calendarios *ngIf="calendario" [maquinas]="maquinas" (newMantenimientoRealizadoEmit)="nuevoMantenimientoRealizado($event)"></calendarios>
    <lubricantes *ngIf="lubricante"></lubricantes>
     
   </md-sidenav> 
@@ -43,7 +43,7 @@
 <md-tab-group *ngIf="maquina && maquina.id > 0">
   <md-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></md-tab>
   <md-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></md-tab>  
-<md-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-realizados></md-tab>  
+<md-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR" *ngIf="maquina"></mantenimientos-realizados></md-tab>  
 <md-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></md-tab>
   <md-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></md-tab>
   <md-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></md-tab>

@@ -1,5 +1,9 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+<div class="modal" *ngIf="procesando">
+  <md-spinner></md-spinner>
+  </div>
 <div class="table">
+<span class="tooltip" style="display:table-row-group " mdTooltip="{{'configuracion.nuevoControl' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                         
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
     <input type="hidden" [(ngModel)]="nuevoControl.id" name="id">
     <span class="cell">
@@ -23,17 +27,12 @@
     <span class="cell">
       <input class="small" type="text" [(ngModel)]="nuevoControl.critico" name="critico">
     </span>
-    <span class="cell">
-      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoControl.periodicidad" name="periodicidad">
-    </span>
-    <span class="cell">
-      <select class="white-select" required [(ngModel)]="nuevoControl.tipoperiodo" name="tipoperiodo">
-        <option value="Día">{{'Día' | translate}}</option>
-        <option value="Semana">{{'Semana' | translate}}</option>
-        <option>Mes</option>
-        <option value="Año">{{'Año' | translate}}</option>
-      </select>
-    </span>
+    <span class="medium cell">
+        <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="nuevoControl.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      </span>
+    <span class="cell center">
+        <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoControl.fecha" [origen]="tipo"></periodicidad>
+      </span>
     <span class="cell"></span>
     <span class="cell">
       <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid" type="submit">
@@ -41,6 +40,7 @@
       </button>
     </span>
   </form>
+</span>
   <div class="header-row">
     <span class="header-cell">Control</span>
     <span class="header-cell">Pla</span>
@@ -54,7 +54,7 @@
     <span class="header-cell"></span>
     <span class="header-cell"></span>
   </div>
-  <form class=" row"#actControlF="ngForm" (ngSubmit)="actualizarControl(actControlF.value)" *ngFor="let control of controles">
+  <!-- <form class=" row"#actControlF="ngForm" (ngSubmit)="actualizarControl(actControlF.value)" *ngFor="let control of controles">
     <input type="hidden" [(ngModel)]="control.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="control.nombre" name="nombre" (keyup)="modificarControl(control.id)">
@@ -98,6 +98,81 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
-  </form>
+  </form> -->
 </div>
+
+<div style="margin-top:40px">
+    
+<p-dataTable #dt [value]="controles"  [csvSeparator]="';'" [exportFilename]="'Controles'"
+[editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)"
+ sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'900px'}">
+ 
+
+<!-- ********** HEADER  ORDEN    -->
+<p-header>
+  <div class="ui-helper-clearfix">
+      <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+      <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
+      </span>
+      <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
+          </span>
+    </div>
+</p-header>
+<!-- **********  FIN HEADER ORDEN    -->
+<!-- **********  ORDEN    -->
+<p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'70px'}">
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
+  <md-icon>import_export</md-icon>
+  </ng-template>
+  <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+   <!-- <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
+  <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
+  <!-- <div class="orden" >{{item.orden}}</div>         -->
+  <div class="orden" >
+      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controles.length"  (onChange)="editOrden()"></p-spinner> 
+  </div>  
+  </ng-template>
+</p-column>
+<!-- **********  FIN ORDEN    -->
+
+
+  <p-column field="nombre" header="{{'Control' | translate}}" [editable]="true"  [style]="{'width':'100px'}"></p-column>
+  <p-column field="pla" header="{{'Pla' | translate}}"  [editable]="true" [style]="{'width':'100px'}"></p-column>
+  <p-column field="valorminimo" header="{{'min' | translate}}"  [editable]="true"  [style]="{'width':'50px'}"></p-column>
+  <p-column field="valormaximo" header="{{'max' | translate}}" [editable]="true"  [style]="{'width':'50px'}"></p-column>
+  <p-column field="objetivo" header="{{'obj' | translate}}"  [editable]="true" [style]="{'width':'50px'}"></p-column>
+  <p-column field="tolerancia" header="{{'tol' | translate}}"  [editable]="true"  [style]="{'width':'50px'}"></p-column>
+  <p-column field="critico" header="{{'crit' | translate}}" [editable]="true"  [style]="{'width':'50px'}"></p-column>
+  <p-column  field="fecha" header="{{'fecha' | translate}}" [sortable]="true" [style]="{'width':'110px'}">
+      <ng-template let-col let-item="rowData" pTemplate="body" >      
+      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarControl(item.id)" name="fecha"></p-calendar>
+      </ng-template>
+    </p-column>
+ 
+  <p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'100px','text-align': 'center'}">
+      <ng-template let-col let-item="rowData" pTemplate="body">
+      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad2" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
+      </ng-template>
+    </p-column>
+
+
+
+  <p-column header="{{'acciones' | translate}}" [style]="{'width':'120px'}">
+    <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+      <span class="material-icons">close</span>
+    </button>
+  </span>
+  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarControl(item)" type="button">
+      <span class="material-icons">check</span>
+    </button>
+  </span>
+    </ng-template>   
+  </p-column>
+
+</p-dataTable>
+  </div>
 <div class="leyenda" [innerHTML]="'pieControles' | translate"></div>

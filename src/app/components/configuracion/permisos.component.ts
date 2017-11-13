@@ -53,7 +53,7 @@ export class PermisosComponent {
     },
     error => console.log("error getting usuarios en permisos",error),
     ()=>{
-      this.expand();
+     // this.expand();
     }
     
     );
@@ -83,7 +83,7 @@ export class PermisosComponent {
   }
 
   seleccionarUsuario(idUsuario: number) {
-    this.unExpand();
+  //  this.unExpand();
     this.usuarioSeleccionado = idUsuario;
     this.checkControl = [];
     this.checkChecklist = [];
@@ -109,6 +109,9 @@ export class PermisosComponent {
         }
     });
 
+  }
+  onUserSelect(evento){
+this.seleccionarUsuario(evento.data.id);
   }
 
   changeControl(idControl: number) {

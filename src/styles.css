@@ -212,7 +212,15 @@ background-color: #fff;
 }
 
 .selected{
-  background-color: #a77af7;
+  background-color: #a77af7 !important;
+  /* background-color: #EEEAF5;
+  -webkit-text-fill-color: #673ab7; */
+}
+.selected2{
+  /* background-color: #a77af7; */
+  background-color: #EEEAF5;
+  -webkit-text-fill-color: #673ab7;
+  border-bottom-style: solid !important;
 }
 .botonCerrar{
   position: absolute;
@@ -382,14 +390,14 @@ gestion-tablas {
 }
 
 .nueva-checklist {
-  width: 68%;
-  padding-left: 1%;
-  float: right;
+  /* width: 68%; */
+  /* padding-left: 1%;
+  float: right; */
 }
 
 .mostrar-checklist {
-  width: 30%;
-  padding-right: 1%;
+  /* width: 30%;
+  padding-right: 1%; */
 }
 
 .modificar-checklist {
@@ -400,21 +408,22 @@ gestion-tablas {
 
 /* PermisosComponent */
 .seleccionar-usuario {
-  width: 100%;
+  width: 300px;
 }
 
 .marcar-controles,
 .marcar-checklists {
-  width: 48%;
+  width: 320px;
+  margin-left:30px;
 }
 
-.marcar-controles {
+/* .marcar-controles {
   padding-right: 2%;
 }
 
 .marcar-checklists {
   padding-left: 2%;
-}
+} */
 
 /* GestionInformesComponent */
 gestion-informes {
@@ -761,9 +770,12 @@ width: 400px;
    overflow: hidden;
 } */
 
-/* .sidenav-container {
-  width: 100%;
-  height: 100%;
-  border: 0px solid rgba(0, 0, 0, 0);
-} */
 
+/*
+***********************
+* CUSTOM CONTROLS PRIMENG *
+***********************
+*/
+
+.ui-growl-message-success { background-color: #4EC651 !important; }
+.ui-growl-message-error { background-color: #DC1B1B !important; color: #fff !important }

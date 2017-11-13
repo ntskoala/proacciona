@@ -14,10 +14,19 @@
 
 .contenido{
     margin-left:50px;
-    min-height: 500px;
-    overflow: auto;
+    min-height: 1500px;
+    /* overflow: auto; */
 }
-
+.tabs{
+    min-height: 1100px;
+    /* height: 300vh; */
+      display: flex;
+      min-width: 1050px;
+      float: left;
+      overflow-x: hidden;
+      overflow-y: hidden;
+  }
+  
 .opcionBoton{
     margin-left:6px;
     margin-top:25px;

@@ -1,5 +1,5 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div  class="tooltip" mdTooltip="{{'protocolo.nuevoProtocolo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">    
+<div  class="tooltip" mdTooltip="{{'protocolo.nuevoProtocolo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">    
     <button md-mini-fab color="accent" type="button" (click)="newItem()">
         <span class="material-icons">add</span>
         </button>
@@ -9,7 +9,7 @@
 <div class="protocolo" *ngFor="let protocol of items;let i = index">
 <md-card >
     <md-card-header>
-<div  class="tooltip" mdTooltip="{{'protocolo.nombre' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">            
+<div  class="tooltip" mdTooltip="{{'protocolo.nombre' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">            
         <input type="text"  [placeholder]="'nombre' | translate" [(ngModel)]="protocol.nombre" (keydown)="itemEdited(i)">
 </div>
     </md-card-header>
@@ -21,7 +21,7 @@
     <input type="text" [(ngModel)]="nuevoProcedimiento[i]" >
     </span>
         <span class="cell small">
-<div  class="tooltip" mdTooltip="{{'protocolo.anadirElemento' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">                    
+<div  class="tooltip" mdTooltip="{{'protocolo.anadirElemento' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">                    
       <button md-mini-fab color="accent" type="button" [disabled]="!nuevoProcedimiento" (click)="addProcedimiento(i)">
         <span class="material-icons">add</span>
         </button>
@@ -36,7 +36,7 @@
     {{procedimiento.descripcion}}
     </span>
         <span class="cell small">
-<div  class="tooltip" mdTooltip="{{'protocolo.quitarElemento' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">                            
+<div  class="tooltip" mdTooltip="{{'protocolo.quitarElemento' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">                            
             <button md-mini-fab color="primary" type="button" (click)="removeProcedimiento(n,i)">
                 <span class="material-icons">remove</span>
             </button>
@@ -45,16 +45,16 @@
     </div>
 </div>
 <md-card-actions>
-<div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">        
+<div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">        
     <span class="cell small">
-            <div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">                                        
+            <div  class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">                                        
         <button md-mini-fab color="primary" [disabled]="!hayCambios[i]" type="button" (click)="setProtocolo(i)">
           <span class="material-icons">check</span>
           </button>
             </div>
           </span>
 </div>
-<div  class="tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">        
+<div  class="tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">        
     <span class="cell small">
         <button md-mini-fab color="primary" type="button" (click)="checkBorrar(protocol.id)">
           <span class="material-icons">delete</span>
@@ -63,14 +63,14 @@
 </div>
 
 <!--*****  subir/ver FOTO  *********-->
-    <div  class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">        
+    <div  class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">        
         <span class="cell small"> 
    <button [disabled]="!protocol.doc" class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"  md-mini-fab color="primary" (click)="photoURL(i,'doc')" type="button">
      <span class="material-icons">photo_camera</span>
    </button>
         </span>
     </div>
-<div  class="tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'">        
+<div  class="tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">        
     <span class="cell small">
      <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
      <br><input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, protocol.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>

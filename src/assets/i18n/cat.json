@@ -20,7 +20,7 @@
   "cerrar":"Tancar",
   "guardar":"Desar",
   "guardarOrden":"Desar nou ordre",
-  "guardarTodo":"Desar tots els registres",
+  "guardarTodo":"Desar tots els canvis",
   "eliminar":"Eliminar",
   "add":"Afegir",
   "aceptar":"Acceptar",
@@ -36,6 +36,7 @@
   "Controles":"Controls",
   "Opciones":"Opcions premium",
   "Opciones2":"Opcions",
+  "Modulos":"Mòduls actius",
   "Operario":"Operari",
   "Gerente":"Gerent",
   "Idioma": "Idioma",
@@ -109,6 +110,13 @@
     "produccion":"Mòdul producció",
     "personal":"Mòdul personal",
     "planificaciones":"Mòdul planificacions"
+  },
+  "configuracion":{
+    "nuevoUsuario":"Nou usuari",
+    "nuevoControl":"Nou control",
+    "nuevoChecklist":"Nou checklist",
+    "nuevoCCL":"Nou control del checklist",
+    "selecciona":"Selecciona checklist per editar el llistat de controls"
   },
   "premium":{
     "exportar informes":"Exporta informes",
@@ -447,9 +455,12 @@
       "nohaymail":"No té email",
       "guardar":"S'ha modificat un registre, es necessari polsar el botó <span class='material-icons'>check</span> per desar els canvis",
       "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desar' per confirmar els canvis",
-      "noTooltips":"No mostrar tooltips",
+      "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertes",
+      "tituloAlertaInfo":"Informació",
+      "saveOk":"S'ha desat correctament",
+      "saveNotOk":"S'ha produit un error al desar",
       "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició"      
     },
   "alergenos":"Al·lergògens",

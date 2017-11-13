@@ -19,13 +19,13 @@ export class Opciones implements OnInit {
   }
 
   actualizarOpcion(opcion){
-      console.log('Actualizando noTooltips',this.empresasService.noTooltips);
+      console.log('Actualizando showTooltips',this.empresasService.showTooltips);
       switch(opcion){
         case "tooltips":
-          if (this.empresasService.noTooltips){
-            localStorage.setItem("noTooltips","true");
+          if (this.empresasService.showTooltips){
+            localStorage.setItem("showTooltips","true");
             }else{
-            localStorage.setItem("noTooltips","false");
+            localStorage.setItem("showTooltips","false");
             }
         case "alertas":
         if (this.empresasService.showAlerts){

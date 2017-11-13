@@ -1,4 +1,4 @@
-<span class="tooltip" mdTooltip="{{'maquinas.periodicidad' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips"
+<span class="tooltip" mdTooltip="{{'maquinas.periodicidad' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips"
     [mdTooltipPosition]="'right'">        
 <button [disabled]="!fechaPrevista" color="accent" type="button" [ngClass]="{'alert': alert }" md-mini-fab (click)="seleccion()">
     <!-- {{'maquinas.periodicidad' | translate}} -->

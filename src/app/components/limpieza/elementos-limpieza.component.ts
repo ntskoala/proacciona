@@ -35,6 +35,7 @@ export class ElementosLimpiezaComponent implements OnInit, OnChanges{
 public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
 public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
 public items: LimpiezaElemento[];
+public periodicidadActivada:boolean;
 public guardar = [];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
 public idBorrar;
@@ -96,6 +97,9 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
     });
   }
 
+  periodicidadActiva(activada){
+    this.periodicidadActivada=activada;
+  }
   // photoURL(i,tipo) {
   //   let extension = this.items[i].protocolo.substr(this.items[i].protocolo.length-3);
   //   let url = this.baseurl+this.items[i].id +"_"+this.items[i].protocolo;
@@ -301,7 +305,7 @@ this.itemEdited(evento.data.id);
   setAlerta(concept:string){
     let concepto;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
-    this.messageService.add(
+    this.messageService.clear();this.messageService.add(
       {severity:'warn', 
       summary:'Info', 
       detail: concepto
@@ -372,6 +376,7 @@ checkBorrar(idBorrar: number) {
   // }
 
 setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
+  this.periodicidadActivada=false;
   if (!idItem){
   this.nuevoItem.periodicidad = periodicidad;
   // console.log(this.nuevoItem.periodicidad);

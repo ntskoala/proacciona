@@ -126,8 +126,12 @@ findSupervisor(id:number){
 //console.log(id);
 let index = this.usuarios.findIndex((user)=>user.id==id)
 //console.log(this.usuarios[index]);
-let user = this.usuarios[index].usuario;
-//console.log(user);
+let user 
+if (index > -1){
+user = this.usuarios[index].usuario;
+}else{
+  user = '';
+}
 return user;
 }
 
@@ -146,7 +150,7 @@ onEdit(event){
   setAlerta(concept:string){
     let concepto;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
-    this.messageService.add(
+    this.messageService.clear();this.messageService.add(
       {severity:'warn', 
       summary:'Info', 
       detail: concepto

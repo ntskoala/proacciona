@@ -45,7 +45,7 @@
 
 {{'alertas.diasantes' | translate}}
 
-  <span class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+  <span class="tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
   <button  color="accent" md-mini-fab (click)="setPermiso(0,true,'Planificaciones')"><md-icon>check</md-icon></button>
   </span>
 </div>

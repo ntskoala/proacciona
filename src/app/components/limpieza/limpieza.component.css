@@ -4,7 +4,7 @@
   clear:both; */
       margin-left:50px;
     min-height: 1200px;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 .tituloLimpieza{
@@ -19,6 +19,7 @@
 
 .tabs{
   min-height: 1100px;
+  /* height: 300vh; */
     display: flex;
     min-width: 1050px;
     float: left;

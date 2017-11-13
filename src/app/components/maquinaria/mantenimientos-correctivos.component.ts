@@ -141,7 +141,7 @@ public top = '50px';
   setAlerta(concept:string){
     let concepto;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
-    this.messageService.add(
+    this.messageService.clear();this.messageService.add(
       {severity:'warn', 
       summary:'Info', 
       detail: concepto
@@ -213,7 +213,9 @@ public top = '50px';
 
 
 //*******IMAGENES */
-
+cerrarFoto(){
+  this.verdoc=false;
+}
 verFoto(foto:string,idItem){
   
   let calc = window.scrollY;

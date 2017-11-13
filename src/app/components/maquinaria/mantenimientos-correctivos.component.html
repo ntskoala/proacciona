@@ -1,6 +1,6 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 
-<span class="cell tooltip" mdTooltip="{{'maquinas.nuevoMantenimientoR' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">            
+<span class="cell tooltip" mdTooltip="{{'maquinas.nuevoMantenimientoR' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">            
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
@@ -41,7 +41,7 @@
     </span>
 
     <span class="cell small">
-        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
       <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <!--<button md-mini-fab color="accent" (click)="crearMantenimiento()">-->
         <span class="material-icons">add</span>
@@ -106,7 +106,7 @@
       [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Correctivos'">
       <p-header>
           <div class="ui-helper-clearfix">
-              <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
+              <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
               <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
               </span>
             </div>
@@ -114,7 +114,7 @@
   
       <p-column expander="true" styleClass="col-icon" [style]="{'width':'50px'}">
           <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-              <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+              <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
              
              </div>
          </ng-template> 
@@ -140,14 +140,14 @@
         <!-- <p-column field="doc" header="{{'doc' | translate }}">
             <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
                 <span class="cell">
-                    <span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                              
+                    <span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                              
                     <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
                       <span class="material-icons">photo_camera</span>
                     </button>
                     </span>
                   </span>
                   <span class="cell mini-fab">
-                      <span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">                                
+                      <span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                                
                       <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
                       <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
                       </span>
@@ -160,12 +160,12 @@
 
         <p-column header="{{'acciones' | translate }}">
           <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-              <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
+              <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
           <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
             <span class="material-icons">close</span>
           </button>
         </span>
-        <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+        <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
           <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
             <span class="material-icons">check</span>
           </button>
@@ -193,7 +193,7 @@
        <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
     
       <hr>
-      <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">        
+      <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">        
       <span  class="but but2">
           <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
           <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
@@ -207,7 +207,7 @@
        <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
            <hr>
       <span  class="but but2 altPanel">
-      <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">                
+      <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">                
           <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
       </span>
           <br>
@@ -222,8 +222,8 @@
 
 
 <div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
-   <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
-<button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+   <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
+<button  color="accent" md-mini-fab (click)="cerrarFoto()"><md-icon>close</md-icon></button>
 </div>
 <img   class="iframe"  [src]="foto">
 </div>

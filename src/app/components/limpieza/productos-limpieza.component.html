@@ -9,7 +9,7 @@
 </div>
 <h2 class="center">{{"limpieza.productoslimpieza" | translate}}</h2>
 <div class="table">
-    <span class="tooltip row" mdTooltip="{{'limpieza.nuevoProd' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">
+    <span class="tooltip row" mdTooltip="{{'limpieza.nuevoProd' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
         
     <div class="header-row">
         <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
@@ -113,8 +113,15 @@
 
 <div>
   <p-dataTable #dt [value]="items" 
-  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)">
-   
+  [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)"
+  [csvSeparator]="';'" [exportFilename]="'Productos_Limpieza'">
+  <p-header>
+      <div class="ui-helper-clearfix">
+          <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
+          </span>
+        </div>
+  </p-header> 
     <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true" ></p-column>
     <p-column field="marca" header="{{'limpieza.marca' | translate}}"  [editable]="true"></p-column>
    
@@ -144,14 +151,14 @@
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
 <!--*****  subir/ver FOTO  *********-->
     <span class="cell small">
-<span class="cell tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">      
+<span class="cell tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" md-mini-fab color="accent" (click)="photoURL(i,'doc',item.doc)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
 </span>
     </span>
     <span class="cell mini-fab">
-<span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">      
+<span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
 </span>
@@ -162,14 +169,14 @@
       <ng-template let-col let-item="rowData" let-i="rowIndex"  pTemplate="body">
 <!-- *****  subir/ver Ficha  ********* -->
     <span class="cell small">
-<span class="cell tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">      
+<span class="cell tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.ficha" md-mini-fab color="accent" (click)="photoURL(i,'ficha',item.ficha)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
 </span>
     </span>
     <span class="cell mini-fab">
-<span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'above'">            
+<span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">            
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'ficha'+i}}"></label>                
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'ficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'ficha')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
 </span>
@@ -182,12 +189,12 @@
 
     <p-column header="{{'acciones' | translate}}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
+          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
         <span class="material-icons">check</span>
       </button>

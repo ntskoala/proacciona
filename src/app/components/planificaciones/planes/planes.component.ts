@@ -143,7 +143,7 @@ onEdit(evento){
 setAlerta(concept:string){
   let concepto;
   this.translate.get(concept).subscribe((valor)=>concepto=valor)  
-  this.messageService.add(
+  this.messageService.clear();this.messageService.add(
     {severity:'warn', 
     summary:'Info', 
     detail: concepto

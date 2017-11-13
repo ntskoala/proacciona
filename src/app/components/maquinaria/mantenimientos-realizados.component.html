@@ -59,7 +59,7 @@
 [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
 <p-header>
     <div class="ui-helper-clearfix">
-        <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">              
+        <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
         <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
         </span>
       </div>
@@ -67,7 +67,7 @@
 
 <p-column expander="true" styleClass="col-icon" [style]="{'width':'50px'}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-        <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+        <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
        
        </div>
    </ng-template> 
@@ -99,12 +99,12 @@
 
   <p-column header="{{'acciones' | translate }}" [style]="{'width':'100px'}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">
+        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
     <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
       <span class="material-icons">close</span>
     </button>
   </span>
-  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'right'">
+  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
     <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
       <span class="material-icons">check</span>
     </button>
@@ -132,7 +132,7 @@
         <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
      
        <hr>
-       <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">        
+       <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">        
        <span  class="but but2">
            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
            <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
@@ -146,7 +146,7 @@
         <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
             <hr>
        <span  class="but but2 altPanel">
-       <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'left'">                
+       <span class="cell tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">                
            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
        </span>
            <br>
@@ -161,8 +161,8 @@
 
 
 <div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">
-    <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="empresasService.noTooltips" [mdTooltipPosition]="'before'">
-<button  color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>close</md-icon></button>
+    <div class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
+<button  color="accent" md-mini-fab (click)="cerrarFoto()"><md-icon>close</md-icon></button>
 </div>
 <img   class="iframe"  [src]="foto">
 </div>

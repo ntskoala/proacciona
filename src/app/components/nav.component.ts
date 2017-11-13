@@ -25,15 +25,15 @@ export class NavComponent implements OnInit{
       },
       error => console.log(error)
     )
-    if(localStorage.getItem("noTooltips")=="true"){
-      this.empresasService.noTooltips=true;
+    if(localStorage.getItem("showTooltips")=="false"){
+      this.empresasService.showTooltips=false;
     }else{
-      this.empresasService.noTooltips=false;
+      this.empresasService.showTooltips=true;
     }
-    if(localStorage.getItem("showAlerts")=="true"){
-      this.empresasService.showAlerts=true;
-    }else{
+    if(localStorage.getItem("showAlerts")=="false"){
       this.empresasService.showAlerts=false;
+    }else{
+      this.empresasService.showAlerts=true;
     }
   }
 

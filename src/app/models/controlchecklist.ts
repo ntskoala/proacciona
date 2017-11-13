@@ -3,6 +3,7 @@ export class ControlChecklist{
     public id: number,
     public idchecklist: number,
     public nombre: string,
-    public migrado?: number
+    public migrado?: number,
+    public orden?: number
   ){}
 }

@@ -1,15 +1,15 @@
 <div class="table">
         <div class="header-row">
-            <span class="header-cell">{{'Opcion' | translate}}</span>
+            <span class="header-cell" style="width:70%">{{'Opcion' | translate}}</span>
             <span class="header-cell">{{'Estado' | translate}}</span>
           </div>
           <div class="row">
                   <span class="cell">
-                 {{'alertas.noTooltips' | translate}}
+                 {{'alertas.showTooltips' | translate}}
                 </span>
                
                 <span class="cell">
-                 <md-checkbox [(ngModel)]="empresasService.noTooltips" (change)="actualizarOpcion('tooltips')">
+                 <md-checkbox [(ngModel)]="empresasService.showTooltips" (change)="actualizarOpcion('tooltips')">
                 </md-checkbox>
                 </span>
                 </div>

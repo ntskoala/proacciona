@@ -69,6 +69,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
 
   checkProtocolos(prots,x){
     return new Promise((resolve, reject) => {
+      try{
       let myProts = JSON.parse(prots)
       myProts.forEach(prot => {
        let existe = this.protocolos.findIndex(Aprot=>Aprot.id==prot)
@@ -78,7 +79,11 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
           }
       });
      resolve(x);
-    });
+  }
+  catch(e){
+    resolve(x);
+  }
+});
 }
 
 

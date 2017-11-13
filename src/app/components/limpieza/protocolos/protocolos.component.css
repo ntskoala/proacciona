@@ -18,8 +18,9 @@
     float: left;
 }
 
-listOfProtocolos{
-    width: 1025px;
+.listOfProtocolos{
+    /* width: 1025px; */
+    margin-top: 10px;
 }
 
 .inputfile{

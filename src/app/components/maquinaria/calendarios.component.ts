@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
 import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 
@@ -21,6 +21,7 @@ import { Empresa } from '../../models/empresa';
 export class CalendariosComponent implements OnInit {
 public maquina: Maquina;
 @Input() maquinas: Maquina[];
+@Output() newMantenimientoRealizadoEmit:EventEmitter<number>= new EventEmitter<number>();
 public calendario: CalendarioMantenimiento[];
 public meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','diciembre'];
 public dias = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
@@ -313,8 +314,18 @@ newMantenimientoRealizado(){
       response => {
         if (response.success) {
           console.log('Mantenimiento updated');
-        }
-    });
+          this.events.push({"idmantenimiento":response.id,"idmaquina":this.mantenimientorealizado.idmaquina,"title":this.mantenimientorealizado.maquina,"descripcion":this.mantenimientorealizado.descripcion,"start":this.mantenimientorealizado.fecha,"tipo":this.mantenimientorealizado.tipo,"elemento":this.mantenimientorealizado.elemento,"causas":this.mantenimientorealizado.causas,"tipo2":this.mantenimientorealizado.tipo2,"usuario":this.mantenimientorealizado.idusuario,"responsable":this.mantenimientorealizado.responsable,"color":this.setColor2(this.mantenimientorealizado.tipo_evento),"tipoevento":this.mantenimientorealizado.tipo_evento,"estado":"realizado"});
+          
+        this.newMantenimientoRealizadoEmit.emit(response.id);
+        //console.log('paso1',this.limpiezarealizada.nombre);
+      }
+    },
+    error=>console.log(error),
+    ()=>{
+      
+      
+      }
+    );
 
 }
 

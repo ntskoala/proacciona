@@ -19,6 +19,7 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 
 export class PeriodicidadComponent implements OnInit {
 @Output() periodo:EventEmitter<string>= new EventEmitter<string>();
+@Output() activo:EventEmitter<boolean>= new EventEmitter<boolean>();
 @Input() miperiodo: string;
 @Input() origen: string;
 @Input() fechaPrevista: Date;
@@ -47,7 +48,7 @@ public period: boolean=false;
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
   console.log('##########',this.origen);
-if (this.origen == 'limpieza'){
+if (this.origen == 'limpieza' || this.origen == 'libre'){
     this.periodos = ['diaria', 'semanal','mensual','anual','por uso'];
 }else{
      this.periodos = ['diaria', 'semanal','mensual','anual'];
@@ -78,7 +79,10 @@ ngOnChanges(){
 }
 }
 seleccion(){
-    this.period = !this.period
+    this.period = !this.period;
+    if (this.period){
+        this.activo.emit(true);
+    }
 }
 
 cambio(valor) {
@@ -106,6 +110,7 @@ ok(){
 }
 notok(){
     this.period = false;
+    this.activo.emit(false);
     return false;
 }
 setSemana(valor){

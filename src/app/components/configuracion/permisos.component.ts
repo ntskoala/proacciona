@@ -43,7 +43,7 @@ export class PermisosComponent {
     this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
       response => {
         this.usuarios = [];
-        this.usuarios.push(this.usuario);
+       // this.usuarios.push(this.usuario);
         if (response.success && response.data) {
           for (let element of response.data) {
             this.usuarios.push(new Usuario(element.id, element.usuario, element.password,

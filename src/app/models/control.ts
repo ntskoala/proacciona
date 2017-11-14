@@ -12,7 +12,7 @@ export class Control {
     public tipoperiodo: string,
     public idempresa: number,
     public periodicidad2?: string,
-    public fecha?: Date,
+    public fecha_?: Date,
     public orden?: number
   ) {}
 }

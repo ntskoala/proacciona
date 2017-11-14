@@ -68,8 +68,8 @@ export class ControlesComponent implements OnInit {
                   }else{orden=parseInt(element.orden);}
                 let fecha;
                 //console.log(element.fecha, new Date(element.fecha), typeof(element.fecha));
-                if (moment.isDate(new Date(element.fecha)) && element.fecha != "0000-00-00"){
-                  fecha = new Date(element.fecha)
+                if (moment.isDate(new Date(element.fecha_)) && element.fecha_ != "0000-00-00"){
+                  fecha = new Date(element.fecha_)
                 }else{
                   fecha = null;
                 }
@@ -85,7 +85,7 @@ export class ControlesComponent implements OnInit {
 
   crearControl(nuevoControl: Control) {
     nuevoControl.idempresa = this.empresasService.seleccionada;
-    (nuevoControl.fecha)? nuevoControl.fecha = new Date(Date.UTC(this.nuevoControl.fecha.getFullYear(), this.nuevoControl.fecha.getMonth(), this.nuevoControl.fecha.getDate())):nuevoControl.fecha=null;
+    (nuevoControl.fecha_)? nuevoControl.fecha_ = new Date(Date.UTC(this.nuevoControl.fecha_.getFullYear(), this.nuevoControl.fecha_.getMonth(), this.nuevoControl.fecha_.getDate())):nuevoControl.fecha_=null;
     nuevoControl.periodicidad2 = this.nuevoControl.periodicidad2;
     nuevoControl.orden = this.newOrden();
     this.servidor.postObject(URLS.CONTROLES, nuevoControl).subscribe(
@@ -180,7 +180,7 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
     }
     let indice = this.controles.findIndex((elem)=>elem.id==control.id);
     let parametros = '?id=' + control.id;   
-    if (control.fecha) control.fecha = new Date(Date.UTC(control.fecha.getFullYear(), control.fecha.getMonth(), control.fecha.getDate()))
+    if (control.fecha_) control.fecha_ = new Date(Date.UTC(control.fecha_.getFullYear(), control.fecha_.getMonth(), control.fecha_.getDate()))
     control.periodicidad2 = this.controles[indice].periodicidad2;   
            
     this.servidor.putObject(URLS.CONTROLES, parametros, control).subscribe(

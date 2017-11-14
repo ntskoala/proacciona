@@ -28,10 +28,10 @@
       <input class="small" type="text" [(ngModel)]="nuevoControl.critico" name="critico">
     </span>
     <span class="medium cell">
-        <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="nuevoControl.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+        <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="nuevoControl.fecha_" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_"></p-calendar>
       </span>
     <span class="cell center">
-        <periodicidad name="periodicidad" (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoControl.fecha" [origen]="tipo"></periodicidad>
+        <periodicidad name="periodicidad" (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoControl.fecha_" [origen]="tipo"></periodicidad>
       </span>
     <span class="cell"></span>
     <span class="cell">
@@ -146,13 +146,13 @@
   <p-column field="critico" header="{{'crit' | translate}}" [editable]="true"  [style]="{'width':'50px'}"></p-column>
   <p-column  field="fecha" header="{{'fecha' | translate}}" [sortable]="true" [style]="{'width':'110px'}">
       <ng-template let-col let-item="rowData" pTemplate="body" >      
-      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarControl(item.id)" name="fecha"></p-calendar>
+      <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha_"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="modificarControl(item.id)" name="fecha_"></p-calendar>
       </ng-template>
     </p-column>
  
   <p-column field="periodicidad" header="{{'periodicidad' | translate}}" [style]="{'width':'100px','text-align': 'center'}">
       <ng-template let-col let-item="rowData" pTemplate="body">
-      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad2" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
+      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad2" [fechaPrevista]="item.fecha_" [origen]="tipo" name="periodicidad"></periodicidad>
       </ng-template>
     </p-column>
 

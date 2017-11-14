@@ -37,6 +37,8 @@ public es;
 
   ngOnInit() {
     // Conseguir checklists
+    this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
+    this.fecha['fin']= new Date();//moment().date();
     this.getChecklists();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getChecklists());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);

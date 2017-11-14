@@ -1,3 +1,12 @@
+<div class="modal" *ngIf="modal" (click)="cerrarFoto()">
+    <div class="foto-window"  >
+        <span class="close material-icons" (click)="cerrarFoto()">close</span>
+        <div class="foto">
+          <img src="{{fotoSrc}}">
+        </div>
+    </div>
+  </div>
+
 <p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'">
     <p-header>
       <div class="informe-header">
@@ -11,18 +20,10 @@
     <div  class="filtro">
     <p-calendar name="inicio" [(ngModel)]="fecha['inicio']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
     </div>
-   <div class="modal" *ngIf="modal" (click)="cerrarFoto()">
-  <div class="foto-window"  >
-      <span class="close material-icons" (click)="cerrarFoto()">close</span>
-      <div class="foto">
-        <img src="{{fotoSrc}}">
-      </div>
-  </div>
-</div>
-   
     <div class="filtro">
     <p-calendar name="fin" [(ngModel)]="fecha['fin']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
     </div>
+
     </div>
     <div style="float:left; margin-left:20px">
     <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
@@ -36,6 +37,9 @@
   </form>
       </div>
     </p-header>
+
+
+
     <p-column field="usuario" header="usuario">
               <ng-template pTemplate="header">
            <span id="user-link" class="material-icons">perm_identity</span>

@@ -21,7 +21,8 @@
   color: #ffffff;
   font-weight: bold; }
   .ui-widget-header a {
-    color: #ffffff; }
+    /* color: #ffffff;  */
+  }
 
 .ui-widget-overlay {
   background: #666666;

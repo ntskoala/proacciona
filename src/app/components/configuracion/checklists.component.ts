@@ -84,7 +84,8 @@ export class ChecklistsComponent implements OnInit{
               let orden=0;
               for (let element of response.data) {
                 if (element.orden == 0){
-                  this.modificarCL(element.id);
+                  //this.modificarCL(element.id);
+                  this.guardarCL[element.id] = true;
                   orden++;
                   }else{orden=parseInt(element.orden);}
                 let fecha;

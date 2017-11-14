@@ -42,14 +42,15 @@ public es;
     this.getChecklists();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getChecklists());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
-            this.es = {
-            firstDayOfWeek: 1,
-            dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
-            dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
-            dayNamesMin: [ "D","L","M","X","J","V","S" ],
-            monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
-            monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ]
-        }
+    this.es = {
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          monthNamesShort: [ "Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic" ],              
+      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
+      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+      firstDayOfWeek: 1
+  }; 
   }
 
   getChecklists() {

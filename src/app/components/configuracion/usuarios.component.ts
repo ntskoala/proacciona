@@ -52,7 +52,7 @@ export class UsuariosComponent implements OnInit {
           let orden=0;
           for (let element of response.data) {
             if (element.orden == 0){
-              this.itemEdited(element.id);
+              this.guardar[element.id] = true;
               orden++;
               }else{orden=parseInt(element.orden);}
             this.usuarios.push(new Usuario(element.id, element.usuario, element.password,

@@ -63,7 +63,8 @@ export class ControlesComponent implements OnInit {
               let orden=0;
               for (let element of response.data) {
                 if (element.orden == 0){
-                  this.modificarControl(element.id);
+                  //this.modificarControl(element.id);
+                  this.guardar[element.id] = true;
                   orden++;
                   }else{orden=parseInt(element.orden);}
                 let fecha;

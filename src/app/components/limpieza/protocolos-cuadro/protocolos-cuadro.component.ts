@@ -33,12 +33,13 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     console.log('CAMBIO PROTOCOLO');
-    if (this.items){
-    this.procesando = true;
+    if (this.items ){
+    
     let x = 0;
     let i=0;
     //console.log(x,i,this.protocolos,this.items)
     if (this.protocolos && this.items){
+      this.procesando = true;
     this.items.forEach((elementoLimpieza)=>{
       //console.log(x,i,elementoLimpieza)
       this.checkProtocolos(elementoLimpieza.protocolo,x).then(
@@ -51,6 +52,8 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
             this.mergeData();
             this.procesando=false;
             //console.log(this.misproductos)
+           }else{
+            this.procesando=false;
            }
         }
       )

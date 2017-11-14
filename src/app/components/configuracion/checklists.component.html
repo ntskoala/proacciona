@@ -15,16 +15,16 @@
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="cl.nombrechecklist" name="nombrechecklist">
         </span>
         <span class="medium cell">
-            <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="cl.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+            <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="cl.fecha_" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_"></p-calendar>
           </span>
         <span class="cell center">
-            <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="cl.fecha" [origen]="tipo"></periodicidad>
+            <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="cl.fecha_" [origen]="tipo"></periodicidad>
           </span>
 
   
         <span class="cell">
         <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                                 
-          <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
+          <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid  || !cl.periodicidad2" type="submit">
             <span class="material-icons">add</span>
           </button>
         </span>
@@ -88,7 +88,7 @@
 <!-- **********  FIN ORDEN    -->
 
 
-<p-column [style]="{'width':'38px'}" selectionMode="single" >
+<p-column [style]="{'width':'38px'}" selectionMode="single" dataKey="nombrechecklist">
     <ng-template  pTemplate="header">
         <span class="tooltip" mdTooltip="{{'configuracion.selecciona' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                           
           Sel.
@@ -114,7 +114,7 @@
   </button>
 </span>
 <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardarCL[item.id]" (click)="actualizarCL(item)" type="button">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardarCL[item.id]" (click)="actualizarCL(item.id)" type="button">
     <span class="material-icons">check</span>
   </button>
 </span>
@@ -137,7 +137,7 @@
 <!-- Mostrar control checklists -->
  <div class="mostrar-checklist" style="margin-top:40px">
   <div *ngIf="checklistActiva != 0">
-    <h2>Item checklist</h2>
+    <h2>{{'configuracion.elemento' | translate}} checklist</h2>
     <div class="table">
         <span class="cell tooltip" mdTooltip="{{'configuracion.nuevoCCL' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                     
         <!-- <div class="header-row">

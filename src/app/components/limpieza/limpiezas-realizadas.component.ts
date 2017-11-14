@@ -257,13 +257,12 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     response => {
       console.log('doc subido correctamente');
       if (field == 'imagen'){
-        console.log('##',this.baseurl + idItem + "_"+event.srcElement.files[0].name)
-        this.images[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
-        this.items[index].imagen=event.srcElement.files[0].name;
-       //this.image= this.baseurl + idItem + "_"+event.srcElement.files[0].name;
+        console.log('##',this.baseurl + idItem + "_"+files[0].name)
+        this.images[idItem] = this.baseurl + idItem + "_"+files[0].name;
+        this.items[index].imagen=files[0].name;
       }else{
-         this.docs[idItem] = this.baseurl + idItem + "_"+event.srcElement.files[0].name;
-         this.items[index].doc=event.srcElement.files[0].name;
+         this.docs[idItem] = this.baseurl + idItem + "_"+files[0].name;
+         this.items[index].doc=files[0].name;
       }
       // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
       // activa.logo = '1';

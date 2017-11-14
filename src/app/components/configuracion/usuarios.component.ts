@@ -66,7 +66,7 @@ export class UsuariosComponent implements OnInit {
 
   crearUsuario(usuario) {
     let usuarioCrear = new Usuario(0, usuario.usuario, usuario.password,
-      usuario.tipouser, usuario.email, this.empresasService.seleccionada);
+      usuario.tipouser, usuario.email, this.empresasService.seleccionada,this.newOrden());
     this.servidor.postObject(URLS.USUARIOS, usuarioCrear).subscribe(
       response => {
         if (response.success == "true") {
@@ -84,7 +84,16 @@ export class UsuariosComponent implements OnInit {
     // limpiar form
     this.nuevoUsuario = {usuario: '', password: '', tipouser: 'Operario'}  
   }
-
+  
+  newOrden():number{
+    let orden;
+    if ( this.usuarios.length && this.usuarios[this.usuarios.length-1].orden >0){
+      orden = this.usuarios[this.usuarios.length-1].orden+1;
+     }else{
+      orden = 0;
+     }
+     return orden;
+  }
   checkBorrar(idBorrar: number) {
     // Guardar el id del usuario a borrar
     this.idBorrar = idBorrar;

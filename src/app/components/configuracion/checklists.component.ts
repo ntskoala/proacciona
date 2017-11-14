@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from 'ng2-translate';
 
@@ -19,6 +20,7 @@ import { Modal } from '../../models/modal';
 })
 export class ChecklistsComponent implements OnInit{
 @ViewChild ('listaChecklist') lista: ElementRef;
+@ViewChild('dt') dt: DataTable;
   public subscription: Subscription;
   checklistActiva: number = 0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
@@ -105,12 +107,11 @@ export class ChecklistsComponent implements OnInit{
    }
 
   nuevaChecklist(cl: Checklist) {
-    // Limpiar el form
-    //this.cl = {tipoperiodo: 'Día'};
-    let fecha 
+
+    let fecha;
     (cl.fecha_)? fecha= new Date(Date.UTC(cl.fecha_.getFullYear(), cl.fecha_.getMonth(), cl.fecha_.getDate())): fecha=null;
     let nuevaChecklist = new Checklist(0, this.empresasService.seleccionada,
-      cl.nombrechecklist, cl.periodicidad, cl.tipoperiodo,0,this.cl.periodicidad2,fecha);
+      cl.nombrechecklist, cl.periodicidad, cl.tipoperiodo,0,this.cl.periodicidad2,fecha,this.newOrdenCL());
     this.servidor.postObject(URLS.CHECKLISTS, nuevaChecklist).subscribe(
       response => {
         // si tiene éxito
@@ -128,6 +129,16 @@ export class ChecklistsComponent implements OnInit{
         this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
       });
   }
+  newOrdenCL():number{
+    let orden;
+    if ( this.checklists.length && this.checklists[this.checklists.length-1].orden >0){
+      orden = this.checklists[this.checklists.length-1].orden+1;
+     }else{
+      orden = 0;
+     }
+     return orden;
+  }
+
   onChecklistSelect(evento){
 console.log(evento)
 this.checklistActiva = evento.data.id;
@@ -135,6 +146,8 @@ this.controlchecklists=[];
 this.controlchecklists = this.controlchecklists.slice();
 this.mostrarCCL(evento.data.id)
   }
+
+
   onEditCL(evento){
     this.modificarCL(evento.data.id);
     } 
@@ -152,17 +165,20 @@ this.mostrarCCL(evento.data.id)
   //   this.modCL = this.checklists.find(checklist => checklist.id == this.checklistActiva);
   // }
 
-  actualizarCL(modCL) {
+  actualizarCL(idCL) {
+
    // let parametros = '?id=' + this.modCL.id;  
-   let indice = this.checklists.findIndex((elem)=>elem.id==modCL.id);
-   let parametros = '?id=' + modCL.id; 
+   let indice = this.checklists.findIndex((elem)=>elem.id==idCL);
+   let parametros = '?id=' + idCL; 
      
-  if (modCL.fecha_)  modCL.fecha_ = new Date(Date.UTC(modCL.fecha_.getFullYear(), modCL.fecha_.getMonth(), modCL.fecha_.getDate()))
-   modCL.periodicidad2 = this.checklists[indice].periodicidad2;          
-    this.servidor.putObject(URLS.CHECKLISTS, parametros,modCL).subscribe(
+  if (this.checklists[indice].fecha_)  this.checklists[indice].fecha_ = new Date(Date.UTC(this.checklists[indice].fecha_.getFullYear(), this.checklists[indice].fecha_.getMonth(), this.checklists[indice].fecha_.getDate()))
+    this.checklists[indice].periodicidad2 = this.checklists[indice].periodicidad2;  
+  if (this.checklists[indice]["_$visited"]) delete this.checklists[indice]["_$visited"]; 
+  console.log(this.checklists[indice]);      
+    this.servidor.putObject(URLS.CHECKLISTS, parametros,this.checklists[indice]).subscribe(
       response => {
         if (response.success) {
-          this.guardarCL[modCL.id] = false;
+          this.guardarCL[idCL] = false;
           this.alertaGuardar['guardar'] = false;
           this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
         }else{
@@ -237,7 +253,7 @@ this.mostrarCCL(evento.data.id)
   crearCCL(ccl: ControlChecklist) {
     // Limpiar el form
     this.ccl = {};
-    let nuevoCCL = new ControlChecklist(0, this.checklistActiva, ccl.nombre);
+    let nuevoCCL = new ControlChecklist(0, this.checklistActiva, ccl.nombre,0,this.newOrdenCCL());
     this.servidor.postObject(URLS.CONTROLCHECKLISTS, nuevoCCL).subscribe(
       response => {
         if (response.success) {
@@ -252,6 +268,16 @@ this.mostrarCCL(evento.data.id)
       (error)=>{
         this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
       });
+  }
+
+  newOrdenCCL():number{
+    let orden;
+    if ( this.controlchecklists.length && this.controlchecklists[this.controlchecklists.length-1].orden >0){
+      orden = this.controlchecklists[this.controlchecklists.length-1].orden+1;
+     }else{
+      orden = 0;
+     }
+     return orden;
   }
 
   checkBorrarCCL(idCCL: number) {
@@ -272,6 +298,7 @@ this.mostrarCCL(evento.data.id)
             let cclBorrar = this.controlchecklists.find(ccl => ccl.id == this.idBorrar);
             let indice = this.controlchecklists.indexOf(cclBorrar);
             this.controlchecklists.splice(indice, 1);
+            this.controlchecklists = this.controlchecklists.slice();
             this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
           }else{
             this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
@@ -374,7 +401,7 @@ this.mostrarCCL(evento.data.id)
       console.log('checklist')
     this.checklists.forEach((item) => {
       console.log('ORDENANDO',item)
-      this.actualizarCL(item);
+      this.actualizarCL(item.id);
     });
     this.checklists = this.checklists.slice();
   }else{

@@ -86,7 +86,8 @@ export class ControlesComponent implements OnInit {
   crearControl(nuevoControl: Control) {
     nuevoControl.idempresa = this.empresasService.seleccionada;
     (nuevoControl.fecha)? nuevoControl.fecha = new Date(Date.UTC(this.nuevoControl.fecha.getFullYear(), this.nuevoControl.fecha.getMonth(), this.nuevoControl.fecha.getDate())):nuevoControl.fecha=null;
-    nuevoControl.periodicidad2 = this.nuevoControl.periodicidad2
+    nuevoControl.periodicidad2 = this.nuevoControl.periodicidad2;
+    nuevoControl.orden = this.newOrden();
     this.servidor.postObject(URLS.CONTROLES, nuevoControl).subscribe(
       response => {
         if (response.success) {
@@ -104,7 +105,15 @@ export class ControlesComponent implements OnInit {
 this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
 });
   }
-  
+  newOrden():number{
+    let orden;
+    if ( this.controles.length && this.controles[this.controles.length-1].orden >0){
+      orden = this.controles[this.controles.length-1].orden+1;
+     }else{
+      orden = 0;
+     }
+     return orden;
+  }
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;

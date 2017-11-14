@@ -31,11 +31,11 @@
         <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" required [(ngModel)]="nuevoControl.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
       </span>
     <span class="cell center">
-        <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoControl.fecha" [origen]="tipo"></periodicidad>
+        <periodicidad name="periodicidad" (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoControl.fecha" [origen]="tipo"></periodicidad>
       </span>
     <span class="cell"></span>
     <span class="cell">
-      <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid" type="submit">
+      <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid || !nuevoControl.periodicidad2" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>

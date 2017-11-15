@@ -20,3 +20,15 @@
     top:65px;
     left:45px;
 }
+
+.orientacionWindow{
+    position: absolute;
+    top: 150px;
+    left: 300px;
+    width: 500px;
+    height: 250px;
+    background-color: #ccc;
+    border-color: #000;
+    border-style: solid;
+    text-align: center;
+}

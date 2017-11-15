@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef } from '@angular/core';
+
 import {Tree,TreeNode } from 'primeng/primeng';
 import { TranslateService } from 'ng2-translate';
 import { Servidor } from '../../services/servidor.service';
@@ -59,13 +60,15 @@ public foto:string;
 public widthArbol;
 public informe:string;
 public nodozero:boolean=false;
-
+public orientacion:boolean=false;
+public orientado:string='landscape';
 modal: Modal = new Modal();
 entidad:string="&entidad=produccion_detalle";
 field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 es;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService, public translate: TranslateService) {}
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, 
+    public translate: TranslateService) {}
 
   ngOnInit() {
       this.getAlmacenes();
@@ -446,11 +449,18 @@ return nivel;
         }
     }
 
+
+    
+askOrientacion(){
+    this.orientacion=true;
+}    
+    
 downloadPdf(){
-        let pdf = new jsPDF();
+    this.orientacion=false;
+        let pdf = new jsPDF(this.orientado,'mm','a3');
         let options = {
             pagesplit: false,
-            orientation:"l"
+            orientation:this.orientado
         };
         pdf.addHTML(this.elTitle.nativeElement,0,0,options,()=>{
         pdf.addHTML(this.el.nativeElement, 25, 30, options, () => {
@@ -464,9 +474,8 @@ downloadPdf(){
             }
         });
         });
-
-
 }
+
 
 doInforme(){
     this.informe ="";
@@ -561,3 +570,4 @@ return cliente;
 
 
 }
+

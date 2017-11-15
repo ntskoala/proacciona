@@ -8,7 +8,7 @@
     </md-card-title>
  <md-card-subtitle>
  <div class="botones">
-        <button  md-mini-fab color="accent" (click)="downloadPdf()" type="button">
+        <button  md-mini-fab color="accent" (click)="askOrientacion()" type="button">
           <span class="material-icons">picture_as_pdf</span>
     </button>
             <!--<button  md-mini-fab color="accent" (click)="doInforme()" type="button">
@@ -55,4 +55,16 @@
         <!--<md-card >
             {{informe}}
         </md-card>-->
+</div>
+
+
+<div *ngIf="orientacion" class="orientacionWindow">
+    <span style="position:relative;top:60px">
+    <md-radio-group [(ngModel)]="orientado">
+        <md-radio-button value="portrait">Vertical</md-radio-button>
+        <md-radio-button value="landscape">Horizontal</md-radio-button>
+      </md-radio-group>
+      <BR>
+      <button style="position:relative;top:40px" md-raised-button color="accent" (click)="downloadPdf()">Ok</button>
+      </span>
 </div>

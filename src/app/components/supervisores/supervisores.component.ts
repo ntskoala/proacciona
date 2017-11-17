@@ -38,12 +38,15 @@ public procesando:boolean=true;
 public entidad:string="&entidad=";
 public field:string="&field=";
 public idItem:number;
+public ancho:string;
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
   }
   ngOnChanges(){
+    let num = (this.items.length * 90)
+    this.ancho = num + 'px';
         switch(this.tipoControl){
       case "planes":
       this.entidad="&entidad=planificaciones";

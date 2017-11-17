@@ -41,7 +41,7 @@ export class ChecklistsComponent implements OnInit{
   modalImportCL: Modal = new Modal();
   empresa: any;
   es;
-  tipo = 'libre';
+  public tipo = 'libre';
   procesando:boolean=false;
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}

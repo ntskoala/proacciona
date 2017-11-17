@@ -2,6 +2,7 @@
 <div class="modal" *ngIf="procesando">
   <md-spinner></md-spinner>
   </div>
+
 <span class="tooltip" mdTooltip="{{'configuracion.nuevoUsuario' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">         
 <div class="table">
     <div class="header-row">
@@ -35,47 +36,10 @@
   </form>
 </div>
 </span>
-  <!-- <form class="row" #actualizarUsuarioForm="ngForm" (ngSubmit)="actualizarUsuario(usuario.id)" *ngFor="let usuario of usuarios">
-    <span class="cell">
-
-      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.usuario" name="modUsuario" (keyup)="modificarUsuario(usuario.id)">
-    </span>
-    <span class="cell">
-      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.password" name="modPassword" (keyup)="modificarUsuario(usuario.id)">
-    </span>
-    <span class="cell">
-      <select class="white-select" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.tipouser" name="modTipo" (change)="modificarUsuario(usuario.id)">
-
-        <option value="Operario">{{'Operario' | translate}}</option>
-        <option value="Gerente">{{'Gerente' | translate}}</option>
-        <option value="Mantenimiento">{{'Mantenimiento' | translate}}</option>
-        <option *ngIf="empresasService.administrador" value="Administrador">Administrador</option>
-      </select>
-    </span>
-        <span class="cell">
-
-      <input type="text" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" [(ngModel)]="usuario.email" name="modEmail" (keyup)="modificarUsuario(usuario.id)">
-    </span>
-    <span class="cell">
-
-      <button md-mini-fab *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" color="primary" (click)="checkBorrar(usuario.id)" type="submit">
-
-        <span class="material-icons">close</span>
-      </button>
-    </span>
-    <span class="cell">
-
-      <button md-mini-fab *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" color="primary" [disabled]="!guardar[usuario.id]" type="submit">
-
-        <span class="material-icons">check</span>
-      </button>                
-    </span>
-  </form> -->
 
 
 
-
-  <div style="margin-top:40px">
+  <div style="margin-top:40px;width:100%">
       
 <p-dataTable #dt [value]="usuarios" [csvSeparator]="';'" [exportFilename]="'Usuarios'"
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" 

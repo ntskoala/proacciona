@@ -29,6 +29,7 @@ export class ControlesComponent implements OnInit {
   modal: Modal = new Modal();
   es;
   procesando:boolean=false;
+  public tipo = 'libre';
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
 

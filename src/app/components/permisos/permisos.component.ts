@@ -54,12 +54,15 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
   public cargaData: boolean[] = [false, false];
   public entidad: string = "&entidad=permissionlimpieza";
   public field: string = "&field=idelementolimpieza&idItem=";
+  public ancho:string;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) { }
 
   ngOnInit() {
 
   }
     ngOnChanges(){
+      let num = (this.items.length * 90)
+      this.ancho = num + 'px';
     switch (this.tipoControl) {
       case "planes":
         this.entidad = "&entidad=permissionplanificaciones";

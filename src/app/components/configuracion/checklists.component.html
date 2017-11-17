@@ -36,26 +36,10 @@
 
 
 
-  
-<!-- Seleccionar checklist -->
-<!-- <div class="seleccionar-checklist">
-  <h2>Checklist</h2>
-  <form>
-    <select #listaChecklist (change)="mostrarCCL($event.target.value)">
-      <option *ngFor="let checklist of checklists" [value]="checklist.id">
-        {{checklist.nombrechecklist}}
-      </option>
-    </select>
-  </form>
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-button color="warn" (click)="checkBorrarCL()" type="submit">Eliminar</button>
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-button color="primary" (click)="modificarCL()" type="submit">Modificar</button>
-  <button *ngIf="empresasService.administrador" md-button color="primary" (click)="import()" type="submit">Importar</button>
-  
-</div> -->
 <div style="margin-top:40px">  
 <p-dataTable #dt [value]="checklists" [csvSeparator]="';'" [exportFilename]="'Checklists'" 
 [editable]="true"  [responsive]="false" (onEditInit)="onEditCL($event)"
- sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'600px'}"
+ sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'620px'}" [style]="{'width':'620px'}"
 [(selection)]="selectedChecklist" (onRowSelect)="onChecklistSelect($event)"
 [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]">
 
@@ -72,7 +56,7 @@
 </p-header>
 <!-- **********  FIN HEADER ORDEN    -->
 <!-- **********  ORDEN    -->
-<p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'60px'}">
+<p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'80px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
   <md-icon>import_export</md-icon>
   </ng-template>
@@ -80,7 +64,7 @@
    <!-- <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
   <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
   <!-- <div class="orden" >{{item.orden}}</div>         -->
-  <div class="orden" >
+  <div class="orden">
       <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="editOrden()"></p-spinner> 
   </div>  
   </ng-template>

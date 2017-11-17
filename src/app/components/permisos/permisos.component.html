@@ -3,7 +3,7 @@
 </div>
 <md-toolbar color="accent">{{'PermisosGenerales' | translate}}
 </md-toolbar>
-<p-dataTable [value]="tabla" [style]="{'width':ancho,'overflow-y':'hidden','overflow':'auto','padding-right':'60px','min-width':'600px'}">
+<p-dataTable [value]="tabla" [style]="{'width':ancho,'overflow-y':'hidden','overflow-x':'auto','padding-right':'60px','min-width':'600px'}">
     <!-- <p-column field="usuario" header="usuario"></p-column> -->
     <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'user'">
      <!-- <ng-template let-col let-user="rowData" pTemplate="header">

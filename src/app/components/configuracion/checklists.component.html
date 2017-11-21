@@ -50,7 +50,7 @@
       <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
       </span>
       <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
-          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('ckecklist')"  style="float:left"></button>
+          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenarcheck'] &&  !this.alertaGuardar['guardarcheck']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('ckecklist')"  style="float:left"></button>
           </span>
     </div>
 </p-header>
@@ -65,7 +65,7 @@
   <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
   <!-- <div class="orden" >{{item.orden}}</div>         -->
   <div class="orden">
-      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="editOrden()"></p-spinner> 
+      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="editOrden('check')"></p-spinner> 
   </div>  
   </ng-template>
 </p-column>
@@ -173,7 +173,7 @@
       <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
       </span>
       <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
-          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('controlChecklist')"  style="float:left"></button>
+          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenarcheckcontrol'] &&  !this.alertaGuardar['guardarcheckcontrol']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('controlChecklist')"  style="float:left"></button>
           </span>
     </div>
 </p-header>
@@ -188,7 +188,7 @@
   <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
   <!-- <div class="orden" >{{item.orden}}</div>         -->
   <div class="orden" >
-      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controlchecklists.length"  (onChange)="editOrden()"></p-spinner> 
+      <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controlchecklists.length"  (onChange)="editOrden('checkcontrol')"></p-spinner> 
   </div>  
   </ng-template>
 </p-column>

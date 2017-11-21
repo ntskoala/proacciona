@@ -86,9 +86,9 @@ getChecklists(){
                 this.limpiezas.push();
                 this.zonas.push(new LimpiezaZona(null,element.idempresa,element.nombrechecklist,'importado de checklist' + element.id))
                 this.checklists.push(new Checklist(element.id, element.idempresa, element.nombrechecklist,
-                  element.periodicidad, element.tipoperiodo, element.migrado));
-                  this.calcFecha(element.id).then((fecha:Date)=>{
-                this.getControlesCheckList(pos,element.id,this.calcPeriodicidad(element.tipoperiodo,element.periodicidad),fecha); 
+                  element.periodicidad, element.tipoperiodo, element.migrado,element.periodicidad2,element.fecha,0+element.orden));
+                  this.calcFecha(element.id,element.fecha_).then((fecha:Date)=>{
+                this.getControlesCheckList(pos,element.id,this.calcPeriodicidad(element.tipoperiodo,element.periodicidad,element.periodicidad2),fecha); 
                   });
                   cont ++;
           }
@@ -121,8 +121,8 @@ getChecklists(){
         
         if (response.success && response.data) {
           for (let element of response.data) {
-            controlchecklists.push(new ControlChecklist(element.id, element.idchecklist, element.nombre, element.migrado));
-              misElementosLimpieza.push(new LimpiezaElemento(null,null,element.nombre,new Date(fecha),'interno',periodicidad,'','','',this.empresasService.userId.toString(),this.empresasService.userName));
+            controlchecklists.push(new ControlChecklist(element.id, element.idchecklist, element.nombre, element.migrado,0+element.orden));
+              misElementosLimpieza.push(new LimpiezaElemento(null,null,element.nombre,new Date(fecha),'interno',periodicidad,'','','',this.empresasService.userId.toString(),this.empresasService.userName,false,0,0+element.orden));
               productos.push(null);
               let migrar = (element.migrado == 1)?false:true;
               let origen = (element.migrado == 1)?'bd':'app';
@@ -164,8 +164,11 @@ getChecklists(){
   // }
 
 
-calcPeriodicidad(tipoperiodo,periodicidad){
+calcPeriodicidad(tipoperiodo,periodicidad,periodicidad2){
   let newPeriodicidad:string='';
+  if (periodicidad2){
+    newPeriodicidad = periodicidad2
+  }else{
               switch (tipoperiodo) {
               case 'Día':
                 newPeriodicidad = '{"repeticion":"diaria","dias":[{"nombre":"lunes","checked":true},{"nombre":"martes","checked":true},{"nombre":"miercoles","checked":true},{"nombre":"jueves","checked":true},{"nombre":"viernes","checked":true},{"nombre":"sabados","checked":false},{"nombre":"domingos","checked":false}],"frecuencia":'+periodicidad+',"tipo":"diames","numdia":28,"nomdia":"1","numsemana":1,"mes":""}';
@@ -183,16 +186,20 @@ calcPeriodicidad(tipoperiodo,periodicidad){
                 newPeriodicidad = '{"repeticion":"anual","dias":[{"nombre":"lunes","checked":false},{"nombre":"martes","checked":false},{"nombre":"miercoles","checked":false},{"nombre":"jueves","checked":false},{"nombre":"viernes","checked":false},{"nombre":"sabados","checked":false},{"nombre":"domingos","checked":false}],"frecuencia":'+periodicidad+',"tipo":"diames","numdia":28,"nomdia":"1","numsemana":1,"mes":"1"}';
                 break;
             }
+          }
   return newPeriodicidad;
 }
 
 
-calcFecha(idChecklist: number){
+calcFecha(idChecklist: number,fecha_:string){
   return new Promise((resolve, reject) => {
   let fecha;
     //let parametros = '&idchecklist=' + idChecklist;
     // let parametros = '&idempresa=' + params+"&entidad=limpieza_zona&order=nombre";
-
+if (fecha_ != '0000-00-00' && fecha_ != null){
+  //fecha = fecha_;
+  resolve(fecha_);
+}else{
       let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=resultadoschecklist"+"&field=idchecklist&idItem="+idChecklist + "&order=id desc"; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
       response => {
@@ -213,7 +220,7 @@ calcFecha(idChecklist: number){
       resolve(fecha);
     }
         );
-    
+      }
   });
 }
 
@@ -370,7 +377,7 @@ creaLimpiezas(){
       let param = "&entidad=limpieza_zona&field=idempresa&idItem="+this.empresasService.seleccionada+"&WHERE=descripcion=&valor=importado de checklist"+this.checklists[x].id;
       this.servidor.getObjects(URLS.STD_SUBITEM,param).subscribe(
       response => {
-        if (response.success) {
+        if (response.success && response.data) {
           if (response.data.length == 1){
           let id = response.data[0].id;
           this.migrarList[x]['migrado'] = true;
@@ -399,7 +406,7 @@ creaElementoLimpìeza(idZona: number, pos:number){
   limpieza = this.limpiezas[pos]['Alimpiezas'][x];
   limpieza.idlimpiezazona = idZona;
   limpieza.app = true;
-  limpieza.orden = x+1;
+  //limpieza.orden = x+1;
 
     let param = "&entidad=limpieza_elemento"+"&field=idlimpiezazona&idItem="+idZona;
     limpieza.fecha = new Date(Date.UTC(limpieza.fecha.getFullYear(), limpieza.fecha.getMonth(), limpieza.fecha.getDate()))

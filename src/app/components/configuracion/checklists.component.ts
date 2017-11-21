@@ -33,7 +33,7 @@ export class ChecklistsComponent implements OnInit{
   modCL: Checklist;
   guardar = [];
   guardarCL = [];
-  public alertaGuardar:object={'guardar':false,'ordenar':false};  
+  public alertaGuardar:object={'guardarcheck':false,'guardarcheckcontrol':false,'ordenarcheck':false,'ordenarcheckcontrol':false};  
   
   idBorrar: number;
   modalCL: Modal = new Modal();
@@ -142,6 +142,8 @@ export class ChecklistsComponent implements OnInit{
 
   onChecklistSelect(evento){
 console.log(evento)
+this.alertaGuardar['ordenarcheckcontrol'] = false;
+this.alertaGuardar['guardarcheckcontrol'] = false;
 this.checklistActiva = evento.data.id;
 this.controlchecklists=[];
 this.controlchecklists = this.controlchecklists.slice();
@@ -154,8 +156,8 @@ this.mostrarCCL(evento.data.id)
     } 
   modificarCL(idChecklist: number) {
     this.guardarCL[idChecklist] = true;
-    if (!this.alertaGuardar['guardar']){
-      this.alertaGuardar['guardar'] = true;
+    if (!this.alertaGuardar['guardarcheck']){
+      this.alertaGuardar['guardarcheck'] = true;
       this.setAlerta('alertas.guardar','warn','alertas.tituloAlertaInfo');
       }
   }
@@ -180,7 +182,7 @@ this.mostrarCCL(evento.data.id)
       response => {
         if (response.success) {
           this.guardarCL[idCL] = false;
-          this.alertaGuardar['guardar'] = false;
+          this.alertaGuardar['guardarcheck'] = false;
           this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
         }else{
           this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
@@ -316,8 +318,8 @@ this.mostrarCCL(evento.data.id)
     } 
   modificarCCL(idControlchecklist: number) {
     this.guardar[idControlchecklist] = true;
-    if (!this.alertaGuardar['guardar']){
-      this.alertaGuardar['guardar'] = true;
+    if (!this.alertaGuardar['guardarcheckcontrol']){
+      this.alertaGuardar['guardarcheckcontrol'] = true;
       this.setAlerta('alertas.guardar','warn','alertas.tituloAlertaInfo');
       }
   }
@@ -343,7 +345,7 @@ this.mostrarCCL(evento.data.id)
         if (response.success =="true") {
           console.log('User updated');
           this.guardar[idControlchecklist] = false;
-          this.alertaGuardar['guardar'] = false;
+          this.alertaGuardar['guardarcheckcontrol'] = false;
           this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
         }else{
           this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
@@ -397,8 +399,9 @@ this.mostrarCCL(evento.data.id)
   ordenar(elemento) {
     console.log('ORDENANDO')
     this.procesando = true;
-    this.alertaGuardar['ordenar'] = false;
+   
     if (elemento == 'ckecklist'){
+      this.alertaGuardar['ordenarcheck'] = false;
       console.log('checklist')
     this.checklists.forEach((item) => {
       console.log('ORDENANDO',item)
@@ -406,6 +409,7 @@ this.mostrarCCL(evento.data.id)
     });
     this.checklists = this.checklists.slice();
   }else{
+    this.alertaGuardar['ordenarcheckcontrol'] = false;
     this.controlchecklists.forEach((item) => {
       this.actualizarCCL(item.id);
     });
@@ -414,11 +418,20 @@ this.mostrarCCL(evento.data.id)
     this.procesando = false;
   }
   
-  editOrden(){
-    if (!this.alertaGuardar['ordenar']){
-      this.alertaGuardar['ordenar'] = true;
-      this.setAlerta('alertas.nuevoOrden','info','alertas.tituloAlertaInfo');
-      }
+
+  editOrden(elemento){
+    if (elemento == 'ckeck'){
+      if (!this.alertaGuardar['ordenarcheck']){ 
+        this.setAlerta('alertas.nuevoOrden','info','alertas.tituloAlertaInfo');
+        }
+      this.alertaGuardar['ordenarcheck'] = true;
+    }else{
+      if (!this.alertaGuardar['ordenarcheckcontrol']){ 
+        this.setAlerta('alertas.nuevoOrden','info','alertas.tituloAlertaInfo');
+        }
+      this.alertaGuardar['ordenarcheckcontrol'] = true;
+    }
+   
   }
 
 

@@ -156,7 +156,10 @@ findSupervisor(id:number){
 //console.log(id);
 let index = this.usuarios.findIndex((user)=>user.id==id)
 //console.log(this.usuarios[index]);
-let user = this.usuarios[index].usuario;
+let user = '';
+if (index >-1){
+user = this.usuarios[index].usuario;
+}
 //console.log(user);
 return user;
 }

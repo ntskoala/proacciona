@@ -23,6 +23,7 @@ export class ChecklistsComponent implements OnInit{
 @ViewChild('dt') dt: DataTable;
   public subscription: Subscription;
   checklistActiva: number = 0;
+  public clmigrado:number=0;
   checklist: Checklist = new Checklist(0, 0, 'Seleccionar', 0, '');
   checklists: Checklist[] = [];
   selectedChecklist: Checklist;
@@ -145,6 +146,7 @@ console.log(evento)
 this.alertaGuardar['ordenarcheckcontrol'] = false;
 this.alertaGuardar['guardarcheckcontrol'] = false;
 this.checklistActiva = evento.data.id;
+this.clmigrado = this.checklists[this.checklists.findIndex((cl)=>cl.id==this.checklistActiva)].migrado;
 this.controlchecklists=[];
 this.controlchecklists = this.controlchecklists.slice();
 this.mostrarCCL(evento.data.id)
@@ -256,7 +258,9 @@ this.mostrarCCL(evento.data.id)
   crearCCL(ccl: ControlChecklist) {
     // Limpiar el form
     this.ccl = {};
-    let nuevoCCL = new ControlChecklist(0, this.checklistActiva, ccl.nombre,0,this.newOrdenCCL());
+    let orden;
+    (ccl.orden>0)?orden=ccl.orden:orden=this.newOrdenCCL();
+    let nuevoCCL = new ControlChecklist(0, this.checklistActiva, ccl.nombre,0,orden);
     this.servidor.postObject(URLS.CONTROLCHECKLISTS, nuevoCCL).subscribe(
       response => {
         if (response.success) {
@@ -374,7 +378,7 @@ this.mostrarCCL(evento.data.id)
         if (response.success && response.data) {
           for (let element of response.data) {
             this.crearCCL(new ControlChecklist(0, this.checklistActiva,
-              element.nombre));
+              element.nombre,0,element.orden));
           }
         }
     });

@@ -1,5 +1,6 @@
-let server = 'https://tfc.proacciona.es/'; //prod
+//let server = 'https://tfc.proacciona.es/'; //prod
 //let server = 'http://tfc.ntskoala.com/';//DESARROLLO
+import { server } from 'environments/environment';
 let base = server + 'api/';
 
 export const URLS = {

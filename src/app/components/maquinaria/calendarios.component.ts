@@ -89,7 +89,7 @@ loadRealizados(){
             if (response.success && response.data) {
               for (let element of response.data) {  
                   let color2 = this.setColor2(element.tipo_evento);
-                  this.events.push({"idmantenimiento":element.idmantenimiento,"idmaquina":element.idmaquina,"title":element.maquina,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"causas":element.causas,"tipo2":element.tipo2,"usuario":element.idusuario,"responsable":element.responsable,"color":color2,"tipoevento":element.tipo_evento,"estado":"realizado"});
+                  this.events.push({"idmantenimiento":element.idmantenimiento,"idmaquina":element.idmaquina,"title":element.mantenimiento + ' ' + element.maquina,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"causas":element.causas,"tipo2":element.tipo2,"usuario":element.idusuario,"responsable":element.responsable,"color":color2,"tipoevento":element.tipo_evento,"estado":"realizado"});
              }
              console.log("realizadost",this.events_realizados);
              this.events.concat(this.events_realizados);

@@ -98,13 +98,18 @@
   </button>
 </span>
 <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardarCL[item.id]" (click)="actualizarCL(item.id)" type="button">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardarCL[item.id] || (item.migrado == true)" (click)="actualizarCL(item.id)" type="button">
     <span class="material-icons">check</span>
   </button>
 </span>
-<span class="cell tooltip" mdTooltip="{{'importar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+<span *ngIf="item.migrado == 0" class="cell tooltip" mdTooltip="{{'importar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
     <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="item.id!=checklistActiva" (click)="import(item.id)" type="button">
         <span class="material-icons">get_app</span>
+    </button>
+  </span>
+  <span *ngIf="item.migrado == 1" class="cell tooltip" mdTooltip="{{'migrado a limpieza' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+    <button md-mini-fab color="primary" [disabled]="true"  type="button">
+        <span class="material-icons">brush</span>
     </button>
   </span>
   </ng-template>   
@@ -134,7 +139,7 @@
         </span>
         <span class="cell">
         <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                                 
-          <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
+          <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid || clmigrado==1" type="submit">
             <span class="material-icons">add</span>
           </button>
         </span>
@@ -161,7 +166,7 @@
 
 <div style="margin-top:40px">
     
-<p-dataTable #dt [value]="controlchecklists"  [csvSeparator]="';'" [exportFilename]="'items'" 
+<p-dataTable #dt2 [value]="controlchecklists"  [csvSeparator]="';'" [exportFilename]="'items'" 
 [editable]="true"  [responsive]="false" (onEditInit)="onEditCCL($event)"
  sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'320px'}">
 
@@ -170,10 +175,10 @@
 <p-header>
   <div class="ui-helper-clearfix">
       <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
-      <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
+      <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt2.exportCSV()" style="float:left"></button>
       </span>
       <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
-          <button type="button" pButton [disabled]="!this.alertaGuardar['ordenarcheckcontrol'] &&  !this.alertaGuardar['guardarcheckcontrol']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('controlChecklist')"  style="float:left"></button>
+          <button type="button"  pButton [disabled]="(!this.alertaGuardar['ordenarcheckcontrol'] &&  !this.alertaGuardar['guardarcheckcontrol']) || clmigrado==1" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar('controlChecklist')"  style="float:left"></button>
           </span>
     </div>
 </p-header>
@@ -197,16 +202,21 @@
 
 <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'150px'}"></p-column>
 
-<p-column header="{{'acciones' | translate}}" [style]="{'width':'120px'}">
+<p-column header="{{'acciones' | translate}}" [style]="{'width':'150px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
       <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrarCCL(item.id)" type="button">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" [disabled]="clmigrado==1"  md-mini-fab color="primary" (click)="checkBorrarCCL(item.id)" type="button">
     <span class="material-icons">close</span>
   </button>
 </span>
 <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarCCL(item.id,i)" type="button">
+  <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id] || clmigrado==1" (click)="actualizarCCL(item.id,i)" type="button">
     <span class="material-icons">check</span>
+  </button>
+</span>
+<span *ngIf="item.migrado" class="cell tooltip" mdTooltip="{{'migrado a limpieza' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+  <button md-mini-fab color="primary" [disabled]="true"  type="button">
+      <span class="material-icons">brush</span>
   </button>
 </span>
   </ng-template>   

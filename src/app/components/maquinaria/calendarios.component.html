@@ -32,11 +32,11 @@
 </md-card>
 </md-card>
 
- <p-dialog appendTo="body" header="Detalles" [(visible)]="dialogVisible" [responsive]="false" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
-    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="mantenimientorealizado">
+ <p-dialog  *ngIf="mantenimientorealizado" width="455" appendTo="body" header="{{mantenimientorealizado.maquina}}" [(visible)]="dialogVisible" [responsive]="false" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid">
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.titulo' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="mantenimientorealizado.maquina" /></div>
+            <div class="ui-grid-col-8"><input pInputText size="35" id="title" [(ngModel)]="mantenimientorealizado.maquina" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="start">{{'maquinas.fecha_prevista' | translate}}</label></div>
@@ -48,19 +48,19 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.elemento' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input  pInputText id="elem" [(ngModel)]="mantenimientorealizado.elemento" /></div>
+            <div class="ui-grid-col-8"><input  pInputText size="35" id="elem" [(ngModel)]="mantenimientorealizado.elemento" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.descripcion' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="mantenimientorealizado.descripcion" /></div>
+            <div class="ui-grid-col-8"><input  pInputText size="35" id="descrip" [(ngModel)]="mantenimientorealizado.descripcion" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.causa' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input  pInputText id="casusa" [(ngModel)]="mantenimientorealizado.causas" /></div>
+            <div class="ui-grid-col-8"><input  pInputText size="35" id="casusa" [(ngModel)]="mantenimientorealizado.causas" /></div>
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.tipo' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input  pInputText id="tipo" [(ngModel)]="mantenimientorealizado.tipo" /></div>
+            <div class="ui-grid-col-8"><input  pInputText size="35" id="tipo" [(ngModel)]="mantenimientorealizado.tipo" /></div>
         </div>
         <!--<div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.preventivo/correctivo' | translate}}</label></div>
@@ -68,7 +68,7 @@
         </div>-->
         <div class="ui-grid-row">
             <div class="ui-grid-col-4"><label for="vin">{{'maquinas.responsable' | translate}}</label></div>
-            <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="mantenimientorealizado.responsable" /></div>
+            <div class="ui-grid-col-8"><input id="responsable" size="35" [(ngModel)]="mantenimientorealizado.responsable" /></div>
         </div>
     </div>
     <p-footer>

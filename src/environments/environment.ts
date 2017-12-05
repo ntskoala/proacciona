@@ -6,3 +6,5 @@
 export const environment = {
   production: false
 };
+export const server = 'http://tfc.ntskoala.com/';
+export var usuario: Object = {"user":"demo","password":"demo","idioma":null};

@@ -82,104 +82,21 @@
  
 
 </span>
+
 <div class="space" ></div>
 
-<!-- 
-  <div class="protocol" *ngIf="newItemprotocolo">
- <protocolo class="cell" (protocolEmitter)="setProtocol($event,-1,0)" [parentProtocol]="" ></protocolo>
-  </div>
-  <div class="header-row">
-    <span class="header-cell">{{"limpieza.nombre" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
-    <span class="header-cell">{{"limpieza.periodicidad" | translate}}</span>
-    <span class="header-cell">{{"limpieza.productos" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
-     <span class="header-cell">{{"App" | translate}}</span>
-      <span class="header-cell small">{{"Permisos" | translate}}</span>
-      <span class="header-cell small">{{"Supervisor" | translate}}</span>
-    <span class="header-cell medium">{{"limpieza.protocolo" | translate}}</span>
-    <span class="header-cell">
-      </span>
-    <span class="header-cell"></span>
-  </div>
-  <div class="divrow"  *ngFor="let item of items; let i = index">
-  <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
-    <input type="hidden" [(ngModel)]="item.id" name="id">
-    <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
-    </span>
-    <span class="medium cell">
-      <p-calendar [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>    
-    </span>
-    <span class="medium cell small">
-      <select class="medium small" [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="white-select" [(ngModel)]="item.tipo" name="tipo" (change)="itemEdited(item.id)">
-        <option value="interno">{{'interno' | translate}}</option>
-        <option value="externo">{{'externo' | translate}}</option>
-      </select>
-    </span>
-    <span class="cell">
-      <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>
-    </span>
-
- <span class="cell">
-    <select-productos name="productos" [elementoLimpieza]="item.id" (selectedProductsChange)="setProducts($event)"></select-productos>
- </span>
-
-    <span class="medium cell">
-      <input class="medium" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="item.responsable" name="responsable" (keyup)="itemEdited(item.id)">
-    </span>
-    <span class="cell small">
-        <md-checkbox [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="example-margin" [(ngModel)]="item.app" name="app" (change)="itemEdited(item.id)"></md-checkbox>
-    </span>
-      <span class="cell small">
-        <app-permisos-limpieza [limpieza]="item.id"></app-permisos-limpieza>
-    </span>
-      <span class="cell small">
-        <app-permisos-limpieza [supervisor]="item.supervisor"  (setSupervisor)="setSupervisor($event,item)"></app-permisos-limpieza>
-    </span> -->
 
 
 
-<!--*****  subir/ver FOTO  *********-->
-    <!-- <span class="cell">
-       <button md-mini-fab class="camera" (click)="verProtocolo(i)" type="button">
-        <span class="material-icons">list</span>
-      </button>    
-      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.protocolo" md-mini-fab color="color" (click)="photoURL(i,'protocolo')" type="button">
-        <span class="material-icons">photo_camera</span>
-      </button>
-
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'protocolo'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'protocolo'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'protocolo')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
-    </span> -->
-<!--****** FIN ********************-->
 
 
 
-    <!-- <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
-        <span class="material-icons">close</span>
-      </button>
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
-        <span class="material-icons">check</span>
-      </button>                
-    </span>
-   
-  </form> -->
-  <!-- <div class="protocol"  *ngIf="protocolo[i]">
- <protocolo class="cell" (protocolEmitter)="setProtocol($event,i,item.id)" [parentProtocol]="item.protocol"></protocolo>
-  </div> -->
- <!-- </div>
- </div>  -->
-
-<div style="position:absolute; left:0px; top:140px; min-width: 900px">
+<div style="position:absolute; left:0px; top:140px; min-width: 950px">
   <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
-  [rows]="10" [paginator]="true" [alwaysShowPaginator]="false" [pageLinks]="5" [rowsPerPageOptions]="[10,20,30,50]">
+  [rows]="10" [paginator]="true" [alwaysShowPaginator]="false" [pageLinks]="5" 
+  [rowsPerPageOptions]="[10,20,30,50]">
   <p-header>
       <div class="ui-helper-clearfix">
           <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              

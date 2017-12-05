@@ -18,13 +18,13 @@
 }
 
 .tabs{
-  min-height: 1100px;
-  /* height: 300vh; */
+  /* min-height: 1100px; */
+  height: 280vh;
     display: flex;
     min-width: 1050px;
     float: left;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 .campo{

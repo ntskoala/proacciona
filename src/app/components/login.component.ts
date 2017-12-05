@@ -7,18 +7,18 @@ import { EmpresasService } from '../services/empresas.service';
 import { TranslateService } from 'ng2-translate';
 import { URLS } from '../models/urls';
 import { Modal } from '../models/modal';
-
+import { usuario } from 'environments/environment'
 @Component({
   selector: 'login',
   templateUrl: '../assets/html/login.component.html'
 })
 export class LoginComponent implements OnInit {
- public usuario: Object = {"user":"","password":"","idioma":null};
+// public usuario: Object = {"user":"","password":"","idioma":null};
 
 // public  usuario: Object = {"user":"demo","password":"demo","idioma":null};
 
  //public  usuario: Object = {"user":"admin","password":"admin$2017","idioma":null};
-
+public usuario = usuario;
  public  modal: Modal = new Modal();
   public logoEmpresa:string;
 public gallery: string;

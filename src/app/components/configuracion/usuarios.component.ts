@@ -20,11 +20,12 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   guardar = [];
   public alertaGuardar:object={'guardar':false,'ordenar':false};  
-  nuevoUsuario: Object = {tipouser: 'Operario'};
+  nuevoUsuario: Object = {tipouser: 'Operario',superuser:0};
   idBorrar: number;
   modal: Modal = new Modal();
   procesando:boolean=false;
   public tipos:object[]=[{label:'Operario', value:'Operario'},{label:'Gerente', value:'Gerente'},{label:'Mantenimiento', value:'Mantenimiento'}];
+  public superusers:object[]=[{label:'Activado', value:1},{label:'Desactivado', value:0}];
   
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -56,7 +57,7 @@ export class UsuariosComponent implements OnInit {
               orden++;
               }else{orden=parseInt(element.orden);}
             this.usuarios.push(new Usuario(element.id, element.usuario, element.password,
-              element.tipouser, element.email, element.idempresa,0+orden));
+              element.tipouser, element.email, element.idempresa,0+orden,element.superuser));
             this.guardar[element.id] = false;
           }
         }
@@ -66,7 +67,7 @@ export class UsuariosComponent implements OnInit {
 
   crearUsuario(usuario) {
     let usuarioCrear = new Usuario(0, usuario.usuario, usuario.password,
-      usuario.tipouser, usuario.email, this.empresasService.seleccionada,this.newOrden());
+      usuario.tipouser, usuario.email, this.empresasService.seleccionada,this.newOrden(),usuario.superuser);
     this.servidor.postObject(URLS.USUARIOS, usuarioCrear).subscribe(
       response => {
         if (response.success == "true") {

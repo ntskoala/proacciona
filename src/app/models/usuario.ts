@@ -6,6 +6,7 @@ export class Usuario {
     public tipouser: string,
     public email: string,
     public idempresa: number,
-    public orden?: number
+    public orden?: number,
+    public superuser?: number
   ) {}
 }

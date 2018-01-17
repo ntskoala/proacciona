@@ -10,7 +10,7 @@
       <nueva-empresa *ngIf="empresasService.administrador && selectedMenu=='empresas'"></nueva-empresa>
     
 
-    
+      <app-dashboard *ngIf="selectedMenu=='dashboard'"></app-dashboard>
       <gestion-tablas *ngIf="selectedMenu=='settings'"></gestion-tablas>
       <gestion-informes *ngIf="selectedMenu=='informes'"></gestion-informes>
        <app-planificaciones style="margin-left:-25px;" class="full-width" *ngIf="selectedMenu=='planificaciones'"></app-planificaciones> 

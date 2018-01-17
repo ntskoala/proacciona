@@ -30,7 +30,7 @@ import {AccordionModule} from 'primeng/primeng';
 import {SpinnerModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-
+import {ChartModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
@@ -132,6 +132,8 @@ import { ProductosCuadroComponent } from './components/limpieza/productos-cuadro
 import { ProtocolosComponent } from './components/limpieza/protocolos/protocolos.component';
 import { ProtocolosCuadroComponent } from './components/limpieza/protocolos-cuadro/protocolos-cuadro.component';
 import { ComponentsComponent } from './components/components.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsoComponent } from './components/dashboard/uso/uso.component';
 
 
 
@@ -164,6 +166,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     AccordionModule,
     SpinnerModule,
     GrowlModule,
+    ChartModule,
 /**********MATERIAL */
     MaterialModule,
    // MdSelectModule,
@@ -267,7 +270,9 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     ProductosCuadroComponent,
     ProtocolosComponent,
     ProtocolosCuadroComponent,
-    ComponentsComponent
+    ComponentsComponent,
+    DashboardComponent,
+    UsoComponent
   ],
   providers: [
     EmpresasService,

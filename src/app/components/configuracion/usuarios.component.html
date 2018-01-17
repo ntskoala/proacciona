@@ -9,7 +9,9 @@
         <span class="header-cell">{{'Usuario' | translate}}</span>
         <span class="header-cell">{{'Contraseña' | translate}}</span>
         <span class="header-cell">{{'Tipo' | translate}}</span>
+        <span class="header-cell">{{'Usuario' | translate}} +</span>
         <span class="header-cell">email</span>
+        <span class="header-cell">{{'add' | translate}}</span>
       </div>
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #crearUsuarioForm="ngForm" (ngSubmit)="crearUsuario(crearUsuarioForm.value)">
     <span class="cell">
@@ -25,6 +27,15 @@
         <option value="Mantenimiento">{{'Mantenimiento' | translate}}</option>
         <option *ngIf="empresasService.administrador" value="Administrador">Administrador</option>
       </select>
+    </span>
+    <span class="cell">
+      <select class="white-select" required [(ngModel)]="nuevoUsuario.superuser" name="superuser">
+        <option value="0">{{'Desactivado' | translate}}</option>
+        <option value="1">{{'Activado' | translate}}</option>
+      </select>
+    </span>   
+    <span class="cell">
+      <input type="text" [placeholder]="'email' | translate" required [(ngModel)]="nuevoUsuario.email" name="email">
     </span>
     <span class="cell">
         <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">                        
@@ -43,7 +54,7 @@
       
 <p-dataTable #dt [value]="usuarios" [csvSeparator]="';'" [exportFilename]="'Usuarios'"
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" 
-sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'750px'}">
+sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'900px'}">
 <!-- ********** HEADER  ORDEN    -->
 <p-header>
   <div class="ui-helper-clearfix">
@@ -89,7 +100,14 @@ sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'750px'}">
         </select> -->
   </p-column>
   <p-column field="email" header="{{'email' | translate}}"  [editable]="true"  [style]="{'width':'190px'}"></p-column>
-  
+  <p-column field="superuser" header="{{'Usuario' | translate}} +"  [style]="{'width':'150px'}">
+    <ng-template  let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+      <p-dropdown  [panelStyleClass]="clase"  appendTo="body" [options]="superusers" [(ngModel)]="item.superuser" [style]="{'width':'140px'}" (onChange)="itemEdited(item.id)">
+
+      </p-dropdown>
+    </ng-template>
+  </p-column>
+
 
 
 

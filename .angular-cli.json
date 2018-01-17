@@ -25,6 +25,7 @@
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
+        "../node_modules/chart.js/dist/Chart.js",
         "./assets/i18n/es.js",
         "./assets/i18n/ca.js"
       ],

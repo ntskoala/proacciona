@@ -141,7 +141,7 @@
       <p-column field="nombre" header="{{'Nombre' | translate }}" [editable]="true" ></p-column>
       <p-column field="fecha" header="{{'fecha' | translate }}" >
         <ng-template let-col let-item="rowData" pTemplate="body">      
-        <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+        <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
         </ng-template>
       </p-column>
       <p-column field="tipo" header="{{'tipo' | translate }}">

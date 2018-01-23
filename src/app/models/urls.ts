@@ -30,6 +30,7 @@ export const URLS = {
   UPLOAD_DOCS: base + 'uploads.php',
   STD_ITEM: base + 'std_item.php',
   STD_SUBITEM: base + 'std_subitem.php',
+  DASHCONTROLES: base + 'dashControles.php',
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
   TRAZA_ATRAS:  base + 'traza_atras.php',

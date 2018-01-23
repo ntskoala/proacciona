@@ -134,6 +134,9 @@ import { ProtocolosCuadroComponent } from './components/limpieza/protocolos-cuad
 import { ComponentsComponent } from './components/components.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsoComponent } from './components/dashboard/uso/uso.component';
+import { AlertasControlesComponent } from './components/dashboard/alertas/alertas.component';
+import { DashrealizadosComponent } from './components/dashboard/dashrealizados/dashrealizados.component';
+import { DashproduccionComponent } from './components/dashboard/dashproduccion/dashproduccion.component';
 
 
 
@@ -272,7 +275,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     ProtocolosCuadroComponent,
     ComponentsComponent,
     DashboardComponent,
-    UsoComponent
+    UsoComponent,
+    AlertasControlesComponent,
+    DashrealizadosComponent,
+    DashproduccionComponent
   ],
   providers: [
     EmpresasService,

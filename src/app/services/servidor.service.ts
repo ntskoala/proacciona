@@ -12,6 +12,7 @@ export class Servidor {
   constructor (private llamada: Http, private empresasService: EmpresasService) {}
   
   login(url: string, param: string, payload = '') {
+    param += "&origen=backoffice";
     return this.llamada.post(url + param, payload)
       .map((res: Response) => JSON.parse(res.json()));
   }
@@ -29,27 +30,27 @@ export class Servidor {
       paramopcional = param;
     }
     paramopcional += "&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada;
-    let parametros = '?token=' + sessionStorage.getItem('token') +paramopcional;
+    let parametros = '?token=' + sessionStorage.getItem('token') +paramopcional+ "&origen=backoffice";
     return this.llamada.post(url + parametros, payload)
       .map((res: Response) => JSON.parse(res.json()));
   }
 
   putObject(url: string, param: string, object: Object) {
     let payload = JSON.stringify(object);        
-    let parametros = param + '&token=' + sessionStorage.getItem('token')+"&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada;
+    let parametros = param + '&token=' + sessionStorage.getItem('token')+"&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada+ "&origen=backoffice";
     return this.llamada.put(url + parametros, payload)
       .map((res: Response) => JSON.parse(res.json()));
   }
   
   deleteObject(url: string, param: string) {
-    let parametros = param + '&token=' + sessionStorage.getItem('token')+"&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada;
+    let parametros = param + '&token=' + sessionStorage.getItem('token')+"&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada+ "&origen=backoffice";
     return this.llamada.delete(url + parametros)
       .map((res: Response) => JSON.parse(res.json()));
   }
 
   postLogo(url: string, files: File[], idEmpresa: string) {
     let formData: FormData = new FormData();
-    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa;
+    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice";
     formData.append('logo', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));
@@ -57,7 +58,7 @@ export class Servidor {
 
   postDoc(url: string, files: File[], entidad:string, idEntidad: string, idEmpresa: string, field?: string) {
     let formData: FormData = new FormData();
-    let parametros = '?token=' + sessionStorage.getItem('token') + '&idEntidad=' + idEntidad +'&entidad=' + entidad+'&idEmpresa=' + idEmpresa+'&field=' + field;
+    let parametros = '?token=' + sessionStorage.getItem('token') + '&idEntidad=' + idEntidad +'&entidad=' + entidad+'&idEmpresa=' + idEmpresa+'&field=' + field+ "&origen=backoffice";
     formData.append('doc', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));

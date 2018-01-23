@@ -1,6 +1,21 @@
 
 
+        <md-card class="card">
+                <md-card-header>
+                  <div md-card-avatar class="example-header-image"></div>
+                  <md-card-title>Uso</md-card-title>
+                  <md-card-subtitle>Uso de la aplicación en los últimos dias</md-card-subtitle>
+                </md-card-header>
+                <!-- <img md-card-image src="" alt="Photo of a Shiba Inu"> -->
+                <md-card-content>
+                                <md-spinner *ngIf="calculando"></md-spinner>  
+                        <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
+          </md-card-content>
+          <md-card-actions>
+            <button md-button (click)="loadLogs(7)">7 días</button>
+            <button md-button (click)="loadLogs(14)">14 días</button>
+          </md-card-actions>
+        </md-card>
 
-
-        <p-chart type="line" [data]="data"></p-chart>
+        
 

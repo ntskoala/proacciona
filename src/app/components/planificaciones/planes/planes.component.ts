@@ -86,8 +86,10 @@ ngOnInit(){
             this.planes = [];
             //this.planes.push(this.plan);
             if (response.success == 'true' && response.data) {
+              let fecha;
               for (let element of response.data) {
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,new Date(element.fecha), element.periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
+                (moment(element.fecha).isValid())? fecha = new Date(element.fecha) : fecha = null;
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,fecha, element.periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
               }
             }
           },

@@ -7,11 +7,11 @@
         <span class="material-icons">business</span>
       </button>
       </div>
-      <div class="tooltip" mdTooltip="{{'menu.dashboard' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
+      <!-- <div class="tooltip" mdTooltip="{{'menu.dashboard' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
           <button [ngClass]="{'selected': subMenu == 'dashboard'}" [disabled]="!empresasService.administrador" (click)="setSeleccion('dashboard')" class="opcion" md-mini-fab color="accent" >
           <span class="material-icons">slow_motion_video</span>
         </button>
-        </div>
+        </div> -->
       <div class="tooltip" mdTooltip="{{'menu.config' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">      
         <button [ngClass]="{'selected': subMenu == 'settings'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('settings')" class="opcion" md-mini-fab color="accent" >
         <span  class="material-icons">settings</span>

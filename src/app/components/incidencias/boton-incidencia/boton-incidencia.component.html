@@ -1,0 +1,48 @@
+<span class="tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips"
+    [mdTooltipPosition]="'right'">  
+<button md-mini-fab color="warn" click="setIncidencia()"> <span class="material-icons">info</span></button>
+</span>
+<div *ngIf="nuevaIncidencia" class="newIncident">
+<span class="cell tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+    <div class="table planes">
+        <div class="header-row">
+            <span class="header-cell">{{"incidencia.incidencia" | translate}}</span>
+            <span class="header-cell">{{"incidencia.fecha" | translate}}</span>
+            <span class="header-cell" style="padding-right: 10px">{{"incidencia.solucion" | translate}}</span>
+             <span class="medium header-cell">{{"incidencia.responsable" | translate}}</span>
+             <span class="medium header-cell">{{"incidencia.nc" | translate}}</span>
+             <span class="medium header-cell">{{"add" | translate}}</span>
+          </div>
+      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
+        <input type="hidden" [(ngModel)]="newIncidencia.id" name="id">
+        <span class="cell">
+          <input type="text" [placeholder]="'incidencia.incidencia' | translate" required [(ngModel)]="newIncidencia.incidencia" name="incidencia">
+        </span>
+        <span class="medium cell">
+          <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+        </span>
+    
+        <span class="cell center">
+           <input type="test" [(ngModel)]="newIncidencia.solucion" name="solucion">
+        </span>
+          <span class="cell small">
+          <input type="text" [placeholder]="'incidencia.responsable' | translate" required [(ngModel)]="newIncidencia.responsable" name="responsable">
+        </span>
+        <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+            <span class="cell">
+              <select class="smallselect" required [(ngModel)]="newIncidencia.nc" name="nc">
+                <option value="0">--</option>
+                <option value="1">{{'incidencia.nc' | translate}}</option>
+              </select>
+              </span>
+            </span>
+        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+          <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+            <span class="material-icons">add</span>
+          </button>
+        </span>
+      </form>
+      <div style="height: 15px" ></div>
+    </div>
+    </span>
+</div>

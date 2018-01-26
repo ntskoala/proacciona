@@ -21,6 +21,7 @@ import {LightboxModule} from 'primeng/primeng';
 import {TreeModule,TreeNode} from 'primeng/primeng';
 import {MultiSelectModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
+import {TableModule} from 'primeng/table';
 import {DropdownModule} from 'primeng/primeng';
 import {FieldsetModule} from 'primeng/primeng';
 import {PanelModule} from 'primeng/primeng';
@@ -137,6 +138,8 @@ import { UsoComponent } from './components/dashboard/uso/uso.component';
 import { AlertasControlesComponent } from './components/dashboard/alertas/alertas.component';
 import { DashrealizadosComponent } from './components/dashboard/dashrealizados/dashrealizados.component';
 import { DashproduccionComponent } from './components/dashboard/dashproduccion/dashproduccion.component';
+import { IncidenciasComponent } from './components/incidencias/incidencias.component';
+import { BotonIncidenciaComponent } from './components/incidencias/boton-incidencia/boton-incidencia.component';
 
 
 
@@ -159,6 +162,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     LightboxModule,
     TreeModule,
     DataTableModule,
+    TableModule,
     SharedModule,
     MultiSelectModule,
     DropdownModule,
@@ -278,7 +282,9 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     UsoComponent,
     AlertasControlesComponent,
     DashrealizadosComponent,
-    DashproduccionComponent
+    DashproduccionComponent,
+    IncidenciasComponent,
+    BotonIncidenciaComponent
   ],
   providers: [
     EmpresasService,

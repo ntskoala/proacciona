@@ -464,6 +464,15 @@
       "saveNotOk":"S'ha produit un error al desar",
       "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició"      
     },
+    "incidencia":
+    {
+      "nueva":"Nova incidencia",
+      "incidencia":"Incidencia",
+      "fecha":"Data",
+      "solucion":"Solució",
+      "responsable":"Responsable",
+      "nc":"No conformitat"
+    },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",
   "martes":"Dimarts",

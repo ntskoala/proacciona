@@ -464,6 +464,15 @@
       "saveNotOk":"Se ha producido un error al guardar",
       "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición"
     },
+    "incidencia":
+    {
+      "nueva":"Nueva incidencia",
+      "incidencia":"Incidencia",
+      "fecha":"Fecha",
+      "solucion":"Solución",
+      "responsable":"Responsable",
+      "nc":"No conformidad"
+    },
   "alergenos":"alérgenos",
   "lunes":"Lunes",
   "martes":"mMartes",

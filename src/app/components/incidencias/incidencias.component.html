@@ -1,0 +1,179 @@
+
+<app-boton-incidencia></app-boton-incidencia>
+ <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+ <div class="modal" *ngIf="procesando">
+<md-spinner></md-spinner>
+</div>
+<span class="cell tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+<div class="table planes">
+    <div class="header-row">
+        <span class="header-cell">{{"incidencia.incidencia" | translate}}</span>
+        <span class="header-cell">{{"incidencia.fecha" | translate}}</span>
+        <span class="header-cell" style="padding-right: 10px">{{"incidencia.solucion" | translate}}</span>
+         <span class="medium header-cell">{{"incidencia.responsable" | translate}}</span>
+         <span class="medium header-cell">{{"incidencia.nc" | translate}}</span>
+         <span class="medium header-cell">{{"add" | translate}}</span>
+      </div>
+  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
+    <input type="hidden" [(ngModel)]="newIncidencia.id" name="id">
+    <span class="cell">
+      <input type="text" [placeholder]="'incidencia.incidencia' | translate" required [(ngModel)]="newIncidencia.incidencia" name="incidencia">
+    </span>
+    <span class="medium cell">
+      <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+    </span>
+
+    <span class="cell center">
+       <input type="test" [(ngModel)]="newIncidencia.solucion" name="solucion">
+    </span>
+      <span class="cell small">
+      <input type="text" [placeholder]="'incidencia.responsable' | translate" required [(ngModel)]="newIncidencia.responsable" name="responsable">
+    </span>
+    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+        <span class="cell">
+          <select class="smallselect" required [(ngModel)]="newIncidencia.nc" name="nc">
+            <option value="0">--</option>
+            <option value="1">{{'incidencia.nc' | translate}}</option>
+          </select>
+          </span>
+        </span>
+    <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="material-icons">add</span>
+      </button>
+    </span>
+  </form>
+  <div style="height: 15px" ></div>
+</div>
+</span>
+
+<p-table #dt [value]="incidencias"  (onEditInit)="onEdit($event)" 
+[csvSeparator]="';'" [exportFilename]="'Incidencias'" dataKey="incidencia">
+    <!-- <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of cols">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template> -->
+    <!-- <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col style="width:30px">
+            <col style="width:100px">
+            <col style="width:110px; background-color:#FFD54F !important">
+            <col style="width:100px">
+            <col  style="width:100px">
+            <col  style="width:100px">
+            <col style="width:80px; background-color:#FFD54F !important">
+        </colgroup>
+    </ng-template> -->
+    <ng-template pTemplate="header" let-columns>
+        <tr class="header-row">
+          <th style="width: 2.25em"></th>
+            <th style="width:100px" class="header-cell">{{"incidencia.incidencia" | translate}}</th>
+            <th style="width:100px" class="header-cell">{{"incidencia.fecha" | translate}}</th>
+            <th style="width:100px" class="header-cell" style="padding-right: 10px">{{"incidencia.solucion" | translate}}</th>
+             <th style="width:100px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>
+             <th style="width:100px" class="medium header-cell">{{"incidencia.nc" | translate}}</th>
+             <th style="width:100px" class="medium header-cell">{{"acciones" | translate}}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="indexRow" let-columns="columns" let-expanded="expanded">
+        <tr>
+            <td>
+                <span [pRowToggler]="item">
+                    <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></i>
+                </span>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]="item.incidencia">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.incidencia}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn [style]="{'width':'110px','text-align': 'center'}">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-calendar  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.fecha | date:"dd-mm-yyyy hh:mm"}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]="item.solucion">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.solucion}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]="item.responsable">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.responsable}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]="item.nc">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.nc}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+                            <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+                              <span class="material-icons">close</span>
+                            </button>
+                          </span>
+                          <span #saveTT="mdTooltip" class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
+                            <!-- <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+                              <span class="material-icons">check</span>
+                            </button> -->
+                          </span>
+            </td>
+            <!-- <td *ngFor="let col of cols" pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]=" rowData[col.field]">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{rowData[col.field]}}
+                    </ng-template>
+                </p-cellEditor>
+                   
+            </td> -->
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-item let-columns="columns">
+        <tr>
+            <td [attr.colspan]="columns.length + 1">
+                <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-g-12 ui-md-3" style="text-align:center">
+                    </div>
+                    <div class="ui-g-12 ui-md-9">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

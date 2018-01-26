@@ -1,0 +1,15 @@
+.newIncident{
+    position:absolute;
+    padding:25px;
+    top:3px;
+    left:30px;
+    width:860px;
+    height:300px;
+    min-height:400px;
+    z-index:99;
+    background-color:#fff;
+    opacity:0.94;
+    border: black;
+      border-style: solid;
+      border-width: thin;
+    }

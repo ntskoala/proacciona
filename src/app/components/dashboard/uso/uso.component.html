@@ -9,7 +9,7 @@
                 <!-- <img md-card-image src="" alt="Photo of a Shiba Inu"> -->
                 <md-card-content>
                                 <md-spinner *ngIf="calculando"></md-spinner>  
-                        <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
+                <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
           </md-card-content>
           <md-card-actions>
             <button md-button (click)="loadLogs(7)">7 días</button>

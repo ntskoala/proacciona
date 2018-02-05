@@ -9,7 +9,7 @@ import { MaterialModule } from '@angular/material';
 //import {MdSelectModule} from '@angular/material';
 import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
-import { DatePickerModule } from 'ng2-datepicker';
+    //import { DatePickerModule } from 'ng2-datepicker';
 //**********REQUIRED FOR CALENDAR */
 //import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
 import {MomentModule} from 'angular2-moment';
@@ -31,7 +31,8 @@ import {AccordionModule} from 'primeng/primeng';
 import {SpinnerModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import {ChartModule} from 'primeng/primeng';
+import {ChartModule} from 'primeng/chart';
+//import {ChartModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
 import { AppComponent } from './components/app.component';
@@ -140,6 +141,7 @@ import { DashrealizadosComponent } from './components/dashboard/dashrealizados/d
 import { DashproduccionComponent } from './components/dashboard/dashproduccion/dashproduccion.component';
 import { IncidenciasComponent } from './components/incidencias/incidencias.component';
 import { BotonIncidenciaComponent } from './components/incidencias/boton-incidencia/boton-incidencia.component';
+import { GestionIncidenciaComponent } from './components/incidencias/gestion-incidencia/gestion-incidencia.component';
 
 
 
@@ -177,7 +179,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
 /**********MATERIAL */
     MaterialModule,
    // MdSelectModule,
-    DatePickerModule,
+   // DatePickerModule,
     TranslateModule.forRoot({
       provide: TranslateLoader,
       //useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
@@ -284,7 +286,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     DashrealizadosComponent,
     DashproduccionComponent,
     IncidenciasComponent,
-    BotonIncidenciaComponent
+    BotonIncidenciaComponent,
+    GestionIncidenciaComponent
   ],
   providers: [
     EmpresasService,

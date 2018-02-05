@@ -1,0 +1,198 @@
+  <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+  <div class="modal" *ngIf="procesando">
+      <md-spinner></md-spinner>
+  </div>
+<div class="gestionIncidencia">
+  <!-- <span class="cell tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+  <div class="table planes">
+      <div class="header-row">
+          <span class="header-cell">{{"incidencia.accion" | translate}}</span>
+          <span class="header-cell">{{"incidencia.fecha" | translate}}</span>
+          <span class="header-cell" style="padding-right: 10px">{{"incidencia.fecha_termini" | translate}}</span>
+           <span class="medium header-cell">{{"incidencia.responsable" | translate}}</span>
+           <span class="medium header-cell">{{"incidencia.estado" | translate}}</span>
+           <span class="medium header-cell">{{"add" | translate}}</span>
+        </div>
+    <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
+      <input type="hidden" [(ngModel)]="newAccionIncidencia.id" name="id">
+      <input type="hidden" [(ngModel)]="newAccionIncidencia.idIncidencia" name="idIncidencia">
+      <span class="cell">
+        <input type="text" [placeholder]="'incidencia.accion' | translate" required [(ngModel)]="newAccionIncidencia.accion" name="accion">
+      </span>
+      <span class="medium cell">
+        <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="newAccionIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      </span>
+      <span class="medium cell">
+        <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha_termini" [(ngModel)]="newAccionIncidencia.fecha_termini" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_termini"></p-calendar>
+      </span> 
+        <span class="cell small">
+        <input type="text" [placeholder]="'incidencia.responsable' | translate" required [(ngModel)]="newAccionIncidencia.responsable" name="responsable">
+      </span>
+      <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+          <span class="cell">
+            <select class="smallselect" required [(ngModel)]="newAccionIncidencia.estado" name="estado">
+              <option value="0">incorrecto</option>
+              <option value="1">correcto</option>
+            </select>
+            </span>
+          </span>
+      <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+        <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+          <span class="material-icons">add</span>
+        </button>
+      </span>
+    </form>
+  </div>
+  </span> -->
+  
+  <p-table #dt [columns]="cols" [value]="incidencias_nc" (onEdit)="onEdit($event)" [csvSeparator]="';'" [exportFilename]="'Acciones_incidencia'"
+      dataKey="incidencia_nc">
+  
+      <!-- <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+              <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+                  <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(dt,dt)" style="float:left"></button>
+              </span>
+          </div>
+      </ng-template> -->
+
+      <ng-template pTemplate="header" let-columns>
+          <tr class="header-row">
+              <th style="width:122px" class="header-cell">{{"incidencia.accion" | translate}}</th>
+              <th style="width:175px" class="header-cell">{{"incidencia.fecha" | translate}}</th>
+              <th style="width:175px" class="header-cell">{{"incidencia.fecha_termini" | translate}}</th>
+              <th style="width:130px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>
+              <th style="width:100px" class="medium header-cell">{{"incidencia.estado" | translate}}</th>
+              <th style="width:100px" class="medium header-cell">{{"acciones" | translate}}</th>
+          </tr>
+          <tr>
+                <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row addItem" #newItemForm="ngForm" (ngSubmit)="newItem()">
+                        <input type="hidden" [(ngModel)]="newAccionIncidencia.id" name="id">
+                        <input type="hidden" [(ngModel)]="newAccionIncidencia.idIncidencia" name="idIncidencia">
+                  
+            <td class="espacio" style="min-width: 153px;">
+        <input type="text" style="width:128px" [placeholder]="'incidencia.accion' | translate" required [(ngModel)]="newAccionIncidencia.accion" name="accion">
+               
+            </td>
+            <td class="espacio" style="min-width: 219px;">
+        <p-calendar [inputStyle]="{'width':'180px'}" placeholder="fecha" [(ngModel)]="newAccionIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+               
+            </td>
+            <td class="espacio" style="min-width: 219px;">
+        <p-calendar [inputStyle]="{'width':'180px'}" placeholder="fecha_termini" [(ngModel)]="newAccionIncidencia.fecha_termini" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_termini"></p-calendar>
+                
+            </td>
+            <td  class="espacio" style="min-width: 163px;">
+        <input type="text" [placeholder]="'incidencia.responsable' | translate" required [(ngModel)]="newAccionIncidencia.responsable" name="responsable">
+            </td>
+            <td class="espacio" style="min-width: 126px;">
+                    <select class="smallselect" required [(ngModel)]="newAccionIncidencia.estado" name="estado">
+                            <option value="0">incorrecto</option>
+                            <option value="1">correcto</option>
+                          </select>
+            </td>
+            <td class="espacio">
+                    <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+                            <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+                              <span class="material-icons">add</span>
+                            </button>
+                          </span>
+            </td>
+        </form>
+        </tr>
+
+
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-i="rowIndex" let-columns="columns" let-expanded="expanded">
+          <tr>
+              <td pEditableColumn>
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input type="text" [(ngModel)]="item.accion" (keypress)="itemEdited(item.id)">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{item.accion}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+              <td pEditableColumn [style]="{'width':'140px','text-align': 'center'}">
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <p-calendar #cal appendTo="body" [inputStyle]="{'width':'140px'}" class="medium" [(ngModel)]="item.fecha" [locale]="es" dateFormat="dd/mm/yy"
+                              hourFormat="24" [showTime]="true" (onSelect)="itemDateEdited(item.id,item.fecha,$event,'fecha')" name="fecha">
+                              <p-footer>
+                                  <button pButton type="button" (click)="okDate(cal)" icon="fa-check" style="margin-left:45%"></button>
+                              </p-footer>
+                              <ng-template pTemplate="date" let-date>
+                                  <span [ngStyle]="{backgroundColor: (date.day == selectedDay) ? '#7cc67c' : 'inherit'}" style="border-radius:50%">{{date.day}}</span>
+                              </ng-template>
+                          </p-calendar>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{item.fecha | date:"dd-mm-yyyy hh:mm"}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+              <td pEditableColumn [style]="{'width':'110px','text-align': 'center'}">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-calendar #cal appendTo="body" [inputStyle]="{'width':'140px'}" class="medium" [(ngModel)]="item.fecha" [locale]="es" dateFormat="dd/mm/yy"
+                            hourFormat="24" [showTime]="true" (onSelect)="itemDateEdited(item.id,item.fecha_termini,$event,'fecha_termini')" name="fecha_termini">
+                            <p-footer>
+                                <button pButton type="button" (click)="okDate(cal)" icon="fa-check" style="margin-left:45%"></button>
+                            </p-footer>
+                            <ng-template pTemplate="date" let-date>
+                                <span [ngStyle]="{backgroundColor: (date.day == selectedDay_Termini) ? '#7cc67c' : 'inherit'}" style="border-radius:50%">{{date.day}}</span>
+                            </ng-template>
+                        </p-calendar>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{item.fecha_termini | date:"dd-mm-yyyy hh:mm"}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+              <td pEditableColumn>
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input type="text" [(ngModel)]="item.responsable" (keypress)="itemEdited(item.id)">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{item.responsable}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input type="text" [(ngModel)]="item.estado" (keypress)="itemEdited(item.id)">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{item.estado}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+
+              <td>
+                  <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
+                      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)"
+                          type="button">
+                          <span class="material-icons">close</span>
+                      </button>
+                  </span>
+                  <span #saveTT="mdTooltip" class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips"
+                      [mdTooltipPosition]="'right'">
+                      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]"
+                          (click)="saveItem(item,i)" type="button">
+                          <span class="material-icons">check</span>
+                      </button>
+                  </span>
+              </td>
+
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-item let-columns="columns">
+              test
+      </ng-template>
+  </p-table>
+<div style="height:30px"></div>
+</div>

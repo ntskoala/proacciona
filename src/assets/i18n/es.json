@@ -471,7 +471,14 @@
       "fecha":"Fecha",
       "solucion":"Solución",
       "responsable":"Responsable",
-      "nc":"No conformidad"
+      "nc":"No conformidad",
+      "origen":"Origen",
+      "accion":"Acción",
+      "acciones":"Acciones",
+      "estado":"Estado",
+      "fecha_termini":"Fecha limite",
+      "valoracion":"Valoración",
+      "fecha_valoracion":"Fecha valoración"
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

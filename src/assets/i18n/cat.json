@@ -466,12 +466,19 @@
     },
     "incidencia":
     {
-      "nueva":"Nova incidencia",
-      "incidencia":"Incidencia",
+      "nueva":"Nova incidència",
+      "incidencia":"Incidència",
       "fecha":"Data",
       "solucion":"Solució",
       "responsable":"Responsable",
-      "nc":"No conformitat"
+      "nc":"No conformitat",
+      "origen":"Origen",
+      "accion":"Acció",
+      "acciones":"Accions",
+      "estado":"Estat",
+      "fecha_termini":"Data termini",
+      "valoracion":"Valoració",
+      "fecha_valoracion":"Data valoració"
     },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",

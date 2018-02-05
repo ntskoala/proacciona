@@ -1,15 +1,45 @@
 .newIncident{
     position:absolute;
     padding:25px;
-    top:3px;
-    left:30px;
+    top:30px;
+    left:60px;
     width:860px;
     height:300px;
     min-height:400px;
     z-index:99;
-    background-color:#fff;
-    opacity:0.94;
+    background-color:rgba(200,200,200,0.96);
+    opacity:0.99;
     border: black;
       border-style: solid;
       border-width: thin;
     }
+
+    .buttons{
+      position: absolute;
+      bottom: 50px;
+  }
+  .elem{
+    position: relative;
+    display: flex;
+    margin-top: 14px;
+    height: 38px;
+    float:right;
+    width: 400px;
+  }
+  .itemElem{
+    float: right;
+    display: block;
+    position: absolute;
+    right: 0px;
+    margin-right: 0px;
+    width: 200px;
+  }
+  .label{
+    margin-right: 30px;
+    float:left;
+  }
+
+  .formIncidencia{
+    width: 400px;
+    display: block;
+  }

@@ -472,6 +472,14 @@
       "solucion":"Solución",
       "responsable":"Responsable",
       "nc":"No conformidad",
+      "NC":{
+        "0":"No Activat",
+        "1":"No Conforme",
+        "2":"Resolt"
+      },
+      "estado0":"--",
+      "estado1":"Incorrecto",
+      "estado2":"Correcto",
       "origen":"Origen",
       "accion":"Acción",
       "acciones":"Acciones",

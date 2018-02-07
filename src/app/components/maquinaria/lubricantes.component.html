@@ -8,7 +8,7 @@
   </div>
 </div>
 <h2 class="center">{{'maquinas.lubricantes' | translate}}</h2>
-<span class="tooltip" mdTooltip="{{'maquinas.nuevoLubricante' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">     
+<span class="tooltip" matTooltip="{{'maquinas.nuevoLubricante' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">     
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{"maquinas.nombre" | translate}}</span>
@@ -31,8 +31,8 @@
     </span>
 
     <span class="cell">
-        <span class="tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">            
-      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+        <span class="tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">            
+      <button mat-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
         </span>
@@ -54,7 +54,7 @@
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="item.tipo" name="tipo" (keyup)="itemEdited(item.id)">
     </span>
     <span class="cell small">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgficha" md-mini-fab color="accent" (click)="photoURL(i,'imgficha')" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgficha" mat-mini-fab color="accent" (click)="photoURL(i,'imgficha')" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
@@ -64,7 +64,7 @@
     </span>
 
     <span class="cell small">
-      <button  *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgcertificado" md-mini-fab color="accent" (click)="photoURL(i,'imgcertificado')" type="button">
+      <button  *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgcertificado" mat-mini-fab color="accent" (click)="photoURL(i,'imgcertificado')" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
@@ -73,12 +73,12 @@
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'imgcertificado'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgcertificado')" accept=".gif,.jpg,.jpeg,.png"/>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
@@ -98,14 +98,14 @@
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
 <!--*****  subir/ver FOTO  *********-->
   <span class="cell small">
-<span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgficha" md-mini-fab color="accent" (click)="photoURL(i,'imgficha',item.imgficha)" type="button">
+<span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgficha" mat-mini-fab color="accent" (click)="photoURL(i,'imgficha',item.imgficha)" type="button">
       <span class="material-icons">photo_camera</span>
     </button>
 </span>
   </span>
   <span class="cell mini-fab">
-<span class="tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
+<span class="tooltip" matTooltip="{{'subirArchivo' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
       <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'imgficha'+i}}"></label>                
     </span>
       <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'imgficha'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgficha')" accept=".gif,.jpg,.jpeg,.png"/>
@@ -117,14 +117,14 @@
     <ng-template let-col let-item="rowData" let-i="rowIndex"  pTemplate="body">
 <!-- *****  subir/ver Ficha  ********* -->
   <span class="cell small">
-<span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgcertificado" md-mini-fab color="accent" (click)="photoURL(i,'imgcertificado',item.imgcertificado)" type="button">
+<span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.imgcertificado" mat-mini-fab color="accent" (click)="photoURL(i,'imgcertificado',item.imgcertificado)" type="button">
       <span class="material-icons">photo_camera</span>
     </button>
 </span>
   </span>
   <span class="cell mini-fab">
-<span class="tooltip" mdTooltip="{{'subirArchivo' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">            
+<span class="tooltip" matTooltip="{{'subirArchivo' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
       <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'imgcertificado'+i}}"></label>                
     </span>
       <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'imgcertificado'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'imgcertificado')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
@@ -138,13 +138,13 @@
 
   <p-column header="{{'acciones' | translate}}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+        <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
       <span class="material-icons">close</span>
     </button>
   </span>
-  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+  <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
       <span class="material-icons">check</span>
     </button>
   </span>
@@ -157,6 +157,6 @@
 
 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+  <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
 <img   class="iframe" [src]="foto">
 </div>

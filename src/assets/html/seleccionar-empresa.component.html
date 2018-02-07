@@ -1,14 +1,14 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<md-card>
-  <md-card-title>
-    <md-toolbar color="accent">
+<mat-card>
+  <mat-card-title>
+    <mat-toolbar color="accent">
       Empresa
       <span class="id-empresa" *ngIf="empresasService.seleccionada != 0">
         24{{empresasService.seleccionada}}53
       </span>
-    </md-toolbar>
-  </md-card-title>
-  <md-card-content>
+    </mat-toolbar>
+  </mat-card-title>
+  <mat-card-content>
     <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
     <!--<form>
       <select (change)="selecciona($event.target.value)">
@@ -21,5 +21,5 @@
       <input id="logo" class="inputfile" type="file" (change)="uploadLogo($event)"/>
 
     <button md-button color="warn" (click)="checkBorrar()" type="submit">Eliminar</button>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>

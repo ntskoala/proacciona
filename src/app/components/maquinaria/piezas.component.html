@@ -7,7 +7,7 @@
       </div>
   </div>
 </div>
-<span class="cell tooltip" mdTooltip="{{'maquinas.nuevaCalibracion' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">        
+<span class="cell tooltip" matTooltip="{{'maquinas.nuevaCalibracion' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">        
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{'maquinas.pieza' | translate}}</span>
@@ -22,7 +22,7 @@
       <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
     </span>
 
-    <span class="cell tooltip" mdTooltip="{{'cantidadPiezas' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">             
+    <span class="cell tooltip" matTooltip="{{'cantidadPiezas' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">             
     <span class="cell">
       <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.cantidad" name="cantidad">
         </span>
@@ -30,7 +30,7 @@
     <span class="cell">
       <input type="text" placeholder="material" required [(ngModel)]="nuevoPieza.material" name="material">
     </span>
-    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+    <span class="cell tooltip" matTooltip="{{'numero' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
         <span class="cell">num.
           <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
             <option value="1">1</option>
@@ -49,8 +49,8 @@
           </span>
         </span>
     <span class="cell">
-        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">            
-      <button md-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+        <span class="cell tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
+      <button mat-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
         </span>
@@ -72,7 +72,7 @@
     </span>
     <span class="cell">
      <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!pieza.doc" md-mini-fab color="accent" (click)="photoURL(i)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!pieza.doc" mat-mini-fab color="accent" (click)="photoURL(i)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
     </span>
@@ -82,12 +82,12 @@
     </span>    
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
@@ -100,7 +100,7 @@
 [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
 <p-header>
     <div class="ui-helper-clearfix">
-        <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+        <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
         <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
         </span>
       </div>
@@ -115,14 +115,14 @@
   <p-column field="doc" header="{{'foto' | translate}}" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
     <span class="cell small">
-<span class="tooltip" mdTooltip="{{'verFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" md-mini-fab color="accent" (click)="photoURL(i,'doc',item.doc)" type="button">
+<span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" mat-mini-fab color="accent" (click)="photoURL(i,'doc',item.doc)" type="button">
         <span class="material-icons">photo_camera</span>
       </button>
 </span>
     </span>
     <span class="cell mini-fab">
-<span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
+<span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
         <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
         <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
 </span>
@@ -132,13 +132,13 @@
 
   <p-column header="{{'acciones' | translate }}" [style]="{'width':'100px'}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+        <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
       <span class="material-icons">close</span>
     </button>
   </span>
-  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+  <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
       <span class="material-icons">check</span>
     </button>
   </span>
@@ -151,7 +151,7 @@
 
 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc" [ngStyle]="{'top':top}">
-    <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+    <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
   <img   class="iframe" [src]="foto">
   </div>
   

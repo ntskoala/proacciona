@@ -6,7 +6,7 @@ import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
 import { URLS } from '../models/urls';
 import { Empresa } from '../models/empresa';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
  
 @Component({
   selector: 'listado-empresas',

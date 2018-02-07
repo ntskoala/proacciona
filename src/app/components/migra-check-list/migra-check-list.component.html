@@ -1,26 +1,26 @@
-<md-toolbar color="accent">Importar checklists 
+<mat-toolbar color="accent">Importar checklists 
 &nbsp;
-  <button md-raised-button color="primary" (click)="creaLimpiezas()">Convertir</button>&nbsp;
-  <button md-raised-button color="primary" (click)="finMigraLimpiezas('cancelado')">Cancelas</button> &nbsp;
-  <button md-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
-</md-toolbar>
+  <button mat-raised-button color="primary" (click)="creaLimpiezas()">Convertir</button>&nbsp;
+  <button mat-raised-button color="primary" (click)="finMigraLimpiezas('cancelado')">Cancelas</button> &nbsp;
+  <button mat-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
+</mat-toolbar>
 
 
 
 <div class="zona" *ngFor="let item of zonas; let i = index">
   <div class="yellow full-width">
-    <md-checkbox   [disabled]="checklists[i].migrado == 1"  [indeterminate]="checklists[i].migrado == 1" class="example-margin" (click)="cambiaEstadoZona(i)" [(ngModel)]="migrarList[i]['migrar']">
+    <mat-checkbox   [disabled]="checklists[i].migrado == 1"  [indeterminate]="checklists[i].migrado == 1" class="example-margin" (click)="cambiaEstadoZona(i)" [(ngModel)]="migrarList[i]['migrar']">
       <span *ngIf="migrarList[i]['migrado']">ok- </span>
       {{item.nombre}}
-      </md-checkbox>
+      </mat-checkbox>
 
   </div>
 <span *ngIf="limpiezas[i]">
   <div class="elemento" *ngFor="let limpieza of limpiezas[i]['Alimpiezas']; let x = index">
-    <span class="migra-cell"><md-checkbox [disabled]="limpiezas[i]['AcontrolChecklist'][x].migrado == 1" [indeterminate]="limpiezas[i]['AcontrolChecklist'][x].migrado == 1" (click)="verLimpieza(limpieza)" [(ngModel)]="limpiezas[i]['migracion'][x]['migrar']" class="example-margin">
+    <span class="migra-cell"><mat-checkbox [disabled]="limpiezas[i]['AcontrolChecklist'][x].migrado == 1" [indeterminate]="limpiezas[i]['AcontrolChecklist'][x].migrado == 1" (click)="verLimpieza(limpieza)" [(ngModel)]="limpiezas[i]['migracion'][x]['migrar']" class="example-margin">
       <span *ngIf="limpiezas[i]['migracion'][x]['migrado']">ok- </span>
       <div class="migra-element-titulo">{{limpieza.nombre}}</div>
-      </md-checkbox></span>
+      </mat-checkbox></span>
         <span class="migra-cell">
       <p-calendar placeholder="fecha" [(ngModel)]="limpieza.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
@@ -44,10 +44,10 @@
 </span>
 </div>
 
-<md-toolbar color="accent">Importar checklists 
+<mat-toolbar color="accent">Importar checklists 
 &nbsp;
-  <button md-raised-button color="primary" (click)="creaLimpiezas()">Convertir</button>&nbsp;
-  <button md-raised-button color="primary" (click)="finMigraLimpiezas('cancelado')">Cancelas</button> &nbsp;
-  <button md-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
-</md-toolbar>
+  <button mat-raised-button color="primary" (click)="creaLimpiezas()">Convertir</button>&nbsp;
+  <button mat-raised-button color="primary" (click)="finMigraLimpiezas('cancelado')">Cancelas</button> &nbsp;
+  <button mat-raised-button color="primary" (click)="finMigraLimpiezas('cerrar')">Cerrar</button>
+</mat-toolbar>
 

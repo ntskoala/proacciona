@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { Http } from '@angular/http';
 
-import { MaterialModule } from '@angular/material';
-//import {MdSelectModule} from '@angular/material';
+//import { MaterialModule } from '@angular/material';
+//import {MatSelectModule} from '@angular/material';
 import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
     //import { DatePickerModule } from 'ng2-datepicker';
@@ -144,7 +144,80 @@ import { BotonIncidenciaComponent } from './components/incidencias/boton-inciden
 import { GestionIncidenciaComponent } from './components/incidencias/gestion-incidencia/gestion-incidencia.component';
 
 
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatIconModule } from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCardModule} from '@angular/material/card';
+import {
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MAT_DATE_LOCALE
+  } from '@angular/material';
+import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.component';
 
+@NgModule({
+    exports: [
+      // CDk
+      OverlayModule,
+      
+      // Material
+      MatAutocompleteModule,
+      MatButtonModule,
+      MatButtonToggleModule,
+      MatCardModule,
+      MatCheckboxModule,
+      MatChipsModule,
+      MatDatepickerModule,
+      MatDialogModule,
+      MatExpansionModule,
+      MatGridListModule,
+      MatIconModule,
+      MatInputModule,
+      MatListModule,
+      MatMenuModule,
+      MatProgressBarModule,
+      MatProgressSpinnerModule,
+      MatRadioModule,
+      MatRippleModule,
+      MatSelectModule,
+      MatSidenavModule,
+      MatSlideToggleModule,
+      MatSliderModule,
+      MatSnackBarModule,
+      MatTabsModule,
+      MatToolbarModule,
+      MatTooltipModule,
+      MatNativeDateModule,
+      MatSortModule,
+      MatPaginatorModule
+    ],
+    declarations: []
+  })
+  export class PlunkerMaterialModule {}
 
 export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
 
@@ -153,6 +226,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    PlunkerMaterialModule,
     FormsModule,
     HttpModule,
     JsonpModule,
@@ -177,8 +251,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     GrowlModule,
     ChartModule,
 /**********MATERIAL */
-    MaterialModule,
-   // MdSelectModule,
+   // MaterialModule,
+   // MatSelectModule,
    // DatePickerModule,
     TranslateModule.forRoot({
       provide: TranslateLoader,
@@ -280,20 +354,24 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     ProtocolosComponent,
     ProtocolosCuadroComponent,
     ComponentsComponent,
+//*******DASHBOARDS     */
     DashboardComponent,
     UsoComponent,
     AlertasControlesComponent,
     DashrealizadosComponent,
     DashproduccionComponent,
+//*******INCIDENCIAS     */
     IncidenciasComponent,
     BotonIncidenciaComponent,
-    GestionIncidenciaComponent
+    GestionIncidenciaComponent,
+    NcSelectComponent
   ],
   providers: [
     EmpresasService,
     Servidor,
     PermisosService,
-    MessageService
+    MessageService,
+    , {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
   ],
   
   bootstrap: [AppComponent],

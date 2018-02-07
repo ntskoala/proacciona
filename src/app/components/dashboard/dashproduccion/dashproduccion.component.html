@@ -1,31 +1,31 @@
-<md-card class="card">
-    <md-card-header>
+<mat-card class="card">
+    <mat-card-header>
       <div></div>
-      <md-card-title>Controles realizados</md-card-title>
+      <mat-card-title>Controles realizados</mat-card-title>
       
-    </md-card-header>
-    <!-- <img md-card-image src="" alt="Photo of a Shiba Inu"> -->
-    <md-card-content>
-      <!-- <md-list>
-        <md-list-item>
+    </mat-card-header>
+    <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
+    <mat-card-content>
+      <!-- <mat-list>
+        <mat-list-item>
           {{controles}} {{'Controles'|translate}} {{'para realizar'|translate}}
-        </md-list-item>
-        <md-list-item>
+        </mat-list-item>
+        <mat-list-item>
           {{checklists}} {{'Checklists'|translate}} {{'para realizar'|translate}}
-        </md-list-item>
-        <md-list-item>
+        </mat-list-item>
+        <mat-list-item>
           {{limpiezas}} {{'Limpiezas'|translate}} {{'para realizar'|translate}}
-        </md-list-item>
-        <md-list-item>
+        </mat-list-item>
+        <mat-list-item>
           {{mantenimientos}} {{'Mantenimientos'|translate}} {{'para realizar'|translate}}
-        </md-list-item>
-      </md-list> -->
-      <md-spinner *ngIf="calculando"></md-spinner>  
+        </mat-list-item>
+      </mat-list> -->
+      <mat-spinner *ngIf="calculando"></mat-spinner>  
       <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
   
-    </md-card-content>
-    <md-card-actions>
+    </mat-card-content>
+    <mat-card-actions>
         <button md-button (click)="loadResultados(7)">7 días</button>
         <button md-button (click)="loadResultados(14)">14 días</button>
-      </md-card-actions>
-  </md-card>
+      </mat-card-actions>
+  </mat-card>

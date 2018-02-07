@@ -3,33 +3,33 @@
 <div class="cabeceraItems">
   <!--{{'clientes.clientes' | translate}}<br>-->
 
-  <!--<md-slide-toggle (change)="changeEstado()">{{'produccion.lotes_cerrados' | translate}}</md-slide-toggle>-->
-    <button md-mini-fab color="primary" (click)="filter=!filter" type="button">
+  <!--<mat-slide-toggle (change)="changeEstado()">{{'produccion.lotes_cerrados' | translate}}</mat-slide-toggle>-->
+    <button mat-mini-fab color="primary" (click)="filter=!filter" type="button">
         <span class="material-icons">filter_list</span>
       </button>
   <form>
-    <md-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (change)="changeEstado($event)">
-      <md-option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</md-option>
-      <md-option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</md-option>
-      <md-option  value="entregado">{{'produccion.lotes_entregados' | translate}}</md-option>
-    </md-select>
+    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (change)="changeEstado($event)">
+      <mat-option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</mat-option>
+      <mat-option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</mat-option>
+      <mat-option  value="entregado">{{'produccion.lotes_entregados' | translate}}</mat-option>
+    </mat-select>
   </form>
   <form>
-    <md-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choicer (change)="seleccionarItem($event)">
-      <md-option *ngFor="let item of items; let i = index" [value]="i">
+    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choicer (change)="seleccionarItem($event)">
+      <mat-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.numlote}}
-      </md-option>
-    </md-select>
+      </mat-option>
+    </mat-select>
   </form>
 <!--<button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
 <button *ngIf="empresasService.administrador && itemActivo > 0" md-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
-        <button md-mini-fab color="primary" (click)="addItem()" type="button">
+        <button mat-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
-        <button md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button mat-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">edit</span>
         </button>
-        <button md-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button mat-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">delete_forever</span>
         </button>
 </div>
@@ -43,7 +43,7 @@
         <input [placeholder]="'Lote' | translate" type="text" required [(ngModel)]="nuevoItem.numlote" name="numlote">
       </span>
       <span class="cell">
-        <button md-mini-fab color="accent" [disabled]="!newItem.form.valid" type="submit">
+        <button mat-mini-fab color="accent" [disabled]="!newItem.form.valid" type="submit">
           <span class="material-icons">add</span>
         </button>
       </span>
@@ -58,13 +58,13 @@
           <h2 class="center"  *ngIf="nuevoItem">{{ 'produccion.crear' | translate }}</h2>
           <input [placeholder]="'Lote' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
           <span class="material-icons">check</span>
         </button>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
           <span class="material-icons">add</span>
         </button>
-          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <button mat-mini-fab color="accent" (click)="modificarItem()">
           <span class="material-icons">close</span>
         </button>
   </div>

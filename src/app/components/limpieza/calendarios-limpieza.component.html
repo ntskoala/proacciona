@@ -1,29 +1,29 @@
 <!--[locale]="es" -->
-<md-card>
+<mat-card>
 <h2 class="center">{{'limpieza.CalendarioGeneralLimpieza' | translate}}</h2>
 <!-- <p-schedule [height]="470"  [contentHeight]="400"  [aspectRatio]="3" [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="4" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule> -->
  <p-schedule [height]="410"  [contentHeight]="410"  [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="2" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card>
+<mat-card>
     <div class="leyenda">
         {{'leyenda' | translate}}
     </div>
     <div class="leyenda">
-        <md-chip-list>
+        <mat-chip-list>
             <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</md-chip>
+            <mat-chip class="chip" color="#33cc33" selected="true">{{'limpieza.realizadas' | translate}}</mat-chip>
             <figure class="chip" style="display: block;background: #F67E1F;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.proximas' | translate}}</md-chip>
+            <mat-chip class="chip" color="#33cc33" selected="true">{{'limpieza.proximas' | translate}}</mat-chip>
             <figure class="chip" style="display: block;background: #3333ff;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip" color="#33cc33" selected="true">{{'por uso' | translate}}</md-chip>
+            <mat-chip class="chip" color="#33cc33" selected="true">{{'por uso' | translate}}</mat-chip>
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip" color="#33cc33" selected="true">{{'limpieza.vencidas' | translate}}</md-chip>
-        </md-chip-list>
+            <mat-chip class="chip" color="#33cc33" selected="true">{{'limpieza.vencidas' | translate}}</mat-chip>
+        </mat-chip-list>
     </div>
-</md-card>
-</md-card>
+</mat-card>
+</mat-card>
 <!--
     [contentStyle]="{'overflow':'visible','height':'430px'}"
 [height]="500"
@@ -62,10 +62,10 @@
         <div class="ui-grid-row" *ngIf="limpiezarealizada.supervision">
             <div class="ui-grid-col-4"><label for="vin">{{'limpieza.supervision' | translate}}</label></div>
             <div class="ui-grid-col-8">
-                <!--<md-select placeholder="{{'limpieza.supervision' | translate}}"  [(ngModel)]="limpiezarealizada.supervision">
-                    <md-option [value]="sup['valor']" *ngFor="let sup of supervisar">{{'limpieza.'+sup["descrip"] | translate}}</md-option>
+                <!--<mat-select placeholder="{{'limpieza.supervision' | translate}}"  [(ngModel)]="limpiezarealizada.supervision">
+                    <mat-option [value]="sup['valor']" *ngFor="let sup of supervisar">{{'limpieza.'+sup["descrip"] | translate}}</mat-option>
 
-                </md-select>-->
+                </mat-select>-->
                 <p-dropdown (onChange)="setSupervision($event)" [style]="{'width':'173px'}" [options]="supervisar" [(ngModel)]="limpiezarealizada.supervision"></p-dropdown>
 
                 <!--<input id="responsable" [(ngModel)]="limpiezarealizada.supervision" />-->

@@ -12,7 +12,7 @@ import { URLS } from '../../models/urls';
 import { Empresa } from '../../models/empresa';
 import { Incidencia } from '../../models/incidencia';
 import { Modal } from '../../models/modal';
-import {MdSelect,MdSnackBar} from '@angular/material';
+import {MatSelect,MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 @Component({
   selector: 'app-incidencias',
@@ -32,7 +32,7 @@ public idBorrar:number;
 public alertas: object[]=[];
 public selectedDay: number;
 public selectedDayValoracion: number;
-
+public estados = [];
 public cols:any[];
 public es:any;
 public entidad:string="&entidad=incidencias";
@@ -66,6 +66,7 @@ public top:string;
       { field: 'nc', header: 'No conformidad' },
       { field: 'foto', header: 'Foto' }
   ];
+  this.estados = [{'nombre':'--','valor':0},{'nombre':'Incorrecto','valor':1},{'nombre':'Correcto','valor':2}]
   }
 
 
@@ -301,5 +302,11 @@ setAlerta(concept:string){
     console.log(evento);
     this.fotoSrc = URLS.DOCS + this.empresasService.seleccionada + '/incidencias/' + incidencia.id+ "_"+ incidencia.foto;
     
+  }
+
+  nuevoEstadoNC($event,item){
+    console.log($event);
+    item.nc=$event;
+    this.itemEdited(item.id)
   }
 }

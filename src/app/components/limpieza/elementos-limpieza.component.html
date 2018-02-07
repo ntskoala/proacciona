@@ -8,10 +8,10 @@
   </div>
 </div> -->
  <div class="modal" *ngIf="procesando">
-<md-spinner></md-spinner>
+<mat-spinner></mat-spinner>
 </div>
 
-<span class="cell tooltip" mdTooltip="{{'limpieza.nuevoElemento' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" matTooltip="{{'limpieza.nuevoElemento' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
 
 <div class="table">
     <div class="header-row">
@@ -48,10 +48,10 @@
       <input class="medium" type="text" [placeholder]="'limpieza.responsable' | translate" [(ngModel)]="nuevoItem.responsable" name="responsable">
     </span>
     <span class="cell small center">
-        <md-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></md-checkbox>
+        <mat-checkbox  class="example-margin" [(ngModel)]="nuevoItem.app" name="app"></mat-checkbox>
     </span>
 
-    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+    <span class="cell tooltip" matTooltip="{{'numero' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
     <span class="cell">num.
       <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
         <option value="1">1</option>
@@ -70,9 +70,9 @@
       </span>
     </span>
     <span class="cell">
-<span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+<span class="cell tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
     
-      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+      <button mat-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
 </span>
@@ -99,10 +99,10 @@
   [rowsPerPageOptions]="[10,20,30,50]">
   <p-header>
       <div class="ui-helper-clearfix">
-          <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
           <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
           </span>
-          <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+          <span class="cell tooltip" matTooltip="{{'guardarOrden' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
               <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
               </span>
         </div>
@@ -110,17 +110,17 @@
   
   <p-column expander="true" styleClass="col-icon" [style]="{'width':'40px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-         <div class="tooltip expander" mdTooltip="{{'expandir' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
+         <div class="tooltip expander" matTooltip="{{'expandir' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
         </div>
     </ng-template> 
   </p-column>
       <p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [editable]="false">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
-      <md-icon>import_export</md-icon>
+      <mat-icon>import_export</mat-icon>
       </ng-template>
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-       <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
-      <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
+       <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
+      <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>
       <!-- <div class="orden" >{{item.orden}}</div>         -->
       <div class="orden" >
           <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="items.length"  (onChange)="editOrden()"></p-spinner> 
@@ -149,25 +149,25 @@
 
     <p-column field="app" header="App" [style]="{'min-width':'40px','width':'50px','text-align': 'center'}">
       <ng-template  pTemplate="header">
- <span class="cell tooltip" mdTooltip="{{'limpieza.app' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">  
+ <span class="cell tooltip" matTooltip="{{'limpieza.app' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">  
    App   
  </span> 
 
       </ng-template>
       <ng-template let-col let-item="rowData" pTemplate="body">
-        <md-checkbox [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="example-margin" [(ngModel)]="item.app" name="app" (change)="itemEdited(item.id)"></md-checkbox>
+        <mat-checkbox [disabled]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="example-margin" [(ngModel)]="item.app" name="app" (change)="itemEdited(item.id)"></mat-checkbox>
       </ng-template>
     </p-column>
 
     <p-column header="{{'acciones' | translate}}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-          <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+          <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+    <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
         <span class="material-icons">check</span>
       </button>
     </span>
@@ -245,7 +245,7 @@
 
 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+  <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
 <img class="iframe" [src]="foto">
 </div>
 

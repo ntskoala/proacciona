@@ -1,7 +1,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div class="modal" *ngIf="procesando"><md-spinner></md-spinner></div>
+<div class="modal" *ngIf="procesando"><mat-spinner></mat-spinner></div>
 
-<span class="cell tooltip" mdTooltip="{{'maquinas.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">    
+<span class="cell tooltip" matTooltip="{{'maquinas.nueva' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">    
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
@@ -33,7 +33,7 @@
     <span class="cell">
       <input type="text" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
     </span>
-    <span class="cell tooltip" mdTooltip="{{'numero' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+    <span class="cell tooltip" matTooltip="{{'numero' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
         <span class="cell">num.
           <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
             <option value="1">1</option>
@@ -52,8 +52,8 @@
           </span>
         </span>
     <span class="cell">
-        <span class="cell tooltip" mdTooltip="{{'add' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">            
-      <button md-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
+        <span class="cell tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
+      <button mat-mini-fab color="accent" [disabled]="!crearMantenimientoForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
         </span>
@@ -94,12 +94,12 @@
     </span>
 
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" md-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
@@ -113,10 +113,10 @@
     [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'">
     <p-header>
         <div class="ui-helper-clearfix">
-            <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+            <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
             <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
             </span>
-            <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+            <span class="cell tooltip" matTooltip="{{'guardarOrden' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
                 <button type="button" pButton icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
                 </span>
           </div>
@@ -125,11 +125,11 @@
     <!--************ ORDEN ***************************-->
         <p-column field="orden" header="orden" [sortable]="true" [editable]="false">
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
-        <md-icon>import_export</md-icon>
+        <mat-icon>import_export</mat-icon>
         </ng-template>
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-         <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
-        <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div>
+         <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
+        <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>
         <!-- <div class="orden" >{{item.orden}}</div>         -->
         <div class="orden" >
             <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="mantenimientos.length"  (onChange)="editOrden()"></p-spinner> 
@@ -159,13 +159,13 @@
   
       <p-column header="{{'acciones' | translate }}">
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-            <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+            <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
           <span class="material-icons">close</span>
         </button>
       </span>
-      <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+      <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
           <span class="material-icons">check</span>
         </button>
       </span>

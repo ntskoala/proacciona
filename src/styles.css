@@ -804,3 +804,9 @@ width: 400px;
 .ui-growl-message-success { background-color: #4EC651 !important; }
 .ui-growl-message-error { background-color: #DC1B1B !important; color: #fff !important }
 /* .ui-dialog-content {width:450px} */
+
+.seleccionNC .mat-select-content{
+  width:150px;
+  min-width: 150px !important;
+  background: grey;
+}

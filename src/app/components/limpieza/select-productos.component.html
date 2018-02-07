@@ -1,11 +1,11 @@
-      <button md-raised-button color="accent"  type="button" (click)="setProductos('save')">{{'limpieza.productos' | translate}}</button>
+      <button mat-raised-button color="accent"  type="button" (click)="setProductos('save')">{{'limpieza.productos' | translate}}</button>
 
       <div class="selproducts" *ngIf="viewProducts">
-          <md-list *ngFor="let producto of productos;let i = index">
-                <md-list-item [ngClass]="{'yellow': producto.estado != -1,'grey': producto.estado <0, 'itemproducto':true, 'round':true}" (click)="cambiaEstadoProducto(producto)" >{{producto.nombre}}</md-list-item>
-        </md-list>
+          <mat-list *ngFor="let producto of productos;let i = index">
+                <mat-list-item [ngClass]="{'yellow': producto.estado != -1,'grey': producto.estado <0, 'itemproducto':true, 'round':true}" (click)="cambiaEstadoProducto(producto)" >{{producto.nombre}}</mat-list-item>
+        </mat-list>
     <span class="cell">
-      <button md-mini-fab color="primary" (click)="setProductos('save')" type="button">
+      <button mat-mini-fab color="primary" (click)="setProductos('save')" type="button">
         <span class="material-icons">check</span>
       </button>                
     </span>

@@ -7,7 +7,7 @@ import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-ordenes-produccion',
@@ -17,8 +17,8 @@ import {MdSelect} from '@angular/material';
 
 export class ListadoOrdenesProduccionComponent implements OnInit {
 //*** STANDARD VAR
- @ViewChild('choiceEstat') ChoiceEstat: MdSelect;
-  @ViewChild('choicer') Choicer: MdSelect;
+ @ViewChild('choiceEstat') ChoiceEstat: MatSelect;
+  @ViewChild('choicer') Choicer: MatSelect;
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 public itemActivo: number;
 public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
@@ -163,10 +163,10 @@ addItem(){
   this.nuevoItem = new ProduccionOrden(0,0,'',new Date(),new Date());
 }
 
-expand(list: MdSelect){
+expand(list: MatSelect){
 setTimeout(()=>{list.open();},200)
 }
-unExpand(list: MdSelect){
+unExpand(list: MatSelect){
   list.close();
 }
 

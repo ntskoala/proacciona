@@ -7,13 +7,13 @@
       </option>
     </select>
   </form>
-      <button md-mini-fab color="primary" (click)="addItem()" type="button">
+      <button mat-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
-        <button md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button mat-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">edit</span>
         </button>
-        <button md-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button mat-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">delete_forever</span>
         </button>
 </div>
@@ -24,13 +24,13 @@
           <h2 class="center"  *ngIf="nuevoItem">{{ 'clientes.crear' | translate }}</h2>
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
           <span class="material-icons">check</span>
         </button>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
           <span class="material-icons">add</span>
         </button>
-          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <button mat-mini-fab color="accent" (click)="modificarItem()">
           <span class="material-icons">close</span>
         </button>
   </div>
@@ -39,19 +39,19 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="cabeceraItems">
   <form>
-    <md-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarItem($event)">
-      <md-option *ngFor="let item of items; let i = index" [value]="i">
+    <mat-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarItem($event)">
+      <mat-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.nombre}}
-      </md-option>
-    </md-select>
+      </mat-option>
+    </mat-select>
   </form>
-        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="addItem()" type="button">
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" mat-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
-        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" mat-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">edit</span>
         </button>
-        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" md-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
+        <button *ngIf="(empresasService.administrador || empresasService.userTipo == 'Gerente')" mat-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">delete_forever</span>
         </button>
 </div>
@@ -64,13 +64,13 @@
           <h2 class="center"  *ngIf="novaLimpieza">{{ 'limpieza.nueva'  | translate }}</h2>
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="nuevoNombre">
           <hr>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="modificar()" *ngIf="modificaItem">
           <span class="material-icons">check</span>
         </button>
-          <button md-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
+          <button mat-mini-fab color="accent" [disabled]="!nuevoNombre" (click)="crearItem(nuevoItem)" *ngIf="nuevoItem">
           <span class="material-icons">add</span>
         </button>
-          <button md-mini-fab color="accent" (click)="modificarItem()">
+          <button mat-mini-fab color="accent" (click)="modificarItem()">
           <span class="material-icons">close</span>
         </button>
   </div>

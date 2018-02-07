@@ -10,7 +10,7 @@ import { URLS } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
 import { Incidencia } from '../../../models/incidencia';
 import { Modal } from '../../../models/modal';
-import {MdSelect,MdSnackBar} from '@angular/material';
+import {MatSelect,MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 
 @Component({

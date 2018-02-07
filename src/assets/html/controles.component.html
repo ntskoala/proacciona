@@ -36,7 +36,7 @@
     </span>
     <span class="cell"></span>
     <span class="cell">
-      <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid" type="submit">
+      <button mat-mini-fab color="accent" [disabled]="!crearControlForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>
@@ -89,12 +89,12 @@
       </select>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
+      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
+      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

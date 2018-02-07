@@ -1,12 +1,12 @@
-<!--<button md-raised-button (click)="traspaso = !traspaso">{{'produccion.traspaso' | translate}}</button>-->
+<!--<button mat-raised-button (click)="traspaso = !traspaso">{{'produccion.traspaso' | translate}}</button>-->
 
 <!--<div *ngIf="traspaso">-->
   <div>
-<md-toolbar color="accent">{{'produccion.traspaso' | translate}}</md-toolbar>
+<mat-toolbar color="accent">{{'produccion.traspaso' | translate}}</mat-toolbar>
 <div id="traspasoComponent">
 <div id="origen">
 
-   <!--<md-slide-toggle [(ngModel)]="proveedor" (change)="cambioOrigen()">proveedor</md-slide-toggle>-->
+   <!--<mat-slide-toggle [(ngModel)]="proveedor" (change)="cambioOrigen()">proveedor</mat-slide-toggle>-->
 <div id="select_proveedor">
     <select class="smallselect"  name="proveedor" (change)="getProductos($event.target.value)">
       <option *ngFor="let prov of proveedores; let i = index" [value]="prov.id">
@@ -45,10 +45,10 @@
 
 
 
-  <md-card *ngIf="almacenOrigenSelected">
-      <md-card-header>
+  <mat-card *ngIf="almacenOrigenSelected">
+      <mat-card-header>
           {{'traspasos.Tanque Origen' | translate}}: {{almacenOrigenSelected.nombre}}
-      </md-card-header>
+      </mat-card-header>
         {{'traspasos.Capacidad' | translate}}: {{almacenOrigenSelected.capacidad}}<br>
         {{'traspasos.Uso' | translate}}: {{almacenOrigenSelected.estado}}<br>
         {{'traspasos.Lote actual' | translate}}: {{almacenOrigenSelected.idproduccionordenactual}}<br>
@@ -60,31 +60,31 @@
         {{'traspasos.Fecha caducidad' | translate}}: {{ordenOrigen.fecha_caducidad | date:'dd/MM/yy'}}<br>
         </span>
         </span>
-  </md-card>
-  <md-card *ngIf="loteSelected">
-      <md-card-header>
+  </mat-card>
+  <mat-card *ngIf="loteSelected">
+      <mat-card-header>
          {{'traspasos.Num_Lote' | translate}}: {{loteSelected.numlote_proveedor}}
-      </md-card-header>
+      </mat-card-header>
         {{'traspasos.Cantidad Inicial' | translate}}: {{loteSelected.cantidad_inicial}}<br>
         {{'traspasos.Cantidad Disponible' | translate}}: {{loteSelected.cantidad_remanente}}<br>
         {{'traspasos.Fecha Entrada' | translate}}: {{loteSelected.fecha_entrada | date:'dd/MM/yy'}}<br>
         <span *ngIf="loteSelected.fecha_caducidad != 'Invalid Date'">
         {{'traspasos.Fecha caducidad' | translate}}: {{loteSelected.fecha_caducidad | date:'dd/MM/yy'}}<br>
          </span>
-  </md-card>
+  </mat-card>
 
 </div>
 <div id="traspaso">
-<md-input-container>
-  <input type="number"  mdInput placeholder="{{'traspasos.Cantidad' | translate}}" [(ngModel)]="cantidadTraspaso">
-</md-input-container>
-<button md-raised-button (click)="traspasar()" [disabled]="bloquearTraspaso">{{'traspasos.traspasar' | translate}}</button>
+<mat-input-container>
+  <input type="number"  matInput placeholder="{{'traspasos.Cantidad' | translate}}" [(ngModel)]="cantidadTraspaso">
+</mat-input-container>
+<button mat-raised-button (click)="traspasar()" [disabled]="bloquearTraspaso">{{'traspasos.traspasar' | translate}}</button>
 <div *ngIf="alerts.length >0" class="modal">
   <div class="modal-window">
-<md-list>
-  <md-list-item *ngFor="let alert of alerts">{{alert}}</md-list-item>
-</md-list>
-<button md-raised-button (click)="cierraMessage()">{{'traspasos.entendido' | translate}}</button>
+<mat-list>
+  <mat-list-item *ngFor="let alert of alerts">{{alert}}</mat-list-item>
+</mat-list>
+<button mat-raised-button (click)="cierraMessage()">{{'traspasos.entendido' | translate}}</button>
   </div>
   </div>
 </div>
@@ -100,10 +100,10 @@
 </div>
 {{'traspasos.Destino' | translate }}
   <div *ngIf="clienteSelected">
-  <md-card>
-      <md-card-header>
+  <mat-card>
+      <mat-card-header>
           {{'traspasos.Cliente Destino' | translate}}: {{clienteSelected.nombre}}
-      </md-card-header>
+      </mat-card-header>
         {{'clientes.contacto' | translate}}: {{clienteSelected.contacto}}<br>
         {{'clientes.telf' | translate}}: {{clienteSelected.telf}}<br>
         {{'clientes.email' | translate}}: {{clienteSelected.email}}<br>
@@ -114,7 +114,7 @@
         <span *ngIf="distribucion.fecha_caducidad != 'Invalid Date'">{{'traspasos.Fecha caducidad' | translate}}: {{distribucion.fecha_caducidad | date:'dd/MM/yy'}}<br></span>
 
         </span>
-  </md-card>
+  </mat-card>
   </div>
 
   <div *ngIf="!clienteSelected">
@@ -125,10 +125,10 @@
       </option>
     </select>
   </form>
-  <md-card *ngIf="almacenDestinoSelected">
-      <md-card-header>
+  <mat-card *ngIf="almacenDestinoSelected">
+      <mat-card-header>
           {{'traspasos.Tanque Destino' | translate}}: {{almacenDestinoSelected.nombre}}
-      </md-card-header>
+      </mat-card-header>
         {{'traspasos.Capacidad' | translate}}: {{almacenDestinoSelected.capacidad}}<br>
         {{'traspasos.Disponible' | translate}}: {{almacenDestinoSelected.capacidad - almacenDestinoSelected.estado}}<br>
         {{'traspasos.Lote actual' | translate}}: {{almacenDestinoSelected.idproduccionordenactual}}<br>
@@ -140,7 +140,7 @@
         {{'traspasos.Fecha caducidad' | translate}}: {{ordenDestino.fecha_caducidad | date:'dd/MM/yy'}}<br>
          </span>
         </span>
-  </md-card>
+  </mat-card>
   </div>
 
 </div>

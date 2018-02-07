@@ -26,10 +26,10 @@
 
     </div>
     <div style="float:left; margin-left:20px">
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="dt.exportCSV()">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="dt.exportCSV()">
       <span class="material-icons">cloud_download</span>
     </button>  
     </div>      

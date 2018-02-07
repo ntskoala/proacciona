@@ -20,7 +20,7 @@
       <input type="text" [placeholder]="'email' | translate" [(ngModel)]="nuevoUsuario.usuario" name="email">
     </span>
     <span class="cell">
-      <button md-mini-fab color="accent" [disabled]="!crearUsuarioForm.form.valid" type="submit">
+      <button mat-mini-fab color="accent" [disabled]="!crearUsuarioForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>
@@ -55,14 +55,14 @@
     </span>
     <span class="cell">
 
-      <button md-mini-fab *ngIf="empresasService.administrador" color="primary" (click)="checkBorrar(usuario.id)" type="submit">
+      <button mat-mini-fab *ngIf="empresasService.administrador" color="primary" (click)="checkBorrar(usuario.id)" type="submit">
 
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
 
-      <button md-mini-fab *ngIf="empresasService.administrador" color="primary" [disabled]="!guardar[usuario.id]" type="submit">
+      <button mat-mini-fab *ngIf="empresasService.administrador" color="primary" [disabled]="!guardar[usuario.id]" type="submit">
 
         <span class="material-icons">check</span>
       </button>                

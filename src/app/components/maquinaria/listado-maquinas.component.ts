@@ -8,7 +8,7 @@ import { URLS } from '../../models/urls';
 import { Checklist } from '../../models/checklist';
 import { Maquina } from '../../models/maquina';
 import { Modal } from '../../models/modal';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-maquinas',
@@ -17,7 +17,7 @@ import {MdSelect} from '@angular/material';
 })
 export class ListadoMaquinasComponent implements OnInit {
   //@ViewChild('choicer') Choicer: ElementRef;
-  @ViewChild('choicer') Choicer: MdSelect;
+  @ViewChild('choicer') Choicer: MatSelect;
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
   public subscription: Subscription;

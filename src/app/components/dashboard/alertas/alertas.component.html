@@ -1,12 +1,12 @@
 
-<md-card class="card">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>Controles hoy</md-card-title>
-    <md-card-subtitle>Eventos que se tienen que realizar hoy</md-card-subtitle>
-  </md-card-header>
-  <!-- <img md-card-image src="" alt="Photo of a Shiba Inu"> -->
-  <md-card-content>
+<mat-card class="card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Controles hoy</mat-card-title>
+    <mat-card-subtitle>Eventos que se tienen que realizar hoy</mat-card-subtitle>
+  </mat-card-header>
+  <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
+  <mat-card-content>
     <!-- <div *ngFor="let alerta of alertas">
       {{alerta.nombre}} {{alerta.fecha}}
       </div> -->
@@ -21,13 +21,13 @@
             </mat-expansion-panel-header> 
             
 
-   <md-list *ngFor="let control of controles">
-    <md-list-item>
+   <mat-list *ngFor="let control of controles">
+    <mat-list-item>
         <span class="elem" [ngClass]="{'onDate':!control.isbeforedate,'beforeOnDate':control.isbeforedate}">             
       {{control.nombre}}
         </span>
-    </md-list-item>
-   </md-list>
+    </mat-list-item>
+   </mat-list>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -40,15 +40,15 @@
                 </mat-panel-description>
               </mat-expansion-panel-header> 
               
- <md-list *ngFor="let check of checklists">
-    <md-list-item>
+ <mat-list *ngFor="let check of checklists">
+    <mat-list-item>
         <span class="elem" [ngClass]="{'onDate':!check.isbeforedate,'beforeOnDate':check.isbeforedate}"> 
           {{check.nombre}}
         </span>
       
       <!-- {{check.nombrechecklist}} -->
-  </md-list-item>
- </md-list> 
+  </mat-list-item>
+ </mat-list> 
 
 
 </mat-expansion-panel>
@@ -62,13 +62,13 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header> 
 
- <md-list *ngFor="let limpieza of limpiezas"  dense>
-    <md-list-item>
+ <mat-list *ngFor="let limpieza of limpiezas"  dense>
+    <mat-list-item>
         <span class="elem" [ngClass]="{'onDate':!limpieza.isbeforedate,'beforeOnDate':limpieza.isbeforedate}">               
             {{limpieza.nombre}}
         </span>
-  </md-list-item>
- </md-list>   
+  </mat-list-item>
+ </mat-list>   
 
 
 </mat-expansion-panel>
@@ -83,19 +83,19 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
 
- <md-list *ngFor="let mantenimiento of mantenimientos">
-    <md-list-item>
+ <mat-list *ngFor="let mantenimiento of mantenimientos">
+    <mat-list-item>
         <span class="elem" [ngClass]="{'onDate':!mantenimiento.isbeforedate,'beforeOnDate':mantenimiento.isbeforedate}">               
       {{mantenimiento.nombre}}
         </span>
-  </md-list-item>
- </md-list>  
+  </mat-list-item>
+ </mat-list>  
 </mat-expansion-panel>
 
 
-  </md-card-content>
-  <!-- <md-card-actions>
+  </mat-card-content>
+  <!-- <mat-card-actions>
     <button md-button>LIKE</button>
     <button md-button>SHARE</button>
-  </md-card-actions> -->
-</md-card>
+  </mat-card-actions> -->
+</mat-card>

@@ -13,9 +13,9 @@
   <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
     <ng2-datepicker type="date" name="inicio" [(ngModel)]="fecha.inicio"></ng2-datepicker>
    <ng2-datepicker type="date" name="fin" [(ngModel)]="fecha.fin"></ng2-datepicker>
-    <!--<input mdInput type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio">
-    <input mdInput type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin">-->
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+    <!--<input matInput type="date" [placeholder]="'Inicio' | translate" required [(ngModel)]="fecha.inicio" name="inicio">
+    <input matInput type="date" [placeholder]="'Fin' | translate" required [(ngModel)]="fecha.fin" name="fin">-->
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>                
   </form>

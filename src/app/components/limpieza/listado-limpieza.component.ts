@@ -7,7 +7,7 @@ import { URLS } from '../../models/urls';
 import { Empresa } from '../../models/empresa';
 import { LimpiezaZona } from '../../models/limpiezazona';
 import { Modal } from '../../models/modal';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
 @Component({
   selector: 'listado-limpieza',
   templateUrl: './listado-limpieza.component.html',
@@ -15,7 +15,7 @@ import {MdSelect} from '@angular/material';
 })
 export class ListadoLimpiezasComponent implements OnInit {
   //@ViewChild('choicer') Choicer: ElementRef;
-  @ViewChild('choicer') Choicer: MdSelect;
+  @ViewChild('choicer') Choicer: MatSelect;
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
   @Output() migrando: EventEmitter<boolean>=new EventEmitter<boolean>();

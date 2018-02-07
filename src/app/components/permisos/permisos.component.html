@@ -1,8 +1,8 @@
 <div class="modal" *ngIf="procesando">
-<md-spinner></md-spinner>
+<mat-spinner></mat-spinner>
 </div>
-<md-toolbar color="accent">{{'PermisosGenerales' | translate}}
-</md-toolbar>
+<mat-toolbar color="accent">{{'PermisosGenerales' | translate}}
+</mat-toolbar>
 <p-dataTable [value]="tabla" [style]="{'width':ancho,'overflow-y':'hidden','overflow-x':'auto','padding-right':'60px','min-width':'600px'}">
     <!-- <p-column field="usuario" header="usuario"></p-column> -->
     <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'user'">
@@ -11,12 +11,12 @@
     </ng-template> -->
          <ng-template let-col let-user="rowData" pTemplate="body">
             <span *ngIf="col.field == 'user'">{{user[col.field]}}</span>
-            <md-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.field == 'user'"
+            <mat-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.field == 'user'"
           [checked]="user['generalSwitch']">
-      </md-slide-toggle>
-            <md-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
+      </mat-slide-toggle>
+            <mat-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
           [checked]="user[col.field]">
-      </md-slide-toggle>
+      </mat-slide-toggle>
         </ng-template> 
     </p-column>
 </p-dataTable>

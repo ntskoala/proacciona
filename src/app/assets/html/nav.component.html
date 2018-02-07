@@ -5,15 +5,15 @@
   
   <div class="logo-empresa">
   <div class="userlogged" *ngIf="empresasService.userId"> 
-  <div class="tooltip" mdTooltip="{{'menu.login' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">    
-    <button class="profile" md-mini-fab color="accent" (click)="closeSession()">
+  <div class="tooltip" matTooltip="{{'menu.login' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">    
+    <button class="profile" mat-mini-fab color="accent" (click)="closeSession()">
         <span class="material-icons">account_circle</span>
   </button>
   </div>
   </div>
   <!--<md-menu positionX="after" positionY="below" #menu="mdMenu">
   <button md-menu-item (click)="closeSession()">
-    <md-icon>account_circle</md-icon>
+    <mat-icon>account_circle</mat-icon>
     <span>Cerrar Session</span>
   </button>
 </md-menu>-->
@@ -23,5 +23,5 @@
 </nav>
 <p-growl *ngIf="empresasService.showAlerts" [life]="5000" [style]="{'position':'fixed','top':'0px','right':'400px','Z-Index':'99999'}" (onHover)="showAlertOptions()"></p-growl>
 <div *ngIf="alertOptions"  style="position:fixed;top:0px;right:770px;height:60px;background-color:#ffd740;width: 120px;padding-top: 7px;padding-left: 7px;Z-Index:99999">
-    <md-checkbox [(ngModel)]="empresasService.showAlerts" (change)="alertOptionsChanged()">{{'alertas.showAlerts' | translate}}</md-checkbox>
+    <mat-checkbox [(ngModel)]="empresasService.showAlerts" (change)="alertOptionsChanged()">{{'alertas.showAlerts' | translate}}</mat-checkbox>
 </div>

@@ -1,23 +1,23 @@
 <div [class.hide]="empresasService.seleccionada == 0">
-  <md-card>
-    <md-card-title>
-      <md-toolbar color="accent">{{'Tablas' | translate}}</md-toolbar>
-    </md-card-title>
-    <md-card-subtitle>
-      <button md-button color="primary" [attr.md-raised-button]="tabs[0]"
+  <mat-card>
+    <mat-card-title>
+      <mat-toolbar color="accent">{{'Tablas' | translate}}</mat-toolbar>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <button md-button color="primary" [attr.mat-raised-button]="tabs[0]"
         (click)="cambiarTab(0)">{{'Usuarios' | translate}}</button>
-      <button md-button color="primary" [attr.md-raised-button]="tabs[1]"
+      <button md-button color="primary" [attr.mat-raised-button]="tabs[1]"
         (click)="cambiarTab(1)">{{'Controles' | translate}}</button>
-      <button md-button color="primary" [attr.md-raised-button]="tabs[2]"
+      <button md-button color="primary" [attr.mat-raised-button]="tabs[2]"
         (click)="cambiarTab(2)">Checklists</button>
-      <button md-button color="primary" [attr.md-raised-button]="tabs[3]"
+      <button md-button color="primary" [attr.mat-raised-button]="tabs[3]"
         (click)="cambiarTab(3); permisos.seleccionarPermisos()">Permisos</button>
-    </md-card-subtitle>
-    <md-card-content>
+    </mat-card-subtitle>
+    <mat-card-content>
       <tab-usuarios class="tab" [class.active]="tabActivo == 0"></tab-usuarios>
       <tab-controles class="tab" [class.active]="tabActivo == 1"></tab-controles>
       <tab-checklists class="tab" [class.active]="tabActivo == 2"></tab-checklists>
       <tab-permisos #permisos class="tab" [class.active]="tabActivo == 3"></tab-permisos>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

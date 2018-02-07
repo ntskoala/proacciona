@@ -9,8 +9,8 @@
                 </span>
                
                 <span class="cell">
-                 <md-checkbox [(ngModel)]="empresasService.showTooltips" (change)="actualizarOpcion('tooltips')">
-                </md-checkbox>
+                 <mat-checkbox [(ngModel)]="empresasService.showTooltips" (change)="actualizarOpcion('tooltips')">
+                </mat-checkbox>
                 </span>
                 </div>
                 <div class="row">
@@ -18,8 +18,8 @@
                  {{'alertas.showAlerts' | translate}}
                 </span>
                 <span class="cell">
-                 <md-checkbox [(ngModel)]="empresasService.showAlerts" (change)="actualizarOpcion('alertas')">
-                </md-checkbox>
+                 <mat-checkbox [(ngModel)]="empresasService.showAlerts" (change)="actualizarOpcion('alertas')">
+                </mat-checkbox>
                 </span>
                 </div>
         </div>

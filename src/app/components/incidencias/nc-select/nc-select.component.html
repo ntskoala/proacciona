@@ -1,0 +1,8 @@
+
+<mat-form-field>
+    <mat-select panelClass="seleccionNC" placeholder="No conformidad" (selectionChange)="onChange($event)">
+      <mat-option style="width:150px;" *ngFor="let opcion of estadosMoConformidad" value="{{opcion.valor}}">
+        {{ opcion.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>

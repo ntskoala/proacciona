@@ -53,7 +53,7 @@ for ($i=0;$i<count($columns);$i++) {
 // create SQL based on HTTP method
 switch ($method) {
   case 'GET':
-    $sql = "select *, ResultadosControl.id as idr from ResultadosControl INNER JOIN controles ON controles.id = ResultadosControl.idcontrol LEFT OUTER JOIN usuarios ON ResultadosControl.idusuario = usuarios.id WHERE controles.idempresa=$idempresa AND ResultadosControl.fecha >= '$fechainicio' AND ResultadosControl.fecha <= '$fechafin' ORDER BY ResultadosControl.fecha DESC"; break;
+    $sql = "select *, ResultadosControl.id as idr from ResultadosControl INNER JOIN controles ON controles.id = ResultadosControl.idcontrol LEFT OUTER JOIN usuarios ON ResultadosControl.idusuario = usuarios.id WHERE controles.idempresa=$idempresa AND ResultadosControl.fecha >= '$fechainicio' AND ResultadosControl.fecha <= '$fechafin'"; break;
 }
 //echo $sql;
 $registros=mysqli_query($conexion,$sql) or die('{"success":"false","error":"query->'.mysqli_error().'"}');

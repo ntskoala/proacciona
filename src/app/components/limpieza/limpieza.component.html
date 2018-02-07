@@ -1,48 +1,48 @@
-  <md-card>
-    <md-card-title>
-      <md-toolbar color="accent" class="toolbar-principal">{{'menu.limpieza' | translate}}
+  <mat-card>
+    <mat-card-title>
+      <mat-toolbar color="accent" class="toolbar-principal">{{'menu.limpieza' | translate}}
 
         <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)" (migrando)="migrando($event)"></listado-limpieza>
-      </md-toolbar>
-    </md-card-title>
- <md-card-subtitle>
+      </mat-toolbar>
+    </mat-card-title>
+ <mat-card-subtitle>
 
    <!-- <div class="calendarios" *ngIf="!migrandoEstat">
-  <button color="accent" md-raised-button (click)="calendarios()">{{'limpieza.calendarios' | translate}}</button>
-  <button color="accent" md-raised-button (click)="verProductosLimpieza()">{{'limpieza.productos' | translate}}</button>
+  <button color="accent" mat-raised-button (click)="calendarios()">{{'limpieza.calendarios' | translate}}</button>
+  <button color="accent" mat-raised-button (click)="verProductosLimpieza()">{{'limpieza.productos' | translate}}</button>
    </div> -->
 
 
   <div class="botonera"  *ngIf="!migrandoEstat">
     
-     <div  class="tooltip" mdTooltip="{{'limpieza.calendarios' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
-      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" md-mini-fab (click)="cambioMenu('calendario')"><md-icon>date_range</md-icon></button> 
+     <div  class="tooltip" matTooltip="{{'limpieza.calendarios' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" mat-mini-fab (click)="cambioMenu('calendario')"><mat-icon>date_range</mat-icon></button> 
       </div>
 
-   <div class="tooltip" mdTooltip="{{'planificaciones.permisos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
-  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" md-mini-fab (click)="cambioMenu('permiso')"><md-icon>vpn_key</md-icon></button>
+   <div class="tooltip" matTooltip="{{'planificaciones.permisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" mat-mini-fab (click)="cambioMenu('permiso')"><mat-icon>vpn_key</mat-icon></button>
   </div>
 
-     <div class="tooltip" mdTooltip="{{'limpieza.productos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
-  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'productos'}" color="accent" md-mini-fab (click)="cambioMenu('productos')"><md-icon>widgets</md-icon></button>
+     <div class="tooltip" matTooltip="{{'limpieza.productos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'productos'}" color="accent" mat-mini-fab (click)="cambioMenu('productos')"><mat-icon>widgets</mat-icon></button>
   </div>
-  <div class="tooltip" mdTooltip="{{'limpieza.protocolos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
-      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'protocolos'}" color="accent" md-mini-fab (click)="cambioMenu('protocolos')"><md-icon>description</md-icon></button>
+  <div class="tooltip" matTooltip="{{'limpieza.protocolos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'protocolos'}" color="accent" mat-mini-fab (click)="cambioMenu('protocolos')"><mat-icon>description</mat-icon></button>
       </div>
-   <!-- <div class="tooltip" mdTooltip="{{'alertas.avisos' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'after'">
-  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" md-mini-fab (click)="cambioMenu('alerta')"><md-icon>notifications_active</md-icon></button>
+   <!-- <div class="tooltip" matTooltip="{{'alertas.avisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('alerta')"><mat-icon>notifications_active</mat-icon></button>
   </div> -->
    </div>
- </md-card-subtitle>
+ </mat-card-subtitle>
 
 
 
 
  <div class="contenido">
- <md-sidenav-container class="example-container">
-  <md-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-          <div  class="tooltip botonCerrar" mdTooltip="{{'cerrar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'before'">
-  <button  top-left color="accent" md-mini-fab (click)="cerrarSideNav()"><md-icon>skip_previous</md-icon></button>
+ <mat-sidenav-container class="example-container">
+  <mat-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
+          <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+  <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
   </div>
  <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
 
@@ -64,7 +64,7 @@
    <div  *ngIf="protocolos" style="height:35px" ></div>
    <app-protocolos-cuadro *ngIf="protocolos" [items]="elementosLimpieza" [protocolos]="misProtocolosLimpieza"></app-protocolos-cuadro>
    <div  *ngIf="protocolos" style="height:35px" ></div>
-  </md-sidenav> 
+  </mat-sidenav> 
 
 
 
@@ -74,12 +74,12 @@
 
   <div class="sidenav-content">
    <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2><BR>
-<md-tab-group *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
-  <md-tab label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" (onElementosLimpieza)="setElementosLimpieza($event)" *ngIf="limpieza"></elementos-limpieza></md-tab>
-<md-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></md-tab>  
-  <!--<md-tab label="{{'limpiezas.limpiezascorrectivas' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [limpieza]="limpieza" *ngIf="limpieza"></mantenimientos-correctivos></md-tab>-->
-</md-tab-group>
+<mat-tab-group *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
+  <mat-tab label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" (onElementosLimpieza)="setElementosLimpieza($event)" *ngIf="limpieza"></elementos-limpieza></mat-tab>
+<mat-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></mat-tab>  
+  <!--<mat-tab label="{{'limpiezas.limpiezascorrectivas' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [limpieza]="limpieza" *ngIf="limpieza"></mantenimientos-correctivos></mat-tab>-->
+</mat-tab-group>
   </div>
- </md-sidenav-container>
+ </mat-sidenav-container>
  </div>
-  </md-card>
+  </mat-card>

@@ -1,9 +1,9 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="modal" *ngIf="procesando">
-  <md-spinner></md-spinner>
+  <mat-spinner></mat-spinner>
   </div>
 <div class="table">
-<span class="tooltip" style="display:table-row-group " mdTooltip="{{'configuracion.nuevoControl' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">                         
+<span class="tooltip" style="display:table-row-group " matTooltip="{{'configuracion.nuevoControl' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">                         
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
     <input type="hidden" [(ngModel)]="nuevoControl.id" name="id">
     <span class="cell">
@@ -35,7 +35,7 @@
       </span>
     <span class="cell"></span>
     <span class="cell">
-      <button md-mini-fab color="accent" [disabled]="!crearControlForm.form.valid || !nuevoControl.periodicidad2" type="submit">
+      <button mat-mini-fab color="accent" [disabled]="!crearControlForm.form.valid || !nuevoControl.periodicidad2" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>
@@ -89,12 +89,12 @@
       </select>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(control.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[control.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
@@ -111,10 +111,10 @@
 <!-- ********** HEADER  ORDEN    -->
 <p-header>
   <div class="ui-helper-clearfix">
-      <span class="cell tooltip" mdTooltip="{{'exportar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+      <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
       <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>
       </span>
-      <span class="cell tooltip" mdTooltip="{{'guardarOrden' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">              
+      <span class="cell tooltip" matTooltip="{{'guardarOrden' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
           <button type="button" pButton [disabled]="!this.alertaGuardar['ordenar'] &&  !this.alertaGuardar['guardar']" icon="fa-floppy-o" iconPos="left" label="{{'guardarTodo'|translate}}" (click)="ordenar()"  style="float:left"></button>
           </span>
     </div>
@@ -123,11 +123,11 @@
 <!-- **********  ORDEN    -->
 <p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'70px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
-  <md-icon>import_export</md-icon>
+  <mat-icon>import_export</mat-icon>
   </ng-template>
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-   <!-- <div class="up" (click)="goUp(i,$event,dt)"><md-icon>arrow_drop_up</md-icon></div>
-  <div class="down" (click)="goDown(i,$event,dt)"><md-icon>arrow_drop_down</md-icon></div> -->
+   <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
+  <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div> -->
   <!-- <div class="orden" >{{item.orden}}</div>         -->
   <div class="orden" >
       <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controles.length"  (onChange)="editOrden()"></p-spinner> 
@@ -160,13 +160,13 @@
 
   <p-column header="{{'acciones' | translate}}" [style]="{'width':'120px'}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-        <span class="cell tooltip" mdTooltip="{{'eliminar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'left'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+        <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
       <span class="material-icons">close</span>
     </button>
   </span>
-  <span class="cell tooltip" mdTooltip="{{'guardar' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'right'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarControl(item)" type="button">
+  <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="actualizarControl(item)" type="button">
       <span class="material-icons">check</span>
     </button>
   </span>

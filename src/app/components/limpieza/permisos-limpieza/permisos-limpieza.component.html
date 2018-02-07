@@ -1,13 +1,13 @@
-        <button md-mini-fab class="camera" (click)="verPermisos()" type="button">
+        <button mat-mini-fab class="camera" (click)="verPermisos()" type="button">
         <span class="material-icons">phonelink_lock</span>
       </button>
 
       <div class="selpermisos" *ngIf="viewPermisos">
-          <md-list dense *ngFor="let usuario of usuarios;let i = index">
-                <md-list-item [ngClass]="{'yellow': haypermiso[i] != -1,'grey': haypermiso[i] <0, 'itemproducto':true, 'round':true}" (click)="cambiaEstadoPermiso(usuario,i)" >{{usuario.usuario}}</md-list-item>
-        </md-list>
+          <mat-list dense *ngFor="let usuario of usuarios;let i = index">
+                <mat-list-item [ngClass]="{'yellow': haypermiso[i] != -1,'grey': haypermiso[i] <0, 'itemproducto':true, 'round':true}" (click)="cambiaEstadoPermiso(usuario,i)" >{{usuario.usuario}}</mat-list-item>
+        </mat-list>
     <span class="cell">
-      <button md-mini-fab color="primary" (click)="verPermisos()" type="button">
+      <button mat-mini-fab color="primary" (click)="verPermisos()" type="button">
         <span class="material-icons">check</span>
       </button>                
     </span>

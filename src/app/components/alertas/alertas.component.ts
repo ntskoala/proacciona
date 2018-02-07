@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -36,7 +36,7 @@ public cargaData: boolean[]=[false,false];
 public entidad:string="&entidad=alertas";
 //public field:string="&field=idelementolimpieza&idItem=";
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService, public snack: MdSnackBar) { }
+  constructor(public servidor: Servidor,public empresasService: EmpresasService, public snack: MatSnackBar) { }
 
   ngOnInit() {
     this.items = ['Planificaciones'];

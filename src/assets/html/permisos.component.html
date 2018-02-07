@@ -21,9 +21,9 @@
         {{control.nombre}}
       </span>
       <span class="cell">
-        <md-checkbox [disabled]="!empresasService.administrador"  [checked]="checkControl[control.id]" (change)="changeControl(control.id)">
+        <mat-checkbox [disabled]="!empresasService.administrador"  [checked]="checkControl[control.id]" (change)="changeControl(control.id)">
           {{'Permitido' | translate}}
-        </md-checkbox>
+        </mat-checkbox>
       </span>
     </div>
   </div>
@@ -41,9 +41,9 @@
         {{checklist.nombrechecklist}}
       </span>
       <span class="cell">
-        <md-checkbox [disabled]="!empresasService.administrador" [checked]="checkChecklist[checklist.id]" (change)="changeChecklist(checklist.id)">
+        <mat-checkbox [disabled]="!empresasService.administrador" [checked]="checkChecklist[checklist.id]" (change)="changeChecklist(checklist.id)">
           {{'Permitido' | translate}}
-        </md-checkbox>
+        </mat-checkbox>
       </span>
     </div>
   </div>

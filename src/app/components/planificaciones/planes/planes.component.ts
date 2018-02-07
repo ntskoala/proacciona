@@ -11,7 +11,7 @@ import { URLS } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
 import { Planificacion } from '../../../models/planificacion';
 import { Modal } from '../../../models/modal';
-import {MdSelect,MdSnackBar} from '@angular/material';
+import {MatSelect,MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 export class Familia{
   constructor(
@@ -27,8 +27,8 @@ export class Familia{
   styleUrls: ['./planes.component.css']
 })
 export class PlanesComponent implements OnInit {
-  @ViewChild('choicer') Choicer: MdSelect;
-  //@ViewChild('saveTT') saveTT: MdTooltip;
+  @ViewChild('choicer') Choicer: MatSelect;
+  //@ViewChild('saveTT') saveTT: matTooltip;
   //@Output() planSeleccionado: EventEmitter<Planificacion>=new EventEmitter<Planificacion>();
   @Output() listaPlanes: EventEmitter<Planificacion[]>=new EventEmitter<Planificacion[]>();
 

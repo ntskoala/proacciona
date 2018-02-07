@@ -6,7 +6,7 @@ import { Empresa } from '../../models/empresa';
 import { Proveedor } from '../../models/proveedor';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'listado-proveedores',
@@ -15,7 +15,7 @@ import {MdSelect} from '@angular/material';
 })
 export class ListadoProveedoresComponent implements OnInit {
 //*** STANDARD VAR
- @ViewChild('choicer') Choicer: MdSelect;
+ @ViewChild('choicer') Choicer: MatSelect;
 @Output() itemSeleccionado: EventEmitter<Proveedor> = new EventEmitter<Proveedor>();
 public itemActivo: number;
 public items: Proveedor[]=[];//Array de Items para el desplegable;

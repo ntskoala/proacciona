@@ -1,14 +1,14 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<md-card>
-  <md-card-title>
-    <md-toolbar color="accent">
+<mat-card>
+  <mat-card-title>
+    <mat-toolbar color="accent">
       Empresa
       <span class="id-empresa" *ngIf="empresasService.seleccionada != 0">
         24{{empresasService.seleccionada}}53
       </span>
-    </md-toolbar>
-  </md-card-title>
-  <md-card-content>
+    </mat-toolbar>
+  </mat-card-title>
+  <mat-card-content>
     <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
 
     <button md-button color="warn" (click)="checkBorrar()" type="submit">Eliminar</button>
@@ -16,5 +16,5 @@
       <label class="inputlabel full-width" for="logo">{{'le' | translate}}</label>
       <input id="logo" class="inputfile" type="file" (change)="uploadLogo($event)"/>
       <!--<opciones-premium class="tab" [class.active]="Premium"></opciones-premium>-->
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>

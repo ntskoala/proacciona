@@ -1,26 +1,26 @@
-  <md-card>
-    <md-card-title>
-      <md-toolbar color="accent" class="toolbar-principal">{{'menu.clientes' | translate}}
+  <mat-card>
+    <mat-card-title>
+      <mat-toolbar color="accent" class="toolbar-principal">{{'menu.clientes' | translate}}
         <listado-clientes (itemSeleccionado)="seleccionCliente($event)"></listado-clientes>
-      </md-toolbar>
-    </md-card-title>
- <md-card-subtitle>
+      </mat-toolbar>
+    </mat-card-title>
+ <mat-card-subtitle>
    <div class="w80">
    
    </div>
    <div class="w20">
-     <!--<button md-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>-->
+     <!--<button mat-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>-->
    </div>
 
- </md-card-subtitle>
+ </mat-card-subtitle>
 
  <div class="contenido">
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <!--<familias-producto *ngIf="familias"></familias-producto>-->
- <md-toolbar color="accent" *ngIf="cliente && cliente.id >0"><h2 class="center" >{{cliente.nombre}}</h2></md-toolbar>
-<md-tab-group *ngIf="cliente && cliente.id > 0" [dynamicHeight]="false">
-  <md-tab label="{{'clientes.ficha' | translate}}"><span class="space"></span><ficha-cliente class="tabs"  [cliente]="cliente" *ngIf="cliente"></ficha-cliente></md-tab>  
-<md-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente"></entrega-productos></md-tab>  
-</md-tab-group>
+ <mat-toolbar color="accent" *ngIf="cliente && cliente.id >0"><h2 class="center" >{{cliente.nombre}}</h2></mat-toolbar>
+<mat-tab-group *ngIf="cliente && cliente.id > 0" [dynamicHeight]="false">
+  <mat-tab label="{{'clientes.ficha' | translate}}"><span class="space"></span><ficha-cliente class="tabs"  [cliente]="cliente" *ngIf="cliente"></ficha-cliente></mat-tab>  
+<mat-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente"></entrega-productos></mat-tab>  
+</mat-tab-group>
  </div>
-  </md-card>
+  </mat-card>

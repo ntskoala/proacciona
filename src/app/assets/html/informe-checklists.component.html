@@ -32,10 +32,10 @@
     <p-calendar name="fin" [(ngModel)]="fecha['fin']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
     </div>
     </div>
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
       <span class="material-icons">cloud_download</span>
     </button>                   
   </form>

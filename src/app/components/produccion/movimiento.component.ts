@@ -491,7 +491,7 @@ prepareAlmacenes(newOrden: number){
     this.setAlmacen(this.almacenOrigenSelected);
     this.ordenOrigen = null;
     }else{ 
-        //Origen = entrada Proveedor, actualizamos md-card desde this.loteSelected
+        //Origen = entrada Proveedor, actualizamos mat-card desde this.loteSelected
         this.loteSelected.cantidad_remanente = this.loteSelected.cantidad_remanente -this.cantidadTraspaso;
     }
 }

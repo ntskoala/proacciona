@@ -39,12 +39,12 @@
         </select>
       </span>
         <!--<span class="cell">
-          <button md-mini-fab color="accent" (click)="import()">
+          <button mat-mini-fab color="accent" (click)="import()">
             <span class="material-icons">archive</span>
           </button>
         </span>-->
       <span class="cell">
-        <button md-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
+        <button mat-mini-fab color="accent" [disabled]="!nuevaCLf.form.valid" type="submit">
           <span class="material-icons">add</span>
         </button>
       </span>
@@ -63,7 +63,7 @@
         </span>
         <span class="cell"></span>
         <span class="cell">
-          <button md-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
+          <button mat-mini-fab color="accent" [disabled]="!crearCCLf.form.valid" type="submit">
             <span class="material-icons">add</span>
           </button>
         </span>
@@ -79,12 +79,12 @@
           <input [readonly]="!empresasService.administrador" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
         </span>
         <span class="cell">
-          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
+          <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
             <span class="material-icons">close</span>
           </button>
         </span>
         <span class="cell">
-          <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
+          <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
             <span class="material-icons">check</span>
           </button>                
         </span>
@@ -113,7 +113,7 @@
         </select>
       </span>
       <span class="cell">
-        <button md-mini-fab color="accent" [disabled]="!actCLf.form.valid" type="submit">
+        <button mat-mini-fab color="accent" [disabled]="!actCLf.form.valid" type="submit">
           <span class="material-icons">check</span>
         </button>
       </span>

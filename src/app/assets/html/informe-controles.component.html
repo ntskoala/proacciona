@@ -21,10 +21,10 @@
     </div>
     </div>
    <!--<ng2-datepicker type="date" name="fin" [(ngModel)]="fecha['fin']" (click)="scroll()"></ng2-datepicker>-->
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button md-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
       <span class="material-icons">cloud_download</span>
     </button>                    
   </form>

@@ -1,43 +1,43 @@
   
-  <md-card>
-    <md-card-title>
+  <mat-card>
+    <mat-card-title>
         <div #toPDFTitle>
-      <md-toolbar color="accent">{{'trazabilidad.Trazabilidad' | translate}} {{'trazabilidad.lote' | translate}} {{orden.numlote}}
-      </md-toolbar>
+      <mat-toolbar color="accent">{{'trazabilidad.Trazabilidad' | translate}} {{'trazabilidad.lote' | translate}} {{orden.numlote}}
+      </mat-toolbar>
         </div>
-    </md-card-title>
- <md-card-subtitle>
+    </mat-card-title>
+ <mat-card-subtitle>
  <div class="botones">
-        <button  md-mini-fab color="accent" (click)="askOrientacion()" type="button">
+        <button  mat-mini-fab color="accent" (click)="askOrientacion()" type="button">
           <span class="material-icons">picture_as_pdf</span>
     </button>
-            <!--<button  md-mini-fab color="accent" (click)="doInforme()" type="button">
+            <!--<button  mat-mini-fab color="accent" (click)="doInforme()" type="button">
           <span class="material-icons">picture_as_pdf</span>
     </button>-->
  </div>
- </md-card-subtitle>
+ </mat-card-subtitle>
 
 <div #toPDF class="arbol" [ngStyle]="{'width': widthArbol, 'overflow-y':'scroll'}">
-    <md-card>
-                <md-card-title>
+    <mat-card>
+                <mat-card-title>
             {{'trazabilidad.Arbol' | translate}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
-        </md-card-title>
+        </mat-card-title>
 <p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
         
 <!--<p-tree [value]="tree" styleClass="miarbol" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
-    </md-card>
+    </mat-card>
 </div>
 <div #toPDF2 class="info" *ngIf="selectedNode || informe">
-    <md-card *ngFor="let card of msgs; let i = index">
-        <md-card-title>
-    <button  md-mini-fab color="accent" (click)="closeFicha(i)" type="button">
+    <mat-card *ngFor="let card of msgs; let i = index">
+        <mat-card-title>
+    <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
           <span class="material-icons">remove_circle_outline</span>
     </button>
            {{ card.label }}
            
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
-        </md-card-title>
+        </mat-card-title>
         
         <!--{{'num traspaso' }} : {{card.data.level}}<br>-->
         <span *ngIf="card.data.proveedor">{{'trazabilidad.proveedor'| translate}} : {{card.data.proveedor}}<br></span>
@@ -51,20 +51,20 @@
         {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br>
          <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
         <!--{{message}}-->
-        </md-card>
-        <!--<md-card >
+        </mat-card>
+        <!--<mat-card >
             {{informe}}
-        </md-card>-->
+        </mat-card>-->
 </div>
 
 
 <div *ngIf="orientacion" class="orientacionWindow">
     <span style="position:relative;top:60px">
-    <md-radio-group [(ngModel)]="orientado">
-        <md-radio-button value="portrait">Vertical</md-radio-button>
-        <md-radio-button value="landscape">Horizontal</md-radio-button>
-      </md-radio-group>
+    <mat-radio-group [(ngModel)]="orientado">
+        <mat-radio-button value="portrait">Vertical</mat-radio-button>
+        <mat-radio-button value="landscape">Horizontal</mat-radio-button>
+      </mat-radio-group>
       <BR>
-      <button style="position:relative;top:40px" md-raised-button color="accent" (click)="downloadPdf()">Ok</button>
+      <button style="position:relative;top:40px" mat-raised-button color="accent" (click)="downloadPdf()">Ok</button>
       </span>
 </div>

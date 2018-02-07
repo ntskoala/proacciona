@@ -1,27 +1,27 @@
 <!--[locale]="es" -->
-<md-card>
+<mat-card>
 <h2 class="center">{{'planificaciones.CalendarioGeneralPlanificaciones' | translate}}</h2>
 <p-schedule [height]="410"  [contentHeight]="410" [aspectRatio]="4"  [style]="{'z-index': '9998 !important'}" [events]="events" [header]="headerCalendar" [locale]="locale"  [eventLimit]="2" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)" [contentHeight]="600" [aspectRatio]="3"-->
-<md-card>
+<mat-card>
     <div class="leyenda">{{'leyenda' | translate}}: </div>
     <div class="leyenda">
         
         <!-- {{'planificaciones.planificaciones' | translate}} -->
-        <md-chip-list>
+        <mat-chip-list>
             <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip" color="#33cc33" selected="true">{{'planificaciones.realizadas' | translate}}</md-chip>
+            <mat-chip class="chip" color="#33cc33" selected="true">{{'planificaciones.realizadas' | translate}}</mat-chip>
             <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip"  color="#33cc33" selected="true">{{'planificaciones.proximas' | translate}}</md-chip>
+            <mat-chip class="chip"  color="#33cc33" selected="true">{{'planificaciones.proximas' | translate}}</mat-chip>
             <!-- <figure style="display: block;background: #3333ff;border-radius: 50%;height: 30px;width: 30px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'por uso' | translate}}</md-chip> -->
+            <mat-chip color="#33cc33" selected="true">{{'por uso' | translate}}</mat-chip> -->
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip class="chip"  color="#33cc33" selected="true">{{'planificaciones.vencidas' | translate}}</md-chip>
-        </md-chip-list>
+            <mat-chip class="chip"  color="#33cc33" selected="true">{{'planificaciones.vencidas' | translate}}</mat-chip>
+        </mat-chip-list>
     </div>
-</md-card>
-</md-card>
+</mat-card>
+</mat-card>
 <!--
     [contentStyle]="{'overflow':'visible','height':'430px'}"
 [height]="500"

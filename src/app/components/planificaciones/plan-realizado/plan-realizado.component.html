@@ -48,7 +48,7 @@
      </span>
       <!-- <span class="ui-g-3">documentos</span>
        <span class="ui-g-9">
-      <button [disabled]="planRealizado.supervision==1" md-mini-fab  (click)="detalleSupervision(planRealizado.id,i)" type="button">
+      <button [disabled]="planRealizado.supervision==1" mat-mini-fab  (click)="detalleSupervision(planRealizado.id,i)" type="button">
          <span class="material-icons">info</span> 
       </button> 
        </span>-->
@@ -74,7 +74,7 @@
     </span>
 </span>
       <span class="cell">
-      <button *ngIf="empresasService.administrador" md-raised-button color="accent" (click)="cerrarModal()" type="button">
+      <button *ngIf="empresasService.administrador" mat-raised-button color="accent" (click)="cerrarModal()" type="button">
        ver pdf
       </button>
     </span>
@@ -85,17 +85,17 @@
 <p-fieldset legend="Acciones">
 
       <span class="cell">
-      <button *ngIf="empresasService.administrador"  md-raised-button color="accent" (click)="cerrarModal()" type="button">
+      <button *ngIf="empresasService.administrador"  mat-raised-button color="accent" (click)="cerrarModal()" type="button">
        cerrar
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" (click)="checkBorrar(planRealizado.id)" type="button">
+      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(planRealizado.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador" md-mini-fab color="primary" [disabled]="!guardar" type="submit">
+      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="!guardar" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

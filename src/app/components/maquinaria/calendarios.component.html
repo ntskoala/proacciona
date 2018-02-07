@@ -1,36 +1,36 @@
-<md-card>
+<mat-card>
 <h2 class="center">{{'maquinas.CalendarioGeneralMantenimiento' | translate}}</h2>
 <p-schedule [height]="410"  [contentHeight]="410"  [aspectRatio]="3" [events]="events" [header]="headerCalendar"  [locale]="locale" 
  [eventLimit]="2" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar
  [style]="{'width':'900px'}">
 </p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
-<md-card style="height:66px">
+<mat-card style="height:66px">
     <span class="titleLeyenda">{{'leyenda' | translate}}</span>
     <div class="leyenda">
        {{'maquinas.mantenimientos' | translate}}
-        <md-chip-list>
+        <mat-chip-list>
             <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
+            <mat-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</mat-chip>
             <figure style="display: block;background: #F67E1F;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip color="#F67E1F" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
+            <mat-chip color="#F67E1F" selected="true">{{'maquinas.proximos' | translate}}</mat-chip>
             <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
-        </md-chip-list>
+            <mat-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</mat-chip>
+        </mat-chip-list>
     </div>
     <div class="leyenda2">
         {{'maquinas.calibraciones' | translate}}
-        <md-chip-list>
+        <mat-chip-list>
             <figure style="display: block;background: #88ee88;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</md-chip>
+            <mat-chip  color="#33cc33" selected="true">{{'maquinas.realizados' | translate}}</mat-chip>
             <figure style="display: block;background: #673AB7;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'maquinas.proximos' | translate}}</md-chip>
+            <mat-chip color="#33cc33" selected="true">{{'maquinas.proximos' | translate}}</mat-chip>
             <figure style="display: block;background: red;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-            <md-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</md-chip>
-        </md-chip-list>
+            <mat-chip color="#33cc33" selected="true">{{'maquinas.vencidos' | translate}}</mat-chip>
+        </mat-chip-list>
     </div>
-</md-card>
-</md-card>
+</mat-card>
+</mat-card>
 
  <p-dialog  *ngIf="mantenimientorealizado" width="455" appendTo="body" header="{{mantenimientorealizado.maquina}}" [(visible)]="dialogVisible" [responsive]="false" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
     <div class="ui-grid ui-grid-responsive ui-fluid">

@@ -11,12 +11,12 @@
 <div class="filter">
   {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}}
       <span class="">
-                  <button md-mini-fab color="primary" (click)="filter=!filter" type="button">
+                  <button mat-mini-fab color="primary" (click)="filter=!filter" type="button">
         <span class="material-icons">filter_list</span>
       </button>
       </span>
     <span class="">
-            <button md-mini-fab color="primary" (click)="excel()" type="button">
+            <button mat-mini-fab color="primary" (click)="excel()" type="button">
         <span class="material-icons">cloud_download</span>
       </button>
       </span>
@@ -61,7 +61,7 @@
       <span class="header-cell">
       </span>
     <span class="cell">
-      <button md-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+      <button mat-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
         <span class="material-icons">add</span>
       </button>
     </span>
@@ -118,12 +118,12 @@
 
 
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
@@ -139,7 +139,7 @@
 
 
 <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
-  <button md-mini-fab style="position:absolute;right:0px;top:0px"><md-icon>close</md-icon></button>
+  <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
 <img class="iframe" [src]="foto">
 </div>
 <div class="modal" *ngIf="filter">

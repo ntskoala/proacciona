@@ -1,11 +1,11 @@
-<span class="tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips"
-    [mdTooltipPosition]="'right'">  
-<button md-mini-fab color="warn" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
+<span class="tooltip" matTooltip="{{'incidencia.nueva' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+    [matTooltipPosition]="'right'">  
+<button mat-mini-fab color="warn" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
 </span>
 <div *ngIf="nuevaIncidencia" class="newIncident">
     <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  #newItemForm="ngForm" (ngSubmit)="newItem()">
   
-<span class="formIncidencia tooltip" mdTooltip="{{'incidencia.nueva' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">
+<span class="formIncidencia tooltip" matTooltip="{{'incidencia.nueva' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
 
         <input type="hidden" [(ngModel)]="newIncidencia.id" name="id">
         <input type="hidden" [(ngModel)]="newIncidencia.foto" name="foto">
@@ -52,7 +52,7 @@
 
              
               <span class="elem mini-fab">
-          <span class="cell tooltip" mdTooltip="{{'subirFoto' | translate}}" [mdTooltipDisabled]="!empresasService.showTooltips" [mdTooltipPosition]="'above'">      
+          <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
                   <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'foto'}}"><span style="margin-left:60px">{{newIncidencia.foto}}</span></label>                
                   <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'foto'}}" class="inputfile" type="file" (change)="setImg($event)" accept=".gif,.jpg,.jpeg,.png"/>
                       
@@ -64,8 +64,8 @@
     </span>
     <div class="buttons">
       <hr class="hr">
-      <button type="button" md-raised-button [disabled]="!newItemForm.form.valid" type="submit" >{{'aceptar' | translate}}</button>
-      <button type="button" md-raised-button (click)="setIncidencia()">{{'cancelar' | translate}}</button>
+      <button type="button" mat-raised-button [disabled]="!newItemForm.form.valid" type="submit" >{{'aceptar' | translate}}</button>
+      <button type="button" mat-raised-button (click)="setIncidencia()">{{'cancelar' | translate}}</button>
   </div>
 </form>
 

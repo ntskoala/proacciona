@@ -1,68 +1,68 @@
 
 <form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
-    <md-grid-list cols="3" rowHeight="65px">
-        <md-grid-tile [colspan]="3">
-            <md-grid-tile-header>{{"proveedores.nombre" | translate}}
-            </md-grid-tile-header>
+    <mat-grid-list cols="3" rowHeight="65px">
+        <mat-grid-tile [colspan]="3">
+            <mat-grid-tile-header>{{"proveedores.nombre" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.Nombre' | translate" type="text"
                 required [(ngModel)]="proveedor.nombre" name="nombre">
-        </md-grid-tile>
+        </mat-grid-tile>
 
 
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.contacto" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.contacto" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
                 [(ngModel)]="proveedor.contacto" name="contacto">
-        </md-grid-tile>
+        </mat-grid-tile>
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.telf" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.telf" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
                 [(ngModel)]="proveedor.telf" name="telf">
-        </md-grid-tile>
+        </mat-grid-tile>
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.email" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.email" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
                 [(ngModel)]="proveedor.email" name="email">
-        </md-grid-tile>
+        </mat-grid-tile>
 
-        <md-grid-tile [colspan]="3">
+        <mat-grid-tile [colspan]="3">
            {{'alertas alimentarias' | translate}}
-        </md-grid-tile>
+        </mat-grid-tile>
 
 
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_contacto" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.alert_contacto" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
                 [(ngModel)]="proveedor.alert_contacto" name="alert_contacto">
-        </md-grid-tile>
+        </mat-grid-tile>
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_telf" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.alert_telf" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
                 [(ngModel)]="proveedor.alert_telf" name="alert_telf">
-        </md-grid-tile>
+        </mat-grid-tile>
 
-        <md-grid-tile>
-            <md-grid-tile-header>{{"proveedores.alert_email" | translate}}
-            </md-grid-tile-header>
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"proveedores.alert_email" | translate}}
+            </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
                 [(ngModel)]="proveedor.alert_email" name="alert_email">
-        </md-grid-tile>
-    </md-grid-list>
+        </mat-grid-tile>
+    </mat-grid-list>
 
 
     <div  class="botones">
     <span class="but">
-        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" md-raised-button color="accent" [disabled]="!myItem.form.valid" type="submit">
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-raised-button color="accent" [disabled]="!myItem.form.valid" type="submit">
           <!--<span class="material-icons">save</span>-->{{'maquinas.guardar' | translate}}
     </button>
     </span>

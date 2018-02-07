@@ -4,7 +4,7 @@
     <input type="text" [(ngModel)]="nuevoProcedimiento" >
     </span>
         <span class="cell small">
-      <button md-mini-fab color="accent" type="button" [disabled]="!nuevoProcedimiento" (click)="addProcedimiento()">
+      <button mat-mini-fab color="accent" type="button" [disabled]="!nuevoProcedimiento" (click)="addProcedimiento()">
         <span class="material-icons">add</span>
         </button>
         </span>
@@ -12,7 +12,7 @@
     <div class="divrow yellow">
         <span class="cell">{{"limpieza.descripcion" | translate}}</span>
         <span class="cell small">
-      <button md-mini-fab color="primary" [disabled]="!hayCambios" type="button" (click)="setProtocolo()">
+      <button mat-mini-fab color="primary" [disabled]="!hayCambios" type="button" (click)="setProtocolo()">
         <span class="material-icons">check</span>
         </button>
         </span>
@@ -22,7 +22,7 @@
     {{procedimiento.descripcion}}
     </span>
         <span class="cell small">
-            <button md-mini-fab color="primary" type="button" (click)="removeProcedimiento(n)">
+            <button mat-mini-fab color="primary" type="button" (click)="removeProcedimiento(n)">
                 <span class="material-icons">remove</span>
             </button>
         </span>

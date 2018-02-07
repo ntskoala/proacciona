@@ -6,7 +6,7 @@ import { Empresa } from '../../models/empresa';
 import { Cliente } from '../../models/clientes';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
-import {MdSelect} from '@angular/material';
+import {MatSelect} from '@angular/material';
 @Component({
   selector: 'listado-clientes',
   templateUrl: './listado-clientes.component.html',
@@ -14,7 +14,7 @@ import {MdSelect} from '@angular/material';
 })
 export class ListadoClientesComponent implements OnInit {
 //*** STANDARD VAR
- @ViewChild('choicer') Choicer: MdSelect;
+ @ViewChild('choicer') Choicer: MatSelect;
 @Output() itemSeleccionado: EventEmitter<Cliente> = new EventEmitter<Cliente>();
 public itemActivo: number;
 public items: Cliente[]=[];//Array de Items para el desplegable;

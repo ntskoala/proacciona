@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 //import {MessageService} from 'primeng/components/common/messageservice';
+import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../services/empresas.service';
 import { Empresa } from '../models/empresa';
@@ -12,6 +13,7 @@ import { Empresa } from '../models/empresa';
 export class EmpresasComponent implements OnInit {
 @ViewChild('scrollMe') public myScrollContainer: ElementRef;
 public selectedMenu:string='home';
+public inicio:string;
 
   permiso: boolean = false;
   token = sessionStorage.getItem('token');
@@ -19,8 +21,9 @@ public selectedMenu:string='home';
   constructor(public router: Router, public empresasService: EmpresasService) {}
 
   ngOnInit() {
-
+    this.isTokenExired(this.token)
     // Si no exite el token, redirecciona a login
+
     if (!this.token) {
       this.router.navigate(['login']);
     }
@@ -28,9 +31,9 @@ public selectedMenu:string='home';
       case 'Administrador':
         this.permiso = true;
         console.log('Seleccion automática de empresa, empresas component');
-        this.empresasService.seleccionarEmpresa(new Empresa('','',2));
-        this.selectedMenu = "incidencias";
-        //this.selectedMenu = "empresas";
+        //this.empresasService.seleccionarEmpresa(new Empresa('','',2));
+        //this.selectedMenu = "incidencias";
+        this.selectedMenu = "empresas";
         break;
       case "Mantenimiento":
         if (this.empresasService.empresaActiva == 0) {
@@ -67,5 +70,19 @@ public selectedMenu:string='home';
     setMenu(menu){
       this.selectedMenu = menu;
     }
+
+isTokenExired (token) {
+  if (token){
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            //return JSON.parse(window.atob(base64));
+            let jwt = JSON.parse(window.atob(base64));
+            console.log (moment.unix(jwt.exp).isBefore(moment()));
+            if (moment.unix(jwt.exp).isBefore(moment())) this.token = null;
+           return moment.unix(jwt.exp).isBefore(moment());
+  }else{
+    return true;
+  }
+}
 
 }

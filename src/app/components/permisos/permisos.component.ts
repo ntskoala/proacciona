@@ -50,7 +50,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
   public haypermiso: number[] = [];
   public tabla: object[];
   public cols: object[];
-  public procesando: boolean = true;
+  public procesando: boolean = false;
   public cargaData: boolean[] = [false, false];
   public entidad: string = "&entidad=permissionlimpieza";
   public field: string = "&field=idelementolimpieza&idItem=";
@@ -61,8 +61,11 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
 
   }
     ngOnChanges(){
+  //    if (this.items.length>=1){
+      this.procesando=true;
       let num = (this.items.length * 90)
       this.ancho = num + 'px';
+      
     switch (this.tipoControl) {
       case "planes":
         this.entidad = "&entidad=permissionplanificaciones";
@@ -96,6 +99,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
         }
       }
     )
+//  }
   }
 
   carga() {

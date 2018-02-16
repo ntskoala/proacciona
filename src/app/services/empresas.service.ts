@@ -21,9 +21,9 @@ export class EmpresasService {
 //  empresa: Empresa;
 
   // fuente del observable
-  private empresaSeleccionadaFuente = new Subject<Empresa>();
+  public empresaSeleccionadaFuente = new Subject<Empresa>();
   private nuevaEmpresaFuente = new Subject<Empresa>();
-  opcionesFuente = new Subject<boolean>();
+  public opcionesFuente = new Subject<boolean>();
   
   // streaming del observable
   empresaSeleccionada = this.empresaSeleccionadaFuente.asObservable();

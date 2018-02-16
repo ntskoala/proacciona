@@ -76,7 +76,7 @@ export class UsuariosComponent implements OnInit {
           this.usuarios = this.usuarios.slice();
           this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
         }else{
-          this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+          this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo',response.error);
         }
     },
     (error)=>{
@@ -139,7 +139,7 @@ export class UsuariosComponent implements OnInit {
       }
   }
 
-  setAlerta(concept:string,tipo:string,titulo:string){
+  setAlerta(concept:string,tipo:string,titulo:string, extraInfo?:string){
     let concepto;
     let sumary;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
@@ -148,7 +148,7 @@ export class UsuariosComponent implements OnInit {
     this.messageService.clear();this.messageService.add(
       {severity:tipo,//success | info | warn | error  
       summary:sumary, 
-      detail: concepto
+      detail: concepto + ' ' + extraInfo
       }
     );
   }

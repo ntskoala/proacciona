@@ -109,7 +109,8 @@
     "clientes":"Mòdul clients",
     "produccion":"Mòdul producció",
     "personal":"Mòdul personal",
-    "planificaciones":"Mòdul planificacions"
+    "planificaciones":"Mòdul planificacions",
+    "incidencias":"Mòdul incidències"
   },
   "configuracion":{
     "nuevoUsuario":"Nou usuari",
@@ -471,6 +472,8 @@
       "fecha":"Data",
       "solucion":"Solució",
       "responsable":"Responsable",
+      "r_seguimiento":"Responsable seguiment",
+      "r_cierre":"Responsable tancament",
       "nc":"No conformitat",
       "NC":{
         "0":"No Activat",

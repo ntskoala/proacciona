@@ -109,8 +109,10 @@ setPermisos(idempresa){
             if (response.success && response.data) {
               for (let element of response.data) {
                 //this.permisos.setOpciones(true,element.opcion);
-                this.permisos.setOpciones(true,element.idopcion);
+                this.permisos.setOpciones(true,element.idopcion,'login');
               }
+              console.log('setting permisos');
+              this.permisos.modulosFuente.next('login');
             }
         },
         error => {console.log(error)});

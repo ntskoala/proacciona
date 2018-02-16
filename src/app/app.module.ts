@@ -178,6 +178,8 @@ import {
     MAT_DATE_LOCALE
   } from '@angular/material';
 import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.component';
+import { TablaIncidenciasComponent } from './components/incidencias/tabla-incidencias/tabla-incidencias.component';
+import { CalendariosIncidenciasComponent } from './components/incidencias/calendarios-incidencias/calendarios-incidencias.component';
 
 @NgModule({
     exports: [
@@ -362,8 +364,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     DashproduccionComponent,
 //*******INCIDENCIAS     */
     IncidenciasComponent,
+    TablaIncidenciasComponent,
     BotonIncidenciaComponent,
     GestionIncidenciaComponent,
+    CalendariosIncidenciasComponent,
     NcSelectComponent
   ],
   providers: [

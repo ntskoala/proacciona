@@ -9,7 +9,8 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'empresas', component: EmpresasComponent},
   {path: '404', component: PageNotFoundComponent},
-  {path: '**', redirectTo: '404'}
+  {path: '**', redirectTo: '404'},
+  {path: 'log_in', component: LoginComponent}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

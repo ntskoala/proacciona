@@ -4,13 +4,13 @@
       <mat-toolbar color="accent">{{'Tablas' | translate}}</mat-toolbar>
     </mat-card-title>
     <mat-card-subtitle>
-      <button md-button color="primary" [attr.mat-raised-button]="tabs[0]"
+      <button mat-button color="primary" [attr.mat-raised-button]="tabs[0]"
         (click)="cambiarTab(0)">{{'Usuarios' | translate}}</button>
-      <button md-button color="primary" [attr.mat-raised-button]="tabs[1]"
+      <button mat-button color="primary" [attr.mat-raised-button]="tabs[1]"
         (click)="cambiarTab(1)">{{'Controles' | translate}}</button>
-      <button md-button color="primary" [attr.mat-raised-button]="tabs[2]"
+      <button mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
         (click)="cambiarTab(2)">Checklists</button>
-      <button md-button color="primary" [attr.mat-raised-button]="tabs[3]"
+      <button mat-button color="primary" [attr.mat-raised-button]="tabs[3]"
         (click)="cambiarTab(3); permisos.seleccionarPermisos()">Permisos</button>
     </mat-card-subtitle>
     <mat-card-content>

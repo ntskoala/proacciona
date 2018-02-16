@@ -109,7 +109,8 @@
     "clientes":"Módulo clientes",
     "produccion":"Módulo producción",
     "personal":"Módulo personal",
-    "planificaciones":"Módulo planificaciones"
+    "planificaciones":"Módulo planificaciones",
+    "incidencias":"Módulo incidencias"
   },
   "configuracion":{
     "nuevoUsuario":"Nuevo usuario",
@@ -471,11 +472,13 @@
       "fecha":"Fecha",
       "solucion":"Solución",
       "responsable":"Responsable",
+      "r_seguimiento":"Responsable seguimiento",
+      "r_cierre":"Responsable cierre",
       "nc":"No conformidad",
       "NC":{
-        "0":"No Activat",
+        "0":"No activado",
         "1":"No Conforme",
-        "2":"Resolt"
+        "2":"Resuelto"
       },
       "estado0":"--",
       "estado1":"Incorrecto",

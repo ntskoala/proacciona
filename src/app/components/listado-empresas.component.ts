@@ -67,10 +67,13 @@ setPermisos(idempresa){
           response => {
             
             if (response.success && response.data) {
+              this.permisos.resetPermisos();
               for (let element of response.data) {
-                  this.permisos.setOpciones(true,element.idopcion);
+                  this.permisos.setOpciones(true,element.idopcion,'list-empresas');
                 //this.guardar[element.id] = false;
               }
+              
+              this.permisos.modulosFuente.next('listado-empresas');
             }
         },
         error => {console.log(error)});

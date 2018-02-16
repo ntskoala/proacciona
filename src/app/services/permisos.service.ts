@@ -3,11 +3,12 @@ import { Subject } from 'rxjs/Subject';
 
 import { Servidor } from './servidor.service';
 import { URLS } from '../models/urls';
+import { Menu } from '../models/menu';
 
 @Injectable()
 export class PermisosService {
     // variables
-
+    public modulosFuente = new Subject<string>();
     exportar: boolean;
     fichas_maquinaria: boolean;
     personal: boolean;
@@ -17,16 +18,30 @@ export class PermisosService {
     produccion:boolean;
     traspasos:boolean;
     planificaciones:boolean;
-    constructor(private servidor: Servidor){}
+
+    constructor(private servidor: Servidor){
+
+    }
 
 
     // exportarFuente = new Subject<boolean>();
     // ficha_maquinariaFuente = new Subject<boolean>();
 
+    resetPermisos(){
+    this.exportar=false;
+    this.fichas_maquinaria=false;
+    this.personal=false;
+    this.limpieza=false;
+    this.proveedores=false;
+    this.clientes=false;
+    this.produccion=false;
+    this.traspasos=false;
+    this.planificaciones=false;   
+    }
 
 
-    setOpciones(valor: boolean, opcion) {
-        console.log(opcion);
+    setOpciones(valor: boolean, opcion: any, fuente?: string) {
+        console.log(opcion + ' ' + fuente);
         switch (opcion) {//OPCION = ID opcion
             case "1"://"exportar informes":
                 // this.exportarFuente.next(valor);
@@ -58,6 +73,8 @@ export class PermisosService {
             //     this.personal = valor;
             //     break;
         }
+        
+
     }
 
 

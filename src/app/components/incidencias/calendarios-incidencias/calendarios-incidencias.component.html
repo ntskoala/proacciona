@@ -1,0 +1,91 @@
+<!--[locale]="es" -->
+
+<mat-card>
+  <h2 class="center">{{'incidencias.CalendarioGeneralIncidencias' | translate}}</h2>
+  <!-- <p-schedule [height]="470"  [contentHeight]="400"  [aspectRatio]="3" [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="4" [editable]="false"
+   dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule> -->
+   <p-schedule [height]="410"  [contentHeight]="410"  [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="2" [editable]="false"
+   dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+  <!--(onDayClick)="handleDayClick($event)"-->
+  <mat-card>
+      <div class="leyenda">
+          {{'leyenda' | translate}}
+      </div>
+      <div class="leyenda">
+          <mat-chip-list>
+              <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.2' | translate}}</mat-chip>
+              <figure class="chip" style="display: block;background: #3333ff;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.0' | translate}}</mat-chip>
+              <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.1' | translate}}</mat-chip>
+          </mat-chip-list>
+      </div>
+  </mat-card>
+  </mat-card>
+  <!--
+      [contentStyle]="{'overflow':'visible','height':'430px'}"
+  [height]="500"
+      -->
+   <p-dialog appendTo="body" header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+      <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="limpiezarealizada">
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.nombre' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="limpiezarealizada.nombre" /></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_prevista' | translate}}</label></div>
+              <div class="ui-grid-col-8"><p-calendar appendTo="body" [disabled] id="start"  [(ngModel)]="limpiezarealizada.fecha_prevista" dateFormat="dd/mm/yy"></p-calendar></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="start">{{'limpieza.fecha_real' | translate}}</label></div>
+              <div class="ui-grid-col-8"><p-calendar  appendTo="body" id="fechareal"  [(ngModel)]="limpiezarealizada.fecha" dateFormat="dd/mm/yy"></p-calendar></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.descripcion' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="limpiezarealizada.descripcion" /></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.tipo' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input  pInputText id="tipo" [(ngModel)]="limpiezarealizada.tipo" /></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.responsable' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="limpiezarealizada.responsable" /></div>
+          </div>
+  
+          <div class="ui-grid-row" *ngIf="limpiezarealizada.idsupervisor"> 
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.supervisor' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="supervisor" /></div>
+          </div>
+          <div class="ui-grid-row" *ngIf="limpiezarealizada.supervision">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.supervision' | translate}}</label></div>
+              <div class="ui-grid-col-8">
+                  <!--<mat-select placeholder="{{'limpieza.supervision' | translate}}"  [(ngModel)]="limpiezarealizada.supervision">
+                      <mat-option [value]="sup['valor']" *ngFor="let sup of supervisar">{{'limpieza.'+sup["descrip"] | translate}}</mat-option>
+  
+                  </mat-select>-->
+                  <p-dropdown (onChange)="setSupervision($event)" [style]="{'width':'173px'}" [options]="supervisar" [(ngModel)]="limpiezarealizada.supervision"></p-dropdown>
+  
+                  <!--<input id="responsable" [(ngModel)]="limpiezarealizada.supervision" />-->
+                  </div>
+          </div>
+          <div class="ui-grid-row" *ngIf="limpiezarealizada.fecha_supervision">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.fecha_supervision' | translate}}</label></div>
+              <div class="ui-grid-col-8"><p-calendar placeholder="Selecciona" id="fecha_supervision"  [(ngModel)]="limpiezarealizada.fecha_supervision" dateFormat="dd/mm/yy"></p-calendar></div>
+          </div>      
+          <div class="ui-grid-row" *ngIf="limpiezarealizada.detalles_supervision || limpiezarealizada.supervision != 1">
+              <div class="ui-grid-col-4"><label for="vin">{{'limpieza.detalles_supervision' | translate}}</label></div>
+              <div class="ui-grid-col-8"><input id="responsable" [(ngModel)]="limpiezarealizada.detalles_supervision" /></div>
+          </div>
+  
+      </div>
+      <p-footer>
+          <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+              <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
+              <button *ngIf="estado=='pendiente'" type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+              <button *ngIf="estado=='realizado' && limpiezarealizada.idsupervisor == empresasService.userId" type="button" pButton icon="fa-check" (click)="supervisarEvent()" label="Supervisar"></button>
+              
+          </div>
+      </p-footer>
+  </p-dialog>

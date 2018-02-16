@@ -627,25 +627,26 @@ gestion-informes {
   vertical-align: middle;
 }
 
-md-card-footer {
+mat-card-footer {
   position: inherit !important;
 }
 
-md-card-title {
+mat-card-title {
   margin: -24px -24px 24px -24px !important;
 }
 
-md-input {
+mat-input {
   font-size: 0.9rem !important;
 }
 
-button[md-mini-fab] {
+button[mat-mini-fab] {
   width: 35px;
   height: 35px;
 }
 
-md-grid-tile-header{
+mat-grid-tile-header{
   background: #ffd740 !important;
+  height: 30px !important;
 }
 
 /*TRAZABILIDAD*/
@@ -701,9 +702,11 @@ width: 400px;
   background-color: #fff9c4;
   border: 1px solid orange;
   margin-left: 5px;
-  width: 200px;
+  width: 200px !important;
   padding-left: 15px;
+  font-size: initial;
 }
+
 .left{
   float:left;
   margin-left: 30px;

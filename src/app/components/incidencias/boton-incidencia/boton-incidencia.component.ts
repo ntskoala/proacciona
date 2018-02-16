@@ -24,7 +24,7 @@ export class BotonIncidenciaComponent implements OnInit, OnChanges {
   @Input() origen: any;
 
 public nuevaIncidencia:boolean=false;
-public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'Incidencias',0,'','',null,0);
+public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,null,null,0,'Incidencias',0,'','',null,0);
 public incidencias: Incidencia[];
 public selectedDay: number;
 public cols:any[];

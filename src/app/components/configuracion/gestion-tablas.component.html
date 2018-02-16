@@ -4,17 +4,17 @@
       <mat-toolbar color="accent" class="toolbar-principal">{{'Tablas' | translate}}</mat-toolbar>
     </mat-card-title>
     <mat-card-subtitle>
-      <button [ngClass]="{'selected2':tabs[0]}" md-button color="primary"  [attr.mat-raised-button]="tabs[0]"
+      <button [ngClass]="{'selected2':tabs[0]}" mat-button color="primary"  [attr.mat-raised-button]="tabs[0]"
         (click)="cambiarTab(0)">{{'Usuarios' | translate}}</button>
-      <button md-button color="primary" [ngClass]="{'selected2':tabs[1]}"
+      <button mat-button color="primary" [ngClass]="{'selected2':tabs[1]}"
         (click)="cambiarTab(1)">{{'Controles' | translate}}</button>
-      <button md-button color="primary" [ngClass]="{'selected2':tabs[2]}"
+      <button mat-button color="primary" [ngClass]="{'selected2':tabs[2]}"
         (click)="cambiarTab(2)">Checklists</button>
-      <button md-button color="primary" [ngClass]="{'selected2':tabs[3]}"
+      <button mat-button color="primary" [ngClass]="{'selected2':tabs[3]}"
         (click)="cambiarTab(3); permisos.seleccionarPermisos()">Permisos</button>
-      <button md-button color="primary" [ngClass]="{'selected2':tabs[4]}"
+      <button mat-button color="primary" [ngClass]="{'selected2':tabs[4]}"
         (click)="cambiarTab(4);">{{'Opciones' | translate}}</button>
-        <!-- <button md-button color="primary" [ngClass]="{'selected2':tabs[5]}"
+        <!-- <button mat-button color="primary" [ngClass]="{'selected2':tabs[5]}"
         (click)="cambiarTab(5);">{{'Opciones2' | translate}}</button> -->
     </mat-card-subtitle>
     <mat-card-content>

@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 export class PageNotFoundComponent implements OnInit {
   constructor(public router: Router) {}
   ngOnInit() {
+    console.log('ERROR 404')
     sessionStorage.removeItem('token');
-    this.router.navigate(['login']);
+    //this.router.navigate(['login']);
   }
 }

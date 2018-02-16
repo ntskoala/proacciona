@@ -34,7 +34,7 @@ public haypermiso: number[]=[];
 public tabla: object[];
 public cols: object[];
 public cargaData: boolean[]=[false,false];
-public procesando:boolean=true;
+public procesando:boolean=false;
 public entidad:string="&entidad=";
 public field:string="&field=";
 public idItem:number;
@@ -45,23 +45,28 @@ public ancho:string;
   ngOnInit() {
   }
   ngOnChanges(){
+   
+      this.procesando=true;
     let num = (this.items.length * 90)
     this.ancho = num + 'px';
+    
         switch(this.tipoControl){
       case "planes":
       this.entidad="&entidad=planificaciones";
       this.field = "&field=idempresa&idItem="+this.empresasService.seleccionada;
       break;
       case "limpiezas":
+      if (this.items.length>=1){
       this.entidad="&entidad=limpieza_elemento";
       this.field = "&field=idlimpiezazona&idItem="+this.items[0].idlimpiezazona;
+    }
       break;
       case "conroles":
       break;
       case "checklists":
       break;
     }
-
+ 
        this.carga().subscribe(
          (valor)=>{
                  switch(valor){
@@ -80,6 +85,7 @@ public ancho:string;
                 }
          }
        )
+      
   }
 
   carga(){
@@ -130,7 +136,9 @@ return new Observable<string>((valor)=>{
 
 getSupervisiones(){
       console.log('##########getSupervisiones########')
+      if (this.items.length>=1){
       this.idItem = this.items[0].idlimpiezazona;
+      }
       return new Promise((resolve, reject) => {
       //let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad; 
       let parametros = '&idempresa=' + this.empresasService.seleccionada +this.entidad + this.field; 

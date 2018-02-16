@@ -31,14 +31,16 @@ export class OpcionesPremium implements OnInit {
   
   ngOnInit() {
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
-    this.subscription = this.empresasService.empresaSeleccionada.subscribe(
-      emp => {
-        this.setEmpresa(emp);
-    });
-    if (this.empresasService.administrador == false) {
-      this.setEmpresa(this.empresasService.empresaActiva.toString());
-    }
+    // this.subscription = this.empresasService.empresaSeleccionada.subscribe(
+    //   emp => {
+    //     this.setEmpresa(emp);
+    // });
+    // if (this.empresasService.administrador == false) {
+    //   this.setEmpresa(this.empresasService.empresaActiva.toString());
+    // }
   }
+
+  
 
   setEmpresa(emp: Empresa | string){
     this.empresasService.setOpciones(false);
@@ -68,7 +70,7 @@ getOpciones(parametros){
             if (response.success && response.data) {
               for (let element of response.data) {
                 this.opcionesempresa[element.idopcion] = parseInt(element.id);
-                this.permisos.setOpciones(true,element.idopcion);
+                this.permisos.setOpciones(true,element.idopcion,'get-empresasopciones');
                 //this.guardar[element.id] = false;
               }
             }
@@ -86,7 +88,7 @@ getOpciones(parametros){
       this.servidor.deleteObject(URLS.OPCIONES_EMPRESA, parametros).subscribe(
         response => {
           if (response.success) {
-            this.permisos.setOpciones(false,this.opciones[i].id);
+            this.permisos.setOpciones(false,this.opciones[i].id,'actualiza-empresasopciones1');
             console.log("quita",this.opciones[i].id)
           }
       });
@@ -98,7 +100,7 @@ getOpciones(parametros){
         response => {
           if (response.success) {
             this.opcionesempresa[opcion] = response.id;
-            this.permisos.setOpciones(true,this.opciones[i].id);
+            this.permisos.setOpciones(true,this.opciones[i].id,'actualiza-empresasopciones2');
             console.log("pon",this.opciones[i].id)
           }
       });

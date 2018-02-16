@@ -72,6 +72,7 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
     , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
+    
      // this.setItems();
      // this.setProductos();
                  this.es = {
@@ -84,6 +85,7 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
         }; 
   }
   ngOnChanges(){
+
     this.getProtocolos().then(
       (resultado)=>{
         console.log("******PROTOCOLOS",this.protocolos);
@@ -185,9 +187,10 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
                   this.getProdsElemtento(element.id,index);
                   index++;
              }
-                this.onElementosLimpieza.emit(this.items);
-                //console.log ('items',this.items,this.protocolo);
+                
             }
+            this.onElementosLimpieza.emit(this.items);
+                console.log ('items',this.items,this.protocolo);
         },
         error=>console.log(error),
         ()=>{

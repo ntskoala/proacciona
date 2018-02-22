@@ -7,9 +7,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class DashproduccionComponent implements OnInit {
-
+public calculando:boolean=false;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  loadResultados(dias:number){
+
   }
 }

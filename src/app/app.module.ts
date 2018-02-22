@@ -377,7 +377,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     Servidor,
     PermisosService,
     MessageService,
-    , {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
   ],
   
   bootstrap: [AppComponent],

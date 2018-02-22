@@ -128,5 +128,7 @@ public subMenu:string=null;
     this.closeSideNav();
       this.subMenu = null;
   }
-  
+  nuevaIncidenciaCreada(evento){
+    console.log(evento);
+  }
 }

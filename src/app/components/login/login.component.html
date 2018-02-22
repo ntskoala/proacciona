@@ -1,0 +1,34 @@
+<modal [modal]="modal" (onCerrar)="cerrarModal()"></modal>
+<div class="login-form">
+    <mat-card style="height:100%">
+      <mat-card-title>
+        <mat-toolbar color="accent">Login</mat-toolbar>
+      </mat-card-title>
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
+        <mat-card-content>
+          <mat-input-container>
+          <input matInput class="full-width" type="text" required [placeholder]="'Usuario' | translate" 
+            [(ngModel)]="usuario['user']" name="user">
+          </mat-input-container>
+          <mat-input-container>
+          <input matInput class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
+            [(ngModel)]="usuario['password']" name="password">
+          </mat-input-container>
+          <span *ngIf="!idioma">
+          <label for="idioma">Seleccionar idioma</label>
+          <select class="white-select" required [(ngModel)]="usuario['idioma']" name="idioma">
+            <option disabled value="null">Selecciona</option>
+            <option value="cat">Català</option>
+            <option value="es">Castellano</option>
+          </select>
+          </span>
+        </mat-card-content>
+        <mat-card-footer>
+  
+  <button matTooltip="LogIn" mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
+            Enviar
+          </button>
+        </mat-card-footer>
+      </form>
+    </mat-card>
+  </div>

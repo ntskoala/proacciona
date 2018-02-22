@@ -5,11 +5,11 @@
         <span class="material-icons">business</span>
       </button>
       </div>
-      <div class="tooltip" matTooltip="{{'menu.dashboard' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+      <!-- <div class="tooltip" matTooltip="{{'menu.dashboard' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button [ngClass]="{'selected': subMenu == 'dashboard'}" [disabled]="!empresasService.empresaActiva" (click)="setSeleccion('dashboard')" class="opcion" mat-mini-fab color="accent" >
           <span class="material-icons">slow_motion_video</span>
         </button>
-        </div>
+        </div> -->
       <div class="tooltip" matTooltip="{{'menu.config' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">      
         <button [ngClass]="{'selected': subMenu == 'settings'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('settings')" class="opcion" mat-mini-fab color="accent" >
         <span  class="material-icons">settings</span>
@@ -26,49 +26,20 @@
           <span class="material-icons">{{opcion.icono}}</span>
         </button>
         </div>
-       <!-- <div class="tooltip" matTooltip="{{'menu.planificaciones' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">      
-        <button [ngClass]="{'selected': subMenu == 'planificaciones'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.planificaciones" (click)="setSeleccion('planificaciones')" class="opcion" mat-mini-fab color="accent" >
-        <span  class="material-icons">date_range</span>
-      </button>
-      </div> 
-      <div class="tooltip" matTooltip="{{'menu.maquinaria' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-        <button [ngClass]="{'selected': subMenu == 'maquinaria'}" [disabled]="!empresasService.empresaActiva || !permisos.fichas_maquinaria" (click)="setSeleccion('maquinaria')" class="opcion" mat-mini-fab color="accent" >
-        <span class="material-icons">build</span>
-      </button>
-      </div>
-      <div class="tooltip" matTooltip="{{'menu.limpieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-        <button [ngClass]="{'selected': subMenu == 'limpieza'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.limpieza" (click)="setSeleccion('limpieza')" class="opcion" mat-mini-fab color="accent" >
-        <span class="material-icons">brush</span>
-      </button>
-      </div>
-      <div class="tooltip" matTooltip="{{'menu.proveedores' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-        <button [ngClass]="{'selected': subMenu == 'proveedores'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.proveedores" (click)="setSeleccion('proveedores')" class="opcion" mat-mini-fab color="accent" >
-        <span  class="material-icons">work</span>
-      </button>
-      </div>
-      <div class="tooltip" matTooltip="{{'menu.clientes' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-        <button [ngClass]="{'selected': subMenu == 'clientes'}" [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.clientes" (click)="setSeleccion('clientes')" class="opcion" mat-mini-fab color="accent" >
-        <span  class="material-icons">store</span>
-      </button>
-      </div>
-      <div class="tooltip" matTooltip="{{'menu.produccion' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-        <button [ngClass]="{'selected': subMenu == 'produccion'}"  [disabled]="!empresasService.empresaActiva || empresasService.userTipo =='Mantenimiento' || !permisos.produccion" (click)="setSeleccion('produccion')" class="opcion" mat-mini-fab color="accent" >
-        <span class="material-icons">developer_board</span>
-      </button>  
-      </div>-->
-      <div class="tooltip" matTooltip="{{'menu.incidencias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+
+      <!-- <div class="tooltip" matTooltip="{{'menu.incidencias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button [ngClass]="{'selected': subMenu == 'incidencias'}"  [disabled]="!empresasService.empresaActiva" (click)="setSeleccion('incidencias')" class="opcion" mat-mini-fab color="accent" >
           <span class="material-icons">error</span>
         </button>
-        </div> 
+        </div>  -->
      <!--  <div class="tooltip" matTooltip="{{'menu.personal' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button [ngClass]="{'selected': subMenu == 'personal'}"  [disabled]="!empresasService.empresaActiva || !permisos.personal || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('personal')" class="opcion" mat-mini-fab color="accent" >
         <span class="material-icons">supervisor_account</span>
       </button>
       </div> -->
-      <div class="tooltip" matTooltip="{{'menu.soporte' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+      <!-- <div class="tooltip" matTooltip="{{'menu.soporte' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button [ngClass]="{'selected': subMenu == 'incidencias'}"  [disabled]="!empresasService.empresaActiva" (click)="setSeleccion('incidencias')" class="opcion" mat-mini-fab color="accent" >
         <span class="material-icons">report</span>
       </button>
-      </div> 
+      </div>  -->
   </div>

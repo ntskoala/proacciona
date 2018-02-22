@@ -39,7 +39,7 @@ import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
 
-import { LoginComponent } from './components/login.component';
+import { StartComponent } from './components/start.component';
 import { EmpresasComponent } from './components/empresas.component';
 import { OpcionesPremium } from './components/configuracion/empresasopcionespremium.component';
 import { Opciones } from './components/configuracion/opciones';
@@ -180,6 +180,7 @@ import {
 import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.component';
 import { TablaIncidenciasComponent } from './components/incidencias/tabla-incidencias/tabla-incidencias.component';
 import { CalendariosIncidenciasComponent } from './components/incidencias/calendarios-incidencias/calendarios-incidencias.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
     exports: [
@@ -271,6 +272,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     //CalendarComponent,
     NavComponent,
     MenuComponent,
+    StartComponent,
     LoginComponent,
     EmpresasComponent,
     OpcionesPremium,

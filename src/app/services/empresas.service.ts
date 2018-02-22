@@ -17,6 +17,7 @@ export class EmpresasService {
   exportar: boolean;
   showTooltips: boolean = true;
   showAlerts:boolean = true;
+  login:boolean=false;
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
 

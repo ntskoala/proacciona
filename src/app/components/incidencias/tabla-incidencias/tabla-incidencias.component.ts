@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from 'ng2-translate';
@@ -24,11 +26,12 @@ import * as moment from 'moment';
   encapsulation: ViewEncapsulation.None
 })
 export class TablaIncidenciasComponent implements OnInit {
-
+@Output() incidenciasCargadas: EventEmitter<Incidencia[]> = new EventEmitter<Incidencia[]>();
   public modal: Modal = new Modal();
   public procesando:boolean=false;
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
 public incidencias: Incidencia[];
+public selectedItem: Incidencia;
 public usuarios: Usuario[];
 
 public guardar = [];
@@ -50,8 +53,9 @@ public verdoc: boolean = false;
 public foto:string;
 public top:string;
 
-  constructor(public servidor: Servidor, public empresasService: EmpresasService
-    , public translate: TranslateService, private messageService: MessageService) { }
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public sanitizer: DomSanitizer
+    , public translate: TranslateService, private messageService: MessageService, public router: Router,
+  public route: ActivatedRoute) { }
 
   ngOnInit() {
     if (this.empresasService.seleccionada) this.loadSupervisores();
@@ -71,8 +75,9 @@ public top:string;
       { field: 'nc', header: 'No conformidad' },
       { field: 'foto', header: 'Foto' }
   ];
-  this.estados = [{'nombre':'--','valor':0},{'nombre':'Incorrecto','valor':1},{'nombre':'Correcto','valor':2}]
-  }
+  this.estados = [{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
+
+}
 
   loadSupervisores(){
     let params = this.empresasService.seleccionada;
@@ -97,7 +102,7 @@ public top:string;
 
   loadIncidencias(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
-    let parametros = '&idempresa=' + params+this.entidad;
+    let parametros = '&idempresa=' + params+this.entidad+'&order=id DESC';
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
@@ -112,22 +117,50 @@ public top:string;
                 }else{
                   fecha_Valoracion = null;
                 }
-                this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,
-                  moment(new Date(element.fecha)).utc().toDate(),element.solucion, element.responsable,element.responsable_seguimiento,
-                  element.responsable_cierre,element.nc,element.origen,element.idOrigen,element.foto,
-                  element.valoracion,fecha_Valoracion,element.estado));
+                this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,element.responsable,
+                  moment(new Date(element.fecha)).utc().toDate(),element.responsable_cierre,
+                  moment(new Date(element.fecha_cierre)).utc().toDate(),element.solucion,
+                  element.nc,element.origen,element.idOrigen,element.origenasociado,element.idOrigenasociado,element.foto,
+                  element.descripcion,element.estado));
                 // this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/incidencias/' + element.id +'_'+element.foto);
 
               }
+              this.incidenciasCargadas.emit(this.incidencias);
+              this.incidenciaSelection();
             }
           },
               (error) => {console.log(error)},
               ()=>{
+
               }
         );
    }
-
-
+   incidenciaSelection(){
+console.log('Seleccion***');
+    let x=0;
+    this.route.paramMap.forEach((param)=>{
+      x++;
+      console.log(param["params"]["modulo"],param["params"]["id"]);
+        if (param["params"]["modulo"] == "incidencias"){
+          if (param["params"]["id"]){
+            let idOrigen = param["params"]["id"];
+            let index = this.incidencias.findIndex((item)=>item.id==idOrigen);
+            console.log(index);
+            this.selectedItem = this.incidencias[index]
+            //this.tablaPosition = index;
+          }
+        }
+      });
+  }
+  
+   changeItem(event,idItem:number,fuente:string){
+console.log(event);
+    if (fuente == 'responsable'){
+      let index = this.incidencias.findIndex((incidencia)=>incidencia.id==idItem);
+      if (this.incidencias[index].responsable_cierre == 0) this.incidencias[index].responsable_cierre = event.value;
+    }
+    this.itemEdited(idItem);
+   }
 
    itemEdited(idItem: number, fecha?: any) {
 
@@ -190,8 +223,9 @@ setAlerta(concept:string){
   nuevaIncidenciaCreada(incidencia: Incidencia){
     console.log('incidencia creada',incidencia);
   this.incidencias.push(new Incidencia(incidencia.id,incidencia.idempresa,incidencia.incidencia,
-    incidencia.fecha,incidencia.solucion,incidencia.responsable,incidencia.responsable_seguimiento,
-    incidencia.responsable_cierre,incidencia.nc,incidencia.origen,incidencia.idOrigen,incidencia.foto,incidencia.valoracion,incidencia.fecha_valoracion,incidencia.estado));
+    incidencia.responsable,incidencia.fecha,incidencia.responsable_cierre,incidencia.fecha_cierre,
+    incidencia.solucion,incidencia.nc,incidencia.origen,incidencia.idOrigen,incidencia.origenasociado,
+    incidencia.idOrigenasociado,incidencia.foto,incidencia.descripcion,incidencia.estado));
     this.incidencias = this.incidencias.slice();
 }
 
@@ -335,6 +369,17 @@ setAlerta(concept:string){
     console.log($event);
     item.nc=$event;
     this.itemEdited(item.id)
+  }
+
+  gotoOrigen(item){
+    console.log('goto Origen',item);
+    let url = 'empresas/limpieza_realizada/'+item.idOrigenasociado+'/'+item.idOrigen
+    let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+    //this.router.navigate([url]);
+    this.router.navigateByUrl(url).catch(
+      (error)=>{console.log('ERROR:',error)}
+    )
   }
 }
 

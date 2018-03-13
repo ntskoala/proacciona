@@ -463,33 +463,38 @@
       "tituloAlertaInfo":"Información",
       "saveOk":"Se ha guardado correctamente",
       "saveNotOk":"Se ha producido un error al guardar",
-      "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición"
+      "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición",
+      "tokenExpired":"La sesión ha caducado, por favor vuelve a iniciar sesión"
     },
     "incidencia":
     {
       "nueva":"Nueva incidencia",
       "incidencia":"Incidencia",
       "fecha":"Fecha",
-      "solucion":"Solución",
-      "responsable":"Responsable",
+      "solucion":"Solución inmediata",
+      "responsable":"Resp. apertura",
       "r_seguimiento":"Responsable seguimiento",
       "r_cierre":"Responsable cierre",
+      "fecha:cierre":"Fecha cierre",
       "nc":"No conformidad",
       "NC":{
         "0":"No activado",
         "1":"No Conforme",
         "2":"Resuelto"
       },
-      "estado0":"--",
-      "estado1":"Incorrecto",
-      "estado2":"Correcto",
+      "0":"Nueva incidencia",
+      "1":"Ir a la incidencia abierta",
+      "2":"Ir a la incidencia cerrada",
+      "Goto":"Ir al elemento origen de la incidencia",
+      "estado0":"No aplica",
+      "estado1":"Abierto",
+      "estado2":"Cerrado",
       "origen":"Origen",
       "accion":"Acción",
       "acciones":"Acciones",
       "estado":"Estado",
       "fecha_termini":"Fecha limite",
-      "valoracion":"Valoración",
-      "fecha_valoracion":"Fecha valoración"
+      "descripcion":"Descripción"
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

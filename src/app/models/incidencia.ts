@@ -3,17 +3,18 @@ export class Incidencia {
       public id: number,
       public idempresa: number,
       public incidencia: string,
-      public fecha: Date,
-      public solucion: string,
       public responsable: number,
-      public responsable_seguimiento: number,
+      public fecha: Date,
       public responsable_cierre: number,
+      public fecha_cierre: Date,
+      public solucion: string,
       public nc: number,
       public origen:string,
       public idOrigen:number,
+      public origenasociado: string, 
+      public idOrigenasociado: number, 
       public foto:string,
-      public valoracion: string,
-      public fecha_valoracion: Date,
+      public descripcion: string,
       public estado: number
     ) {}
   }

@@ -1,6 +1,6 @@
-<span class="tooltip" matTooltip="{{'incidencia.nueva' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+<span class="tooltip" matTooltip="{{'incidencia.'+newIncidencia.estado | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
     [matTooltipPosition]="'right'">  
-<button mat-mini-fab color="warn" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
+<button class="botonIncidencia" mat-mini-fab [color]="colorBoton" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
 </span>
 <div *ngIf="nuevaIncidencia" class="newIncident">
     <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -13,10 +13,15 @@
           <label class="label">{{'incidencia.incidencia' | translate}}</label>
           <input class="itemElem" type="text" [placeholder]="'incidencia.incidencia' | translate" required [(ngModel)]="newIncidencia.incidencia" name="incidencia">
         </span>
+
+        <span class="elem">
+            <label class="label">{{'incidencia.responsable' | translate}}</label>
+            <p-dropdown [disabled]="true" styleClass="itemElem"  [style]="{'width':'200px'}" [options]="responsables" [(ngModel)]="newIncidencia.responsable" placeholder="{{'incidencia.responsable' | translate}}"  name="responsable" (onChange)="responsableSelected($event)"></p-dropdown>
+      </span>
         <span class="elem">
             <label class="label">{{'incidencia.fecha' | translate}}</label>
           <!-- <p-calendar class="itemElem" [inputStyle]="{'width':'200px'}" placeholder="fecha" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy" hourFormat="24" [showTime]="true" name="fecha"> -->
-            <p-calendar class="itemElem"  #cal appendTo="body" [inputStyle]="{'width':'200px'}" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"
+            <p-calendar  [disabled]="true" class="itemElem"  #cal appendTo="body" [inputStyle]="{'width':'200px'}" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"
             hourFormat="24" [showTime]="true" (onSelect)="itemDateEdited(newIncidencia.fecha,$event)" name="fecha">
             <p-footer>
                 <button pButton type="button" (click)="okDate(cal)" icon="fa-check" style="margin-left:45%"></button>
@@ -31,23 +36,26 @@
           </p-calendar> -->
         </span>
         
+        <div class="elem">
+            <label  class="label">{{'incidencia.r_cierre' | translate}}</label>
+      <p-dropdown styleClass="itemElem"  [style]="{'width':'200px'}" [options]="responsables" [(ngModel)]="newIncidencia.responsable_cierre" placeholder="{{'incidencia.r_cierre' | translate}}"  name="r_cierre"></p-dropdown>    
+</div>
+
         <span class="elem">
             <label class="label">{{'incidencia.solucion' | translate}}</label>
            <textarea class="itemElem"  pInputTextarea [placeholder]="'incidencia.solucion' | translate" [(ngModel)]="newIncidencia.solucion" name="solucion">
            </textarea>
         </span>
-          <span class="elem">
-              <label class="label">{{'incidencia.responsable' | translate}}</label>
-          <input class="itemElem" type="text" [placeholder]="'incidencia.responsable' | translate" required [(ngModel)]="newIncidencia.responsable" name="responsable">
-        </span>
 
-            <span class="elem">
+
+
+            <!-- <span class="elem">
                 <label class="label">{{'incidencia.nc' | translate}}</label>
               <select class="smallselect itemElem" required [(ngModel)]="newIncidencia.nc" name="nc">
                 <option value="0">--</option>
                 <option value="1">{{'incidencia.nc' | translate}}</option>
               </select>
-              </span>
+              </span> -->
 
 
              

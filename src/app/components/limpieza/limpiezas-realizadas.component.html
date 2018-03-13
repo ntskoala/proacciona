@@ -75,7 +75,8 @@
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true" 
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
-[csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'" [tableStyle]="{'width':'1050px'}">
+[csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'" [tableStyle]="{'width':'1050px'}"
+selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="seleccion($event)" (onRowUnselect)="unSeleccion($event)"  [(first)]="tablaPosition">
 <p-header>
     <div class="ui-helper-clearfix">
         <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -108,9 +109,9 @@
 
   <p-column field="responsable" header="{{'limpieza.responsable' | translate}}" [editable]="true" [sortable]="true"></p-column>
 
-  <p-column [style]="{'width':'180px'}" field="supervision" header="{{'limpieza.supervision' | translate}}"  [sortable]="true">
+  <p-column [style]="{'width':'190px','position':'relative'}" field="supervision" header="{{'limpieza.supervision' | translate}}"  [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-       <div style="float:left">
+       <div style="width:130px;position:relative;float:left">
          <mat-select  [(ngModel)]="item[col.field]" name="item[col.header]">
   <mat-option value="0">{{'planificaciones.porSupervisar' | translate}}</mat-option>
    <mat-option value="1">{{'planificaciones.correcta' | translate}}</mat-option>
@@ -118,7 +119,7 @@
 </mat-select>
     <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
        </div>
-  <div style="float:right">
+  <div style="width:30px;position:relative;float:right">
         <figure *ngIf="item.supervision==1" style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
         <figure *ngIf="item.supervision==2" style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
   </div>
@@ -187,7 +188,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'120px'}">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'150px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
@@ -200,6 +201,9 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
+
+  <app-boton-incidencia class="incidenciaItem" id="botonIncidencia" [origen]="incidencia[item.id]"></app-boton-incidencia>
+    
 </ng-template>  
   </p-column>  
 </p-dataTable>

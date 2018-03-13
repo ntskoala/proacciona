@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {DataTable,Column} from 'primeng/primeng';
@@ -23,7 +25,12 @@ import * as moment from 'moment';
 export class LimpiezasRealizadasComponent implements OnInit, OnChanges {
 @Input() limpieza: LimpiezaZona;
 @Input() nueva: number;
+@ViewChild('DT') tablaLimpiezas: DataTable;
+public tablaPosition=0;
+public incidencia:any[];
+
 public items: LimpiezaRealizada[];
+public selectedItem: LimpiezaRealizada;
 public images: string[];
 public docs: string[];
 public usuarios:Usuario[];
@@ -45,7 +52,7 @@ public foto;
 public top = '50px';
 //************** */
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService
+  constructor(public servidor: Servidor,public empresasService: EmpresasService,private route: ActivatedRoute
     , public translate: TranslateService, private messageService: MessageService) {}
 
 
@@ -61,7 +68,31 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        
   }
+incidenciaSelection(){
+  let x=0;
+  this.route.paramMap.forEach((param)=>{
+    x++;
+      console.log(param["params"]["id"],param["params"]["modulo"]);
+      if (param["params"]["modulo"] == "limpieza_realizada"){
+        console.log(param["params"]["id"],param["params"]["modulo"]);
+        if (param["params"]["id"]){
+          console.log(param["params"]["id"],param["params"]["modulo"]);
+          let idOrigen = param["params"]["id"];
+          let index = this.items.findIndex((item)=>item.id==idOrigen);
+          this.selectedItem = this.items[index]
+          // let x= 5;
+          // do {x--} while ((index -x) % 5 != 0 || x > 0)
+          this.tablaPosition = index;
+          //console.log("SELECCION AÇUTOMATICA",index,x);
+        }
+      }
+    });
+}
+seleccion(evento){
+  console.log("SELECCION",evento);
+}
 
   ngOnChanges(){
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_realizada/';
@@ -80,6 +111,7 @@ public top = '50px';
             this.items = [];
             this.images=[];
             this.docs=[];
+            this.incidencia=[];
             if (response.success && response.data) {
               for (let element of response.data) {  
                 let fecha;
@@ -91,10 +123,13 @@ public top = '50px';
                   element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
                   supervisor,element.doc,element.imagen));
                   this.motivo.push(false);
+                  this.incidencia[element.id]={'origen':'limpiezas','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                 }
+                this.incidenciaSelection();
+                this.getIncidencias();
             }
 
         });
@@ -279,6 +314,7 @@ uploadFunciones(event:any,idItem: number,field?:string) {
   }
 
 exportData(tabla: DataTable){
+
   console.log(tabla);
   let origin_Value = tabla._value;
   tabla.columns.push(new Column())
@@ -317,4 +353,23 @@ exportData(tabla: DataTable){
   tabla.columns.splice(tabla.columns.length-2,2);
 }
 
+
+getIncidencias(){
+  let params = this.empresasService.seleccionada;
+  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.limpieza.id;
+      this.servidor.getObjects(URLS.STD_SUBITEM, parametros2).subscribe(
+        response => {
+          
+          if (response.success && response.data) {
+
+            for (let element of response.data) {  
+              this.incidencia[element.idOrigen]["idIncidencia"]=element.id; 
+              this.incidencia[element.idOrigen]["estado"]=element.estado;                              
+           }
+           
+           //console.log(this.incidencia);
+          // this.localSupervisor = this.findSupervisor(this.empresasService.userId);
+          }
+      });
+}
 }

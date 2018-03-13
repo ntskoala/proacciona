@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit,OnChanges, Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -13,12 +13,13 @@ import {MatSelect} from '@angular/material';
   templateUrl: './listado-limpieza.component.html',
   styleUrls:['./listado-limpieza.css']
 })
-export class ListadoLimpiezasComponent implements OnInit {
+export class ListadoLimpiezasComponent implements OnInit, OnChanges {
   //@ViewChild('choicer') Choicer: ElementRef;
   @ViewChild('choicer') Choicer: MatSelect;
   @Output() zonaSeleccionada: EventEmitter<LimpiezaZona>=new EventEmitter<LimpiezaZona>();
   @Output() listaZonas: EventEmitter<LimpiezaZona[]>=new EventEmitter<LimpiezaZona[]>();
   @Output() migrando: EventEmitter<boolean>=new EventEmitter<boolean>();
+  @Input() idSelected: number;
   public myItem: number = null;
   
   public subscription: Subscription;
@@ -34,12 +35,24 @@ export class ListadoLimpiezasComponent implements OnInit {
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
+  console.log('select limpiezaZona init',this.idSelected)
+  
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadLimpiezas(this.empresasService.seleccionada.toString());
 
 }
+ngOnChanges(){
+//  console.log('select limpiezaZona changes',this.idSelected)
+  if (this.idSelected){
+    this.unExpand();
+    // console.log('select limpiezaZona changes',this.limpiezas)
+    // let event = this.limpiezas.findIndex((limpieza)=>limpieza.id==this.idSelected);
+    // console.log('select limpiezaZona changes',event)
+    // this.seleccionarZona(event);
+  }
+}
 
-     loadLimpiezas(emp: Empresa | string) {
+    loadLimpiezas(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
     let parametros = '&idempresa=' + params+"&entidad=limpieza_zona&order=nombre";
         //let parametros = '&idempresa=' + seleccionada.id;
@@ -61,13 +74,15 @@ ngOnInit(){
               ()=>{
               this.listaZonas.emit(this.limpiezas);
                //this.expand(this.Choicer.nativeElement);
-               this.expand();
+               if (!this.idSelected) this.expand();
               }
         );
    }
 
 seleccionarZona(event:any | number){
+  console.log(event);
   this.myItem = typeof(event) == "number" ? event : event.value;
+  
   this.zonaSeleccionada.emit(this.limpiezas[this.myItem]);
   this.limpiezaActiva = this.limpiezas[this.myItem].id;
   this.unExpand();

@@ -27,6 +27,7 @@ export class SeleccionarEmpresaComponent {
 
   selecciona(empresa: Empresa){
     this.empresasService.seleccionarEmpresa(empresa);
+    sessionStorage.setItem('idEmpresa', empresa.id.toString());
     //console.log("informes",this.empresasService.empresa.exportar_informes);
   }
 

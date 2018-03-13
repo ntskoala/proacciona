@@ -31,7 +31,10 @@ import * as moment from 'moment';
 export class IncidenciasComponent implements OnInit {
 
   @ViewChild('sidenavCalendar') snCalendar: any;
-
+public myTop;
+public myLeft;
+public ayuda;
+public incidencias: Incidencia[];
 // public limpieza: LimpiezaZona;
 // public elementosLimpieza: LimpiezaElemento[];
 // public misProdusctosLimpieza: LimpiezaProducto[];
@@ -51,7 +54,19 @@ public subMenu:string=null;
     , public translate: TranslateService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.ayuda=true;
+   this.myTop =document.getElementById("botonIncidencia").offsetTop;
+   this.myLeft=document.getElementById("botonIncidencia").offsetLeft+document.getElementById("botonIncidencia").offsetWidth;
   }
+  // setStyles(){
+  //   let styles = {
+  //   'position':'relative',
+  //   'top':this.myTop+'px',
+  //   'left':this.myLeft+'px',
+  //   'color':'#fff',
+  //   };
+  //   return styles;
+  // }
   cambioMenu(opcion: string){
 
 
@@ -130,5 +145,9 @@ public subMenu:string=null;
   }
   nuevaIncidenciaCreada(evento){
     console.log(evento);
+  }
+  cargaIncidencias(incidencias: Incidencia[]){
+    this.incidencias= incidencias;
+
   }
 }

@@ -32,7 +32,7 @@ export class PlanesComponent implements OnInit {
   //@Output() planSeleccionado: EventEmitter<Planificacion>=new EventEmitter<Planificacion>();
   @Output() listaPlanes: EventEmitter<Planificacion[]>=new EventEmitter<Planificacion[]>();
 
-  
+  public incidencia:any[];
   public subscription: Subscription;
   public planActivo: number = 0;
   public plan: Planificacion = new Planificacion(null,null,null,null,0,new Date(),'','',0);
@@ -59,6 +59,7 @@ export class PlanesComponent implements OnInit {
     , public translate: TranslateService, private messageService: MessageService) {}
 
 ngOnInit(){
+  
 
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadplanes(this.empresasService.seleccionada.toString());
@@ -84,12 +85,14 @@ ngOnInit(){
             this.planActivo = 0;
             // Vaciar la lista actual
             this.planes = [];
+            this.incidencia = []; 
             //this.planes.push(this.plan);
             if (response.success == 'true' && response.data) {
               let fecha;
               for (let element of response.data) {
                 (moment(element.fecha).isValid())? fecha = new Date(element.fecha) : fecha = null;
                 this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,fecha, element.periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
+              this.incidencia[element.id]={'origen':'planificaciones','idOrigen':element.id}
               }
             }
           },

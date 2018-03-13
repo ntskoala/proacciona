@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Observable';
 //import {MessageService} from 'primeng/components/common/messageservice';
 import * as moment from 'moment/moment';
 
@@ -16,14 +18,72 @@ export class EmpresasComponent implements OnInit {
 @ViewChild('scrollMe') public myScrollContainer: ElementRef;
 public selectedMenu:string='home';
 public inicio:string;
-
+public params;
   permiso: boolean = false;
   token = sessionStorage.getItem('token');
   empresa: Empresa;
-  constructor(public router: Router, public empresasService: EmpresasService,public servidor: Servidor,
+  constructor(public router: Router,private route: ActivatedRoute,
+     public empresasService: EmpresasService,public servidor: Servidor,
   public permisos: PermisosService) {}
 
   ngOnInit() {
+     let x = 0;
+    // this.router.events.subscribe(
+    //   (elem)=>{
+    //     console.log(elem["id"],elem["modulo"]);
+    //     console.log(elem);
+    //     if (elem["id"] >0 && elem["modulo"]=='/limpiezas'){
+    //       console.log(elem["id"],elem["url"]);
+    //     }else{
+    //       this.setInitial();
+    //     }
+    //   }
+    // )
+    // console.log(this.route.pathFromRoot);
+    // console.log(this.route.fragment);
+    this.route.paramMap.forEach((param)=>{
+    x++;
+      console.log(param["params"]["id"],param["params"]["modulo"]);
+      switch(param["params"]["modulo"]){
+        case "limpieza_realizada":
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        this.setUser();
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
+        // console.log('Go to Limiezas',this.empresa);
+        // this.empresasService.seleccionarEmpresa(this.empresa);
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        this.selectedMenu = "limpieza";
+        break;
+        case "incidencias":
+        this.setUser();
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        this.selectedMenu = "incidencias";
+        break;
+        default:
+        this.setInitial();
+      }
+    });
+
+  // if (x=0) this.setInitial();
+  }
+
+setUser(){
+  this.empresasService.login=false;
+  this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
+  this.empresasService.userName = sessionStorage.getItem('userName');
+  this.empresasService.userTipo = sessionStorage.getItem('userTipo');
+  this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
+  this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
+  this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
+  this.empresasService.seleccionarEmpresa(this.empresa);
+}
+
+
+  setInitial(){
     this.isTokenExired(this.token)
     // Si no exite el token, redirecciona a login
     console.log(this.isTokenExired(this.token),this.token);
@@ -31,13 +91,14 @@ public inicio:string;
       console.log('no hay token');
       this.router.navigate(['login']);
     }
+    this.setUser();
     //if (this.empresasService.login){
-      this.empresasService.login=false;
-      this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
-      this.empresasService.userName = sessionStorage.getItem('userName');
-      this.empresasService.userTipo = sessionStorage.getItem('userTipo');
-      this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
-      this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
+      // this.empresasService.login=false;
+      // this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
+      // this.empresasService.userName = sessionStorage.getItem('userName');
+      // this.empresasService.userTipo = sessionStorage.getItem('userTipo');
+      // this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
+      // this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
     //}
     console.log(this.empresasService.userTipo,this.empresasService.idioma,this.empresasService.userId,this.empresasService.userName)
     switch (this.empresasService.userTipo) {

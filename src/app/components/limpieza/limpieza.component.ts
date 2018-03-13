@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild} from '@angular/core';
-
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
@@ -15,7 +15,7 @@ import { Protocolo } from '../../models/limpiezaprotocolo';
 })
 export class LimpiezaComponent implements OnInit {
   @ViewChild('sidenavCalendar') snCalendar: any;
-
+public incidencia:any;
 public limpieza: LimpiezaZona;
 public elementosLimpieza: LimpiezaElemento[];
 public misProdusctosLimpieza: LimpiezaProducto[];
@@ -30,16 +30,33 @@ public productos:boolean=false;
 public protocolos:boolean=false;
 public estadoSideNav:string="cerrado";
 public subMenu:string=null;
-  constructor(public empresasService: EmpresasService) {}
+public selectedTab: number=null;
+public idlimpiezaURL:number=null;
+  constructor(public empresasService: EmpresasService,public router: Router,private route: ActivatedRoute) {}
 
   ngOnInit() {
-
+    this.incidencia = {'origen':'limpieza_zona','idOrigen':null}
+    let x=0;
+    this.route.paramMap.forEach((param)=>{
+      x++;
+        console.log(param["params"]["id"],param["params"]["modulo"]);
+        if (param["params"]["modulo"] == "limpieza_realizada"){
+          if (param["params"]["idOrigenasociado"]){
+            console.log(param["params"]["idOrigenasociado"]);
+            let event = {'id':param["params"]["idOrigenasociado"]}
+            this.seleccionZona(event);
+            this.idlimpiezaURL = param["params"]["idOrigenasociado"];
+            this.selectedTab = 1;
+          }
+        }
+      });
   }
-cambiarTab(){}
+
 
 seleccionZona($event){
-  //console.log($event);
+  console.log($event);
   this.limpieza = $event;
+  //this.incidencia = {'origen':'limpieza_zona','idOrigen':this.limpieza.id}
 }
 
 loadZonas($event){

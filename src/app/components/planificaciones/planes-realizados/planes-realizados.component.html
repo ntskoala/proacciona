@@ -40,17 +40,20 @@
   </p-column>
   <p-column field="responsable" header="{{'planificaciones.responsable' | translate}}" [editable]="true" [style]="{'width':'90px'}" [sortable]="true"></p-column>
 
-  <p-column [style]="{'width':'190px'}" field="supervision" header="{{'planificaciones.supervision' | translate}}" [editable]="true" [sortable]="true">
+  <p-column [style]="{'width':'190px','overflow':'visible','position':'relative'}" field="supervision" header="{{'planificaciones.supervision' | translate}}" [editable]="true" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
-       <div style="float:left">
-         <mat-select  [(ngModel)]="item[col.field]" name="item[col.header]">
+       <!-- <div style="float:left"> -->
+          <div style="width:130px;position:relative;float:left">
+  <mat-select  [(ngModel)]="item[col.field]" name="item[col.header]">
   <mat-option value="0">{{'planificaciones.porSupervisar' | translate}}</mat-option>
-   <mat-option value="1">{{'planificaciones.correcta' | translate}}</mat-option>
-    <mat-option value="2">{{'planificaciones.incorrecta' | translate}}</mat-option>
+  <mat-option value="1">{{'planificaciones.correcta' | translate}}</mat-option>
+  <mat-option value="2">{{'planificaciones.incorrecta' | translate}}</mat-option>
 </mat-select>
     <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
        </div>
-  <div style="float:right">
+
+  <!-- <div style="float:right"> -->
+  <div style="width:30px;position:relative;float:right">
         <figure *ngIf="item.supervision==1" style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
         <figure *ngIf="item.supervision==2" style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
   </div>

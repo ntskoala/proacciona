@@ -752,6 +752,7 @@ width: 400px;
    /* overflow: auto !important; */
 }
 
+
 /* .example-sidenav-content {
   display: flex;
   height: 300vh;
@@ -808,8 +809,8 @@ width: 400px;
 .ui-growl-message-error { background-color: #DC1B1B !important; color: #fff !important }
 /* .ui-dialog-content {width:450px} */
 
-.seleccionNC .mat-select-content{
+/* .seleccionNC .mat-select-content{
   width:150px;
   min-width: 150px !important;
   background: grey;
-}
+} */

@@ -11,6 +11,7 @@ const appRoutes: Routes = [
   {path: 'login2', component: LoginComponent},
   {path: 'login', component: StartComponent},
   {path: 'empresas', component: EmpresasComponent},
+  {path: 'empresas/:modulo/:idOrigenasociado/:id', component: EmpresasComponent},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '404'}
 ];

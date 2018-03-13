@@ -13,6 +13,7 @@ export class PlanificacionesComponent implements OnInit {
 @ViewChild('sidenavCalendar') snCalendar: any;
 // @ViewChild('sidenavFamilias') snFamilias: any;
 // @ViewChild('sidenavPermisos') snPermisos: any;
+public incidencia:any;
 public calendario:boolean=false;
 public familia:boolean=false;
 public permiso:boolean=false;
@@ -26,6 +27,8 @@ public newPlanRealizado:number;
   constructor(public empresasService: EmpresasService) { }
 
   ngOnInit() {
+    this.incidencia = {'origen':'planificaciones','idOrigen':null}
+    
   }
 
 cambioMenu(opcion: string){

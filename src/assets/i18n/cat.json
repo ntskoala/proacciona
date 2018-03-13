@@ -463,33 +463,38 @@
       "tituloAlertaInfo":"Informació",
       "saveOk":"S'ha desat correctament",
       "saveNotOk":"S'ha produit un error al desar",
-      "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició"      
+      "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició",
+      "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió"      
     },
     "incidencia":
     {
       "nueva":"Nova incidència",
       "incidencia":"Incidència",
       "fecha":"Data",
-      "solucion":"Solució",
-      "responsable":"Responsable",
+      "solucion":"Solució inmediata",
+      "responsable":"Resp. apertura",
       "r_seguimiento":"Responsable seguiment",
       "r_cierre":"Responsable tancament",
+      "fecha:cierre":"Data tancament",
       "nc":"No conformitat",
       "NC":{
         "0":"No Activat",
         "1":"No Conforme",
         "2":"Resolt"
       },
-      "estado0":"--",
-      "estado1":"Incorrecto",
-      "estado2":"Correcto",
+      "0":"Nova incidència",
+      "1":"Anar a la incidència oberta",
+      "2":"Anar a la incidència tancada",
+      "Goto":"Anar a l'element origen de la incidència",
+      "estado0":"No aplica",
+      "estado1":"Obert",
+      "estado2":"Tancat",
       "origen":"Origen",
       "accion":"Acció",
       "acciones":"Accions",
       "estado":"Estat",
       "fecha_termini":"Data termini",
-      "valoracion":"Valoració",
-      "fecha_valoracion":"Data valoració"
+      "descripcion":"Descripció"
     },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",

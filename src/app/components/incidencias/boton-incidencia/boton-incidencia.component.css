@@ -43,3 +43,9 @@
     width: 400px;
     display: block;
   }
+
+  .botonIncidencia{
+    /* margin-left:6px; */
+    /* margin-top:25px;*/
+    display: block; 
+  }

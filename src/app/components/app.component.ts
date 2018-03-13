@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
     // console.log('*******',this.route.queryParams);
     this.router.events.subscribe(
       (elem)=>{
-        console.log(elem);
+       // console.log(elem);
         if (elem["id"] ==1 && elem["url"]=='/login2'){
           this.empresasService.login = true;
          // this.router.navigate(['login2']);

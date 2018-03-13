@@ -2,7 +2,7 @@
     <mat-card-title>
       <mat-toolbar color="accent" class="toolbar-principal">{{'menu.limpieza' | translate}}
 
-        <listado-limpieza (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)" (migrando)="migrando($event)"></listado-limpieza>
+        <listado-limpieza [idSelected]="idlimpiezaURL" (zonaSeleccionada)="seleccionZona($event)" (listaZonas)="loadZonas($event)" (migrando)="migrando($event)"></listado-limpieza>
       </mat-toolbar>
     </mat-card-title>
  <mat-card-subtitle>
@@ -29,6 +29,10 @@
   <div class="tooltip" matTooltip="{{'limpieza.protocolos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'protocolos'}" color="accent" mat-mini-fab (click)="cambioMenu('protocolos')"><mat-icon>description</mat-icon></button>
       </div>
+
+
+      <!-- <app-boton-incidencia id="botonIncidencia" class="opcionBoton" [origen]="incidencia"></app-boton-incidencia> -->
+  
    <!-- <div class="tooltip" matTooltip="{{'alertas.avisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('alerta')"><mat-icon>notifications_active</mat-icon></button>
   </div> -->
@@ -74,7 +78,7 @@
 
   <div class="sidenav-content">
    <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2><BR>
-<mat-tab-group *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
+<mat-tab-group [selectedIndex]="selectedTab" *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" (onElementosLimpieza)="setElementosLimpieza($event)" *ngIf="limpieza"></elementos-limpieza></mat-tab>
 <mat-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></mat-tab>  
   <!--<mat-tab label="{{'limpiezas.limpiezascorrectivas' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [limpieza]="limpieza" *ngIf="limpieza"></mantenimientos-correctivos></mat-tab>-->

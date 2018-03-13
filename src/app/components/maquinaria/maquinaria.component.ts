@@ -17,7 +17,7 @@ public calendario: boolean = false;
 public lubricante: boolean = false;
 public maquinas: Maquina[];
 public nuevoMantenimientoR: number;
-
+public incidencia: any;
 public permiso:boolean=false;
 public alerta:boolean=false;
 public estadoSideNav:string="cerrado";
@@ -26,6 +26,7 @@ public subMenu:string=null;
   constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
+    this.incidencia = {'origen':'maquinaria','idOrigen':null}
 
   }
 cambiarTab(){}
@@ -99,6 +100,7 @@ cambioMenu(opcion: string){
 seleccionMaquina($event){
   console.log($event);
   this.maquina = $event;
+  this.incidencia = {'origen':'maquinaria','idOrigen':this.maquina.id};
 }
 
 loadMaquinas($event){

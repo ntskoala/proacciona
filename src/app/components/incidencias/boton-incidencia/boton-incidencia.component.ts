@@ -1,4 +1,5 @@
-import { Component, OnInit, OnChanges,ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, DoCheck, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Router  } from '@angular/router';
 
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from 'ng2-translate';
@@ -8,6 +9,7 @@ import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
+import { Usuario } from '../../../models/usuario';
 import { Incidencia } from '../../../models/incidencia';
 import { Modal } from '../../../models/modal';
 import {MatSelect,MatSnackBar} from '@angular/material';
@@ -19,23 +21,25 @@ import * as moment from 'moment';
   styleUrls: ['./boton-incidencia.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class BotonIncidenciaComponent implements OnInit, OnChanges {
+export class BotonIncidenciaComponent implements OnInit, OnChanges,DoCheck {
   @Output() nuevaIncidenciaCreada: EventEmitter<Incidencia> = new EventEmitter<Incidencia>();
   @Input() origen: any;
-
+  public responsables: any[];
 public nuevaIncidencia:boolean=false;
-public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,null,null,0,'Incidencias',0,'','',null,0);
-public incidencias: Incidencia[];
+public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',0);
+//public incidencias: Incidencia[];
 public selectedDay: number;
 public cols:any[];
 public es:any;
 public entidad:string="&entidad=incidencias";
 public urlFoto = URLS.DOCS + this.empresasService.seleccionada + '/incidencias/';
 public uploadFoto: any;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService
+public colorBoton:string='accent';
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, public router: Router
     , public translate: TranslateService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.loadUsuarios();
     this.es = {
       monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
           'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -44,20 +48,64 @@ public uploadFoto: any;
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
       firstDayOfWeek: 1
   }; 
+  //this.setOrigen();
   }
 
 ngOnChanges(){
-  if (this.origen.origen && this.origen.idOrigen){
+//this.setOrigen();
+}
+ngDoCheck(){
+  if (this.origen){
+  this.setOrigen();
+  }
+  
+}
+setOrigen(){
+ // console.log('###BOTON CHANGES',this.origen,this.origen.idIncidencia > 0)
+
+  if (this.origen.idIncidencia > 0){
+    switch (this.origen.estado){
+      case "2":
+    this.colorBoton= 'primary';
+    break;
+    case "1":
+    this.colorBoton= 'warn'
+    break;
+    }
+    this.newIncidencia.id = this.origen.idIncidencia;
+    this.newIncidencia.estado = this.origen.estado;
+  }
+
+  if (this.origen.origen){
     this.newIncidencia.origen = this.origen.origen;
+  }
+  if (this.origen.idOrigenasociado){
+    this.newIncidencia.idOrigenasociado = this.origen.idOrigenasociado;
+  }
+  if (this.origen.idOrigen){
     this.newIncidencia.idOrigen = this.origen.idOrigen;
-  }else{
-    this.newIncidencia.origen = 'Incidencias';
-    this.newIncidencia.idOrigen = 0;
   }
 }
+loadUsuarios(){
+  let params = this.empresasService.seleccionada;
+  let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
+      this.servidor.getObjects(URLS.STD_ITEM, parametros2).subscribe(
+        response => {
+          this.responsables = [];
+          if (response.success && response.data) {
+          //  console.log(response.data)
+            for (let element of response.data) {  
+              this.responsables.push({'label':element.usuario,'value':element.id});
+           }
+          }
+      });
+}
+
 
   newItem() {
     this.newIncidencia.fecha = new Date(Date.UTC(this.newIncidencia.fecha.getFullYear(), this.newIncidencia.fecha.getMonth(), this.newIncidencia.fecha.getDate(), this.newIncidencia.fecha.getHours(), this.newIncidencia.fecha.getMinutes()))
+    this.newIncidencia.fecha_cierre = null;//new Date(Date.UTC(this.newIncidencia.fecha_cierre.getFullYear(), this.newIncidencia.fecha_cierre.getMonth(), this.newIncidencia.fecha_cierre.getDate(), this.newIncidencia.fecha_cierre.getHours(), this.newIncidencia.fecha_cierre.getMinutes()))
+
     this.newIncidencia.idempresa = this.empresasService.seleccionada;
 
       this.addItem(this.newIncidencia).then(
@@ -65,6 +113,7 @@ ngOnChanges(){
           console.log(valor);
           this.nuevaIncidenciaCreada.emit(this.newIncidencia);
           this.setIncidencia();
+          this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',0);
             // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
             // this.incidencias = this.incidencias.slice();
           }
@@ -93,8 +142,15 @@ ngOnChanges(){
 
 
 setIncidencia(){
+  if (this.newIncidencia.id >0){
+    let url = 'empresas/incidencias/'+0+'/'+this.newIncidencia.id;
+    this.router.navigateByUrl(url).catch(
+      (error)=>{console.log('ERROR:',error)}
+    )
+  }else{
 this.nuevaIncidencia = ! this.nuevaIncidencia;
 console.log(this.nuevaIncidencia)
+  }
 }
 
 setImg(event){
@@ -133,6 +189,11 @@ itemDateEdited(fecha: any,evento:any) {
   this.selectedDay= new Date(fecha).getDate();
 }
 
+responsableSelected(event){
+  console.log(event);
+  if (!this.newIncidencia.responsable_cierre) this.newIncidencia.responsable_cierre = event.value;
+  
 
+}
 
 }

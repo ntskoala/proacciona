@@ -21,17 +21,22 @@
         <span  class="material-icons">show_chart</span>
       </button>
       </div>
-      <div *ngFor="let opcion of menu" class="tooltip" matTooltip="{{opcion.nombre | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+      <div *ngFor="let opcion of menu" class="tooltip" matTooltip="{{'menu.'+opcion.nombre | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button [ngClass]="{'selected': subMenu == opcion.nombre}" [disabled]="!empresasService.empresaActiva || !opcion.activo" (click)="setSeleccion(opcion.selector)" class="opcion" mat-mini-fab color="accent" >
           <span class="material-icons">{{opcion.icono}}</span>
         </button>
         </div>
 
-      <!-- <div class="tooltip" matTooltip="{{'menu.incidencias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+      <div class="tooltip" matTooltip="{{'menu.incidencias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button [ngClass]="{'selected': subMenu == 'incidencias'}"  [disabled]="!empresasService.empresaActiva" (click)="setSeleccion('incidencias')" class="opcion" mat-mini-fab color="accent" >
           <span class="material-icons">error</span>
         </button>
-        </div>  -->
+        </div> 
+
+
+
+
+
      <!--  <div class="tooltip" matTooltip="{{'menu.personal' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button [ngClass]="{'selected': subMenu == 'personal'}"  [disabled]="!empresasService.empresaActiva || !permisos.personal || empresasService.userTipo =='Mantenimiento'" (click)="setSeleccion('personal')" class="opcion" mat-mini-fab color="accent" >
         <span class="material-icons">supervisor_account</span>

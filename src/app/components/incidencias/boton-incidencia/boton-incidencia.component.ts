@@ -26,7 +26,7 @@ export class BotonIncidenciaComponent implements OnInit, OnChanges,DoCheck {
   @Input() origen: any;
   public responsables: any[];
 public nuevaIncidencia:boolean=false;
-public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',0);
+public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
 //public incidencias: Incidencia[];
 public selectedDay: number;
 public cols:any[];
@@ -69,7 +69,10 @@ setOrigen(){
     this.colorBoton= 'primary';
     break;
     case "1":
-    this.colorBoton= 'warn'
+    this.colorBoton= 'warn';
+    break;
+    case "0":
+    this.colorBoton = 'primary';
     break;
     }
     this.newIncidencia.id = this.origen.idIncidencia;
@@ -113,7 +116,7 @@ loadUsuarios(){
           console.log(valor);
           this.nuevaIncidenciaCreada.emit(this.newIncidencia);
           this.setIncidencia();
-          this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',0);
+          this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
             // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
             // this.incidencias = this.incidencias.slice();
           }

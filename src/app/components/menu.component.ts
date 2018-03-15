@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, Output,EventEmitter } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 
 import { EmpresasService } from '../services/empresas.service';
@@ -18,7 +19,8 @@ public menu:Menu[];
 public subMenu:string=null;
 public modulos:Menu[]= [];
 
-  constructor(public empresasService: EmpresasService,public permisos: PermisosService) {
+  constructor(public empresasService: EmpresasService,private route: ActivatedRoute,
+    public router: Router, public permisos: PermisosService) {
 
   }
   ngAfterViewInit(){
@@ -61,7 +63,8 @@ setMenu(){
 //  this.modulos.filter((mod)=>mod.activo != true).forEach((modulo)=>{
 //     this.menu.push(modulo);
 //   });
- console.log(this.menu);
+this.selectedUrlMenu();
+ console.log(this.menu,this.subMenu);
 // this.setOrden();
 }
 
@@ -69,9 +72,30 @@ setOrden(){
   let newArr= this.menu.sort((a,b)=>(+b.activo)-(+a.activo));
   console.log(newArr);
 }
+
+
+
 setSeleccion(opcionmenu){
+  let url = 'empresas/'+opcionmenu+'/0/0';
+  this.router.navigateByUrl(url);
+
 this.selectedMenu.emit(opcionmenu);
 this.subMenu = opcionmenu
 }
 
+
+selectedUrlMenu(){
+  this.route.paramMap.forEach((param)=>{
+    switch(param["params"]["modulo"]){
+      case "limpieza_realizada":
+      this.subMenu = "limpieza";
+      break;
+      case "incidencias":
+      this.subMenu = "incidencias";
+      break;
+      default:
+      this.subMenu = param["params"]["modulo"];
+    }
+  });
+}
 }

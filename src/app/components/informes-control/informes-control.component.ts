@@ -108,7 +108,7 @@ setColOptions(){
             let fecha = new Date(element.fecha);
 
               this.resultadoscontrol.push(new ResultadoControl(element.idr, element.idcontrol,element.usuario,
-                parseFloat(element.resultado), new Date(element.fecha), element.foto));
+                parseFloat(element.resultado), moment(element.fecha).toDate(), element.foto));
           }
         }
         for (let element of this.resultadoscontrol) {
@@ -117,8 +117,8 @@ setColOptions(){
               let resultado = new Object;
               resultado['id'] = element.idr;
               resultado['usuario'] = element.usuario;
-              resultado['fecha'] = this.formatFecha(element.fecha);
-              //resultado['fecha'] = element.fecha;
+              //resultado['fecha'] = this.formatFecha(element.fecha);
+              resultado['fecha'] = moment(element.fecha).format('DD/MM/YYYY HH:mm');
               resultado['nombre']= control.nombre;
               resultado['valor']= element.resultado;
               resultado[control.nombre] = element.resultado;
@@ -208,10 +208,12 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 }
 
 formatFecha(fecha: Date):string{
-let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getHours())).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
-console.log('fecha',mifecha);
+
+//let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getHours())).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
+let mifecha = moment(fecha).format('DD/MM/YYYY HH:mm')
   return mifecha;
 }
+
 setChanges(){
 this.tabla = this.tabla2;
 this.tabla = this.tabla.filter((fila)=>{

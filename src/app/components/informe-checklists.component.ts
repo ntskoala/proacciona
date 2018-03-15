@@ -117,7 +117,7 @@ public es;
           for (let element of response.data) {
             let fecha = new Date(element.fecha);
               this.resultadoschecklist.push(new ResultadoChecklist(element.idr, element.idcontrolchecklist,
-                element.idchecklist,element.usuario, element.resultado, element.descripcion, new Date(element.fecha), element.foto, element.fotocontrol));
+                element.idchecklist,element.usuario, element.resultado, element.descripcion, moment(element.fecha).toDate(), element.foto, element.fotocontrol));
             if (this.idrs.indexOf(element.idr) == -1) this.idrs.push(element.idr);
           }
         }
@@ -127,7 +127,9 @@ public es;
             if (idr == resultado.idr) {
               this.resultado['id'] = resultado.idr;
               this.resultado['usuario'] = resultado.usuario;
-              this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
+              //this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
+              this.resultado['fecha'] = moment(resultado.fecha).format('DD/MM/YYYY HH:mm');
+              
               if (resultado.foto == 'true') this.resultado['foto'] = true;
 //              if (resultado.resultado == 'true') {
 //                this.resultado['id' + resultado.idcontrolchecklist] = true;

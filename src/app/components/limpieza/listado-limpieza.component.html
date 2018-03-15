@@ -8,7 +8,7 @@
                   </button>
           </span>
   
-    <mat-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarZona($event)">
+    <mat-select class="cabeceraSelect" placeholder="selecciona"  #choicer [(ngModel)]="valorLimpieza" (change)="seleccionarZona($event)" [ngModelOptions]="{standalone: true}">
       <mat-option *ngFor="let limpieza of limpiezas; let i = index" [value]="i">
         {{limpieza.nombre}}
       </mat-option>

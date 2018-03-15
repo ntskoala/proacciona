@@ -75,8 +75,8 @@
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true" 
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
-[csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'" [tableStyle]="{'width':'1050px'}"
-selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="seleccion($event)" (onRowUnselect)="unSeleccion($event)"  [(first)]="tablaPosition">
+[csvSeparator]="';'" [exportFilename]="'Limpiezas_Realizadas'" [tableStyle]="{'width':'1050px'}" 
+[(selection)]="selectedItem" (onRowSelect)="seleccion($event)" (onRowUnselect)="unSeleccion($event)"  [(first)]="tablaPosition">
 <p-header>
     <div class="ui-helper-clearfix">
         <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -191,13 +191,13 @@ selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="seleccion($ev
   <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'150px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
-      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
         <span class="material-icons">close</span>
       </button>
     </span>
      <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
       
-      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item)" type="submit">
+      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item)" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>

@@ -40,7 +40,11 @@ public params;
     //   }
     // )
     // console.log(this.route.pathFromRoot);
-    // console.log(this.route.fragment);
+     console.log("########PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
+
+    if (!this.route.paramMap["source"]["_value"]["modulo"]){
+      this.setInitial();
+    }else{
     this.route.paramMap.forEach((param)=>{
     x++;
       console.log(param["params"]["id"],param["params"]["modulo"]);
@@ -63,11 +67,19 @@ public params;
         this.permiso = true;
         this.selectedMenu = "incidencias";
         break;
+        // case "limpieza":
+        // console.log('limpieza Item');
+        // this.setPermisos(this.empresasService.empresaActiva);
+        // this.permiso = true;
+        // this.selectedMenu = "limpieza";
+        // break;
         default:
-        this.setInitial();
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        this.selectedMenu = param["params"]["modulo"];      
       }
     });
-
+  }
   // if (x=0) this.setInitial();
   }
 

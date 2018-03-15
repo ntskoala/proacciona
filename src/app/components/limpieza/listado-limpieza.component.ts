@@ -32,6 +32,7 @@ export class ListadoLimpiezasComponent implements OnInit, OnChanges {
   public nuevoNombre:string;
   public open:boolean;
   public import: boolean=false;
+  public valorLimpieza:number;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 ngOnInit(){
@@ -42,13 +43,19 @@ ngOnInit(){
 
 }
 ngOnChanges(){
-//  console.log('select limpiezaZona changes',this.idSelected)
-  if (this.idSelected){
+  console.log('select limpiezaZona changes',this.idSelected)
+  if (this.idSelected >0){
+    
     this.unExpand();
+    
+    
+    this.Choicer.disabled = true;
     // console.log('select limpiezaZona changes',this.limpiezas)
     // let event = this.limpiezas.findIndex((limpieza)=>limpieza.id==this.idSelected);
     // console.log('select limpiezaZona changes',event)
     // this.seleccionarZona(event);
+  }else{
+    if (this.empresasService.seleccionada) this.loadLimpiezas(this.empresasService.seleccionada.toString());
   }
 }
 
@@ -74,7 +81,12 @@ ngOnChanges(){
               ()=>{
               this.listaZonas.emit(this.limpiezas);
                //this.expand(this.Choicer.nativeElement);
-               if (!this.idSelected) this.expand();
+               if (this.idSelected>0) {
+                this.valorLimpieza = this.limpiezas.findIndex((limpieza)=>limpieza.id == this.idSelected);                 
+                }else{
+                  this.Choicer.disabled = false;
+                  this.expand()
+                }             
               }
         );
    }

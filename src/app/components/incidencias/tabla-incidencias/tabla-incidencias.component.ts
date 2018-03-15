@@ -33,7 +33,7 @@ export class TablaIncidenciasComponent implements OnInit {
 public incidencias: Incidencia[];
 public selectedItem: Incidencia;
 public usuarios: Usuario[];
-
+public tablaPosition=0;
 public guardar = [];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
 public idBorrar:number;
@@ -147,7 +147,7 @@ console.log('Seleccion***');
             let index = this.incidencias.findIndex((item)=>item.id==idOrigen);
             console.log(index);
             this.selectedItem = this.incidencias[index]
-            //this.tablaPosition = index;
+            this.tablaPosition = index;
           }
         }
       });

@@ -48,6 +48,10 @@ public idlimpiezaURL:number=null;
             this.idlimpiezaURL = param["params"]["idOrigenasociado"];
             this.selectedTab = 1;
           }
+        }else{
+          this.idlimpiezaURL=null;
+          this.seleccionZona(null);
+          this.selectedTab = 0;
         }
       });
   }

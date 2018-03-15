@@ -475,14 +475,15 @@
       "responsable":"Resp. apertura",
       "r_seguimiento":"Responsable seguimiento",
       "r_cierre":"Responsable cierre",
-      "fecha:cierre":"Fecha cierre",
+      "fecha_cierre":"Fecha cierre",
       "nc":"No conformidad",
       "NC":{
         "0":"No activado",
         "1":"No Conforme",
         "2":"Resuelto"
       },
-      "0":"Nueva incidencia",
+      "null":"Nueva incidencia",
+      "0":"Ir a la incidencia sin estado definido",
       "1":"Ir a la incidencia abierta",
       "2":"Ir a la incidencia cerrada",
       "Goto":"Ir al elemento origen de la incidencia",

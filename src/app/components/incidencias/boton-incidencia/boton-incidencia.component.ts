@@ -60,20 +60,27 @@ ngDoCheck(){
   }
   
 }
+getColor(){
+  if (this.origen){
+  switch (this.origen.estado){
+    case "0":
+    return 'green';  
+  case "2":
+  return '#33cc33';  
+  }
+}
+}
 setOrigen(){
  // console.log('###BOTON CHANGES',this.origen,this.origen.idIncidencia > 0)
 
   if (this.origen.idIncidencia > 0){
     switch (this.origen.estado){
-      case "2":
-    this.colorBoton= 'primary';
-    break;
     case "1":
     this.colorBoton= 'warn';
     break;
-    case "0":
+    case "-1":
     this.colorBoton = 'primary';
-    break;
+    break; 
     }
     this.newIncidencia.id = this.origen.idIncidencia;
     this.newIncidencia.estado = this.origen.estado;
@@ -110,7 +117,7 @@ loadUsuarios(){
     this.newIncidencia.fecha_cierre = null;//new Date(Date.UTC(this.newIncidencia.fecha_cierre.getFullYear(), this.newIncidencia.fecha_cierre.getMonth(), this.newIncidencia.fecha_cierre.getDate(), this.newIncidencia.fecha_cierre.getHours(), this.newIncidencia.fecha_cierre.getMinutes()))
 
     this.newIncidencia.idempresa = this.empresasService.seleccionada;
-
+    this.newIncidencia.estado=-1;
       this.addItem(this.newIncidencia).then(
         (valor)=>{      
           console.log(valor);

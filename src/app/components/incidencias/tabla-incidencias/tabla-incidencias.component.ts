@@ -75,7 +75,7 @@ public top:string;
       { field: 'nc', header: 'No conformidad' },
       { field: 'foto', header: 'Foto' }
   ];
-  this.estados = [{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
+  this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
 
 }
 
@@ -380,6 +380,20 @@ setAlerta(concept:string){
     this.router.navigateByUrl(url).catch(
       (error)=>{console.log('ERROR:',error)}
     )
+  }
+
+  getColor(estado){
+    switch(estado){
+      case "-1":
+      return '#673ab7';
+      case "0":
+      return 'green';
+      case "1":
+      return 'red';
+      case "2":
+      return '#33cc33';
+
+    }
   }
 }
 

@@ -483,7 +483,8 @@
         "2":"Resolt"
       },
       "null":"Nova incidència",
-      "0":"Anar a la incidència sense estat definit",
+      "-1":"Anar a la incidència sense estat definit",
+      "0":"Anar a la incidència amb estat 'No aplica'",
       "1":"Anar a la incidència oberta",
       "2":"Anar a la incidència tancada",
       "Goto":"Anar a l'element origen de la incidència",

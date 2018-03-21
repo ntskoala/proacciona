@@ -173,8 +173,8 @@
               </td> -->
               <td pEditableColumn>
                     <mat-form-field style="width:100px;">
-                            <mat-select style="width:100px;" placeholder="Estado" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
-                              <mat-option *ngFor="let estado of estados" value="{{estado.valor}}">
+                            <mat-select style="width:100px;" [ngStyle]="{'border-style':'solid','border-color':getColor(item.estado)}" placeholder="Estado" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
+                              <mat-option  *ngFor="let estado of estados" value="{{estado.valor}}">
                                 {{ estado.nombre }}
                               </mat-option>
                             </mat-select>

@@ -483,7 +483,8 @@
         "2":"Resuelto"
       },
       "null":"Nueva incidencia",
-      "0":"Ir a la incidencia sin estado definido",
+      "-1":"Ir a la incidencia sin estado definido",
+      "0":"Ir a la incidencia con estado No aplica",
       "1":"Ir a la incidencia abierta",
       "2":"Ir a la incidencia cerrada",
       "Goto":"Ir al elemento origen de la incidencia",

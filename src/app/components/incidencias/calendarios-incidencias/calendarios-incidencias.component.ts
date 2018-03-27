@@ -139,8 +139,11 @@ export class CalendariosIncidenciasComponent implements OnInit {
   setColor(estado){
     let color: string;
     switch(estado){
+      case "-1":
+      color="#673ab7";
+      break;     
       case "0":
-      color="#3333ff";
+      color="#cccccc";
       break;
       case "1":
       color= "#E65A58";

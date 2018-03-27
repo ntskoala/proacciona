@@ -1,12 +1,14 @@
 .leyenda{
     float:left;
     margin-left: 10px;
-    margin-top: -25px;
+    margin-top: -25px !important;
 }
 .chip{
 height: 12px;
     margin-right: 10px;
     margin-left: 3px;
+    top: -7px;
+    position: relative;
 }
 .fd{
 color:#F67E1F;

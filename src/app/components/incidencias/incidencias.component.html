@@ -15,7 +15,7 @@
 
   <div class="botonera" >
     
-     <div  class="tooltip" matTooltip="{{'incidencias.calendarios' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+     <div  class="tooltip" matTooltip="{{'incidencia.calendario' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" mat-mini-fab (click)="cambioMenu('calendario')"><mat-icon>date_range</mat-icon></button> 
       </div>
 
@@ -65,7 +65,7 @@
   <div class="sidenav-content">
    <!-- <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2><BR> -->
 <mat-tab-group [dynamicHeight]="false">
-  <mat-tab label="{{'incidencia.incidencia' | translate}}"><span class="space"></span><app-tabla-incidencias id="testid" class="tabs" (incidenciasCargargadas)="cargaIncidencias($event)"></app-tabla-incidencias></mat-tab>
+  <mat-tab label="{{'incidencia.listadoincidencia' | translate}}"><span class="space"></span><app-tabla-incidencias id="testid" class="tabs" (incidenciasCargargadas)="cargaIncidencias($event)"></app-tabla-incidencias></mat-tab>
 
 <!-- <mat-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></mat-tab>   -->
 </mat-tab-group>

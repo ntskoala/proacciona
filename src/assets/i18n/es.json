@@ -468,7 +468,9 @@
     },
     "incidencia":
     {
-      "nueva":"Nueva incidencia",
+      "listadoincidencia":"Listado incidencias",
+      "calendario":" Calendario incidencias",
+      "nueva":"Abrir nueva incidencia",
       "incidencia":"Incidencia",
       "fecha":"Fecha",
       "solucion":"Solución inmediata",
@@ -482,12 +484,13 @@
         "1":"No Conforme",
         "2":"Resuelto"
       },
-      "null":"Nueva incidencia",
+      "null":"Abrir nueva incidencia",
       "-1":"Ir a la incidencia sin estado definido",
       "0":"Ir a la incidencia con estado No aplica",
       "1":"Ir a la incidencia abierta",
       "2":"Ir a la incidencia cerrada",
       "Goto":"Ir al elemento origen de la incidencia",
+      "estado-1":"Sin definir",
       "estado0":"No aplica",
       "estado1":"Abierto",
       "estado2":"Cerrado",

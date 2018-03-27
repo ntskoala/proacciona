@@ -468,7 +468,9 @@
     },
     "incidencia":
     {
-      "nueva":"Nova incidència",
+      "listadoincidencia":"Llistat incidències",
+      "calendario":" Calendari incidències",
+      "nueva":"Obrir nova incidència",
       "incidencia":"Incidència",
       "fecha":"Data",
       "solucion":"Solució inmediata",
@@ -482,12 +484,13 @@
         "1":"No Conforme",
         "2":"Resolt"
       },
-      "null":"Nova incidència",
+      "null":"Obrir nova incidència",
       "-1":"Anar a la incidència sense estat definit",
       "0":"Anar a la incidència amb estat 'No aplica'",
       "1":"Anar a la incidència oberta",
       "2":"Anar a la incidència tancada",
       "Goto":"Anar a l'element origen de la incidència",
+      "estado-1":"Sense definir",
       "estado0":"No aplica",
       "estado1":"Obert",
       "estado2":"Tancat",

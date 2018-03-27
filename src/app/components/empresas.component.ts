@@ -25,7 +25,7 @@ public params;
   constructor(public router: Router,private route: ActivatedRoute,
      public empresasService: EmpresasService,public servidor: Servidor,
   public permisos: PermisosService) {}
-
+public nuevoLogin:boolean=false;
   ngOnInit() {
      let x = 0;
     // this.router.events.subscribe(
@@ -42,43 +42,17 @@ public params;
     // console.log(this.route.pathFromRoot);
      console.log("########PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
 
+
     if (!this.route.paramMap["source"]["_value"]["modulo"]){
       this.setInitial();
     }else{
-    this.route.paramMap.forEach((param)=>{
-    x++;
-      console.log(param["params"]["id"],param["params"]["modulo"]);
-      switch(param["params"]["modulo"]){
-        case "limpieza_realizada":
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
-        this.setUser();
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
-        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
-        // console.log('Go to Limiezas',this.empresa);
-        // this.empresasService.seleccionarEmpresa(this.empresa);
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        this.selectedMenu = "limpieza";
-        break;
-        case "incidencias":
-        this.setUser();
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        this.selectedMenu = "incidencias";
-        break;
-        // case "limpieza":
-        // console.log('limpieza Item');
-        // this.setPermisos(this.empresasService.empresaActiva);
-        // this.permiso = true;
-        // this.selectedMenu = "limpieza";
-        // break;
-        default:
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        this.selectedMenu = param["params"]["modulo"];      
-      }
-    });
+      if (this.isTokenExired(this.token)) {
+        console.log('no hay token');
+        //this.router.navigate(['login']);
+        this.nuevoLogin = true;
+      }else{
+        this.irAlMenu();
+  }
   }
   // if (x=0) this.setInitial();
   }
@@ -94,6 +68,19 @@ setUser(){
   this.empresasService.seleccionarEmpresa(this.empresa);
 }
 
+loggedIn(evento){
+if (evento){
+  this.nuevoLogin=false;
+  let idempresa:number;
+  this.route.paramMap.forEach((param)=>{
+   if (param["params"]["empresa"]) idempresa = param["params"]["empresa"];
+  });
+      
+  this.empresasService.seleccionarEmpresa(new Empresa('','',idempresa));
+
+  this.setInitial();
+}
+}
 
   setInitial(){
     this.isTokenExired(this.token)
@@ -102,7 +89,9 @@ setUser(){
     if (this.isTokenExired(this.token)) {
       console.log('no hay token');
       this.router.navigate(['login']);
+      //this.nuevoLogin = true;
     }
+
     this.setUser();
     //if (this.empresasService.login){
       // this.empresasService.login=false;
@@ -119,7 +108,8 @@ setUser(){
         console.log('Seleccion automática de empresa, empresas component');
         //this.empresasService.seleccionarEmpresa(new Empresa('','',2));
         //this.selectedMenu = "incidencias";
-        this.selectedMenu = "empresas";
+        //this.selectedMenu = "empresas";
+        this.irAlMenu('empresas');
         break;
       case "Mantenimiento":
         if (this.empresasService.empresaActiva == 0) {
@@ -132,7 +122,8 @@ setUser(){
         this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
         this.empresasService.seleccionarEmpresa(this.empresa);
         this.permiso = true;
-        this.selectedMenu = "maquinaria";
+        //this.selectedMenu = "maquinaria";
+        this.irAlMenu('maquinaria');
         break;
       case 'Gerente':
         if (this.empresasService.empresaActiva == 0) {
@@ -145,7 +136,8 @@ setUser(){
         this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
         this.empresasService.seleccionarEmpresa(this.empresa);
         this.permiso = true;
-        this.selectedMenu = "informes";
+        //this.selectedMenu = "informes";
+        this.irAlMenu('informes')
         break;
       default:
         // USUARIO SIN PERMISOS, COMO HA LLEGADO HASTA AQUI???
@@ -165,6 +157,7 @@ setUser(){
     }
 
 isTokenExired (token) {
+  token = sessionStorage.getItem('token');
   if (token){
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace('-', '+').replace('_', '/');
@@ -196,4 +189,41 @@ setPermisos(idempresa){
   error => {console.log(error)});
 }
 
+
+irAlMenu(menuDefecto?:string){
+  this.route.paramMap.forEach((param)=>{
+      console.log(param["params"]["id"],param["params"]["modulo"]);
+      switch(param["params"]["modulo"]){
+        case "limpieza_realizada":
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        this.setUser();
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
+        // console.log('Go to Limiezas',this.empresa);
+        // this.empresasService.seleccionarEmpresa(this.empresa);
+        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        this.selectedMenu = "limpieza";
+        break;
+        case "incidencias":
+        this.setUser();
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        this.selectedMenu = "incidencias";
+        break;
+        // case "limpieza":
+        // console.log('limpieza Item');
+        // this.setPermisos(this.empresasService.empresaActiva);
+        // this.permiso = true;
+        // this.selectedMenu = "limpieza";
+        // break;
+        default:
+        this.setPermisos(this.empresasService.empresaActiva);
+        this.permiso = true;
+        //this.selectedMenu = param["params"]["modulo"];  
+        this.selectedMenu = menuDefecto;
+      }
+    });
+}
 }

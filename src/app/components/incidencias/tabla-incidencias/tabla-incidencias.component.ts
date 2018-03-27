@@ -387,7 +387,7 @@ setAlerta(concept:string){
       case "-1":
       return '#673ab7';
       case "0":
-      return 'green';
+      return '#cccccc';
       case "1":
       return 'red';
       case "2":

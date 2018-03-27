@@ -1,7 +1,7 @@
 <!--[locale]="es" -->
 
 <mat-card>
-  <h2 class="center">{{'incidencias.CalendarioGeneralIncidencias' | translate}}</h2>
+  <h2 class="center">{{'incidencia.calendario' | translate}}</h2>
   <!-- <p-schedule [height]="470"  [contentHeight]="400"  [aspectRatio]="3" [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="4" [editable]="false"
    dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule> -->
    <p-schedule [height]="410"  [contentHeight]="410"  [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="2" [editable]="false"
@@ -13,12 +13,14 @@
       </div>
       <div class="leyenda">
           <mat-chip-list>
-              <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.2' | translate}}</mat-chip>
-              <figure class="chip" style="display: block;background: #3333ff;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.0' | translate}}</mat-chip>
+                <figure style="display: block;background: #673ab7;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+                <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.estado-1' | translate}}</mat-chip>
+              <figure style="display: block;background: #cccccc;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.estado0' | translate}}</mat-chip>
               <figure style="display: block;background: #E65A58;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
-              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.NC.1' | translate}}</mat-chip>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.estado1' | translate}}</mat-chip>
+              <figure style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
+              <mat-chip class="chip" color="#33cc33" selected="true">{{'incidencia.estado2' | translate}}</mat-chip>
           </mat-chip-list>
       </div>
   </mat-card>

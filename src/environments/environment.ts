@@ -9,4 +9,4 @@ export const environment = {
 export const server = 'http://tfc.ntskoala.com/';
 export var usuario: Object = {"user":"demo","password":"demo","idioma":null};
 // export const server = 'https://tfc.proacciona.es/';
-//  export var usuario: Object = {"user":"admin","password":"admin$2018","idioma":null};// 
+// export var usuario: Object = {"user":"admin","password":"admin$2018","idioma":null};

@@ -64,7 +64,7 @@ getColor(){
   if (this.origen){
   switch (this.origen.estado){
     case "0":
-    return 'green';  
+    return '#cccccc';  
   case "2":
   return '#33cc33';  
   }
@@ -121,6 +121,7 @@ loadUsuarios(){
       this.addItem(this.newIncidencia).then(
         (valor)=>{      
           console.log(valor);
+          this.sendMaiolAviso(this.newIncidencia);
           this.nuevaIncidenciaCreada.emit(this.newIncidencia);
           this.setIncidencia();
           this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
@@ -188,7 +189,20 @@ uploadImg(event, idItem,tipo) {
   )
 }
 
-
+sendMaiolAviso(nuevaIncidencia: Incidencia){
+  let body = "Nueva incidencia creada desde " + nuevaIncidencia.origen + "<BR>Por: " +  this.responsables[this.responsables.findIndex((responsable)=>responsable["value"] == nuevaIncidencia.responsable)]["label"]
+  body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>Descrición: " + nuevaIncidencia.descripcion
+  body +=    "<BR>Solución inmediata propuesta: " + nuevaIncidencia.solucion + ""
+  body +=    "<BR>Ir a la incidencia: http://tfc.ntskoala.com/incidencias/0/" + nuevaIncidencia.id + ""
+  body +=    "<BR>Ir al elemento http://tfc.ntskoala.com/incidencias/"+ nuevaIncidencia.idOrigenasociado +"/ " + nuevaIncidencia.id + ""
+  let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada;
+      this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
+        response => {
+          if (response.success && response.data) {
+            console.log(response.data)
+          }
+      });
+}
 
 okDate(cal:Calendar){
   cal.overlayVisible = false;

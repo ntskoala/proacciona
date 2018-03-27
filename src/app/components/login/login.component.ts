@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 
@@ -18,7 +18,8 @@ import * as moment from 'moment/moment';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
-
+@Output() loggedIn: EventEmitter<boolean> =  new EventEmitter<boolean>();
+@Input() modeLogin:string;
   public usuario = usuario;
   public  modal: Modal = new Modal();
    public logoEmpresa:string;
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
      }
      //this.login(this.usuario);
  }
+
  isTokenValid (token) {
   if (token){
             let expired:boolean;
@@ -169,7 +171,7 @@ export class LoginComponent implements OnInit {
    this.empresasService.userTipo = user.userTipo;
 
    //sessionStorage.setItem('token', response.token);
-
+   console.log("procesLogedIn mode:",this.modeLogin);
    switch (user.userTipo) {
      case 'Administrador':
      sessionStorage.setItem('administrador', 'true');
@@ -178,7 +180,12 @@ export class LoginComponent implements OnInit {
        if (this.empresasService.login){
         window.open('../empresas','_parent')
        }else{
-       this.router.navigate(['empresas']);
+         if (this.modeLogin == 'empresas'){
+           
+           this.loggedIn.emit(true);
+         }else{
+          this.router.navigate(['empresas']);
+         }
        }
 
        break;
@@ -198,7 +205,11 @@ export class LoginComponent implements OnInit {
       if (this.empresasService.login){
         window.open('../empresas','_parent')
       }else{
-       this.router.navigate(['empresas']);
+        if (this.modeLogin == 'empresas'){
+          this.loggedIn.emit(true);
+        }else{
+          this.router.navigate(['empresas']);
+        }
       }
        break;
      default:

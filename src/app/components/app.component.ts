@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   private p=2;
   constructor(public router: Router,public route: ActivatedRoute, public empresasService: EmpresasService) {}
   ngOnInit() {
+    console.log('*******',this.route.params);
     // console.log(this.router.url);
     // console.log('*******',this.route.queryParams);
     this.router.events.subscribe(

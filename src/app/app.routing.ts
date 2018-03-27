@@ -10,10 +10,11 @@ const appRoutes: Routes = [
   {path: '', component: StartComponent},
   {path: 'login2', component: LoginComponent},
   {path: 'login', component: StartComponent},
+  {path: 'login/:token', component: StartComponent},
   {path: 'empresas', component: EmpresasComponent},
   {path: 'empresas/:modulo/:idOrigenasociado/:id', component: EmpresasComponent},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '404'}
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes,{useHash:true});

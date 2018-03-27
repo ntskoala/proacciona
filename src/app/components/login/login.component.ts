@@ -35,7 +35,11 @@ export class LoginComponent implements OnInit {
         this.empresasService.idioma = this.idioma;
        this.translate.use(this.idioma);
      }
-     console.log('*******',this.route.queryParams["value"]["token"]);
+     console.log('###',this.route.params);
+    // console.log('*******',this.route.queryParams["value"]["token"]);
+     if(this.route.params["_value"]["token"]){
+      this.isTokenValid(this.route.params["_value"]["token"]);
+     }
      if (this.route.queryParams["value"]["token"]){
        this.isTokenValid(this.route.queryParams["value"]["token"]);
      }
@@ -48,7 +52,7 @@ export class LoginComponent implements OnInit {
             var base64 = base64Url.replace('-', '+').replace('_', '/');
             //return JSON.parse(window.atob(base64));
             let jwt = JSON.parse(window.atob(base64));
-            console.log (moment.unix(jwt.exp).isBefore(moment()));
+            console.log ('LOGIN: token expired: ',moment.unix(jwt.exp).isBefore(moment()));
             if (moment.unix(jwt.exp).isBefore(moment())) {
               expired = true;
             

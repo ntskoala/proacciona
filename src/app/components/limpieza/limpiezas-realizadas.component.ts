@@ -128,8 +128,8 @@ seleccion(evento){
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                 }
-                this.incidenciaSelection();
-                this.getIncidencias();
+                // this.incidenciaSelection();
+                // this.getIncidencias();
             }
 
         });

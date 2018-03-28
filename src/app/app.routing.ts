@@ -18,4 +18,4 @@ const appRoutes: Routes = [
   {path: '**', redirectTo: '404'}
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes,{ useHash: false });
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes,{ enableTracing: false,useHash: false });

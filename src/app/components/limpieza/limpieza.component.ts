@@ -37,15 +37,13 @@ public idlimpiezaURL:number=null;
   ngOnInit() {
     this.incidencia = {'origen':'limpieza_zona','idOrigen':null}
     let x=0;
-    this.route.paramMap.forEach((param)=>{
-      x++;
-        console.log(param["params"]["id"],param["params"]["modulo"]);
-        if (param["params"]["modulo"] == "limpieza_realizada"){
-          if (param["params"]["idOrigenasociado"]){
-            console.log(param["params"]["idOrigenasociado"]);
-            let event = {'id':param["params"]["idOrigenasociado"]}
+    console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"])
+
+        if (this.route.params["_value"]["modulo"] == "limpieza_realizada"){
+          if (this.route.params["_value"]["idOrigenasociado"]){
+            let event = {'id':this.route.params["_value"]["idOrigenasociado"]}
             this.seleccionZona(event);
-            this.idlimpiezaURL = param["params"]["idOrigenasociado"];
+            this.idlimpiezaURL = this.route.params["_value"]["idOrigenasociado"];
             this.selectedTab = 1;
           }
         }else{
@@ -53,7 +51,7 @@ public idlimpiezaURL:number=null;
           this.seleccionZona(null);
           this.selectedTab = 0;
         }
-      });
+
   }
 
 

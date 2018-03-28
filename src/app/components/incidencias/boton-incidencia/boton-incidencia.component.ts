@@ -154,10 +154,13 @@ loadUsuarios(){
 
 setIncidencia(){
   if (this.newIncidencia.id >0){
-    let url = 'empresas/incidencias/'+0+'/'+this.newIncidencia.id;
-    this.router.navigateByUrl(url).catch(
-      (error)=>{console.log('ERROR:',error)}
-    )
+    let url = 'empresas/' + this.empresasService.seleccionada + '/incidencias/'+0+'/'+this.newIncidencia.id;
+    this.router.navigate([url]);
+    // this.router.navigateByUrl(url).then(
+    //   (ok)=>{console.log('ok',ok)}
+    // ).catch(
+    //   (error)=>{console.log('ERROR:',error)}
+    // )
   }else{
 this.nuevaIncidencia = ! this.nuevaIncidencia;
 console.log(this.nuevaIncidencia)

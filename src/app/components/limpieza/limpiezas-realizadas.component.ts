@@ -68,10 +68,11 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
-        
   }
+
 incidenciaSelection(){
   let x=0;
+  
   this.route.paramMap.forEach((param)=>{
     x++;
       console.log(param["params"]["id"],param["params"]["modulo"]);

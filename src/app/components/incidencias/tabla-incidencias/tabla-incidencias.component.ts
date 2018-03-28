@@ -373,13 +373,15 @@ setAlerta(concept:string){
 
   gotoOrigen(item){
     console.log('goto Origen',item);
-    let url = 'empresas/limpieza_realizada/'+item.idOrigenasociado+'/'+item.idOrigen
-    let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    let url = 'empresas/'+ this.empresasService.seleccionada + '/limpieza_realizada/'+item.idOrigenasociado+'/'+item.idOrigen
+    //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
-    //this.router.navigate([url]);
-    this.router.navigateByUrl(url).catch(
-      (error)=>{console.log('ERROR:',error)}
-    )
+    this.router.navigate([url]);
+    // this.router.navigateByUrl(url).then(
+    //   (ok)=>{console.log('ok',ok)}
+    // ).catch(
+    //   (error)=>{console.log('ERROR:',error)}
+    // )
   }
 
   getColor(estado){

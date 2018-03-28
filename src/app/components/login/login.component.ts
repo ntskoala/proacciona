@@ -37,6 +37,9 @@ export class LoginComponent implements OnInit {
        this.translate.use(this.idioma);
      }
      console.log('*******',this.route.queryParams["value"]["token"]);
+     if(this.route.params["_value"]["token"]){
+      this.isTokenValid(this.route.params["_value"]["token"]);
+     }
      if (this.route.queryParams["value"]["token"]){
        this.isTokenValid(this.route.queryParams["value"]["token"]);
      }
@@ -174,19 +177,20 @@ export class LoginComponent implements OnInit {
    console.log("procesLogedIn mode:",this.modeLogin);
    switch (user.userTipo) {
      case 'Administrador':
+     console.log("gerente o mantenimiento");
      sessionStorage.setItem('administrador', 'true');
      this.empresasService.administrador = true;
 
-       if (this.empresasService.login){
-        window.open('../empresas','_parent')
-       }else{
+//       if (this.empresasService.login){
+//        window.open('../empresas','_parent')
+//       }else{
          if (this.modeLogin == 'empresas'){
            
            this.loggedIn.emit(true);
          }else{
           this.router.navigate(['empresas']);
          }
-       }
+//       }
 
        break;
      case "Mantenimiento":
@@ -202,15 +206,15 @@ export class LoginComponent implements OnInit {
        this.setPermisos(idEmpresa);
        console.log(idEmpresa);
 
-      if (this.empresasService.login){
-        window.open('../empresas','_parent')
-      }else{
+//      if (this.empresasService.login){
+//        window.open('../empresas','_parent')
+//      }else{
         if (this.modeLogin == 'empresas'){
           this.loggedIn.emit(true);
         }else{
           this.router.navigate(['empresas']);
         }
-      }
+//      }
        break;
      default:
        // Se queda en login

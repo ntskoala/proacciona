@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap, NavigationEnd,NavigationStart  } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
 //import {MessageService} from 'primeng/components/common/messageservice';
@@ -14,7 +14,7 @@ import { URLS } from '../models/urls';
   selector: 'empresas',
   templateUrl: '../assets/html/empresas.component.html'
 })
-export class EmpresasComponent implements OnInit {
+export class EmpresasComponent implements OnInit, OnChanges {
 @ViewChild('scrollMe') public myScrollContainer: ElementRef;
 public selectedMenu:string='home';
 public inicio:string;
@@ -24,39 +24,46 @@ public params;
   empresa: Empresa;
   constructor(public router: Router,private route: ActivatedRoute,
      public empresasService: EmpresasService,public servidor: Servidor,
-  public permisos: PermisosService) {}
+  public permisos: PermisosService) {
+    console.log("## CONSTRUCTOR PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
+  }
 public nuevoLogin:boolean=false;
   ngOnInit() {
      let x = 0;
-    // this.router.events.subscribe(
-    //   (elem)=>{
-    //     console.log(elem["id"],elem["modulo"]);
-    //     console.log(elem);
-    //     if (elem["id"] >0 && elem["modulo"]=='/limpiezas'){
-    //       console.log(elem["id"],elem["url"]);
-    //     }else{
-    //       this.setInitial();
-    //     }
-    //   }
-    // )
-    // console.log(this.route.pathFromRoot);
-     console.log("########PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
+     this.router.events.subscribe((val) => {
+       x++;
+      // see also 
+      let modulo 
+      if (val["url"]) modulo = val["url"].split("/")[1]
+      //if (val["url"]) console.log("***",val instanceof NavigationStart,val["url"].split("/")[1]) 
+      if (val instanceof NavigationStart && modulo != 'login'){
+        let page
+        page = val["url"].split("/")[3]
+        console.log("ruteando...",x,val) 
+        this.ruteado(page);
+      }
+  });
+  console.log("rutea...",x) 
+  if ( x== 0) this.ruteado();
+  }
 
-
-    if (!this.route.paramMap["source"]["_value"]["modulo"]){
-      this.setInitial();
+ruteado(page?:string){
+  console.log("########RUTEADO",page);
+  if (!page){
+    this.setInitial();
+  }else{
+    if (this.isTokenExired(this.token)) {
+      console.log('no hay token');
+      //this.router.navigate(['login']);
+      this.nuevoLogin = true;
     }else{
-      if (this.isTokenExired(this.token)) {
-        console.log('no hay token');
-        //this.router.navigate(['login']);
-        this.nuevoLogin = true;
-      }else{
-        this.irAlMenu();
-  }
-  }
-  // if (x=0) this.setInitial();
-  }
-
+      this.irAlMenu(page);
+}
+}
+}
+ngOnChanges(){
+  console.log("### ONCHANGES PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
+}
 setUser(){
   this.empresasService.login=false;
   this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
@@ -191,17 +198,12 @@ setPermisos(idempresa){
 
 
 irAlMenu(menuDefecto?:string){
-  this.route.paramMap.forEach((param)=>{
-      console.log(param["params"]["id"],param["params"]["modulo"]);
-      switch(param["params"]["modulo"]){
+  console.log('GOTO',menuDefecto)
+      switch(menuDefecto){
         case "limpieza_realizada":
         // console.log('Go to Limiezas',this.empresasService.empresaActiva);
         this.setUser();
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
-        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
-        // console.log('Go to Limiezas',this.empresa);
-        // this.empresasService.seleccionarEmpresa(this.empresa);
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
+
         this.setPermisos(this.empresasService.empresaActiva);
         this.permiso = true;
         this.selectedMenu = "limpieza";
@@ -219,11 +221,12 @@ irAlMenu(menuDefecto?:string){
         // this.selectedMenu = "limpieza";
         // break;
         default:
+        if (menuDefecto == undefined) menuDefecto = this.route.params["_value"]["modulo"];
         this.setPermisos(this.empresasService.empresaActiva);
         this.permiso = true;
         //this.selectedMenu = param["params"]["modulo"];  
+        console.log(menuDefecto,this.route.params["_value"]["modulo"])
         this.selectedMenu = menuDefecto;
       }
-    });
 }
 }

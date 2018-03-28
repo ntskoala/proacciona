@@ -76,7 +76,7 @@ setOrden(){
 
 
 setSeleccion(opcionmenu){
-  let url = 'empresas/'+opcionmenu+'/0/0';
+  let url = 'empresas/'+ this.empresasService.seleccionada+ '/'+opcionmenu+'/0/0';
   this.router.navigateByUrl(url);
 
 this.selectedMenu.emit(opcionmenu);

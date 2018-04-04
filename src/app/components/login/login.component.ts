@@ -168,7 +168,10 @@ export class LoginComponent implements OnInit {
   sessionStorage.setItem('userId', user.userId);
   sessionStorage.setItem('userName', user.userName);
   sessionStorage.setItem('userTipo', user.userTipo);
-
+if (user.userTipo == 'Administrador'){
+  console.log("procesLogedIn mode:",this.route.paramMap["source"]["_value"]["empresa"]);
+  sessionStorage.setItem('idEmpresa',this.route.paramMap["source"]["_value"]["empresa"])
+}
    this.empresasService.userId = user.userId;
    this.empresasService.userName = user.userName;
    this.empresasService.userTipo = user.userTipo;
@@ -185,7 +188,7 @@ export class LoginComponent implements OnInit {
 //        window.open('../empresas','_parent')
 //       }else{
          if (this.modeLogin == 'empresas'){
-           
+          
            this.loggedIn.emit(true);
          }else{
           this.router.navigate(['empresas']);
@@ -203,7 +206,7 @@ export class LoginComponent implements OnInit {
        this.empresasService.empresaActiva = idEmpresa;
        sessionStorage.setItem('administrador', 'false');
        this.empresasService.administrador = false;
-       this.setPermisos(idEmpresa);
+      //  this.setPermisos(idEmpresa);
        console.log(idEmpresa);
 
 //      if (this.empresasService.login){

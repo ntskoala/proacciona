@@ -65,7 +65,7 @@
   </mat-sidenav> 
         <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
    <div class="sidenav-content">
-<mat-tab-group [dynamicHeight]="false">
+<mat-tab-group  [selectedIndex]="selectedTab" [dynamicHeight]="false">
 
   <mat-tab label="{{'planificaciones.planificaciones_programadas' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></mat-tab>
   <!-- <mat-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'normal'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></mat-tab>   -->

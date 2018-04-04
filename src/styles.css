@@ -253,11 +253,23 @@ background-color: #fff;
 }
 
 /* LoginComponent */
+.login-redirected {
+  position: relative;
+  display: flex;
+  max-width: 250px !important;
+  width: 250px !important;
+  min-width: 250px !important;
+  margin-top: 100px;
+  left: calc(50% - 125px);
+  z-index: 10;
+  height: 400px !important;
+}
 .login-form {
   max-width: 200px;
   margin: auto;
   margin-top: 0px;
-      position: fixed;
+      /* position: fixed; */
+      position: absolute;    
     float: right;
     top: 0px;
     right: 0px;
@@ -716,6 +728,16 @@ width: 400px;
 }
 .ui-column-title{
   font-size: 14px; 
+}
+
+/*
+***********************
+* INCIDENCIAS *
+***********************
+*/
+.incidenciaItem{
+  /* display: table-caption; */
+  float:right;
 }
 
 /*

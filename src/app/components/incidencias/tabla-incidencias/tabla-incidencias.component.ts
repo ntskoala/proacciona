@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -25,8 +25,10 @@ import * as moment from 'moment';
   styleUrls: ['./tabla-incidencias.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TablaIncidenciasComponent implements OnInit {
+export class TablaIncidenciasComponent implements OnInit,OnChanges {
 @Output() incidenciasCargadas: EventEmitter<Incidencia[]> = new EventEmitter<Incidencia[]>();
+@ViewChild('dt') tablaIncidencias: Table;
+@Input() nuevaIncidenciaFromIncidencias: Incidencia;
   public modal: Modal = new Modal();
   public procesando:boolean=false;
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
@@ -78,7 +80,13 @@ public top:string;
   this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
 
 }
-
+  ngOnChanges(){
+    console.log(this.nuevaIncidenciaFromIncidencias);
+    if (this.nuevaIncidenciaFromIncidencias){
+    this.incidencias.push(this.nuevaIncidenciaFromIncidencias)
+    this.incidencias = this.incidencias.slice();
+    }
+  }
   loadSupervisores(){
     let params = this.empresasService.seleccionada;
     let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
@@ -108,22 +116,13 @@ public top:string;
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.incidencias = [];
-            //this.url=[];
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                let fecha_Valoracion;
-                if (moment(element.fecha_valoracion).isValid()){
-                  fecha_Valoracion = moment(new Date(element.fecha_valoracion)).utc().toDate();
-                }else{
-                  fecha_Valoracion = null;
-                }
                 this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,element.responsable,
                   moment(new Date(element.fecha)).utc().toDate(),element.responsable_cierre,
                   moment(new Date(element.fecha_cierre)).utc().toDate(),element.solucion,
                   element.nc,element.origen,element.idOrigen,element.origenasociado,element.idOrigenasociado,element.foto,
                   element.descripcion,element.estado));
-                // this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/incidencias/' + element.id +'_'+element.foto);
-
               }
               this.incidenciasCargadas.emit(this.incidencias);
               this.incidenciaSelection();
@@ -135,7 +134,7 @@ public top:string;
               }
         );
    }
-   incidenciaSelection(){
+incidenciaSelection(){
 console.log('Seleccion***');
     let x=0;
     this.route.paramMap.forEach((param)=>{
@@ -145,14 +144,19 @@ console.log('Seleccion***');
           if (param["params"]["id"]){
             let idOrigen = param["params"]["id"];
             let index = this.incidencias.findIndex((item)=>item.id==idOrigen);
-            console.log(index);
             this.selectedItem = this.incidencias[index]
-            this.tablaPosition = index;
+            //console.log(this.tablaIncidencias.findIndexInSelection(this.tablaIncidencias.selection));
+           // this.tablaPosition = index;
           }
         }
       });
   }
-  
+  onRowSelect(evento, tabla: Table){
+    console.log('****ROWSELECTED',tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
+    let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);
+   this.tablaPosition = index;
+  }
+
    changeItem(event,idItem:number,fuente:string){
 console.log(event);
     if (fuente == 'responsable'){
@@ -373,7 +377,7 @@ setAlerta(concept:string){
 
   gotoOrigen(item){
     console.log('goto Origen',item);
-    let url = 'empresas/'+ this.empresasService.seleccionada + '/limpieza_realizada/'+item.idOrigenasociado+'/'+item.idOrigen
+    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ item.origenasociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
     //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     this.router.navigate([url]);

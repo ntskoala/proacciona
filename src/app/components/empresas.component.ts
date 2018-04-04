@@ -44,7 +44,7 @@ public nuevoLogin:boolean=false;
       }
   });
   console.log("rutea...",x) 
-  if ( x== 0) this.ruteado();
+  if ( x== 0) this.ruteado(this.route.paramMap["source"]["_value"]["modulo"]);
   }
 
 ruteado(page?:string){
@@ -65,6 +65,7 @@ ngOnChanges(){
   console.log("### ONCHANGES PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
 }
 setUser(){
+  return new Promise((resolve,reject)=>{
   this.empresasService.login=false;
   this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
   this.empresasService.userName = sessionStorage.getItem('userName');
@@ -73,24 +74,26 @@ setUser(){
   this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
   this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
   this.empresasService.seleccionarEmpresa(this.empresa);
+  console.log()
+  resolve(this.empresa.id);
+  })
 }
+
 
 loggedIn(evento){
 if (evento){
   this.nuevoLogin=false;
   let idempresa:number;
-  this.route.paramMap.forEach((param)=>{
-   if (param["params"]["empresa"]) idempresa = param["params"]["empresa"];
-  });
-      
+  let paramsurl = this.route.url["value"]
+  console.log('***LOGGEDIN',this.route.url["value"],evento);
+   if (paramsurl[1]["path"]>0) idempresa = paramsurl[1]["path"];
   this.empresasService.seleccionarEmpresa(new Empresa('','',idempresa));
-
-  this.setInitial();
+  //this.setInitial();
+  if (paramsurl[2]["path"]) this.irAlMenu(paramsurl[2]["path"]);
 }
 }
 
   setInitial(){
-    this.isTokenExired(this.token)
     // Si no exite el token, redirecciona a login
     console.log(this.isTokenExired(this.token),this.token);
     if (this.isTokenExired(this.token)) {
@@ -100,22 +103,11 @@ if (evento){
     }
 
     this.setUser();
-    //if (this.empresasService.login){
-      // this.empresasService.login=false;
-      // this.empresasService.userId = parseInt(sessionStorage.getItem('userId'));
-      // this.empresasService.userName = sessionStorage.getItem('userName');
-      // this.empresasService.userTipo = sessionStorage.getItem('userTipo');
-      // this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
-      // this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
-    //}
     console.log(this.empresasService.userTipo,this.empresasService.idioma,this.empresasService.userId,this.empresasService.userName)
     switch (this.empresasService.userTipo) {
       case 'Administrador':
-        this.permiso = true;
-        console.log('Seleccion automática de empresa, empresas component');
-        //this.empresasService.seleccionarEmpresa(new Empresa('','',2));
-        //this.selectedMenu = "incidencias";
-        //this.selectedMenu = "empresas";
+      //  this.permiso = true;
+        console.log('user Administrador');
         this.irAlMenu('empresas');
         break;
       case "Mantenimiento":
@@ -126,10 +118,9 @@ if (evento){
         }else{
           this.setPermisos(this.empresasService.empresaActiva);
         }
-        this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
-        this.empresasService.seleccionarEmpresa(this.empresa);
-        this.permiso = true;
-        //this.selectedMenu = "maquinaria";
+        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
+        // this.empresasService.seleccionarEmpresa(this.empresa);
+        // this.permiso = true;
         this.irAlMenu('maquinaria');
         break;
       case 'Gerente':
@@ -140,10 +131,9 @@ if (evento){
         }else{
           this.setPermisos(this.empresasService.empresaActiva);
         }
-        this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
-        this.empresasService.seleccionarEmpresa(this.empresa);
-        this.permiso = true;
-        //this.selectedMenu = "informes";
+        // this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
+        // this.empresasService.seleccionarEmpresa(this.empresa);
+        // this.permiso = true;
         this.irAlMenu('informes')
         break;
       default:
@@ -163,21 +153,34 @@ if (evento){
       this.selectedMenu = menu;
     }
 
-isTokenExired (token) {
-  token = sessionStorage.getItem('token');
-  if (token){
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace('-', '+').replace('_', '/');
-            //return JSON.parse(window.atob(base64));
-            let jwt = JSON.parse(window.atob(base64));
-            console.log (moment.unix(jwt.exp).isBefore(moment()));
-            if (moment.unix(jwt.exp).isBefore(moment())) this.token = null;
-           return moment.unix(jwt.exp).isBefore(moment());
-  }else{
-    return true;
-  }
-}
 
+irAlMenu(menuDefecto?:string){
+  console.log('GOTO',menuDefecto)
+  this.setUser().then(
+    (empresa)=>{
+  this.setPermisos(empresa);
+  this.permiso=true;
+      switch(menuDefecto){
+        case "limpieza_realizada":
+        this.selectedMenu = "limpieza";
+        break;
+        case "mantenimientos_realizados":
+        this.setUser();
+        this.selectedMenu = "maquinaria";
+        break;
+        case "planificaciones_realizadas":
+        this.setUser();
+        this.selectedMenu = "planificaciones";
+        break;
+        case "incidencias":
+        this.selectedMenu = "incidencias";
+        break;
+        default:
+        if (menuDefecto == undefined) menuDefecto = this.route.params["_value"]["modulo"];
+        this.selectedMenu = menuDefecto;
+      }
+    });
+}
 
 setPermisos(idempresa){
   let parametros = '&idempresa=' + idempresa; 
@@ -196,37 +199,20 @@ setPermisos(idempresa){
   error => {console.log(error)});
 }
 
-
-irAlMenu(menuDefecto?:string){
-  console.log('GOTO',menuDefecto)
-      switch(menuDefecto){
-        case "limpieza_realizada":
-        // console.log('Go to Limiezas',this.empresasService.empresaActiva);
-        this.setUser();
-
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        this.selectedMenu = "limpieza";
-        break;
-        case "incidencias":
-        this.setUser();
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        this.selectedMenu = "incidencias";
-        break;
-        // case "limpieza":
-        // console.log('limpieza Item');
-        // this.setPermisos(this.empresasService.empresaActiva);
-        // this.permiso = true;
-        // this.selectedMenu = "limpieza";
-        // break;
-        default:
-        if (menuDefecto == undefined) menuDefecto = this.route.params["_value"]["modulo"];
-        this.setPermisos(this.empresasService.empresaActiva);
-        this.permiso = true;
-        //this.selectedMenu = param["params"]["modulo"];  
-        console.log(menuDefecto,this.route.params["_value"]["modulo"])
-        this.selectedMenu = menuDefecto;
-      }
+isTokenExired (token) {
+  token = sessionStorage.getItem('token');
+  if (token){
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            //return JSON.parse(window.atob(base64));
+            let jwt = JSON.parse(window.atob(base64));
+            console.log (moment.unix(jwt.exp).isBefore(moment()));
+            if (moment.unix(jwt.exp).isBefore(moment())) this.token = null;
+           return moment.unix(jwt.exp).isBefore(moment());
+  }else{
+    return true;
+  }
 }
+
+
 }

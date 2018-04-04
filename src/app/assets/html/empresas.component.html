@@ -1,7 +1,9 @@
   <!--<alertas></alertas>-->
 
   <div *ngIf="nuevoLogin" class="modal">
-    <app-login [modeLogin]="'empresas'" (loggedIn)="loggedIn($event)"></app-login>
+    <div class="login-redirected">
+    <app-login  [modeLogin]="'empresas'" (loggedIn)="loggedIn($event)"></app-login>
+  </div>
   </div>
 
   <menu (selectedMenu)="setMenu($event)"></menu>

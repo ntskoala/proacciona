@@ -89,6 +89,9 @@ setOrigen(){
   if (this.origen.origen){
     this.newIncidencia.origen = this.origen.origen;
   }
+  if (this.origen.origenasociado){
+    this.newIncidencia.origenasociado = this.origen.origenasociado;
+  }
   if (this.origen.idOrigenasociado){
     this.newIncidencia.idOrigenasociado = this.origen.idOrigenasociado;
   }
@@ -123,10 +126,15 @@ loadUsuarios(){
           console.log(valor);
           this.sendMaiolAviso(this.newIncidencia);
           this.nuevaIncidenciaCreada.emit(this.newIncidencia);
+          let id= this.newIncidencia.id;
           this.setIncidencia();
           this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
             // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
             // this.incidencias = this.incidencias.slice();
+            this.nuevaIncidencia = false;
+            let urlNovaIncidencia = '/empresas/2/incidencias/0/'+id;
+            this.router.navigateByUrl(urlNovaIncidencia)
+
           }
       );
   }
@@ -194,10 +202,13 @@ uploadImg(event, idItem,tipo) {
 
 sendMaiolAviso(nuevaIncidencia: Incidencia){
   let body = "Nueva incidencia creada desde " + nuevaIncidencia.origen + "<BR>Por: " +  this.responsables[this.responsables.findIndex((responsable)=>responsable["value"] == nuevaIncidencia.responsable)]["label"]
-  body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>Descrición: " + nuevaIncidencia.descripcion
-  body +=    "<BR>Solución inmediata propuesta: " + nuevaIncidencia.solucion + ""
-  body +=    "<BR>Ir a la incidencia: http://tfc.ntskoala.com/incidencias/0/" + nuevaIncidencia.id + ""
-  body +=    "<BR>Ir al elemento http://tfc.ntskoala.com/incidencias/"+ nuevaIncidencia.idOrigenasociado +"/ " + nuevaIncidencia.id + ""
+  body +=   "<BR>Con fecha y hora: " + moment(nuevaIncidencia.fecha).format('DD-MM-YYYY hh-mm') +  "<BR>"
+  body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>"
+  body +=   "Descrición: " + (nuevaIncidencia.descripcion)? nuevaIncidencia.descripcion:"";
+  body +=    "<BR>Solución inmediata propuesta: " + (nuevaIncidencia.solucion)? nuevaIncidencia.solucion:"";
+  body +=    "<BR>Ir a la incidencia: http://tfc.ntskoala.com/empresas/"+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
+  if (nuevaIncidencia.origen != 'incidencias')
+  body +=    "<BR>Ir al elemento http://tfc.ntskoala.com/empresas/"+ this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
   let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada;
       this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
         response => {

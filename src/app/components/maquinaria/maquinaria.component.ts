@@ -1,4 +1,5 @@
 import { Component, OnInit, Input,Output, EventEmitter, ViewChild, ElementRef  } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -22,12 +23,30 @@ public permiso:boolean=false;
 public alerta:boolean=false;
 public estadoSideNav:string="cerrado";
 public subMenu:string=null;
-
-  constructor(public empresasService: EmpresasService) {}
+public selectedTab: number=null;
+public idmaquinaURL:number=null;
+  constructor(public empresasService: EmpresasService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.incidencia = {'origen':'maquinaria','idOrigen':null}
-
+    let params = this.route.params["_value"]
+    if (params["modulo"] == "mantenimientos_realizados" && this.route.params["_value"]["idOrigenasociado"]){
+      
+        let event = {'id':this.route.params["_value"]["idOrigenasociado"]}
+        this.seleccionZona(event);
+        this.idmaquinaURL = this.route.params["_value"]["idOrigenasociado"];
+        this.selectedTab = 2;
+      
+    }else{
+      this.idmaquinaURL=null;
+      this.seleccionZona(null);
+      this.selectedTab = 0;
+    }
+  }
+  seleccionZona($event){
+    console.log($event);
+    this.maquina = $event;
+    //this.incidencia = {'origen':'limpieza_zona','idOrigen':this.limpieza.id}
   }
 cambiarTab(){}
 

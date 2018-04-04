@@ -72,7 +72,6 @@ public top = '50px';
 
 incidenciaSelection(){
   let x=0;
-  
   this.route.paramMap.forEach((param)=>{
     x++;
       console.log(param["params"]["id"],param["params"]["modulo"]);
@@ -124,7 +123,7 @@ seleccion(evento){
                   element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
                   supervisor,element.doc,element.imagen));
                   this.motivo.push(false);
-                  this.incidencia[element.id]={'origen':'limpiezas','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
+                  this.incidencia[element.id]={'origen':'limpiezas','origenasociado':'limpieza_realizada','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
@@ -357,7 +356,7 @@ exportData(tabla: DataTable){
 
 getIncidencias(){
   let params = this.empresasService.seleccionada;
-  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.limpieza.id;
+  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.limpieza.id+"&WHERE=origen=&valor=limpiezas";
       this.servidor.getObjects(URLS.STD_SUBITEM, parametros2).subscribe(
         response => {
           

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import {DataTable, Column} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -34,6 +36,10 @@ public items: PlanRealizado[];
 public images: string[];
 public docs: string[];
 public usuarios:object[];
+public incidencia:any[];
+public tablaPosition=0;
+public selectedItem: PlanRealizado;
+
 
  public guardar = [];
  public alertaGuardar:boolean=false;
@@ -56,7 +62,7 @@ public foto;
 public top = '50px';
 //************** */
   constructor(public servidor: Servidor,public empresasService: EmpresasService, 
-    public translate: TranslateService, private messageService: MessageService) {}
+    public translate: TranslateService, private messageService: MessageService,private route: ActivatedRoute) {}
 
 
  ngOnInit() {
@@ -83,6 +89,16 @@ public top = '50px';
   //************* */
   }
 
+  incidenciaSelection(){
+    let params = this.route.paramMap["source"]["_value"];
+        if (params["modulo"] == "planificaciones_realizadas" && params["id"]){
+            let idOrigen =params["id"];
+            let index = this.items.findIndex((item)=>item.id==idOrigen);
+            this.selectedItem = this.items[index]
+            this.tablaPosition = index;
+            console.log('***_',index,this.selectedItem)
+          }
+  }
 
   setItems(){
   //  let params = this.maquina.id;
@@ -91,6 +107,7 @@ public top = '50px';
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.items = [];
+            this.incidencia=[];
             this.images=[];
             this.docs=[];
             if (response.success && response.data) {
@@ -102,11 +119,15 @@ public top = '50px';
                   this.items.push(new PlanRealizado(element.id,element.idplan,element.idfamilia,element.idempresa,
                     element.nombre,element.descripcion,new Date(element.fecha_prevista),new Date(element.fecha),element.responsable,element.usuario,
                   element.idsupervisor,fecha,element.supervision,element.detalles_supervision,element.supervisor,element.imagen,element.doc));
+                  this.incidencia[element.id]={'origen':'planificaciones','origenasociado':'planificaciones_realizadas','idOrigenasociado':null,'idOrigen':element.id}
+                  
                   this.motivo.push(false);
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
              }
+             this.incidenciaSelection();
+             this.getIncidencias();
             }
 
         });
@@ -329,6 +350,23 @@ exportData(tabla: DataTable){
   tabla.exportCSV();
   tabla._value = origin_Value;
   tabla.columns.splice(tabla.columns.length-2,2);
+}
+
+getIncidencias(){
+  let params = this.empresasService.seleccionada;
+  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+0+"&WHERE=origen=&valor=planificaciones";
+      this.servidor.getObjects(URLS.STD_SUBITEM, parametros2).subscribe(
+        response => {
+          
+          if (response.success && response.data) {
+
+            for (let element of response.data) {  
+              this.incidencia[element.idOrigen]["idIncidencia"]=element.id; 
+              this.incidencia[element.idOrigen]["estado"]=element.estado;                              
+           }
+           
+          }
+      });
 }
 
 }

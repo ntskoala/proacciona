@@ -35,6 +35,7 @@ public myTop;
 public myLeft;
 public ayuda;
 public incidencias: Incidencia[];
+public nuevaIncidenciaFromIncidencias: Incidencia;
 // public limpieza: LimpiezaZona;
 // public elementosLimpieza: LimpiezaElemento[];
 // public misProdusctosLimpieza: LimpiezaProducto[];
@@ -145,6 +146,8 @@ public subMenu:string=null;
   }
   nuevaIncidenciaCreada(evento){
     console.log(evento);
+    this.nuevaIncidenciaFromIncidencias = evento;
+
   }
   cargaIncidencias(incidencias: Incidencia[]){
     this.incidencias= incidencias;

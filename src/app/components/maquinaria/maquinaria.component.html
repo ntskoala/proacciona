@@ -1,7 +1,7 @@
   <mat-card>
     <mat-card-title>
       <mat-toolbar color="accent" class="toolbar-principal">{{'menu.maquinaria' | translate}}
-   <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>      
+   <listado-maquinas [idSelected]="idmaquinaURL" (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>      
     </mat-toolbar>
     </mat-card-title>
  <mat-card-subtitle>
@@ -44,7 +44,7 @@
 <div class="sidenav-content">
     <h2 class="cente tituloMaquina" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2><BR>
       <div class="tabs" style="margin-top: 60px">
-<mat-tab-group *ngIf="maquina && maquina.id > 0">
+<mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>
   <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></mat-tab>  
 <mat-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR" *ngIf="maquina"></mantenimientos-realizados></mat-tab>  

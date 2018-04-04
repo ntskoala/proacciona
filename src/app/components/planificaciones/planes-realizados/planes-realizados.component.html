@@ -4,13 +4,13 @@
   </div>
 </modal> -->
 
-  <div style="position:absolute; left:0px; top:40px; min-width: 1000px">
+  <div style="position:absolute; left:0px; top:40px; min-width: 1100px">
 
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50]"
-[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1000px'}"
- [sortOrder]="0">
+[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1100px'}"
+ [sortOrder]="0" [(selection)]="selectedItem"  [(first)]="tablaPosition">
     <p-header>
         <div class="ui-helper-clearfix">
             <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">                              
@@ -134,7 +134,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'100px'}">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'150px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
@@ -147,6 +147,10 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
+
+    <app-boton-incidencia class="incidenciaItem" id="botonIncidencia" [origen]="incidencia[item.id]"></app-boton-incidencia>
+
+
 </ng-template>  
   </p-column>  
 </p-dataTable>

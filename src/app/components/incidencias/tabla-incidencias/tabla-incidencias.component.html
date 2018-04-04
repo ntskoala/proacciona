@@ -55,7 +55,8 @@
   </span> -->
   
   <p-table #dt [columns]="cols" [value]="incidencias" (onEdit)="onEdit($event)" [csvSeparator]="';'" [exportFilename]="'Incidencias'"
-      dataKey="incidencia" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem"
+      dataKey="incidencia" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem" 
+      (onSort)="onRowSelect($event,dt)" sortField="fecha" [sortOrder]="-1" 
       [paginator]="true" [rows]="10" [first]="tablaPosition" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
   
       <ng-template pTemplate="caption">
@@ -78,7 +79,9 @@
               <th style="width: 2.25em"></th>
               <th style="width:100px" class="header-cell">{{"incidencia.incidencia" | translate}}</th>
               <th style="width:120px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>              
-              <th style="width:150px" class="header-cell">{{"incidencia.fecha" | translate}}</th>
+              <th style="width:150px" class="header-cell" [pSortableColumn]="fecha">{{"incidencia.fecha" | translate}}
+                    <p-sortIcon [field]="fecha"></p-sortIcon>
+              </th>
               <th style="width:120px" class="medium header-cell">{{"incidencia.r_cierre" | translate}}</th>
               <th style="width:150px" class="header-cell">{{"incidencia.fecha_cierre" | translate}}</th>              
               <!-- <th style="width:180px" class="medium header-cell">{{"incidencia.nc" | translate}}</th> -->

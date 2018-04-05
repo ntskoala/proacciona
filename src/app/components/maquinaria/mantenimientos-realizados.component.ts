@@ -77,6 +77,7 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        window.scrollTo(0, 0)
   }
   // photoURL(i) {
   //   this.verdoc=!this.verdoc;
@@ -101,6 +102,11 @@ seleccion(evento){
   console.log("SELECCION",evento);
 }
 
+onRowSelect(evento, tabla: DataTable){
+//   console.log('****ROWSELECTED',tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
+//   let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);
+//  this.tablaPosition = index;
+}
 
   setMantenimientos(){
     let params = this.maquina.id;

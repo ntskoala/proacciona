@@ -457,6 +457,7 @@
       "nohaymail":"No té email",
       "guardar":"S'ha modificat un registre, es necessari polsar el botó <span class='material-icons'>check</span> per desar els canvis",
       "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desar' per confirmar els canvis",
+      "borrar":"S'ha esborrat el registre",
       "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertes",

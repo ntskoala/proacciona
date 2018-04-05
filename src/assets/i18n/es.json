@@ -457,6 +457,7 @@
       "nohaymail":"No tiene email",
       "guardar":"Se ha modificado un registro, es necesario pulsar el botón <span class='material-icons'>check</span> para guardar los cambios",
       "guardar_Ficha":"Se ha modificado la ficha, es necesario pulsar el botón 'Guardar' para confirmar los cambios",
+      "borrar":"Se ha borrado un registro",
       "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertas",

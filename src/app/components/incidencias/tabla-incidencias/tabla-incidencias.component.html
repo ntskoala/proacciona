@@ -51,7 +51,7 @@
       </span>
     </form>
     <div style="height: 15px" ></div>
-  </div>
+  </div>   
   </span> -->
   
   <p-table #dt [columns]="cols" [value]="incidencias" (onEdit)="onEdit($event)" [csvSeparator]="';'" [exportFilename]="'Incidencias'"
@@ -104,7 +104,7 @@
                           <input type="text" [(ngModel)]="item.incidencia" (keypress)="itemEdited(item.id)">
                       </ng-template>
                       <ng-template pTemplate="output">
-                          {{item.incidencia}}
+                          {{item.incidencia}} {{item.id}}
                       </ng-template>
                   </p-cellEditor>
               </td>

@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   {path: '', component: StartComponent},
   {path: 'login2', component: LoginComponent},
   {path: 'login', component: StartComponent},
-  // {path: 'login/:token', component: StartComponent},
+  {path: 'login/:token', component: StartComponent},
   {path: 'empresas', component: EmpresasComponent},
   {path: 'empresas/:modulo/:idOrigenasociado/:id', component: EmpresasComponent},
   {path: 'empresas/:empresa/:modulo/:idOrigenasociado/:id', component: EmpresasComponent},

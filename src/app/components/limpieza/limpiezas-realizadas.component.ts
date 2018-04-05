@@ -68,6 +68,7 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        window.scrollTo(0, 0)
   }
 
 incidenciaSelection(){
@@ -212,7 +213,9 @@ onEdit(event){
           if (response.success) {
             let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
+            this.selectedItem=null;
             this.items.splice(indice, 1);
+            this.setAlerta('alertas.guardar');
           }
       });
     }

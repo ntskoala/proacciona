@@ -76,6 +76,7 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        window.scrollTo(0, 0)
   }
 
   ngOnChanges(){

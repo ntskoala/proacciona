@@ -78,7 +78,7 @@ public top:string;
       { field: 'foto', header: 'Foto' }
   ];
   this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
-
+  window.scrollTo(0, 0)
 }
   ngOnChanges(){
     console.log(this.nuevaIncidenciaFromIncidencias);
@@ -134,23 +134,19 @@ public top:string;
               }
         );
    }
-incidenciaSelection(){
-console.log('Seleccion***');
-    let x=0;
-    this.route.paramMap.forEach((param)=>{
-      x++;
-      console.log(param["params"]["modulo"],param["params"]["id"]);
-        if (param["params"]["modulo"] == "incidencias"){
-          if (param["params"]["id"]){
-            let idOrigen = param["params"]["id"];
+
+  incidenciaSelection(){
+    let params = this.route.paramMap["source"]["_value"];
+        if (params["modulo"] == "incidencias" && params["id"]){
+            let idOrigen =params["id"];
             let index = this.incidencias.findIndex((item)=>item.id==idOrigen);
             this.selectedItem = this.incidencias[index]
-            //console.log(this.tablaIncidencias.findIndexInSelection(this.tablaIncidencias.selection));
-           // this.tablaPosition = index;
+            console.log('***_',index,this.selectedItem,idOrigen)
           }
-        }
-      });
   }
+
+
+
   onRowSelect(evento, tabla: Table){
     console.log('****ROWSELECTED',tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
     let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);

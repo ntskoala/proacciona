@@ -36,6 +36,7 @@ public myLeft;
 public ayuda;
 public incidencias: Incidencia[];
 public nuevaIncidenciaFromIncidencias: Incidencia;
+public IncidenciaModificada: Incidencia;
 // public limpieza: LimpiezaZona;
 // public elementosLimpieza: LimpiezaElemento[];
 // public misProdusctosLimpieza: LimpiezaProducto[];
@@ -152,5 +153,10 @@ public subMenu:string=null;
   cargaIncidencias(incidencias: Incidencia[]){
     this.incidencias= incidencias;
 
+  }
+
+  actualizarIncidenciaFromCalendar(evento){
+    console.log('incidencia Actualizada',evento)//evento = incidencia guardada
+    this.IncidenciaModificada = evento;
   }
 }

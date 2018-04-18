@@ -88,7 +88,7 @@
               <th style="width:120px" class="medium header-cell">{{"incidencia.estado" | translate}}</th>            
               <th style="width:100px" class="medium header-cell">{{"incidencia.origen" | translate}}</th>
               <!-- <th style="width:100px" class="medium header-cell">{{"foto" | translate}}</th> -->
-              <th style="width:140px" class="medium header-cell">{{"acciones" | translate}}</th>
+              <th style="width:140px; min-width: 140px" class="medium header-cell">{{"acciones" | translate}}</th>
           </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item let-i="rowIndex" let-columns="columns" let-expanded="expanded">
@@ -224,7 +224,7 @@
                       </button>
                   </span>
                   <span #saveTT="matTooltip" class="cell tooltip" matTooltip="{{'incidencia.Goto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
-                      [matTooltipPosition]="'right'">
+                      [matTooltipPosition]="'right'" (click)="test(item)">
                       <!-- <a [routerLink]="['/empresas','limpieza_realizada',item.idOrigenasociado,item.idOrigen]"> -->
                       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="item.idOrigen==0"
                           type="button" (click)="gotoOrigen(item)">

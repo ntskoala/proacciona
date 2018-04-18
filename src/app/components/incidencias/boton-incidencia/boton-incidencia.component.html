@@ -1,6 +1,6 @@
 <span class="tooltip" matTooltip="{{'incidencia.'+newIncidencia.estado | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
     [matTooltipPosition]="'right'">  
-<button class="botonIncidencia" [ngStyle]="{'background-color':getColor()}" mat-mini-fab [color]="colorBoton" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
+<button [disabled]="!permisos.incidencias" class="botonIncidencia" [ngStyle]="{'background-color':getColor()}" mat-mini-fab [color]="colorBoton" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
 </span>
 <div *ngIf="nuevaIncidencia" class="newIncident">
     <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  #newItemForm="ngForm" (ngSubmit)="newItem()">

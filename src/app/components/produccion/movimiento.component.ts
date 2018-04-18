@@ -496,6 +496,7 @@ prepareAlmacenes(newOrden: number){
     }
 }
 
+
 setAlmacen(almacen: Almacen){
     let param = '?id=' + almacen.id +   "&entidad=almacenes";
     this.servidor.putObject(URLS.STD_ITEM,param, almacen).subscribe(
@@ -514,7 +515,7 @@ setAlmacen(almacen: Almacen){
 setRemanente(detalleProduccion: ProduccionDetalle){
   console.log("setRemanente",detalleProduccion)
   if (detalleProduccion.idmateriaprima >0){
-        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idOrden="+detalleProduccion.idorden+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
         this.servidor.getObjects(URLS.UPDATE_REMANENTE, parametros).subscribe(
           response => {
             this.entrada_productos = [];

@@ -7,6 +7,7 @@ import {Calendar} from 'primeng/primeng';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
+import { PermisosService } from '../../../services/permisos.service';
 import { URLS } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
 import { Usuario } from '../../../models/usuario';
@@ -36,7 +37,7 @@ public urlFoto = URLS.DOCS + this.empresasService.seleccionada + '/incidencias/'
 public uploadFoto: any;
 public colorBoton:string='accent';
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public router: Router
-    , public translate: TranslateService, private messageService: MessageService) { }
+    , public translate: TranslateService, private messageService: MessageService, public permisos: PermisosService) { }
 
   ngOnInit() {
     this.loadUsuarios();

@@ -18,6 +18,7 @@ import { Incidencia } from '../../../models/incidencia';
 import { Modal } from '../../../models/modal';
 import {MatSelect,MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-tabla-incidencias',
@@ -29,6 +30,7 @@ export class TablaIncidenciasComponent implements OnInit,OnChanges {
 @Output() incidenciasCargadas: EventEmitter<Incidencia[]> = new EventEmitter<Incidencia[]>();
 @ViewChild('dt') tablaIncidencias: Table;
 @Input() nuevaIncidenciaFromIncidencias: Incidencia;
+@Input() IncidenciaModificadaFromCalendar: Incidencia;
   public modal: Modal = new Modal();
   public procesando:boolean=false;
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
@@ -80,11 +82,35 @@ public top:string;
   this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
   window.scrollTo(0, 0)
 }
+test(item: Incidencia){
+
+
+}
   ngOnChanges(){
-    console.log(this.nuevaIncidenciaFromIncidencias);
+    if (this.selectedItem) this.selectedItem = null;
+    console.log('nueva:',this.nuevaIncidenciaFromIncidencias,'modificada:',this.IncidenciaModificadaFromCalendar);
     if (this.nuevaIncidenciaFromIncidencias){
+      
     this.incidencias.push(this.nuevaIncidenciaFromIncidencias)
     this.incidencias = this.incidencias.slice();
+    let index = this.incidencias.findIndex((incidencia)=>incidencia.id==this.nuevaIncidenciaFromIncidencias.id);
+    this.incidencias[index].responsable_cierre =this.nuevaIncidenciaFromIncidencias.responsable_cierre;
+    this.incidencias[index].responsable =this.nuevaIncidenciaFromIncidencias.responsable.toString();
+    this.incidencias[index].estado =this.nuevaIncidenciaFromIncidencias.estado.toString();
+    this.nuevaIncidenciaFromIncidencias = null;
+    this.incidencias = this.incidencias.slice();
+    this.selectedItem = this.incidencias[index];
+    }
+    if (this.IncidenciaModificadaFromCalendar){
+    // let indice = this.incidencias.findIndex((item)=>item.id==this.IncidenciaModificadaFromCalendar.id);
+    //   this.incidencias[indice]=this.IncidenciaModificadaFromCalendar;     
+    console.log(this.IncidenciaModificadaFromCalendar)
+      let index = this.incidencias.findIndex((incidencia)=>incidencia.id==this.IncidenciaModificadaFromCalendar.id);
+      this.incidencias[index].responsable_cierre =this.IncidenciaModificadaFromCalendar.responsable_cierre;
+      this.incidencias[index].responsable =this.IncidenciaModificadaFromCalendar.responsable;
+      this.incidencias[index].estado =this.IncidenciaModificadaFromCalendar.estado.toString();
+      this.IncidenciaModificadaFromCalendar = null;
+      this.incidencias = this.incidencias.slice();
     }
   }
   loadSupervisores(){
@@ -118,9 +144,13 @@ public top:string;
             this.incidencias = [];
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
+                let fecha:Date;
+                let fechaCierre:Date;
+                if (moment(element.fecha).isValid()) fecha = moment(new Date(element.fecha)).utc().toDate();              
+                if (moment(element.fecha_cierre).isValid()) fechaCierre = moment(new Date(element.fecha_cierre)).utc().toDate();
                 this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,element.responsable,
-                  moment(new Date(element.fecha)).utc().toDate(),element.responsable_cierre,
-                  moment(new Date(element.fecha_cierre)).utc().toDate(),element.solucion,
+                  fecha,element.responsable_cierre,
+                  fechaCierre,element.solucion,
                   element.nc,element.origen,element.idOrigen,element.origenasociado,element.idOrigenasociado,element.foto,
                   element.descripcion,element.estado));
               }
@@ -148,17 +178,20 @@ public top:string;
 
 
   onRowSelect(evento, tabla: Table){
-    console.log('****ROWSELECTED',tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
+    console.log('****ROWSELECTED',evento,this.selectedItem)
+    if (this.selectedItem){
+    console.log('****ROWSELECTED',evento,tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
     let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);
    this.tablaPosition = index;
+    }
   }
 
    changeItem(event,idItem:number,fuente:string){
 console.log(event);
-    if (fuente == 'responsable'){
-      let index = this.incidencias.findIndex((incidencia)=>incidencia.id==idItem);
-      if (this.incidencias[index].responsable_cierre == 0) this.incidencias[index].responsable_cierre = event.value;
-    }
+    // if (fuente == 'responsable'){
+    //   let index = this.incidencias.findIndex((incidencia)=>incidencia.id==idItem);
+    //   if (this.incidencias[index].responsable_cierre == 0 || isNullOrUndefined(this.incidencias[index].responsable_cierre)) this.incidencias[index].responsable_cierre = event.value;
+    // }
     this.itemEdited(idItem);
    }
 

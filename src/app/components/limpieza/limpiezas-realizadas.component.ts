@@ -82,11 +82,13 @@ incidenciaSelection(){
           console.log(param["params"]["id"],param["params"]["modulo"]);
           let idOrigen = param["params"]["id"];
           let index = this.items.findIndex((item)=>item.id==idOrigen);
-          this.selectedItem = this.items[index]
-          // let x= 5;
-          // do {x--} while ((index -x) % 5 != 0 || x > 0)
-          this.tablaPosition = index;
-          //console.log("SELECCION AÇUTOMATICA",index,x);
+          if (index > -1){
+            this.selectedItem = this.items[index]
+            this.tablaPosition = index;
+            console.log('***_',index,this.selectedItem)
+            }else{
+              this.setAlerta('incidencia.noencontrada')
+            }
         }
       }
     });
@@ -215,7 +217,8 @@ onEdit(event){
             let indice = this.items.indexOf(controlBorrar);
             this.selectedItem=null;
             this.items.splice(indice, 1);
-            this.setAlerta('alertas.guardar');
+            this.items = this.items.slice();
+            this.setAlerta('alertas.borrar');
           }
       });
     }

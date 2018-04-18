@@ -59,6 +59,8 @@
   "borrarPlanST":"Se borrarán sus resultados asociados.",
   "borrarT":"¿Estás seguro de querer eliminar el registro seleccionado?",
   "borrarST":"Se borrarán sus datos asociados.",
+  "borrarIncidenciaT":"Eliminar Incidencia",
+  "borrarIncidenciaST":"Se eliminará la incidencia, ¿confirmar? ",
   "Supervisores":"Supervisores",
   "Supervisor":"Supervisor",
   "PermisosSupervisores":"Permisos supervisores",
@@ -129,7 +131,8 @@
     "Modulo Clientes":"Módulo clientes",
     "Modulo Producción":"Módulo producción",
     "Traspasos":"Módulo traspasos",
-    "Personal":"Módulo personal"
+    "Personal":"Módulo personal",
+    "Modulo Incidencias":"Módulo incidencias"
   },
   "maquinas": {
     "CalendarioGeneralMantenimiento":"Calendario general mantenimiento",
@@ -500,7 +503,8 @@
       "acciones":"Acciones",
       "estado":"Estado",
       "fecha_termini":"Fecha limite",
-      "descripcion":"Descripción"
+      "descripcion":"Descripción",
+      "noencontrada":" No se ha encontrado la incidencia seleccionada"
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

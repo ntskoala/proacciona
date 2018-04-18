@@ -93,9 +93,13 @@ incidenciaSelection(){
       if (params["modulo"] == "mantenimientos_realizados" && params["id"]){
           let idOrigen =params["id"];
           let index = this.mantenimientos.findIndex((item)=>item.id==idOrigen);
+        if (index > -1){
           this.selectedItem = this.mantenimientos[index]
           this.tablaPosition = index;
           console.log('***_',index,this.selectedItem)
+        }else{
+          this.setAlerta('incidencia.noencontrada')
+        }
         }
 }
 seleccion(evento){

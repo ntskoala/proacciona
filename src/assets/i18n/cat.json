@@ -59,6 +59,8 @@
   "borrarPlanST":"S'esborraran els resultats associats.",
   "borrarT":"Estàs segur de voler eliminar el registre seleccionat?",
   "borrarST":"S'esborraran les dades associades.",
+  "borrarIncidenciaT":"Eliminar incidència",
+  "borrarIncidenciaST":"S'esborrara la incidència, ¿confirmar? ",
   "Supervisores":"Supervisors",
   "Supervisor":"Supervisor",
   "PermisosSupervisores":"Permisos supervisors",
@@ -129,7 +131,8 @@
     "Modulo Clientes":"Mòdul clients",
     "Modulo Producción":"Mòdul producció",
     "Traspasos":"Mòdul traspassos",
-    "Personal":"Mòdul personal"
+    "Personal":"Mòdul personal",
+    "Modulo Incidencias":"Mòdul incidències"
   },
   "maquinas": {
     "CalendarioGeneralMantenimiento":"Calendari general manteniment",
@@ -500,7 +503,8 @@
       "acciones":"Accions",
       "estado":"Estat",
       "fecha_termini":"Data termini",
-      "descripcion":"Descripció"
+      "descripcion":"Descripció",
+      "noencontrada":" No s'ha trobat la incidéncia seleccionada"
     },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",

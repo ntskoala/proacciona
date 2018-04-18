@@ -3,7 +3,7 @@ export class Incidencia {
       public id: number,
       public idempresa: number,
       public incidencia: string,
-      public responsable: number,
+      public responsable: any,
       public fecha: Date,
       public responsable_cierre: number,
       public fecha_cierre: Date,
@@ -15,7 +15,7 @@ export class Incidencia {
       public idOrigenasociado: number, 
       public foto:string,
       public descripcion: string,
-      public estado: number
+      public estado: any
     ) {}
   }
 

@@ -4,8 +4,10 @@
   <h2 class="center">{{'incidencia.calendario' | translate}}</h2>
   <!-- <p-schedule [height]="470"  [contentHeight]="400"  [aspectRatio]="3" [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="4" [editable]="false"
    dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule> -->
-   <p-schedule [height]="410"  [contentHeight]="410"  [events]="events" [header]="headerCalendar" [locale]="locale" [eventLimit]="2" [editable]="false"
-   dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
+   <p-schedule [height]="410"  [contentHeight]="410"  [events]="events" [header]="headerCalendar" [locale]="locale" 
+   [eventLimit]="2" [editable]="false"
+   dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar
+   [eventRender]="eventRender"></p-schedule>
   <!--(onDayClick)="handleDayClick($event)"-->
   <mat-card>
       <div class="leyenda">
@@ -30,16 +32,35 @@
   [height]="500"
       -->
 
-   <p-dialog appendTo="body" header="Detalles" [height]="400" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
+   <p-dialog appendTo="body" header="Detalles" [height]="400" [width]="600" [(visible)]="dialogVisible" [responsive]="true" [contentStyle]="{'overflow':'visible'}" showEffect="fade" [modal]="true">
       <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="incidencia">
           <div class="ui-grid-row">
               <div class="ui-grid-col-4"><label for="vin">{{'incidencia.incidencia' | translate}}</label></div>
-              <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="incidencia.incidencia" /></div>
+              <div class="ui-grid-col-8"><input pInputText size="40" id="title" [(ngModel)]="incidencia.incidencia" /></div>
           </div>
           <div class="ui-grid-row">
-              <div class="ui-grid-col-4"><label for="start">{{'incidencia.fecha' | translate}}</label></div>
-              <div class="ui-grid-col-8"><p-calendar [style]="{'width':'170px'}" appendTo="body" [disabled] id="start"  [(ngModel)]="incidencia.fecha" dateFormat="dd/mm/yy"></p-calendar></div>
+            <div class="ui-grid-col-4"><label for="vin">{{'incidencia.responsable' | translate}}</label></div>
+            <div class="ui-grid-col-8">
+                <!-- <input id="responsable" [(ngModel)]="incidencia.responsable" /> -->
+                <p-dropdown [style]="{'width':'170px'}" [options]="responsables" [(ngModel)]="incidencia.responsable" placeholder="{{'incidencia.responsable' | translate}}"></p-dropdown>
           </div>
+        </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="start">{{'incidencia.fecha' | translate}}</label></div>
+              <div class="ui-grid-col-8"><p-calendar [style]="{'width':'170px'}" appendTo="body" [disabled] id="start"  
+                [(ngModel)]="incidencia.fecha" dateFormat="dd/mm/yy" hourFormat="24" [showTime]="true"></p-calendar></div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'incidencia.r_cierre' | translate}}</label></div>
+            <div class="ui-grid-col-8">
+          <p-dropdown [style]="{'width':'170px'}" [options]="responsables" [(ngModel)]="incidencia.responsable_cierre" placeholder="{{'incidencia.r_cierre' | translate}}"></p-dropdown>
+            </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="start">{{'incidencia.fecha_cierre' | translate}}</label></div>
+                <div class="ui-grid-col-8"><p-calendar [style]="{'width':'170px'}" appendTo="body" [disabled] id="start"  
+                    [(ngModel)]="incidencia.fecha_cierre" dateFormat="dd/mm/yy" hourFormat="24" [showTime]="true"></p-calendar></div>
+            </div>
           <div class="ui-grid-row">
               <div class="ui-grid-col-4"><label for="start">{{'incidencia.estado' | translate}}</label></div>
               <div class="ui-grid-col-8">
@@ -47,45 +68,24 @@
                 </div>
           </div>
           <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'incidencia.origen' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText size="40" id="origen" [(ngModel)]="incidencia.origen" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="vin">{{'incidencia.descripcion' | translate}}</label></div>
+            <div class="ui-grid-col-8"><input  pInputText size="40" id="descrip" [(ngModel)]="incidencia.descripcion" /></div>
+        </div>
+          <div class="ui-grid-row">
               <div class="ui-grid-col-4"><label for="vin">{{'incidencia.solucion' | translate}}</label></div>
-              <div class="ui-grid-col-8"><input  pInputText id="descrip" [(ngModel)]="incidencia.solucion" /></div>
+              <div class="ui-grid-col-8"><input  pInputText size="40" id="solucion" [(ngModel)]="incidencia.solucion" /></div>
           </div>
 
-          <div class="ui-grid-row">
-              <div class="ui-grid-col-4"><label for="vin">{{'incidencia.responsable' | translate}}</label></div>
-              <div class="ui-grid-col-8">
-                  <!-- <input id="responsable" [(ngModel)]="incidencia.responsable" /> -->
-                  <p-dropdown [style]="{'width':'170px'}" [options]="responsables" [(ngModel)]="incidencia.responsable" placeholder="{{'incidencia.responsable' | translate}}"></p-dropdown>
-            </div>
-          </div>
-          <div class="ui-grid-row">
-                <div class="ui-grid-col-4"><label for="vin">{{'incidencia.r_seguimiento' | translate}}</label></div>
-                <div class="ui-grid-col-8">
-                  <p-dropdown [style]="{'width':'170px'}" [options]="responsables" [(ngModel)]="incidencia.responsable_seguimiento" placeholder="{{'incidencia.r_seguimiento' | translate}}"></p-dropdown>
-                    
-                </div>
-            </div>
-            <div class="ui-grid-row">
-                    <div class="ui-grid-col-4"><label for="vin">{{'incidencia.r_cierre' | translate}}</label></div>
-                    <div class="ui-grid-col-8">
-                  <p-dropdown [style]="{'width':'170px'}" [options]="responsables" [(ngModel)]="incidencia.responsable_cierre" placeholder="{{'incidencia.r_cierre' | translate}}"></p-dropdown>
-                        
-                    </div>
-                </div>
-                <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="vin">{{'incidencia.valoracion' | translate}}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="valoracion" [(ngModel)]="incidencia.valoracion" /></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="start">{{'incidencia.fecha_valoracion' | translate}}</label></div>
-                        <div class="ui-grid-col-8"><p-calendar [style]="{'width':'170px'}" appendTo="body" [disabled] id="fecha_valoracion"  [(ngModel)]="incidencia.fecha_valoracion" dateFormat="dd/mm/yy"></p-calendar></div>
-                    </div>               
   
       </div>
       <p-footer>
           <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
               <button type="button" pButton icon="fa-close" (click)="cancelEvent()" label="Cancelar"></button>
-              <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Guardar"></button>
+              <button type="button" pButton icon="fa-check" (click)="saveEvent(calendar)" label="Guardar"></button>
               <!-- <button *ngIf="estado=='realizado' && limpiezarealizada.idsupervisor == empresasService.userId" type="button" pButton icon="fa-check" (click)="supervisarEvent()" label="Supervisar"></button> -->
               
           </div>

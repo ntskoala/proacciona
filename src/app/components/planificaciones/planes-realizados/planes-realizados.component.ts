@@ -95,9 +95,13 @@ public top = '50px';
         if (params["modulo"] == "planificaciones_realizadas" && params["id"]){
             let idOrigen =params["id"];
             let index = this.items.findIndex((item)=>item.id==idOrigen);
+            if (index > -1){
             this.selectedItem = this.items[index]
             this.tablaPosition = index;
             console.log('***_',index,this.selectedItem)
+            }else{
+              this.setAlerta('incidencia.noencontrada')
+            }
           }
   }
 
@@ -199,8 +203,8 @@ setAlerta(concept:string){
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;
     // Crea el modal
-    this.modal.titulo = 'plan.borrarT';
-    this.modal.subtitulo = 'plan.borrarST';
+    this.modal.titulo = 'borrarT';
+    this.modal.subtitulo = 'borrarST';
     this.modal.eliminar = true;
     this.modal.visible = true;
   }
@@ -215,6 +219,8 @@ setAlerta(concept:string){
             let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
             this.items.splice(indice, 1);
+            this.items = this.items.slice();
+            this.setAlerta('alertas.borrar');
           }
       });
     }

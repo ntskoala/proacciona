@@ -4,6 +4,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { Http } from '@angular/http';
+import { HttpClientModule,HttpClient } from '@angular/common/http';
 
 //import { MaterialModule } from '@angular/material';
 //import {MatSelectModule} from '@angular/material';
@@ -32,6 +33,9 @@ import {SpinnerModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
 import {ChartModule} from 'primeng/chart';
+import {MenuModule} from 'primeng/menu';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {MenuItem} from 'primeng/api';
 //import {ChartModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
@@ -181,6 +185,7 @@ import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.
 import { TablaIncidenciasComponent } from './components/incidencias/tabla-incidencias/tabla-incidencias.component';
 import { CalendariosIncidenciasComponent } from './components/incidencias/calendarios-incidencias/calendarios-incidencias.component';
 import { LoginComponent } from './components/login/login.component';
+import { TrazabilidadAdComponent } from './components/trazabilidad-ad/trazabilidad-ad.component';
 
 @NgModule({
     exports: [
@@ -232,6 +237,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PlunkerMaterialModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     JsonpModule,
     MomentModule,
     ScheduleModule,
@@ -253,6 +259,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     SpinnerModule,
     GrowlModule,
     ChartModule,
+    MenuModule,
+    ContextMenuModule,
 /**********MATERIAL */
    // MaterialModule,
    // MatSelectModule,
@@ -336,6 +344,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     AlmacenesComponent,
 
     TrazabilidadComponent,
+    TrazabilidadAdComponent,
     AlergenosComponent,
 //*******COMUNES     */
     ModalComponent,

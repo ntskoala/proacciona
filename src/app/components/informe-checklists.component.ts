@@ -1,5 +1,6 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
@@ -14,7 +15,8 @@ import { Columna } from '../models/columna';
 import * as moment from 'moment';
 @Component({
   selector: 'informe-checklists',
-  templateUrl: '../assets/html/informe-checklists.component.html'
+  templateUrl: '../assets/html/informe-checklists.component.html',
+  styles:['.selected {background-color: #ffd740;}'],
 })
 export class InformeChecklistsComponent implements OnInit{
   @ViewChild ('listaChecklist') lista:ElementRef;
@@ -24,6 +26,7 @@ export class InformeChecklistsComponent implements OnInit{
   checklists: Checklist[];
   controlchecklists: ControlChecklist[];
   resultadoschecklist: ResultadoChecklist[];
+  public selectedItem: any;
   columnas: Columna[];
   resultado: Object = {};
   tabla: Object[];
@@ -33,9 +36,16 @@ export class InformeChecklistsComponent implements OnInit{
   fotoSrc: string;
   exportar_informes: boolean =false;
 public es;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
+    public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
   ngOnInit() {
+    console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"],this.route.params["_value"]["idOrigenasociado"])
+    if (this.route.params["_value"]["idOrigenasociado"]>0){
+      this.cambioChecklist(this.route.params["_value"]["idOrigenasociado"]);
+      this.selectedItem = this.route.params["_value"]["id"];
+      console.log(this.selectedItem);
+    }
     // Conseguir checklists
     this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
     this.fecha['fin']= new Date();//moment().date();
@@ -72,12 +82,14 @@ public es;
           },
     error => console.log("error getting usuarios en permisos",error),
     ()=>{
+      if (!this.checklistSeleccionada)
       this.expand();
     }
     );
   }
 
   cambioChecklist(idChecklist: number) {
+    console.log('cambioChecklist');
     this.unExpand();
     this.tabla = [];
     this.checklistSeleccionada = idChecklist;
@@ -98,6 +110,7 @@ public es;
               element.nombre
             ));
           }
+          this.filtrarFechas(this.fecha)
         }
     });
   }
@@ -216,7 +229,10 @@ console.log(mifecha);
 }
 
 unExpand(){
+  console.log('unexpand');
+  
   this.lista.nativeElement.size = 1;
+ // this.lista.nativeElement.close();
 }
 expand(){
   let num = this.checklists.length;

@@ -23,7 +23,7 @@
             {{'trazabilidad.Arbol' | translate}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </mat-card-title>
-<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"  [contextMenu]="cm"></p-tree>
+<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
         
 <!--<p-tree [value]="tree" styleClass="miarbol" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
     </mat-card>
@@ -48,7 +48,7 @@
         <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
         <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
         <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date' && card.nivel == '2' ">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
-        {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br>
+        <!-- {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br> -->
          <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
         <!--{{message}}-->
         </mat-card>
@@ -68,5 +68,3 @@
       <button style="position:relative;top:40px" mat-raised-button color="accent" (click)="downloadPdf()">Ok</button>
       </span>
 </div>
-
-<p-contextMenu #cm [model]="itemsMenu"></p-contextMenu>

@@ -35,6 +35,7 @@ export const URLS = {
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
   TRAZA_ATRAS:  base + 'traza_atras.php',
+  TRAZA_ADELANTE:  base + 'traza_adelante.php',
   UPDATE_REMANENTE: base+ 'update_remanente.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',

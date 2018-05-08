@@ -424,6 +424,8 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Origen.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==this.idProveedorActual)].nombre;
     this.nuevoDetalleOrden_Origen.producto = this.productos[this.productos.findIndex((prod)=>prod.id==this.idProductoActual)].nombre;
     this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.loteSelected.cantidad_remanente- this.cantidadTraspaso;    
+    this.nuevoDetalleOrden_Origen.cantidad_real_origen = this.loteSelected.cantidad_remanente;   
+    
     }
     if (!this.proveedor){
      this.nuevoDetalleOrden_Origen.idloteinterno = this.ordenOrigen.id;
@@ -431,6 +433,9 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Origen.proveedor = 'interno';
     this.nuevoDetalleOrden_Origen.producto = 'lote interno';
     this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.almacenOrigenSelected.estado - this.cantidadTraspaso;        
+    this.nuevoDetalleOrden_Origen.cantidad_real_origen = this.almacenOrigenSelected.estado;   
+    // this.nuevoDetalleOrden_Origen.cantidad_remanente_origen = this.ordenOrigen.remanente - this.cantidadTraspaso;        
+    
     }
     console.log('origen');
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Origen,'origen');
@@ -445,6 +450,10 @@ prepareNewOrdenProduccionDetalle(idOrden: number){
     this.nuevoDetalleOrden_Destino.idloteinterno = this.almacenDestinoSelected.idproduccionordenactual;
     this.nuevoDetalleOrden_Destino.idmateriaprima = 0;
     this.nuevoDetalleOrden_Destino.cantidad = this.almacenDestinoSelected.estado;
+    this.nuevoDetalleOrden_Destino.cantidad_remanente_origen = 0;        
+    this.nuevoDetalleOrden_Destino.cantidad_real_origen = this.almacenDestinoSelected.estado;
+    //this.nuevoDetalleOrden_Destino.cantidad_remanente_origen = this.almacenOrigenSelected.estado - this.cantidadTraspaso;        
+    
     this.setNewOrdenProduccionDetalle(idOrden,this.nuevoDetalleOrden_Destino,'destino');
     }}
  this.prepareAlmacenes(idOrden);
@@ -514,8 +523,8 @@ setAlmacen(almacen: Almacen){
 
 setRemanente(detalleProduccion: ProduccionDetalle){
   console.log("setRemanente",detalleProduccion)
-  if (detalleProduccion.idmateriaprima >0){
-        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idOrden="+detalleProduccion.idorden+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
+  //if (detalleProduccion.idmateriaprima >0){
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idOrden="+detalleProduccion.idloteinterno+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
         this.servidor.getObjects(URLS.UPDATE_REMANENTE, parametros).subscribe(
           response => {
             this.entrada_productos = [];
@@ -526,9 +535,9 @@ setRemanente(detalleProduccion: ProduccionDetalle){
         error=>console.log(error),
         ()=>{}
         ); 
-  }else{
+  //}else{
 
-  }
+  //}
 }
 
 setNewClienteDistribucion(distribucion: Distribucion ){

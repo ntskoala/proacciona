@@ -175,11 +175,19 @@ irAlMenu(menuDefecto?:string){
         case "incidencias":
         this.selectedMenu = "incidencias";
         break;
+        case "Controles":
+        this.selectedMenu = "informes";
+        break;
+        case "Checklists":
+        this.selectedMenu = "informes";
+        break;
         default:
         if (menuDefecto == undefined) menuDefecto = this.route.params["_value"]["modulo"];
         this.selectedMenu = menuDefecto;
       }
+      console.log('selectedMenu:',this.selectedMenu)
     });
+
 }
 
 setPermisos(idempresa){

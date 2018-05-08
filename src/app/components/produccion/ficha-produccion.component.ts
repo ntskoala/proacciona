@@ -28,6 +28,7 @@ export class FichaProduccionComponent implements OnInit, OnChanges {
 //*** ESPECIFIC VAR */
 public es:any;
 public trazabilidad: boolean;
+public trazabilidadAd:boolean;
 public almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
@@ -118,6 +119,6 @@ trazabilidadAtras(){
 this.trazabilidad= !this.trazabilidad;
 }
 trazabilidadAdelante(){
-this.trazabilidad= !this.trazabilidad;
+this.trazabilidadAd= !this.trazabilidadAd;
 }
 }

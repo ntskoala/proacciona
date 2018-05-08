@@ -1,6 +1,9 @@
 import { Injectable, Component } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
 import 'rxjs/add/operator/map';
+
 import { Router } from '@angular/router';
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from 'ng2-translate';
@@ -16,7 +19,7 @@ import * as moment from 'moment/moment';
 // })
 export class Servidor {
 
-  constructor (private llamada: Http, private empresasService: EmpresasService,public router: Router,
+  constructor (private http: HttpClient,private llamada: Http, private empresasService: EmpresasService,public router: Router,
     private messageService: MessageService, public translate: TranslateService) {}
   
   login(url: string, param: string, payload = '') {
@@ -34,7 +37,15 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
     }
   }
-
+  // getObjects2(url: string, param: string) {
+  //   if (this.istokenExpired()){
+  //     this.setAlerta();
+  //   }else{
+  //   let parametros = '?token=' + sessionStorage.getItem('token') + param; 
+  //   return this.http.get(url + parametros)
+  //     //.map((res: Response) => JSON.parse(res.json()));
+  //   }
+  // }
   postObject(url: string, object: Object, param?: string) {
     if (this.istokenExpired()){
       this.setAlerta();

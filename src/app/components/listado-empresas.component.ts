@@ -31,6 +31,7 @@ export class ListadoEmpresasComponent implements OnInit {
     // Conseguir la lista de empresas
     this.servidor.getObjects(URLS.EMPRESAS, '').subscribe(
       response => {
+        console.log(response)
         if (response.success) {
           this.empresas.push(this.empresa);
           for (let element of response.data) {

@@ -47,7 +47,7 @@
     <span class="header-cell center">{{'Imagen' | translate}}</span>
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
   </div>
-  <div class="row" *ngFor="let resultado of tabla; let fila = index">
+  <div [ngClass]="{'yellow':selectedItem==resultado.id}" class="row" *ngFor="let resultado of tabla; let fila = index">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
     <span class="cell">
       <span id="user-link" class="material-icons">perm_identity</span> {{resultado.usuario}} 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
@@ -20,6 +21,7 @@ export class InformesControlComponent implements OnInit {
   public subscription: Subscription;
   public columnOptions: SelectItem[];
   public controles: any[] = [];
+  public selectedItem: any;
   public resultadoscontrol: ResultadoControl[] = [];
   public cols=[];
   public columnas: object[] = [];
@@ -32,10 +34,12 @@ export class InformesControlComponent implements OnInit {
   public exportar_informes: boolean =false;
   public es;
   public brands: string[]=['>','<','='];
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
+    public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
   ngOnInit() {
     // Conseguir controles
+    console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"]);
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
@@ -142,8 +146,10 @@ setColOptions(){
                 
               }
               this.tabla.push(resultado);
+              if (element.idr == this.route.params["_value"]["id"]) this.selectedItem = resultado;
             }
           }
+          
         }
     },
     (error)=>console.log(error),
@@ -223,6 +229,11 @@ this.tabla = this.tabla.filter((fila)=>{
 });
 return result;
 });
+}
+
+gotoIncidencia(evento,item){
+  console.log(evento,item);
+
 }
 
 }

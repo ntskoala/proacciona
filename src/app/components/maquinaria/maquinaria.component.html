@@ -43,7 +43,7 @@
   <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
 <div class="sidenav-content">
     <h2 class="cente tituloMaquina" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2><BR>
-      <div class="tabs" style="margin-top: 60px">
+      <div  style="margin-top: 60px">
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>
   <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></mat-tab>  

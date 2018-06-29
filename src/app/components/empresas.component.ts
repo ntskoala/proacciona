@@ -61,6 +61,7 @@ ruteado(page?:string){
 }
 }
 }
+
 ngOnChanges(){
   console.log("### ONCHANGES PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
 }
@@ -71,8 +72,9 @@ setUser(){
   this.empresasService.userName = sessionStorage.getItem('userName');
   this.empresasService.userTipo = sessionStorage.getItem('userTipo');
   this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
+  this.empresasService.nombreEmpresa = sessionStorage.getItem('nombreEmpresa');
   this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
-  this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
+  this.empresa = new Empresa(this.empresasService.nombreEmpresa, '', this.empresasService.empresaActiva);
   this.empresasService.seleccionarEmpresa(this.empresa);
   console.log()
   resolve(this.empresa.id);

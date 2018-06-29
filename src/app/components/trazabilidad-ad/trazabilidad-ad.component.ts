@@ -300,31 +300,9 @@ return nivel;
 
         let almacen = this.findAlmacen(event.node.data.almacen);
         let nivel = this.findNivelAlmacen(event.node.data.almacen);
-       
 
         let n_cliente = this.findCliente(event.node.data.cliente);
         if (n_cliente) nivel='2';
-
-
-
-        //     if(event.node.children){
-        //     event.node.children.forEach( childNode => {
-        //         let almacen = this.getTanque(childNode.data.almacen)
-        //         if (procedencia.length > 1) procedencia += " y ";
-        //         if (childNode.data.proveedor){
-        //             procedencia += almacen + " : " + childNode.data.cantidad + "l."  
-        //         }else{
-        //         procedencia += almacen + " : " + childNode.data.remanente + "l."  
-        //         }                           
-        //         cantidadProcedencia += childNode.data.cantidad;
-        //     } );
-        // }else{
-        //     procedencia = "Proveedor"
-        // }
-
-        
-
-
         this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,cantidad_remanente_origen:event.node.data.cantidad_remanente_origen});
         this.message="";
 

@@ -18,6 +18,7 @@ export class EmpresasService {
   showTooltips: boolean = true;
   showAlerts:boolean = true;
   login:boolean=false;
+  nombreEmpresa:string='';
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
 
@@ -32,8 +33,9 @@ export class EmpresasService {
   //exportar_informes = this.exportar_informesFuente.asObservable();
 
   seleccionarEmpresa(empresa: Empresa) {
- //     console.log("####EMPRESA SELECCIONADA:",empresa);
+      console.log("####EMPRESA SELECCIONADA:",empresa);
       this.seleccionada = empresa.id;
+      this.nombreEmpresa = empresa.nombre;
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
       this.empresaActiva = empresa.id;

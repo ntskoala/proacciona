@@ -368,7 +368,9 @@
     "origen":"Origen",
     "fecha orden":"Fecha orden",
     "proveedor":"Proveedor",
-    "remanente_origen": "Cantidad remanente en origen"
+    "remanente_origen": "Cantidad remanente en origen",
+    "trazaAtras":"Trazabilidad hacia atrás",
+    "trazaAdelante":"Trazabilidad hacia adelante"
   },
   "almacenes":{
     "nombre":"Nombre",

@@ -354,7 +354,9 @@
     "origen":"Origen",
     "fecha orden":"Data ordre",
     "proveedor":"Proveïdor",
-    "remanente_origen": "Quantitat romanent al origen"
+    "remanente_origen": "Quantitat romanent al origen",
+    "trazaAtras":"Traçabilitat enrera",
+    "trazaAdelante":"Traçabilitat endevant"
   },
   "clientes":{
     "crear":"Crear",

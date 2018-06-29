@@ -34,6 +34,7 @@ let posicion = 0;
 this.labels=[];
 this.logins=[];
 this.acciones=[];
+
     this.logs.forEach((log)=>{
         if (log.fecha != fechaAnterior){
             fechaAnterior =log.fecha;
@@ -70,9 +71,10 @@ loadLogs(periodo?:number){
     let fecha_fin=moment().format('YYYY-MM-DD');
     let fecha_inicio=moment().subtract(periodo,'days').format('YYYY-MM-DD');
     let fecha_field="fecha";
+    let fields = "&fields=fecha,idusuario,tabla,accion,plataforma";
     let filter= "&filterdates=true"+"&fecha_inicio="+fecha_inicio+"&fecha_fin="+fecha_fin+"&fecha_field="+fecha_field;
-    let order = "&order=id DESC";
-        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=logs"+filter+order;
+    let order = "&order=id ASC";
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=logs"+filter+order+fields;
             this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
               response => {
                 this.logs = [];

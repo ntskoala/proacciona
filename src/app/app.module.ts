@@ -186,6 +186,7 @@ import { TablaIncidenciasComponent } from './components/incidencias/tabla-incide
 import { CalendariosIncidenciasComponent } from './components/incidencias/calendarios-incidencias/calendarios-incidencias.component';
 import { LoginComponent } from './components/login/login.component';
 import { TrazabilidadAdComponent } from './components/trazabilidad-ad/trazabilidad-ad.component';
+import { DashincidenciasComponent } from './components/dashboard/dashincidencias/dashincidencias.component';
 
 @NgModule({
     exports: [
@@ -373,6 +374,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     AlertasControlesComponent,
     DashrealizadosComponent,
     DashproduccionComponent,
+    DashincidenciasComponent,
 //*******INCIDENCIAS     */
     IncidenciasComponent,
     TablaIncidenciasComponent,

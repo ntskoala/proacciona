@@ -20,14 +20,16 @@
 <div #toPDF class="arbol" [ngStyle]="{'width': widthArbol, 'overflow-y':'scroll'}">
     <mat-card>
                 <mat-card-title>
-            {{'trazabilidad.Arbol' | translate}}
+            {{'trazabilidad.Arbol' | translate}} {{modo}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </mat-card-title>
 <p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"  [contextMenu]="cm"></p-tree>
-        
+
 <!--<p-tree [value]="tree" styleClass="miarbol" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
     </mat-card>
+   
 </div>
+<p-contextMenu #cm [model]="itemsMenu"></p-contextMenu> 
 <div #toPDF2 class="info" *ngIf="selectedNode || informe">
     <mat-card *ngFor="let card of msgs; let i = index">
         <mat-card-title>
@@ -35,26 +37,17 @@
           <span class="material-icons">remove_circle_outline</span>
     </button>
            {{ card.label }}
-           
-    <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
-        </mat-card-title>
-        
-        <!--{{'num traspaso' }} : {{card.data.level}}<br>-->
+        </mat-card-title>  
         <span *ngIf="card.data.proveedor">{{'trazabilidad.proveedor'| translate}} : {{card.data.proveedor}}<br></span>
         <span *ngIf="card.data.cliente && card.data.cliente>0">{{'produccion.cliente'| translate}} : {{card.cliente}}<br></span>
-        <!--<span *ngIf="card.data.numlote_proveedor">{{'Lote de Proveedor' | translate}} : {{card.data.numlote_proveedor}}<br></span>-->
-        <!--<span *ngIf="card.data.proveedor">{{'proveedor' | translate}} : {{card.proveedor}}<br></span>-->
         <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'trazabilidad.tanque' | translate}} : {{card.almacen}}<br></span>
         <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
         <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
         <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date' && card.nivel == '2' ">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
-        {{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br>
+        <span *ngIf="modo=='atras'">{{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br></span>
          <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
-        <!--{{message}}-->
         </mat-card>
-        <!--<mat-card >
-            {{informe}}
-        </mat-card>-->
+
 </div>
 
 
@@ -69,4 +62,3 @@
       </span>
 </div>
 
-<p-contextMenu #cm [model]="itemsMenu"></p-contextMenu>

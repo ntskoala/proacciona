@@ -10,7 +10,7 @@ import { TranslateService } from 'ng2-translate';
 
 import {EmpresasService} from './empresas.service';
 
-import * as moment from 'moment/moment';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -37,6 +37,7 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
     }
   }
+
   // getObjects2(url: string, param: string) {
   //   if (this.istokenExpired()){
   //     this.setAlerta();

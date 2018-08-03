@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Router,ActivatedRoute, ParamMap, NavigationEnd,NavigationStart  } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
+import { TranslateService } from 'ng2-translate';
+
 import { Observable } from 'rxjs/Observable';
 //import {MessageService} from 'primeng/components/common/messageservice';
 import * as moment from 'moment/moment';
@@ -22,19 +24,24 @@ public params;
   permiso: boolean = false;
   token = sessionStorage.getItem('token');
   empresa: Empresa;
+  public nuevoLogin:boolean=false;
+
   constructor(public router: Router,private route: ActivatedRoute,
      public empresasService: EmpresasService,public servidor: Servidor,
-  public permisos: PermisosService) {
+  public permisos: PermisosService, public translate: TranslateService) {
     console.log("## CONSTRUCTOR PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
   }
-public nuevoLogin:boolean=false;
+
   ngOnInit() {
      let x = 0;
      this.router.events.subscribe((val) => {
        x++;
+       console.log(val);
       // see also 
       let modulo 
+      console.log(val["url"]);
       if (val["url"]) modulo = val["url"].split("/")[1]
+      console.log('modulo',modulo);
       //if (val["url"]) console.log("***",val instanceof NavigationStart,val["url"].split("/")[1]) 
       if (val instanceof NavigationStart && modulo != 'login'){
         let page
@@ -42,12 +49,15 @@ public nuevoLogin:boolean=false;
         console.log("ruteando...",x,val) 
         this.ruteado(page);
       }
-  });
+  },
+  (error)=>{console.log('error ruteando',error)}
+  );
   console.log("rutea...",x) 
   if ( x== 0) this.ruteado(this.route.paramMap["source"]["_value"]["modulo"]);
   }
 
 ruteado(page?:string){
+  if (this.translate.currentLang === undefined) this.setIdioma();
   console.log("########RUTEADO",page);
   if (!page){
     this.setInitial();
@@ -57,11 +67,22 @@ ruteado(page?:string){
       //this.router.navigate(['login']);
       this.nuevoLogin = true;
     }else{
+      console.log('Hay token');
       this.irAlMenu(page);
 }
 }
 }
-
+setIdioma(){
+  console.log(this.translate.currentLang);
+  this.translate.setDefaultLang('cat');
+  this.translate.use('cat');
+if (localStorage.getItem("idioma")){
+   let idioma = localStorage.getItem("idioma");
+   this.empresasService.idioma = idioma;
+  this.translate.use(idioma);
+}
+console.log(this.translate.currentLang);
+}
 ngOnChanges(){
   console.log("### ONCHANGES PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
 }

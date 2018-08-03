@@ -8,7 +8,7 @@
   </div>
 
 <p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'"
-[(selection)]="selectedItem" (click)="gotoIncidencia($event,rowData)">
+[(selection)]="selectedItem" (click)="gotoIncidencia($event)">
     <p-header>
       <div class="informe-header">
         <div style="text-align:left;float:left">

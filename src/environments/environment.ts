@@ -7,6 +7,8 @@ export const environment = {
   production: false
 };
 //export const server = 'http://tfc.ntskoala.com/';
+
+
 export const server = 'https://tfc1-181808.appspot.com/';
 export var usuario: Object = {"user":"demo","password":"demo","idioma":null};
 // export const server = 'https://tfc.proacciona.es/';

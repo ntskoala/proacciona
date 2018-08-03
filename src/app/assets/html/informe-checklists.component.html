@@ -47,7 +47,7 @@
     <span class="header-cell center">{{'Imagen' | translate}}</span>
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
   </div>
-  <div [ngClass]="{'yellow':selectedItem==resultado.id}" class="row" *ngFor="let resultado of tabla; let fila = index">
+  <div class="row" *ngFor="let resultado of tabla; let fila = index">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
     <span class="cell">
       <span id="user-link" class="material-icons">perm_identity</span> {{resultado.usuario}} 
@@ -60,11 +60,12 @@
     <span class="cell center" *ngIf="!resultado.foto">
       <span class="material-icons">do_not_disturb_alt</span>
     </span>
-    <span class="cell right" *ngFor="let columna of columnas; let i = index">
+    <span [ngClass]="{'yellow':selectedItem==resultado[columna.idrc]}" class="cell right" *ngFor="let columna of columnas; let i = index">
       <span class="foto-link material-icons" *ngIf="resultado[columna.fotocontrol]" (click)="ventanaFoto(resultado[columna.fotocontrol],'checklistcontrol')">photo_camera</span>
       <span class="descrip-link material-icons" *ngIf="resultado[columna.id2]">comments</span>
+
       <div class="descripcion"><span *ngIf="resultado[columna.id2]">{{resultado[columna.id2]}}</span></div>
-        
+      <!-- {{resultado[columna.idrc]}} -->
       <span id="{{fila}}-{{i}}" class="material-icons green" *ngIf="resultado[columna.id]=='true'">check</span>
       <span id="{{fila}}-{{i}}" class="material-icons red" *ngIf="resultado[columna.id]=='false'">close</span>
       <span id="{{fila}}-{{i}}" class="" *ngIf="resultado[columna.id]=='na'">n.a.</span>

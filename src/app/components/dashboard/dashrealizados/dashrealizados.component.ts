@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 
 
 import * as moment from 'moment/moment';
@@ -32,7 +33,10 @@ export class DashrealizadosComponent implements OnInit {
   public columnOptions: any[];
   public tabla: Object[] = [];
   public tabla2: Object[] = [];
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
+  public days:number;
+  constructor(public servidor: Servidor,public empresasService: EmpresasService,
+    public router: Router,
+    public route: ActivatedRoute) { }
 
   ngOnInit() {
     this.loadControles();
@@ -65,17 +69,14 @@ export class DashrealizadosComponent implements OnInit {
     (error)=> console.log(error),
     ()=>{
 
-      //this.fecha['inicio']= new Date('2017-01-01'); //moment().subtract(7,'d').date();
-      this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
-      this.fecha['fin']= new Date();//moment().date();
-      this.filtrarFechas(this.fecha)
+      this.loadResultados(7);
     });
   }
 
   setColOptions(){
    let colores=['red','blue','orange','black','aqua','blueviolet','burlywood','cadetblue','chartreuse','cornsilk','darkcyan','gold','lightgrey','olivedrab','pink','royalblue','tan']
    this.labels = [];
-   for(let i = 7; i > 0; i--) {
+   for(let i = this.days; i > 0; i--) {
    this.labels.push(moment().subtract(i,'d').format('YYYY-MM-DD'));
    }
        //this.cols =this.columnas;
@@ -110,7 +111,13 @@ setOptionData(data){
   
   return resultado;
 }
-
+loadResultados(days:number){
+  this.days=days;
+  this.calculando = true;
+  this.fecha['inicio']= new Date(moment().subtract(days,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
+  this.fecha['fin']= new Date();//moment().date();
+  this.filtrarFechas(this.fecha)
+}
 filtrarFechas(fecha) {
   // console.log (fecha.inicio.formatted,fecha.fin.formatted);
    console.log (moment(fecha.inicio).format('YYYY-MM-DD'),moment(fecha.fin).format('YYYY-MM-DD'));
@@ -184,6 +191,17 @@ filtrarFechas(fecha) {
       this.calculando = false;
       console.log(this.data)
   }
+
+  selectData(event) {
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Data Selected', 'detail': this.data.datasets[event.element._datasetIndex].data[event.element._index]});
+    // console.log(this.tabla,event.element._datasetIndex,event.element._index,this.labels[event.element._index])
+    console.log(this.columnas[event.element._datasetIndex],this.labels[event.element._index])
+   let idOrigen = (this.tabla[this.tabla.findIndex((item)=>item["nombre"] == this.columnas[event.element._datasetIndex] && item["fecha"] == this.labels[event.element._index])])["id"];
+
+   let url = 'empresas/'+ this.empresasService.seleccionada + '/Controles/0/'+idOrigen
+   this.router.navigate([url]);
+}
 
   // loadResultados(periodo?:number){
   //   if (!periodo) periodo = 7;

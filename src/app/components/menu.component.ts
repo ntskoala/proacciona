@@ -42,10 +42,10 @@ setMenu(){
     new Menu('planificaciones','planificaciones','date_range',this.permisos.planificaciones),
     new Menu('maquinaria','maquinaria','build',this.permisos.fichas_maquinaria),
     new Menu('limpieza','limpieza','brush',this.permisos.limpieza),
+    new Menu('incidencias','incidencias','error',this.permisos.incidencias),
     new Menu('proveedores','proveedores','work',this.permisos.proveedores),
     new Menu('clientes','clientes','store',this.permisos.clientes),
-    new Menu('produccion','produccion','developer_board',this.permisos.produccion),
-    new Menu('incidencias','incidencias','error',this.permisos.incidencias)
+    new Menu('produccion','produccion','developer_board',this.permisos.produccion)
 ];
   // this.menu.push(new Menu('dashboard','dashboard','slow_motion_video',true));
   // this.menu.push(new Menu('config','settings','settings',true));

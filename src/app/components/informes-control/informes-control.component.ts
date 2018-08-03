@@ -83,7 +83,12 @@ export class InformesControlComponent implements OnInit {
       //this.fecha['inicio']= new Date('2017-01-01'); //moment().subtract(7,'d').date();
       this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
       this.fecha['fin']= new Date();//moment().date();
-      this.filtrarFechas(this.fecha)
+      if (this.route.params["_value"]["modulo"] == "Controles" && this.route.params["_value"]["id"] > 0){
+        this.getDateInicio();
+     }else{
+      this.filtrarFechas(this.fecha);
+
+     }
     });
   }
 
@@ -97,12 +102,33 @@ setColOptions(){
         }
 } 
 
+getDateInicio(){
+  let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=ResultadosControl&field=id&idItem='+this.route.params["_value"]["id"]; 
+  this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+    response => {
+      if (response.success && response.data) {
+        for (let element of response.data) {
+          this.fecha['inicio']= new Date(moment(element.fecha).format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
+          this.filtrarFechas(this.fecha);
+        }
+      }
+  },
+  error=>{console.log('Error getting control',error)});
+
+}
+
   filtrarFechas(fecha) {
    // console.log (fecha.inicio.formatted,fecha.fin.formatted);
     console.log (moment(fecha.inicio).format('YYYY-MM-DD'),moment(fecha.fin).format('YYYY-MM-DD'));
-    let parametros = '&idempresa=' + this.empresasService.seleccionada +
-    //  '&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+    let parametros;
+    if (this.route.params["_value"]["modulo"] == "Controles" && this.route.params["_value"]["id"] > 0){
+     parametros = '&idempresa=' + this.empresasService.seleccionada +
       '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
+  }else{
+     parametros = '&idempresa=' + this.empresasService.seleccionada +
+    '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
+  }
+
     this.servidor.getObjects(URLS.RESULTADOS_CONTROL, parametros).subscribe(
       response => {
         this.resultadoscontrol = [];
@@ -231,8 +257,8 @@ return result;
 });
 }
 
-gotoIncidencia(evento,item){
-  console.log(evento,item);
+gotoIncidencia(evento){
+  console.log(evento);
 
 }
 

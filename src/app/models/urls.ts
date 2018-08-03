@@ -18,6 +18,7 @@ export const URLS = {
   PERMISSION_USER_LIMPIEZA: base + 'permissionuserlimpieza.php',
   RESULTADOS_CONTROL: base + 'resultadoscontrol.php',
   RESULTADOS_CHECKLIST: base + 'resultadoschecklist.php',
+  RESUMEN_ACCIONES_LOGS: base + 'resumen_acciones_logs.php',
   PERIODICIDAD_CONTROL: base + 'periodicidadcontrol.php',
   PERIODICIDAD_CHECKLIST: base + 'periodicidadchecklist.php',
   MAQUINAS: base +'maquinaria.php',

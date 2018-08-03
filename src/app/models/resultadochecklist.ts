@@ -8,6 +8,7 @@ export class ResultadoChecklist {
     public descripcion: string,
     public fecha: Date,
     public foto: string,
-    public fotocontrol: string
+    public fotocontrol: string,
+    public idrc: number
   ) {}
 }

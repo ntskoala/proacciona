@@ -118,6 +118,7 @@ import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
 import { PermisosService } from './services/permisos.service';
+import { ZohoService } from './services/zoho.service';
 
 import { InformesControlComponent } from './components/informes-control/informes-control.component';
 import { MigraCheckListComponent } from './components/migra-check-list/migra-check-list.component';
@@ -187,6 +188,8 @@ import { CalendariosIncidenciasComponent } from './components/incidencias/calend
 import { LoginComponent } from './components/login/login.component';
 import { TrazabilidadAdComponent } from './components/trazabilidad-ad/trazabilidad-ad.component';
 import { DashincidenciasComponent } from './components/dashboard/dashincidencias/dashincidencias.component';
+import { HelpComponent } from './components/help/help.component';
+import { ZohoComponent } from './components/zoho/zoho.component';
 
 @NgModule({
     exports: [
@@ -302,6 +305,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
 //******GENERALES */
     FilterDatesComponent,
     AlertasComponent,
+    HelpComponent,
+    ZohoComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,
@@ -388,6 +393,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     Servidor,
     PermisosService,
     MessageService,
+    ZohoService,
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
   ],
   

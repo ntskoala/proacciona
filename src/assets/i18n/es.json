@@ -112,7 +112,8 @@
     "produccion":"Módulo producción",
     "personal":"Módulo personal",
     "planificaciones":"Módulo planificaciones",
-    "incidencias":"Módulo incidencias"
+    "incidencias":"Módulo incidencias",
+    "dashboard":"Dashboard"
   },
   "configuracion":{
     "nuevoUsuario":"Nuevo usuario",
@@ -507,6 +508,29 @@
       "fecha_termini":"Fecha limite",
       "descripcion":"Descripción",
       "noencontrada":" No se ha encontrado la incidencia seleccionada"
+    },
+    "Dashboard":{
+      "incidenciasT":"Incidencias",
+      "incidenciasST":"Últimas incidencias",
+      "controlesHoyT":"Controles",
+      "controlesHoyST":"Controles pendientes de realizar hoy",
+      "controlesRealiszadosT":"Controles realizados",
+      "controlesRealiszadosST":"Controles realizados en los últimos días",
+      "logginsT":"Loggins",
+      "logginsST":"Accesos y acciones por usuario",
+      "tablas":{
+        "limpieza_realizada":"limpiezas",
+        "incidencias":"incidencias",
+        "ResultadosControl":"controles",
+        "resultadoschecklist":"checklists",
+        "mantenimientos_realizados":"mantenimientos",
+        "login": "conexiones"
+      },
+      "acciones":{
+        "PUT":"actualizados",
+        "POST":"nuevos",
+        "login":""
+      }
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

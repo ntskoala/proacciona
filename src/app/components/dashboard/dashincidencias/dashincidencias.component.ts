@@ -20,14 +20,18 @@ export class DashincidenciasComponent implements OnInit {
   constructor(public servidor: Servidor,public empresasService: EmpresasService,
   public router: Router,
   public route: ActivatedRoute) { }
+  public calculando: boolean=false;
+    public altura:string;
 
   ngOnInit() {
+    let fechaInicio = moment().subtract(1,'d').toDate();
+    this.loadIncidencias(fechaInicio);
   }
 
   loadIncidencias(dateInicio: Date) {
     let empresa = this.empresasService.seleccionada;
     let fechaInicio= moment(dateInicio).format('YYYY-MM-DD');
-    let fechaFin= moment().format('YYYY-MM-DD');
+    let fechaFin= moment().add(1,'d').format('YYYY-MM-DD');
     let filterDates = "&filterdates=true&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&fecha_field=fecha"
     let parametros = '&idempresa=' + empresa+this.entidad+'&order=id DESC'+filterDates;
         //let parametros = '&idempresa=' + seleccionada.id;
@@ -48,6 +52,7 @@ export class DashincidenciasComponent implements OnInit {
                   element.descripcion,element.estado));
               }
               console.log(this.incidencias);
+              this.incidencias.length > 4? this.altura = 95 + this.incidencias.length*48 + 'px' : '';
             }
           },
               (error) => {console.log(error)},
@@ -58,6 +63,7 @@ export class DashincidenciasComponent implements OnInit {
    }
 
   loadResultados(dias:number){
+    this.altura = '';
     let fechaInicio = moment().subtract(dias,'d').toDate();
     this.loadIncidencias(fechaInicio);
   }

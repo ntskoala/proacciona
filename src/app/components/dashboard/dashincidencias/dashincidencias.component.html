@@ -1,25 +1,29 @@
-<mat-card class="card">
+<mat-card class="card" [ngStyle]="{'height':altura}">
   <mat-card-header>
-    <div></div>
-    <mat-card-title>Incidencias</mat-card-title>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{'Dashboard.incidenciasT' | translate}}</mat-card-title>
+    <mat-card-subtitle>{{'Dashboard.incidenciasST' | translate}}</mat-card-subtitle>
     
   </mat-card-header>
   <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let incidencia of incidencias">
+    <mat-list class="sombraListado">
+      <mat-list-item *ngFor="let incidencia of incidencias" (click)="gotoOrigen(incidencia)" class="elem"  [ngClass]="{'sinDefinir':incidencia.estado==-1,'noAplica':incidencia.estado==0,'abierto':incidencia.estado==1,'cerrado':incidencia.estado==2}">
         
-          <span (click)="gotoOrigen(incidencia)" class="elem" [ngClass]="{'sinDefinir':!incidencia.estado==-1,'noAplica':!incidencia.estado==0,'abierto':!incidencia.estado==1,'cerrado':!incidencia.estado==2}"> 
-        {{incidencia.incidencia}} {{incidencia.origen}}
+          <span > 
+            {{incidencia.incidencia}} 
+        <!-- {{incidencia.origen}} -->
           </span>
 
       </mat-list-item>
+     
     </mat-list>
     <mat-spinner *ngIf="calculando"></mat-spinner>  
     <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart> -->
 
   </mat-card-content>
-  <mat-card-actions>
+  
+  <mat-card-actions     style="position: absolute !important;bottom: 25px;">
       <button mat-button (click)="loadResultados(1)">1 día</button>
       <button mat-button (click)="loadResultados(7)">7 días</button>
       <button mat-button (click)="loadResultados(14)">30 días</button>

@@ -104,7 +104,7 @@
                           <input type="text" [(ngModel)]="item.incidencia" (keypress)="itemEdited(item.id)">
                       </ng-template>
                       <ng-template pTemplate="output">
-                          {{item.incidencia}} {{item.id}}
+                          {{item.incidencia}}
                       </ng-template>
                   </p-cellEditor>
               </td>
@@ -131,7 +131,7 @@
                           </p-calendar>
                       </ng-template>
                       <ng-template pTemplate="output">
-                          {{item.fecha | date:"dd-MM-yyyy hh:mm"}}
+                          <span *ngIf="modo!='export'">{{item.fecha | date:"dd-MM-yyyy hh:mm"}}</span>
                       </ng-template>
                   </p-cellEditor>
               </td>
@@ -158,8 +158,8 @@
                             </ng-template>
                         </p-calendar>
                     </ng-template>
-                    <ng-template pTemplate="output">
-                        {{item.fecha_cierre | date:"dd-MM-yyyy hh:mm"}}
+                    <ng-template pTemplate="output" *ngIf="modo!='export'">
+                        <span *ngIf="modo!='export'">{{item.fecha_cierre | date:"dd-MM-yyyy hh:mm"}}</span>
                     </ng-template>
                 </p-cellEditor>
             </td>

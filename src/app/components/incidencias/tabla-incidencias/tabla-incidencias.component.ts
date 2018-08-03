@@ -56,7 +56,7 @@ public verdoc: boolean = false;
 // public url=[];
 public foto:string;
 public top:string;
-
+public modo:string='';
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public sanitizer: DomSanitizer
     , public translate: TranslateService, private messageService: MessageService, public router: Router,
   public route: ActivatedRoute) { }
@@ -71,14 +71,28 @@ public top:string;
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
       firstDayOfWeek: 1
   }; 
+
+  //   this.cols = [
+  //     { field: 'incidencia', header: 'Incidencia' },
+  //     {field: 'fecha', header: 'Fecha' },
+  //     { field: 'solucion', header: 'Solucion' },
+  //     { field: 'responsable', header: 'Responsable' },
+  //     { field: 'nc', header: 'No conformidad' },
+  //     { field: 'foto', header: 'Foto' }
+  // ];
+
     this.cols = [
       { field: 'incidencia', header: 'Incidencia' },
       {field: 'fecha', header: 'Fecha' },
-      { field: 'solucion', header: 'Solucion' },
+      { field: 'descripcion', header: 'Descripción' },
+      { field: 'solucion', header: 'Solución' },
       { field: 'responsable', header: 'Responsable' },
-      { field: 'nc', header: 'No conformidad' },
-      { field: 'foto', header: 'Foto' }
+      { field: 'estado', header: 'Estado' },
+      { field: 'origen', header: 'Origen' },
+      { field: 'responsable_cierre', header: 'Responsable cierre' },
+      { field: 'fecha_cierre', header: 'Fecha cierre' }
   ];
+
   this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
   window.scrollTo(0, 0)
 }
@@ -319,20 +333,34 @@ setAlerta(concept:string){
 
 
   exportData(tabla: Table){
-    console.log(tabla.value);
+    console.log(tabla);
+    
+    this.modo="export";
     let origin_Value = tabla.value;
-//  tab._value.
     let mitabla: Table = tabla;
-    //tabla._value = tabla.da
+    //  let mitabla = new Table(tabla.el,tabla.domHandler,tabla.objectUtils,tabla.zone,tabla.tableService);
+    //  mitabla.value = origin_Value;
+    //  mitabla.columns = tabla.columns;
     mitabla.value.map((incidencia)=>{
-        (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).format("DD/MM/YYYY hh:mm"):'';
+        // (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).format("DD/MM/YYYY hh:mm"):'';
+        // (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).format("DD/MM/YYYY hh:mm"):'';
+        (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).toJSON():'';
+        (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).toJSON():'';
+        let indice_responsable = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable);
+        if (indice_responsable > -1)  incidencia.responsable = this.usuarios[indice_responsable].usuario;
+        let indice_responsable_cierre = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable_cierre);
+        if (indice_responsable_cierre > -1) incidencia.responsable_cierre = this.usuarios[indice_responsable_cierre].usuario;
+        if (parseInt(incidencia.estado)>=-1)  incidencia.estado=this.estados[this.estados.findIndex((estado)=>parseInt(estado.valor)==incidencia.estado)]["nombre"]
         });
-  
+
     mitabla.csvSeparator = ";";
     mitabla.exportFilename = "Incidencias";
     mitabla.exportCSV();
   tabla.value = origin_Value;
+  tabla._value = origin_Value;
+
    // tabla.value = origin_Value;
+   this.modo="normal";
   }
 
   okDate(cal:Calendar){

@@ -112,7 +112,8 @@
     "produccion":"Mòdul producció",
     "personal":"Mòdul personal",
     "planificaciones":"Mòdul planificacions",
-    "incidencias":"Mòdul incidències"
+    "incidencias":"Mòdul incidències",
+    "dashboard":"Dashboard"
   },
   "configuracion":{
     "nuevoUsuario":"Nou usuari",
@@ -507,6 +508,29 @@
       "fecha_termini":"Data termini",
       "descripcion":"Descripció",
       "noencontrada":" No s'ha trobat la incidéncia seleccionada"
+    },
+    "Dashboard":{
+      "incidenciasT":"Incidencies",
+      "incidenciasST":"Darreres incidencias",
+      "controlesHoyT":"Controls",
+      "controlesHoyST":"Controls pendents per realitzar avui",
+      "controlesRealiszadosT":"Controls realitzats",
+      "controlesRealiszadosST":"Controls realizats els darrers díes",
+      "logginsT":"Loggins",
+      "logginsST":"Accessos y accions peor usuari",
+      "tablas":{
+        "limpieza_realizada":"neteges",
+        "incidencias":"incidencies",
+        "ResultadosControl":"controls",
+        "resultadoschecklist":"checklists",
+        "mantenimientos_realizados":"mantenimients",
+        "login": "conexions"
+      },
+      "acciones":{
+        "PUT":"actualitzats",
+        "POST":"afegits",
+        "login": ""
+      }
     },
   "alergenos":"Al·lergògens",
   "lunes":"Dilluns",

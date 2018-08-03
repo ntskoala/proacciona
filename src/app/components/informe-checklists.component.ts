@@ -82,8 +82,13 @@ public es;
           },
     error => console.log("error getting usuarios en permisos",error),
     ()=>{
+      if (this.route.params["_value"]["modulo"] == "Checklists" && this.route.params["_value"]["idOrigenasociado"] > 0){
+        this.cambioChecklist(this.route.params["_value"]["idOrigenasociado"]);
+     }else{
       if (!this.checklistSeleccionada)
       this.expand();
+     }
+
     }
     );
   }
@@ -106,13 +111,45 @@ public es;
             this.columnas.push(new Columna(
               'id' + element.id,
               'id2' + element.id,
+              'idrc' +element.id,
               'fotocontrol'+ element.id,
               element.nombre
             ));
           }
-          this.filtrarFechas(this.fecha)
+        if (this.route.params["_value"]["modulo"] == "Checklists" && this.route.params["_value"]["id"] > 0){
+            this.getDateInicio();
+         }else{
+          this.filtrarFechas(this.fecha);
+         }
         }
     });
+  }
+
+
+
+  getDateInicio(){
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklistcontrol&field=id&idItem='+this.route.params["_value"]["id"]; 
+    this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+      response => {
+        if (response.success && response.data) {
+          for (let element of response.data) {
+          let idChecklist = element.idresultadochecklist;
+
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklist&field=id&idItem='+idChecklist; 
+    this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+      response => {
+        if (response.success && response.data) {
+          for (let element of response.data) {
+            this.fecha['inicio']= new Date(moment(element.fecha).format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
+            this.filtrarFechas(this.fecha);
+          }
+        }
+    },
+    error=>{console.log('Error getting checklist2',error)});
+  }
+    }
+  },
+  error=>{console.log('Error getting checklist1',error)});
   }
 
   filtrarFechas(fecha) {
@@ -130,7 +167,7 @@ public es;
           for (let element of response.data) {
             let fecha = new Date(element.fecha);
               this.resultadoschecklist.push(new ResultadoChecklist(element.idr, element.idcontrolchecklist,
-                element.idchecklist,element.usuario, element.resultado, element.descripcion, moment(element.fecha).toDate(), element.foto, element.fotocontrol));
+                element.idchecklist,element.usuario, element.resultado, element.descripcion, moment(element.fecha).toDate(), element.foto, element.fotocontrol,element.idrc));
             if (this.idrs.indexOf(element.idr) == -1) this.idrs.push(element.idr);
           }
         }
@@ -139,6 +176,7 @@ public es;
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
               this.resultado['id'] = resultado.idr;
+              this.resultado['idrc' + resultado.idcontrolchecklist] = resultado.idrc;
               this.resultado['usuario'] = resultado.usuario;
               //this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
               this.resultado['fecha'] = moment(resultado.fecha).format('DD/MM/YYYY HH:mm');

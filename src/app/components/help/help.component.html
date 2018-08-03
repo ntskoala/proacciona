@@ -1,0 +1,46 @@
+<button  (click)="help()" class="helpButton"  mat-fab color="accent" >
+  <span class="material-icons">live_help</span>
+</button>
+
+<div class="modal" *ngIf="support">
+  <div class="helpWindow">
+    
+
+    <form   #newTicketForm="ngForm" (ngSubmit)="newTicket()">
+        
+              <span class="elem">
+                <label class="label">{{'ticket.subject' | translate}}</label>
+                <input class="itemElem" type="text" [placeholder]="'ticket.subject' | translate" required [(ngModel)]="ticket.subject" name="subject">
+              </span>
+              
+              <div class="elem">
+                  <label  class="label">{{'ticket.r_cierre' | translate}}</label>
+            <p-dropdown styleClass="itemElem"  [style]="{'width':'200px'}" [options]="prioridades" [(ngModel)]="ticket.priority" placeholder="{{'ticket.prioridad' | translate}}"  name="priority"></p-dropdown>    
+      </div>
+      
+              <span class="elem">
+                  <label class="label">{{'ticket.description' | translate}}</label>
+                 <textarea class="itemElem"  pInputTextarea [placeholder]="'ticket.description' | translate" [(ngModel)]="ticket.description" name="description">
+                 </textarea>
+              </span>
+      
+            <div style="height: 15px" ></div>
+      
+
+          <div class="buttons">
+            <hr class="hr">
+            <button type="button" mat-raised-button [disabled]="!newTicketForm.form.valid" type="submit" >{{'aceptar' | translate}}</button>
+            <button type="button" mat-raised-button (click)="help()">{{'cancelar' | translate}}</button>
+        </div>
+      </form>
+      
+
+
+
+
+
+
+
+
+  </div>
+</div>

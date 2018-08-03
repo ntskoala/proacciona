@@ -1,0 +1,42 @@
+.helpButton{
+    position:fixed;
+    bottom:20px;
+    right:90px;
+    background-color: rgba(250, 227, 100, 0.7);
+    z-index: 99999;
+}
+
+.helpWindow{
+    position: absolute;
+    left:calc(50% - 200px);
+    top:calc(50% - 200px);
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    border: 1px solid black;
+}
+
+.buttons{
+    position: absolute;
+    bottom: 50px;
+}
+.elem{
+  position: relative;
+  display: flex;
+  margin-top: 14px;
+  height: 38px;
+  float:right;
+  width: 400px;
+}
+.itemElem{
+  float: right;
+  display: block;
+  position: absolute;
+  right: 0px;
+  margin-right: 0px;
+  width: 200px;
+}
+.label{
+  margin-right: 30px;
+  float:left;
+}

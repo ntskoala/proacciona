@@ -5,7 +5,7 @@ import {MatSnackBar} from '@angular/material';
 import { Servidor } from '../../services/servidor.service';
 import { PermisosService } from '../../services/permisos.service';
 import { EmpresasService } from '../../services/empresas.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { URLS } from '../../models/urls';
 import { Modal } from '../../models/modal';
 import { usuario } from 'environments/environment'

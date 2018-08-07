@@ -58,7 +58,7 @@
       </span>
       
   <form>
-    <mat-select  class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarMaquina($event)">
+    <mat-select  class="cabeceraSelect" placeholder="selecciona"  #choicer  (selectionChange)="seleccionarMaquina($event)">
       <mat-option *ngFor="let maquina of maquinas; let i = index" [value]="i">
         {{maquina.nombre}}
       </mat-option>

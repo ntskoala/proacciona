@@ -48,7 +48,7 @@
  <div class="contenido">
 
    <mat-sidenav-container class="example-container">
-  <mat-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
+  <mat-sidenav  #sidenavCalendar (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
           <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
   <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
   </div>

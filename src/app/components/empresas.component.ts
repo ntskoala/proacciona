@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Router,ActivatedRoute, ParamMap, NavigationEnd,NavigationStart  } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Observable } from 'rxjs/Observable';
 //import {MessageService} from 'primeng/components/common/messageservice';

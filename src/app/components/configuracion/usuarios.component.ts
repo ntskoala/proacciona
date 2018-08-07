@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';

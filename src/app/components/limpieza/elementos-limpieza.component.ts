@@ -2,7 +2,7 @@ import { Component, OnInit, Input,Output,EventEmitter, OnChanges } from '@angula
 //import {SelectItem} from 'primeng/primeng';
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment';
 

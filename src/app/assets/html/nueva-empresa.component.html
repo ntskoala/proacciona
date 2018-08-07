@@ -4,9 +4,9 @@
   </mat-card-title>
   <form #nuevaEmpresaForm="ngForm" (ngSubmit)="nuevaEmpresa(nuevaEmpresaForm.value)">
     <mat-card-content>
-      <mat-input-container  >
+      <mat-form-field  >
       <input matInput class="cabeceraSelect full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresa.nombre" name="nombre">
-      </mat-input-container>
+      </mat-form-field>
     </mat-card-content>
     <mat-card-footer>
       <button mat-raised-button color="accent" [disabled]="!nuevaEmpresaForm.form.valid" type="submit">Crear</button>

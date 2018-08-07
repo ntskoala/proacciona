@@ -25,7 +25,7 @@
                     <label class="l" for="dias">{{'maquinas.todos los' | translate}}</label>
                 </section>
                 <section class="section" *ngIf="periodoactual.repeticion == 'diaria'">
-                    <mat-checkbox [align]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre | translate}} </mat-checkbox>
+                    <mat-checkbox [labelPosition]="end" class="dia" [(ngModel)]="dia.checked" *ngFor="let dia of periodoactual.dias; let i = index">{{dia.nombre | translate}} </mat-checkbox>
                 </section>
                 <!--<section class="section2" *ngIf="periodoactual.repeticion == 'semanal'">
         Los  {{dias[diasemana-1].nombre}}

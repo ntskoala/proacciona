@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import {DataTable,Column} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';

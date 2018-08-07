@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute  } from '@angular/router';
 
 import { Ticket } from '../../models/ticketSoporte';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import {Calendar} from 'primeng/primeng';
 
 import { EmpresasService } from '../../services/empresas.service';

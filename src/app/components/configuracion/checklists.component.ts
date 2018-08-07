@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment';
 

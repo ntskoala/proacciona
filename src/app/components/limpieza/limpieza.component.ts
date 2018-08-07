@@ -103,8 +103,8 @@ cambioMenu(opcion: string){
 
   this.snCalendar.toggle().then(
   (valor)=>{
-    console.log ('$$$$',valor.type,this.subMenu, opcion)
-    if (valor.type=="open")
+    console.log ('$$$$',valor,this.subMenu, opcion)
+    if (valor=="open")
       {
         console.log ('abriendo.-..')
       this.closeSideNav().then(
@@ -127,7 +127,7 @@ cambioMenu(opcion: string){
         });
       }
       
-     if (valor.type=="close"){
+     if (valor=="close"){
         console.log ('cerrando.-..')
         //console.log ('$$$',this.subMenu, opcion)
         this.closeSideNav().then(

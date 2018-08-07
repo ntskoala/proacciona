@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { DatePickerOptions, DateModel } from 'ng2-datepicker';
+// import { DatepickerOptions, DateModel } from 'ng2-datepicker';
 //import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 

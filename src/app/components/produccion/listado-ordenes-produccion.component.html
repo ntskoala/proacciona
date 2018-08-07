@@ -8,14 +8,14 @@
         <span class="material-icons">filter_list</span>
       </button>
   <form>
-    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (change)="changeEstado($event)">
+    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (selectionChange)="changeEstado($event)">
       <mat-option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</mat-option>
       <mat-option  value="cerrado">{{'produccion.lotes_cerrados' | translate}}</mat-option>
       <mat-option  value="entregado">{{'produccion.lotes_entregados' | translate}}</mat-option>
     </mat-select>
   </form>
   <form>
-    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choicer (change)="seleccionarItem($event)">
+    <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choicer (selectionChange)="seleccionarItem($event)">
       <mat-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.numlote}}
       </mat-option>

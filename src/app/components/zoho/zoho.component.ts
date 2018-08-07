@@ -18,13 +18,19 @@ public url2="https://tfc1-181808.appspot.com/api/zoho.php";
 
   ngOnInit() {
     console.log(this.route.params["_value"]);
-    if(parseInt(this.route.params["_value"]["code"])> 0){
-      this.hayPermiso = true;
-      console.log('tenemos codigo',this.route.params["_value"]);
-    }else{
-      this.hayPermiso=false;
-
+    this.route.queryParamMap.forEach(param=>{
+      console.log(param)
+      if(param.keys.find((elem)=>elem=="code")){
+        this.hayPermiso = true;
+        console.log('tenemos codigo',param.getAll('code')[0]);
+        this.zohoAuthgetToken(param.getAll('code')[0]);
+      }else{
+        this.hayPermiso=false;
+        console.log('NO tenemos codigo');
+      } 
     }
+    );
+
   }
 
   zohoAuth(opcion){
@@ -61,16 +67,17 @@ public url2="https://tfc1-181808.appspot.com/api/zoho.php";
     );
   }
 
-  zohoAuthgetToken(){
+  zohoAuthgetToken(code){
     console.log('pidiendo token');
-    let parametros='?code=1000.9a3d71bbab9ffc51b3b9c8960e6ba6a4.114713500cd1a04bc376e99e764cfd82'+
+    let uri=encodeURIComponent(this.url1);
+    let parametros='?code='+code+
     //let parametros='?code=1000.9c53432fc04cb86d04fff2de4fa1839b.c5bc78ed3a45f2d3ab5b5804900e0e8d'+
     '&grant_type=authorization_code'+
     '&client_id=1000.F4L43DSPDVKE79906MFPBS8WSFPXSU'+
     '&client_secret=ec9d218cf1308fada3c021a3ed8597fd2581a5d2d0'+
-    '&redirect_uri=https://tfcbackoffice.appspot.com/#/zoho/'+
+    '&redirect_uri='+uri+
     '&scope=Desk.tickets.WRITE,Desk.basic.WRITE'+
-    '&state=-5466400890088961855';
+    '&state=1';
     // let params= "?response_type=code&client_id=1000.F4L43DSPDVKE79906MFPBS8WSFPXSU&scope=Desk.tickets.WRITE,Desk.basic.WRITE&redirect_uri=https://tfc1-181808.appspot.com/api/zoho.php&state=-5466400890088961855";
     let url='https://accounts.zoho.com/oauth/v2/token'+parametros;
     this.zoho.post(url).subscribe(

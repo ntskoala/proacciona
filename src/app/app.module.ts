@@ -8,7 +8,9 @@ import { HttpClientModule,HttpClient } from '@angular/common/http';
 
 //import { MaterialModule } from '@angular/material';
 //import {MatSelectModule} from '@angular/material';
-import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+// import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+import {TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
     //import { DatePickerModule } from 'ng2-datepicker';
 //**********REQUIRED FOR CALENDAR */
@@ -231,8 +233,10 @@ import { ZohoComponent } from './components/zoho/zoho.component';
   })
   export class PlunkerMaterialModule {}
 
-export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
-
+// export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  }
 
 @NgModule({
   imports: [
@@ -269,13 +273,17 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
    // MaterialModule,
    // MatSelectModule,
    // DatePickerModule,
+    // TranslateModule.forRoot({
+    //   provide: TranslateLoader,
+    //   useFactory: translateLoader,
+    //   deps: [Http]
+    // }),
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      //useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
-      // useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
-//    TranslateService, { provide: TranslateLoader, useFactory: TranslateLoader, deps: [Http] },
-      useFactory: translateLoader,
-      deps: [Http]
+        loader: {
+            provide: TranslateLoader,
+            useFactory: createTranslateLoader,
+            deps: [HttpClient]
+        }
     }),
     routing
   ],

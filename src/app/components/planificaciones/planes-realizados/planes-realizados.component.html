@@ -80,10 +80,10 @@
    <!--//************--> 
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.descripcion' | translate}}">
-                   <!-- <mat-input-container class="full-width textareacontainer">
+                   <!-- <mat-form-field class="full-width textareacontainer">
       <textarea matInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important" placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
                      
-      </mat-input-container>  -->
+      </mat-form-field>  -->
     <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
     
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
@@ -92,9 +92,9 @@
     </span>
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.detalles_supervision' | translate}}">
-                   <!-- <mat-input-container class="full-width textareacontainer">
+                   <!-- <mat-form-field class="full-width textareacontainer">
       <textarea matInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important"  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
-    </mat-input-container> -->
+    </mat-form-field> -->
     <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->

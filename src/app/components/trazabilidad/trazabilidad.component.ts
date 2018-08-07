@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef } from '@angular/core';
 
 import {Tree,TreeNode } from 'primeng/primeng';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';

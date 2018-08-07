@@ -3,7 +3,7 @@ import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { DataTable, Column } from 'primeng/primeng';
 import { Table } from 'primeng/table';
 import {Calendar} from 'primeng/primeng';

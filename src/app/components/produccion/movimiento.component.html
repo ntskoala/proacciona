@@ -75,9 +75,9 @@
 
 </div>
 <div id="traspaso">
-<mat-input-container>
+<mat-form-field>
   <input type="number"  matInput placeholder="{{'traspasos.Cantidad' | translate}}" [(ngModel)]="cantidadTraspaso">
-</mat-input-container>
+</mat-form-field>
 <button mat-raised-button (click)="traspasar()" [disabled]="bloquearTraspaso">{{'traspasos.traspasar' | translate}}</button>
 <div *ngIf="alerts.length >0" class="modal">
   <div class="modal-window">

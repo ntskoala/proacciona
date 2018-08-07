@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';

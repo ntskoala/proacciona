@@ -44,16 +44,11 @@
 
  <div class="contenido">
  <mat-sidenav-container class="example-container">
-  <mat-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
+  <mat-sidenav   #sidenavCalendar  (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
           <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
   <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
   </div>
  <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
-
-   <!-- <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones> -->
-<!-- 
-   <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
-    -->
    <app-permisos *ngIf="permiso" [tipoControl]="'limpiezas'" [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
    <div  *ngIf="permiso" style="height:35px" ></div>
     <app-supervisores *ngIf="permiso" [tipoControl]="'limpiezas'"  [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-supervisores> 
@@ -76,14 +71,14 @@
    <productos-limpieza *ngIf="productosLimpieza"></productos-limpieza>
     -->
 
-  <div class="sidenav-content">
+  <mat-sidenav-content class="sidenav-content">
    <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2><BR>
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" (onElementosLimpieza)="setElementosLimpieza($event)" *ngIf="limpieza"></elementos-limpieza></mat-tab>
 <mat-tab label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></mat-tab>  
   <!--<mat-tab label="{{'limpiezas.limpiezascorrectivas' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [limpieza]="limpieza" *ngIf="limpieza"></mantenimientos-correctivos></mat-tab>-->
 </mat-tab-group>
-  </div>
+  </mat-sidenav-content>
  </mat-sidenav-container>
  </div>
   </mat-card>

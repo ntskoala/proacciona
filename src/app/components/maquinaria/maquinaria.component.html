@@ -41,7 +41,7 @@
     
   </mat-sidenav> 
   <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
-<div class="sidenav-content">
+<mat-sidenav-content class="sidenav-content">
     <h2 class="cente tituloMaquina" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2><BR>
       <div  style="margin-top: 60px">
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
@@ -53,7 +53,7 @@
   <mat-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></mat-tab>
 </mat-tab-group>
       </div>
-</div><!--   Fin example-sidenav-content  -->
+</mat-sidenav-content><!--   Fin example-sidenav-content  -->
 </mat-sidenav-container>
  </div>
   </mat-card>

@@ -411,6 +411,8 @@
       color: #c77405; }
 
 .ui-datepicker .ui-datepicker-header a {
+  border-color: #fdf5ce;
+  background: #c77405;
   color: #ffffff; }
   .ui-datepicker .ui-datepicker-header a:hover {
     border-color: #fbcb09;

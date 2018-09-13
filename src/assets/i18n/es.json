@@ -34,6 +34,9 @@
   "Tablas": "Configuración",
   "Usuarios": "Usuarios",
   "Controles": "Controles",
+  "Checklists":"Checklists",
+  "Limpiezas":"Limpiezas",
+  "Mantenimientos":"Mantenimientos",
   "Opciones": "Opciones premium",
   "Opciones2":"Opciones",
   "Modulos":"Módulos activos",
@@ -481,7 +484,7 @@
       "incidencia":"Incidencia",
       "fecha":"Fecha",
       "solucion":"Solución inmediata",
-      "responsable":"Resp. apertura",
+      "responsable":"Abierta por",
       "r_seguimiento":"Responsable seguimiento",
       "r_cierre":"Responsable cierre",
       "fecha_cierre":"Fecha cierre",
@@ -507,16 +510,21 @@
       "estado":"Estado",
       "fecha_termini":"Fecha limite",
       "descripcion":"Descripción",
-      "noencontrada":" No se ha encontrado la incidencia seleccionada"
+      "noencontrada":" No se ha encontrado la incidencia seleccionada",
+      "Controles":"Controles",
+      "Checklists":"Checklists",
+      "Mantenimientos":"Mantenimiento",
+      "Limpiezas":"Limpiezas",
+      "Incidencias":"Incidencias"
     },
     "Dashboard":{
-      "incidenciasT":"Incidencias",
+      "incidenciasT":"INCIDENCIAS",
       "incidenciasST":"Últimas incidencias",
-      "controlesHoyT":"Controles",
-      "controlesHoyST":"Controles pendientes de realizar hoy",
-      "controlesRealiszadosT":"Controles realizados",
-      "controlesRealiszadosST":"Controles realizados en los últimos días",
-      "logginsT":"Loggins",
+      "controlesHoyT":"REGISTROS",
+      "controlesHoyST":"Registros pendientes a día de hoy",
+      "controlesRealizadosT":"REGISTROS REALIZADOS",
+      "controlesRealizadosST":"Registros realizados en los últimos días",
+      "logginsT":"ACCESOS",
       "logginsST":"Accesos y acciones por usuario",
       "tablas":{
         "limpieza_realizada":"limpiezas",
@@ -531,6 +539,15 @@
         "POST":"nuevos",
         "login":""
       }
+    },
+    "ticket":{
+      "help":"Ticket de soporte",
+      "subject":"Asunto",
+      "prioridad":"Prioridad",
+      "baja":"baja",
+      "standard":"estandard",
+      "urgente":"urgente",
+      "descripcion":"Descripción"
     },
   "alergenos":"alérgenos",
   "lunes":"Lunes",

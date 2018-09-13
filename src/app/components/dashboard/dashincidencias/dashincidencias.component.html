@@ -1,6 +1,6 @@
 <mat-card class="card" [ngStyle]="{'height':altura}">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>{{'Dashboard.incidenciasT' | translate}}</mat-card-title>
     <mat-card-subtitle>{{'Dashboard.incidenciasST' | translate}}</mat-card-subtitle>
     
@@ -24,8 +24,8 @@
   </mat-card-content>
   
   <mat-card-actions     style="position: absolute !important;bottom: 25px;">
-      <button mat-button (click)="loadResultados(1)">1 día</button>
-      <button mat-button (click)="loadResultados(7)">7 días</button>
-      <button mat-button (click)="loadResultados(14)">30 días</button>
+      <button [ngClass]="{'selected2':dias==1}" mat-button (click)="loadResultados(1)">1 {{'dia' | translate}}</button>
+      <button [ngClass]="{'selected2':dias==7}" mat-button (click)="loadResultados(7)">7 {{'dias' | translate}}</button>
+      <button [ngClass]="{'selected2':dias==14}" mat-button (click)="loadResultados(14)">30 {{'dias' | translate}}</button>
     </mat-card-actions>
 </mat-card>

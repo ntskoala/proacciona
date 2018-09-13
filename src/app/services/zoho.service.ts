@@ -1,6 +1,6 @@
 import { Injectable, Component } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders,HttpRequest,HttpEvent,HttpEventType, } from '@angular/common/http';
 
 import 'rxjs/add/operator/map';
 
@@ -25,16 +25,58 @@ export class ZohoService {
     return this.llamada.post(url + param, payload)
       .map((res: Response) => JSON.parse(res.json()));
   }
-get(url: string) {
-  let headers = new Headers({Authorization:'e56e20a25d4c6a363aa9049e5ffdd296'});
-
-    return this.llamada.get(url,{headers:new Headers({Authorization:'1000.1766007e1ce33784392fc39624fd27a7.71db3c5e87c5fb01c82b69d744634a39'})});
+get(url: string, token: string, orgId:string) {
+  console.log('Get1');
+  // let headers = new Headers({'Authorization': 'Zoho-oauthtoken  ' + token});
+  let headers = new HttpHeaders();
+  headers = headers.set("Authorization", 'Bearer ' + token).set("orgId",orgId).set("contentType", "application/json");
+    return this.http.get(url,{headers:headers})
+    // .subscribe(
+    //   (resultado)=>{resultado},
+    //   (error)=>{console.log('ERRORES',error)});
       //.map((res: Response) => res);
-    
   }
 
   post(url: string) {
+
     return this.llamada.post(url,null,null);
   }
-  
+  post2(url: string,params :object, token: string, orgId:string) {
+  let headers = new HttpHeaders();
+  headers = headers.set("Authorization", 'Bearer ' + token).set("orgId",orgId).set("contentType", "application/json");
+    return this.http.post(url,params,{headers:headers})
+  }
+  // get2(url: string, token: string, orgId: string) {
+  //   console.log('Get2');
+  //   let headers = new Headers({'Authorization': 'Bearer  ' + token,'orgId':orgId,'contentType': "application/json"});
+  //     return this.llamada.get(url,{headers:headers});
+  //   }
+
+
+  // getData(url,token) {
+  //   console.log('Get DATA1');
+  //   let headers = new Headers({'Authorization': 'Zoho-oauthtoken  ' + token});
+  //  let miURL =  url;
+  //   const req = new HttpRequest('GET', miURL, {
+  //     headers:headers,reportProgress: true
+  //   });
+
+  //   this.http.request(req).subscribe((event: HttpEvent<any>) => {
+  //     console.log('Get DATA NEW EVENT',event);
+  //     switch (event.type) {
+  //       case HttpEventType.Sent:
+  //         console.log('Request sent!');
+  //         break;
+  //       case HttpEventType.ResponseHeader:
+  //         console.log('Response header received!');
+  //         break;
+  //       case HttpEventType.DownloadProgress:
+  //         const kbLoaded = Math.round(event.loaded / 1024);
+  //         console.log(`Download in progress! ${ kbLoaded }Kb loaded`);
+  //         break;
+  //       case HttpEventType.Response:
+  //         console.log('😺 Done!', event.body);
+  //     }
+  //   });
+  // }
 }

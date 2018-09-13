@@ -9,8 +9,12 @@
     </mat-toolbar>
   </mat-card-title>
   <mat-card-content>
-    <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
-
+    <!-- <div style="width: 44%;float: left;margin-right: 10px;" >Activas -->
+      <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
+    <!-- </div> -->
+    <!-- <div style="width: 44%;float: left;margin-right: 10px;">No activas 
+      <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
+    </div> -->
     <button mat-button color="warn" (click)="checkBorrar()" type="submit">Eliminar</button>
     <!--<button mat-button color="primary" (click)="premium()">Premium</button>-->
       <label class="inputlabel full-width" for="logo">{{'le' | translate}}</label>

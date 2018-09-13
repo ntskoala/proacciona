@@ -37,6 +37,7 @@ import {MessageService} from 'primeng/components/common/messageservice';
 import {ChartModule} from 'primeng/chart';
 import {MenuModule} from 'primeng/menu';
 import {ContextMenuModule} from 'primeng/contextmenu';
+import {PickListModule} from 'primeng/picklist';
 import {MenuItem} from 'primeng/api';
 //import {ChartModule} from 'primeng/primeng';
 
@@ -269,6 +270,7 @@ export function createTranslateLoader(http: HttpClient) {
     ChartModule,
     MenuModule,
     ContextMenuModule,
+    PickListModule,
 /**********MATERIAL */
    // MaterialModule,
    // MatSelectModule,

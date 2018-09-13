@@ -189,7 +189,7 @@
                               <input type="text" [(ngModel)]="item.origen">
                           </ng-template>
                           <ng-template pTemplate="output">
-                              {{item.origen}}
+                              {{'incidencia.'+item.origen | translate}}
                           </ng-template>
                       </p-cellEditor>
                   </td>

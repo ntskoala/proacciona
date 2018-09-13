@@ -5,6 +5,7 @@ import { server } from 'environments/environment';
 let base = server + 'api/';
 
 export const URLS = {
+  SERVER: server,
   LOGIN: base + 'actions/login.php',
   EMPRESAS: base + 'empresas.php',
   OPCIONES: base + 'opciones.php',
@@ -34,6 +35,10 @@ export const URLS = {
   STD_SUBITEM: base + 'std_subitem.php',
   DASHCONTROLES: base + 'dashControles.php',
   ALERTES: base + 'alertes.php',
+  //***********ZOHO API    */
+  GET_ZOHO_TOKEN: base + 'zoho.php',
+  SET_ZOHO_TICKET: base + 'zoho2.php',
+  SET_TICKET: 'https://desk.zoho.com/api/v1/tickets',
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
   TRAZA_ATRAS:  base + 'traza_atras.php',

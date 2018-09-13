@@ -92,9 +92,13 @@ public modo:string='';
       { field: 'responsable_cierre', header: 'Responsable cierre' },
       { field: 'fecha_cierre', header: 'Fecha cierre' }
   ];
-
-  this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
-  window.scrollTo(0, 0)
+  this.translate.get(['incidencia.estado-1','incidencia.estado0','incidencia.estado1','incidencia.estado2']).subscribe((respuesta)=>{
+    console.log(respuesta);
+    this.estados = [{'nombre':respuesta['incidencia.estado-1'],'valor':-1},{'nombre':respuesta['incidencia.estado0'],'valor':0},{'nombre':respuesta['incidencia.estado1'],'valor':1},{'nombre':respuesta['incidencia.estado2'],'valor':2}]
+    window.scrollTo(0, 0)
+  })
+  // this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
+  // window.scrollTo(0, 0)
 }
 test(item: Incidencia){
 
@@ -358,9 +362,9 @@ setAlerta(concept:string){
     mitabla.exportCSV();
   tabla.value = origin_Value;
   tabla._value = origin_Value;
-
    // tabla.value = origin_Value;
    this.modo="normal";
+   this.loadSupervisores();
   }
 
   okDate(cal:Calendar){

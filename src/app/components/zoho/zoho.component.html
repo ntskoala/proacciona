@@ -1,12 +1,12 @@
 <p>
-  zoho works!
+  zoho works!VERSION {{version}}
 </p>
 
-<div *ngIf="!hayPermiso">
-  <button type="button" mat-raised-button (click)="zohoAuth(1)">{{'zoho1' | translate}}</button>
-  <button type="button" mat-raised-button (click)="zohoAuth(2)">{{'zoho2' | translate}}</button>
-  <button type="button" mat-raised-button (click)="zohoAuth(3)">{{'zoho3' | translate}}</button>
-  <button type="button" mat-raised-button (click)="zohoAuth(4)">{{'zoho4' | translate}}</button>
-</div>
+
 <!-- <button type="button" mat-raised-button (click)="zohoAuthgetToken('')">{{'zoho Token' | translate}}</button> -->
-<button type="button" mat-raised-button (click)="testZoho()">{{'zoho Test' | translate}}</button>
+<button type="button" mat-raised-button (click)="zohoAuth(3)">{{'getCode' | translate}}</button>
+<button type="button" mat-raised-button (click)="zohoAuthgetToken()">{{'getTokent' | translate}}</button>
+<button type="button" mat-raised-button (click)="zohoRefereshToken()">{{'Referesh Tokent' | translate}}</button>
+<button type="button" mat-raised-button (click)="testZoho('https://desk.zoho.eu/api/v1/organizations')">{{'zoho Test EU' | translate}}</button>
+<button type="button" mat-raised-button (click)="getTickets()">{{'zoho Get Tickets' | translate}}</button>
+<button type="button" mat-raised-button (click)="postTicket()">{{'zoho Crea Tickets' | translate}}</button>

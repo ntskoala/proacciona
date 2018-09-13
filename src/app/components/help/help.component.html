@@ -1,5 +1,7 @@
 <button  (click)="help()" class="helpButton"  mat-fab color="accent" >
+<span class="tooltip"  [matTooltipPosition]="'above'" matTooltip="{{'ticket.help' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips">  
   <span class="material-icons">live_help</span>
+</span>
 </button>
 
 <div class="modal" *ngIf="support">
@@ -7,26 +9,38 @@
     
 
     <form   #newTicketForm="ngForm" (ngSubmit)="newTicket()">
-        
+        <div class="space"></div>
               <span class="elem">
                 <label class="label">{{'ticket.subject' | translate}}</label>
-                <input class="itemElem" type="text" [placeholder]="'ticket.subject' | translate" required [(ngModel)]="ticket.subject" name="subject">
+                <mat-form-field class="example-full-width" style="margin-top: -25px;">
+                <input   matInput class="itemElem" type="text" required [(ngModel)]="ticket.subject" name="subject">
+              </mat-form-field>
               </span>
               
               <div class="elem">
-                  <label  class="label">{{'ticket.r_cierre' | translate}}</label>
-            <p-dropdown styleClass="itemElem"  [style]="{'width':'200px'}" [options]="prioridades" [(ngModel)]="ticket.priority" placeholder="{{'ticket.prioridad' | translate}}"  name="priority"></p-dropdown>    
+                  <label  class="label">{{'ticket.prioridad' | translate}}</label>
+            <p-dropdown class="itemElem" styleClass="itemElem"  [style]="{'width':'200px'}" [options]="prioridades" [(ngModel)]="ticket.priority" placeholder="{{'ticket.prioridad' | translate}}"  name="priority"></p-dropdown>    
       </div>
       
               <span class="elem">
-                  <label class="label">{{'ticket.description' | translate}}</label>
-                 <textarea class="itemElem"  pInputTextarea [placeholder]="'ticket.description' | translate" [(ngModel)]="ticket.description" name="description">
+                  <label class="label">{{'ticket.descripcion' | translate}}</label>
+                 <textarea class="itemElem descrip"  pInputTextarea [placeholder]="'ticket.descripcion' | translate" [(ngModel)]="ticket.description" name="description">
                  </textarea>
               </span>
       
+
+              <span class="elem mini-fab">
+                  <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+                          <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'foto'}}"><span style="margin-left:60px">foto</span></label>                
+                          <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'foto'}}" class="inputfile" type="file" name="logo" (change)="setImg($event)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>  
+                        </span>
+                        </span>
+
+
+
             <div style="height: 15px" ></div>
       
-
+                        
           <div class="buttons">
             <hr class="hr">
             <button type="button" mat-raised-button [disabled]="!newTicketForm.form.valid" type="submit" >{{'aceptar' | translate}}</button>

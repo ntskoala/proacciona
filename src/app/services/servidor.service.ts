@@ -84,12 +84,12 @@ export class Servidor {
     }
   }
 
-  postLogo(url: string, files: File[], idEmpresa: string) {
+  postLogo(url: string, files: File[], idEmpresa: string, params?:string) {
     if (this.istokenExpired()){
       this.setAlerta();
     }else{
     let formData: FormData = new FormData();
-    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice";
+    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice"+params;
     formData.append('logo', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));

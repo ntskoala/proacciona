@@ -4,11 +4,11 @@
       <mat-toolbar color="accent" class="toolbar-principal">Informes</mat-toolbar>
     </mat-card-title>
     <mat-card-subtitle>
-      <button mat-button color="primary" [attr.mat-raised-button]="tabs[0]"
+      <button [ngClass]="{'selected2':tabs[0]}" mat-button color="primary" [attr.mat-raised-button]="tabs[0]"
         (click)="cambiarTab(0)">{{'Controles' | translate}}</button>
-      <button mat-button color="primary" [attr.mat-raised-button]="tabs[1]"
+      <button [ngClass]="{'selected2':tabs[1]}" mat-button color="primary" [attr.mat-raised-button]="tabs[1]"
         (click)="cambiarTab(1)">Checklists</button>
-      <button mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
+      <button [ngClass]="{'selected2':tabs[2]}" mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
         (click)="cambiarTab(2)">{{'Periodicidad' | translate}}</button>
     </mat-card-subtitle>
     <mat-card-content>

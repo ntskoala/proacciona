@@ -18,10 +18,23 @@ export class GestionInformesComponent implements OnInit{
   ngOnInit() {
     console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"])
 
-        if (this.route.params["_value"]["modulo"] == "Controles"){
-            this.cambiarTab(0);
-        }else{
+
+        // if (this.route.params["_value"]["modulo"] == "Controles"){
+        //     this.cambiarTab(0);
+        // }else{
+        //   this.cambiarTab(1);
+        // }
+        switch(this.route.params["_value"]["modulo"]){
+          case "Controles":
+          this.cambiarTab(0);
+          break;
+          case "Checklists":
           this.cambiarTab(1);
+          break;
+          default:
+          this.cambiarTab(0);
+          break;
+
         }
   }
 

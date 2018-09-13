@@ -26,6 +26,7 @@ export class UsoComponent implements OnInit {
   public panels: boolean[] = [];
   public altura:string;
 public calculando: boolean=false;
+public dias:number;
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
@@ -92,7 +93,9 @@ loadUsers(){
     });
 }
 loadLogs(periodo?:number){
+  
     if (!periodo) periodo = 7;
+    this.dias=periodo;
     let fecha_fin=moment().format('YYYY-MM-DD');
     let fecha_inicio=moment().subtract(periodo,'days').format('YYYY-MM-DD');
     let fecha_field="fecha";

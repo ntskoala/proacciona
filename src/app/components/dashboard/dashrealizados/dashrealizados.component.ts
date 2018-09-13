@@ -68,7 +68,7 @@ export class DashrealizadosComponent implements OnInit {
     },
     (error)=> console.log(error),
     ()=>{
-
+      this.days =7;
       this.loadResultados(7);
     });
   }

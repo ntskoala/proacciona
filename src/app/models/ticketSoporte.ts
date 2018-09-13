@@ -10,6 +10,7 @@ export class Ticket{
       public priority : string,
       public phone : string,
       public email : string,
-      public status : string
+      public status : string,
+      public foto?: string
     ) {}
   }

@@ -22,8 +22,9 @@ export class DashincidenciasComponent implements OnInit {
   public route: ActivatedRoute) { }
   public calculando: boolean=false;
     public altura:string;
-
+    public dias: number;
   ngOnInit() {
+    this.dias=1;
     let fechaInicio = moment().subtract(1,'d').toDate();
     this.loadIncidencias(fechaInicio);
   }
@@ -63,6 +64,7 @@ export class DashincidenciasComponent implements OnInit {
    }
 
   loadResultados(dias:number){
+    this.dias=dias;
     this.altura = '';
     let fechaInicio = moment().subtract(dias,'d').toDate();
     this.loadIncidencias(fechaInicio);

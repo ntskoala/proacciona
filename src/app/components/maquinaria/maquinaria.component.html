@@ -1,7 +1,7 @@
   <mat-card>
     <mat-card-title>
       <mat-toolbar color="accent" class="toolbar-principal">{{'menu.maquinaria' | translate}}
-   <listado-maquinas (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>      
+   <listado-maquinas [idSelected]="idmaquinaURL" (maquinaSeleccionada)="seleccionMaquina($event)" (listaMaquinas)="loadMaquinas($event)"></listado-maquinas>      
     </mat-toolbar>
     </mat-card-title>
  <mat-card-subtitle>
@@ -31,7 +31,7 @@
  </mat-card-subtitle>
  <div class="contenido">
     <mat-sidenav-container class="example-container">
-        <mat-sidenav  #sidenavCalendar (close)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
+        <mat-sidenav  #sidenavCalendar (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
                 <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
         </div>
@@ -41,10 +41,10 @@
     
   </mat-sidenav> 
   <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
-<div class="sidenav-content">
+<mat-sidenav-content class="sidenav-content">
     <h2 class="cente tituloMaquina" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2><BR>
-      <div class="tabs" style="margin-top: 60px">
-<mat-tab-group *ngIf="maquina && maquina.id > 0">
+      <div  style="margin-top: 60px">
+<mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>
   <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></mat-tab>  
 <mat-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR" *ngIf="maquina"></mantenimientos-realizados></mat-tab>  
@@ -53,7 +53,7 @@
   <mat-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></mat-tab>
 </mat-tab-group>
       </div>
-</div><!--   Fin example-sidenav-content  -->
+</mat-sidenav-content><!--   Fin example-sidenav-content  -->
 </mat-sidenav-container>
  </div>
   </mat-card>

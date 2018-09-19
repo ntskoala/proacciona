@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 //import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment';
 

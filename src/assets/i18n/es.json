@@ -34,6 +34,9 @@
   "Tablas": "Configuración",
   "Usuarios": "Usuarios",
   "Controles": "Controles",
+  "Checklists":"Checklists",
+  "Limpiezas":"Limpiezas",
+  "Mantenimientos":"Mantenimientos",
   "Opciones": "Opciones premium",
   "Opciones2":"Opciones",
   "Modulos":"Módulos activos",
@@ -59,6 +62,8 @@
   "borrarPlanST":"Se borrarán sus resultados asociados.",
   "borrarT":"¿Estás seguro de querer eliminar el registro seleccionado?",
   "borrarST":"Se borrarán sus datos asociados.",
+  "borrarIncidenciaT":"Eliminar Incidencia",
+  "borrarIncidenciaST":"Se eliminará la incidencia, ¿confirmar? ",
   "Supervisores":"Supervisores",
   "Supervisor":"Supervisor",
   "PermisosSupervisores":"Permisos supervisores",
@@ -98,6 +103,7 @@
   "bienvenido": "Bienvenido a TFC PROACCIONA",
   "introducirtexto":"Introducir texto",
   "expandir":"Expandir",
+  "Retrasado":"Retrasado",
   "menu":{
     "login":"Cerrar sesión",
     "empresas":"Selecctor de empresa",
@@ -110,7 +116,8 @@
     "produccion":"Módulo producción",
     "personal":"Módulo personal",
     "planificaciones":"Módulo planificaciones",
-    "incidencias":"Módulo incidencias"
+    "incidencias":"Módulo incidencias",
+    "dashboard":"Dashboard"
   },
   "configuracion":{
     "nuevoUsuario":"Nuevo usuario",
@@ -129,7 +136,8 @@
     "Modulo Clientes":"Módulo clientes",
     "Modulo Producción":"Módulo producción",
     "Traspasos":"Módulo traspasos",
-    "Personal":"Módulo personal"
+    "Personal":"Módulo personal",
+    "Modulo Incidencias":"Módulo incidencias"
   },
   "maquinas": {
     "CalendarioGeneralMantenimiento":"Calendario general mantenimiento",
@@ -365,7 +373,9 @@
     "origen":"Origen",
     "fecha orden":"Fecha orden",
     "proveedor":"Proveedor",
-    "remanente_origen": "Cantidad remanente en origen"
+    "remanente_origen": "Cantidad remanente en origen",
+    "trazaAtras":"Trazabilidad hacia atrás",
+    "trazaAdelante":"Trazabilidad hacia adelante"
   },
   "almacenes":{
     "nombre":"Nombre",
@@ -457,6 +467,7 @@
       "nohaymail":"No tiene email",
       "guardar":"Se ha modificado un registro, es necesario pulsar el botón <span class='material-icons'>check</span> para guardar los cambios",
       "guardar_Ficha":"Se ha modificado la ficha, es necesario pulsar el botón 'Guardar' para confirmar los cambios",
+      "borrar":"Se ha borrado un registro",
       "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertas",
@@ -468,11 +479,13 @@
     },
     "incidencia":
     {
-      "nueva":"Nueva incidencia",
+      "listadoincidencia":"Listado incidencias",
+      "calendario":" Calendario incidencias",
+      "nueva":"Abrir nueva incidencia",
       "incidencia":"Incidencia",
       "fecha":"Fecha",
       "solucion":"Solución inmediata",
-      "responsable":"Resp. apertura",
+      "responsable":"Abierta por",
       "r_seguimiento":"Responsable seguimiento",
       "r_cierre":"Responsable cierre",
       "fecha_cierre":"Fecha cierre",
@@ -482,12 +495,13 @@
         "1":"No Conforme",
         "2":"Resuelto"
       },
-      "null":"Nueva incidencia",
+      "null":"Abrir nueva incidencia",
       "-1":"Ir a la incidencia sin estado definido",
       "0":"Ir a la incidencia con estado No aplica",
       "1":"Ir a la incidencia abierta",
       "2":"Ir a la incidencia cerrada",
       "Goto":"Ir al elemento origen de la incidencia",
+      "estado-1":"Sin definir",
       "estado0":"No aplica",
       "estado1":"Abierto",
       "estado2":"Cerrado",
@@ -496,6 +510,44 @@
       "acciones":"Acciones",
       "estado":"Estado",
       "fecha_termini":"Fecha limite",
+      "descripcion":"Descripción",
+      "noencontrada":" No se ha encontrado la incidencia seleccionada",
+      "Controles":"Controles",
+      "Checklists":"Checklists",
+      "Mantenimientos":"Mantenimiento",
+      "Limpiezas":"Limpiezas",
+      "Incidencias":"Incidencias"
+    },
+    "Dashboard":{
+      "incidenciasT":"INCIDENCIAS",
+      "incidenciasST":"Últimas incidencias",
+      "controlesHoyT":"REGISTROS",
+      "controlesHoyST":"Registros pendientes a día de hoy",
+      "controlesRealizadosT":"REGISTROS REALIZADOS",
+      "controlesRealizadosST":"Registros realizados en los últimos días",
+      "logginsT":"ACCESOS",
+      "logginsST":"Accesos y acciones por usuario",
+      "tablas":{
+        "limpieza_realizada":"limpiezas",
+        "incidencias":"incidencias",
+        "ResultadosControl":"controles",
+        "resultadoschecklist":"checklists",
+        "mantenimientos_realizados":"mantenimientos",
+        "login": "conexiones"
+      },
+      "acciones":{
+        "PUT":"actualizados",
+        "POST":"nuevos",
+        "login":""
+      }
+    },
+    "ticket":{
+      "help":"Ticket de soporte",
+      "subject":"Asunto",
+      "prioridad":"Prioridad",
+      "baja":"baja",
+      "standard":"estandard",
+      "urgente":"urgente",
       "descripcion":"Descripción"
     },
   "alergenos":"alérgenos",

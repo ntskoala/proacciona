@@ -1,4 +1,11 @@
   <!--<alertas></alertas>-->
+
+  <div *ngIf="nuevoLogin" class="modal">
+    <div class="login-redirected">
+    <app-login  [modeLogin]="'empresas'" (loggedIn)="loggedIn($event)"></app-login>
+  </div>
+  </div>
+  <app-help></app-help>
   <menu (selectedMenu)="setMenu($event)"></menu>
   <!--<div #scrollMe style="overflow: scroll; height: xyz;" style="width:95%">-->
 

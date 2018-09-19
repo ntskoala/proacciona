@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
+import { EmpresasService } from '../../services/empresas.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -8,9 +8,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(public empresasService: EmpresasService) { }
 
   ngOnInit() {
+    this.empresasService.administrador
   }
 
 }

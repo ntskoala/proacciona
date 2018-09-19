@@ -26,8 +26,10 @@ export class FichaProduccionComponent implements OnInit, OnChanges {
 
 
 //*** ESPECIFIC VAR */
+public modo: string;
 public es:any;
 public trazabilidad: boolean;
+public trazabilidadAd:boolean;
 public almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
 public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
@@ -47,6 +49,9 @@ public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
   }
   ngOnChanges(){
 
+    if (!moment(this.orden.fecha_inicio).isValid()) this.orden.fecha_inicio = null;
+    if (!moment(this.orden.fecha_fin).isValid()) this.orden.fecha_fin = null;
+    if (!moment(this.orden.fecha_caducidad).isValid()) this.orden.fecha_caducidad = null;
   }
   
 cambiarTab(){}
@@ -115,9 +120,12 @@ seleccionarDestino(valor){
 }
 
 trazabilidadAtras(){
+  this.modo = 'atras';
 this.trazabilidad= !this.trazabilidad;
 }
 trazabilidadAdelante(){
-this.trazabilidad= !this.trazabilidad;
+  this.modo = 'adelante';
+  this.trazabilidad= !this.trazabilidad;
+// this.trazabilidadAd= !this.trazabilidadAd;
 }
 }

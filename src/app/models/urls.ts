@@ -1,9 +1,11 @@
 //let server = 'https://tfc.proacciona.es/'; //prod
 //let server = 'http://tfc.ntskoala.com/';//DESARROLLO
+
 import { server } from 'environments/environment';
 let base = server + 'api/';
 
 export const URLS = {
+  SERVER: server,
   LOGIN: base + 'actions/login.php',
   EMPRESAS: base + 'empresas.php',
   OPCIONES: base + 'opciones.php',
@@ -17,6 +19,7 @@ export const URLS = {
   PERMISSION_USER_LIMPIEZA: base + 'permissionuserlimpieza.php',
   RESULTADOS_CONTROL: base + 'resultadoscontrol.php',
   RESULTADOS_CHECKLIST: base + 'resultadoschecklist.php',
+  RESUMEN_ACCIONES_LOGS: base + 'resumen_acciones_logs.php',
   PERIODICIDAD_CONTROL: base + 'periodicidadcontrol.php',
   PERIODICIDAD_CHECKLIST: base + 'periodicidadchecklist.php',
   MAQUINAS: base +'maquinaria.php',
@@ -31,9 +34,16 @@ export const URLS = {
   STD_ITEM: base + 'std_item.php',
   STD_SUBITEM: base + 'std_subitem.php',
   DASHCONTROLES: base + 'dashControles.php',
+  ALERTES: base + 'alertes.php',
+  GETDASHBOARDADMIN: base + 'views/getDashboardAdmin.php',
+  //***********ZOHO API    */
+  GET_ZOHO_TOKEN: base + 'zoho.php',
+  SET_ZOHO_TICKET: base + 'zoho2.php',
+  SET_TICKET: 'https://desk.zoho.com/api/v1/tickets',
   //**********TRAZABILIDAD */
   TRAZA_ORDENES:  base + 'traza_ordenes.php',
   TRAZA_ATRAS:  base + 'traza_atras.php',
+  TRAZA_ADELANTE:  base + 'traza_adelante.php',
   UPDATE_REMANENTE: base+ 'update_remanente.php',
 
   UPLOAD_LOGO: base + 'logoempresa.php',

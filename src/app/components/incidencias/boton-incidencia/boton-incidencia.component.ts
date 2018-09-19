@@ -2,12 +2,14 @@ import { Component, OnInit, OnChanges, DoCheck, ViewEncapsulation, Input, Output
 import { Router  } from '@angular/router';
 
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import {Calendar} from 'primeng/primeng';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
+import { PermisosService } from '../../../services/permisos.service';
 import { URLS } from '../../../models/urls';
+import { server } from '../../../../environments/environment';
 import { Empresa } from '../../../models/empresa';
 import { Usuario } from '../../../models/usuario';
 import { Incidencia } from '../../../models/incidencia';
@@ -36,7 +38,7 @@ public urlFoto = URLS.DOCS + this.empresasService.seleccionada + '/incidencias/'
 public uploadFoto: any;
 public colorBoton:string='accent';
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public router: Router
-    , public translate: TranslateService, private messageService: MessageService) { }
+    , public translate: TranslateService, private messageService: MessageService, public permisos: PermisosService) { }
 
   ngOnInit() {
     this.loadUsuarios();
@@ -64,7 +66,7 @@ getColor(){
   if (this.origen){
   switch (this.origen.estado){
     case "0":
-    return 'green';  
+    return '#cccccc';  
   case "2":
   return '#33cc33';  
   }
@@ -88,6 +90,9 @@ setOrigen(){
 
   if (this.origen.origen){
     this.newIncidencia.origen = this.origen.origen;
+  }
+  if (this.origen.origenasociado){
+    this.newIncidencia.origenasociado = this.origen.origenasociado;
   }
   if (this.origen.idOrigenasociado){
     this.newIncidencia.idOrigenasociado = this.origen.idOrigenasociado;
@@ -121,11 +126,17 @@ loadUsuarios(){
       this.addItem(this.newIncidencia).then(
         (valor)=>{      
           console.log(valor);
+          this.sendMaiolAviso(this.newIncidencia);
           this.nuevaIncidenciaCreada.emit(this.newIncidencia);
+          let id= this.newIncidencia.id;
           this.setIncidencia();
           this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
             // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
             // this.incidencias = this.incidencias.slice();
+            this.nuevaIncidencia = false;
+            let urlNovaIncidencia = '/empresas/2/incidencias/0/'+id;
+            this.router.navigateByUrl(urlNovaIncidencia)
+
           }
       );
   }
@@ -153,10 +164,13 @@ loadUsuarios(){
 
 setIncidencia(){
   if (this.newIncidencia.id >0){
-    let url = 'empresas/incidencias/'+0+'/'+this.newIncidencia.id;
-    this.router.navigateByUrl(url).catch(
-      (error)=>{console.log('ERROR:',error)}
-    )
+    let url = 'empresas/' + this.empresasService.seleccionada + '/incidencias/'+0+'/'+this.newIncidencia.id;
+    this.router.navigate([url]);
+    // this.router.navigateByUrl(url).then(
+    //   (ok)=>{console.log('ok',ok)}
+    // ).catch(
+    //   (error)=>{console.log('ERROR:',error)}
+    // )
   }else{
 this.nuevaIncidencia = ! this.nuevaIncidencia;
 console.log(this.nuevaIncidencia)
@@ -188,7 +202,34 @@ uploadImg(event, idItem,tipo) {
   )
 }
 
+sendMaiolAviso(nuevaIncidencia: Incidencia){
+  console.log(this.responsables,nuevaIncidencia)
+  let responsable;
+if (nuevaIncidencia.responsable == 109){
+responsable = "admin";
+}else{
+  this.responsables[this.responsables.findIndex((responsable)=>responsable["value"] == nuevaIncidencia.responsable)]["label"];
+}
+  let body = "Nueva incidencia creada desde " + nuevaIncidencia.origen + "<BR>Por: " +  responsable;
+  body +=   "<BR>Con fecha y hora: " + moment(nuevaIncidencia.fecha).format('DD-MM-YYYY hh-mm') +  "<BR>"
+  body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>"
+  body +=   "Descripción: " + (nuevaIncidencia.descripcion)? nuevaIncidencia.descripcion:"";
+  body +=    "<BR>Solución inmediata propuesta: " + (nuevaIncidencia.solucion)? nuevaIncidencia.solucion:"";
+  // body +=    "<BR>Ir a la incidencia: https://tfc.proacciona.es.com/empresas/"+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
+  body +=    "<BR>Ir a la incidencia: "+server+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
 
+  if (nuevaIncidencia.origen != 'incidencias')
+  // body +=    "<BR>Ir al elemento https://tfc.proacciona.es/empresas/"+ this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
+  body +=    "<BR>Ir al elemento "+ server + this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
+
+  let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada;
+      this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
+        response => {
+          if (response.success && response.data) {
+            console.log(response.data)
+          }
+      });
+}
 
 okDate(cal:Calendar){
   cal.overlayVisible = false;

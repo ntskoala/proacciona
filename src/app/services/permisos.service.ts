@@ -18,7 +18,7 @@ export class PermisosService {
     produccion:boolean;
     traspasos:boolean;
     planificaciones:boolean;
-
+    incidencias:boolean;
     constructor(private servidor: Servidor){
 
     }
@@ -37,6 +37,7 @@ export class PermisosService {
     this.produccion=false;
     this.traspasos=false;
     this.planificaciones=false;   
+    this.incidencias=false;  
     }
 
 
@@ -68,6 +69,9 @@ export class PermisosService {
                 break;  
                 case "8"://"Planificaciones":
                 this.planificaciones = valor;
+                break;   
+                case "9"://"Planificaciones":
+                this.incidencias = valor;
                 break;                 
             // case ://"personal":
             //     this.personal = valor;

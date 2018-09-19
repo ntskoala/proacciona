@@ -60,7 +60,7 @@ loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
             this.items.push(this.item1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen));
+                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen,element.idcliente));
               }
              console.log(this.items);
             }
@@ -72,11 +72,15 @@ loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
         );
    }
 
+quitaSeleccionado(){
+  this.itemSeleccionado.emit(null);
+}   
 seleccionarItem(event: any){
   this.itemSeleccionado.emit(this.items[event.value]);
   this.itemActivo = this.items[event.value].id;
     this.unExpand(this.Choicer);
 }
+
 
 crearItem(){
 this.nuevoItem.numlote = this.nuevoNombre;
@@ -182,6 +186,7 @@ changeEstado(event: any){
   this.estado = event.value;
   this.setDates(this.fechas_inicio);
   this.unExpand(this.ChoiceEstat);
+  this.quitaSeleccionado();
 }
 
 

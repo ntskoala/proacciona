@@ -6,14 +6,14 @@
       </mat-card-title>
       <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
         <mat-card-content>
-          <mat-input-container>
+          <mat-form-field>
           <input matInput class="full-width" type="text" required [placeholder]="'Usuario' | translate" 
             [(ngModel)]="usuario['user']" name="user">
-          </mat-input-container>
-          <mat-input-container>
+          </mat-form-field>
+          <mat-form-field>
           <input matInput class="full-width" type="password" required [placeholder]="'Contraseña' | translate"
             [(ngModel)]="usuario['password']" name="password">
-          </mat-input-container>
+          </mat-form-field>
           <span *ngIf="!idioma">
           <label for="idioma">Seleccionar idioma</label>
           <select class="white-select" required [(ngModel)]="usuario['idioma']" name="idioma">

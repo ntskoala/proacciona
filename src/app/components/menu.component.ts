@@ -42,6 +42,7 @@ setMenu(){
     new Menu('planificaciones','planificaciones','date_range',this.permisos.planificaciones),
     new Menu('maquinaria','maquinaria','build',this.permisos.fichas_maquinaria),
     new Menu('limpieza','limpieza','brush',this.permisos.limpieza),
+    new Menu('incidencias','incidencias','error',this.permisos.incidencias),
     new Menu('proveedores','proveedores','work',this.permisos.proveedores),
     new Menu('clientes','clientes','store',this.permisos.clientes),
     new Menu('produccion','produccion','developer_board',this.permisos.produccion)
@@ -76,7 +77,7 @@ setOrden(){
 
 
 setSeleccion(opcionmenu){
-  let url = 'empresas/'+opcionmenu+'/0/0';
+  let url = 'empresas/'+ this.empresasService.seleccionada+ '/'+opcionmenu+'/0/0';
   this.router.navigateByUrl(url);
 
 this.selectedMenu.emit(opcionmenu);

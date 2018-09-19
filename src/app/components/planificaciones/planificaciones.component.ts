@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Planificacion } from '../../models/planificacion';
@@ -24,20 +26,27 @@ public planes: Planificacion[] = [];
 public plan: Planificacion;
 public planRealizado: PlanRealizado;
 public newPlanRealizado:number;
-  constructor(public empresasService: EmpresasService) { }
+public selectedTab: number=null;
+  constructor(public empresasService: EmpresasService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.incidencia = {'origen':'planificaciones','idOrigen':null}
-    
+    let params = this.route.params["_value"]
+    if (params["modulo"] == "planificaciones_realizadas"){
+        this.selectedTab = 1;
+    }else{
+      this.selectedTab = 0;
+    }
   }
+
 
 cambioMenu(opcion: string){
 
 
   this.snCalendar.toggle().then(
   (valor)=>{
-    console.log ('$$$$',valor.type,this.subMenu, opcion)
-    if (valor.type=="open")
+    console.log ('$$$$',valor,this.subMenu, opcion)
+    if (valor=="open")
       {
         console.log ('abriendo.-..')
       this.closeSideNav().then(
@@ -60,7 +69,7 @@ cambioMenu(opcion: string){
         });
       }
       
-     if (valor.type=="close"){
+     if (valor=="close"){
         console.log ('cerrando.-..')
         //console.log ('$$$',this.subMenu, opcion)
         this.closeSideNav().then(

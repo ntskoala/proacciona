@@ -1,7 +1,8 @@
 <mat-card class="card">
   <mat-card-header>
     <div></div>
-    <mat-card-title>Controles realizados</mat-card-title>
+    <mat-card-title>{{'Dashboard.controlesRealizadosT' | translate}}</mat-card-title>
+    <!-- <mat-card-subtitle>{{'Dashboard.controlesRealizadosST' | translate}}</mat-card-subtitle> -->
     
   </mat-card-header>
   <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
@@ -21,11 +22,12 @@
       </mat-list-item>
     </mat-list> -->
     <mat-spinner *ngIf="calculando"></mat-spinner>  
-    <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
+    <p-chart type="line" [data]="data"  *ngIf="!calculando" (onDataSelect)="selectData($event)"></p-chart>
 
   </mat-card-content>
   <mat-card-actions>
-      <button mat-button (click)="loadResultados(7)">7 días</button>
-      <button mat-button (click)="loadResultados(14)">14 días</button>
+      <button [ngClass]="{'selected2':days==7}" mat-button (click)="loadResultados(7)">7 {{'dias' | translate}}</button>
+      <button [ngClass]="{'selected2':days==14}" mat-button (click)="loadResultados(14)">14 {{'dias' | translate}}</button>
+      <button [ngClass]="{'selected2':days==30}" mat-button (click)="loadResultados(30)">30 {{'dias' | translate}}</button>
     </mat-card-actions>
 </mat-card>

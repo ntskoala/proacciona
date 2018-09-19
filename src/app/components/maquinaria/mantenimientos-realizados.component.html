@@ -51,12 +51,14 @@
       </button>                
     </span>
   </form>
-</div> -->
+</div> 
+sortField="fecha" [sortOrder]="0" (onSort)="onRowSelect($event,dt)"-->
 
 <p-dataTable #DT [value]="mantenimientos" expandableRows="true" 
-[editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="0" 
+[editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)"   
 [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Realizados'" [tableStyle]="{'width':'900px'}"
-[rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
+[rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]"
+[(selection)]="selectedItem"  [(first)]="tablaPosition">
 <p-header>
     <div class="ui-helper-clearfix">
         <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -97,7 +99,7 @@
   <p-column field="responsable" header="{{'maquinas.responsable' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
   
 
-  <p-column header="{{'acciones' | translate }}" [style]="{'width':'100px'}">
+  <p-column header="{{'acciones' | translate }}" [style]="{'width':'140px'}">
     <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
         <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
     <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
@@ -109,6 +111,10 @@
       <span class="material-icons">check</span>
     </button>
   </span>
+
+  <app-boton-incidencia class="incidenciaItem" id="botonIncidencia" [origen]="incidencia[item.id]"></app-boton-incidencia>
+
+
     </ng-template>   
   </p-column>
 

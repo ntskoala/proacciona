@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 
 import { Servidor } from '../../services/servidor.service';
 import { PermisosService } from '../../services/permisos.service';
 import { EmpresasService } from '../../services/empresas.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { URLS } from '../../models/urls';
 import { Modal } from '../../models/modal';
 import { usuario } from 'environments/environment'
@@ -18,7 +18,8 @@ import * as moment from 'moment/moment';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
-
+@Output() loggedIn: EventEmitter<boolean> =  new EventEmitter<boolean>();
+@Input() modeLogin:string;
   public usuario = usuario;
   public  modal: Modal = new Modal();
    public logoEmpresa:string;
@@ -35,8 +36,7 @@ export class LoginComponent implements OnInit {
         this.empresasService.idioma = this.idioma;
        this.translate.use(this.idioma);
      }
-     console.log('###',this.route.params);
-    // console.log('*******',this.route.queryParams["value"]["token"]);
+     console.log('*******',this.route.queryParams["value"]["token"]);
      if(this.route.params["_value"]["token"]){
       this.isTokenValid(this.route.params["_value"]["token"]);
      }
@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
      }
      //this.login(this.usuario);
  }
+
  isTokenValid (token) {
   if (token){
             let expired:boolean;
@@ -167,23 +168,32 @@ export class LoginComponent implements OnInit {
   sessionStorage.setItem('userId', user.userId);
   sessionStorage.setItem('userName', user.userName);
   sessionStorage.setItem('userTipo', user.userTipo);
-
+if (user.userTipo == 'Administrador'){
+  console.log("procesLogedIn mode:",this.route.paramMap["source"]["_value"]["empresa"]);
+  sessionStorage.setItem('idEmpresa',this.route.paramMap["source"]["_value"]["empresa"])
+}
    this.empresasService.userId = user.userId;
    this.empresasService.userName = user.userName;
    this.empresasService.userTipo = user.userTipo;
 
    //sessionStorage.setItem('token', response.token);
-
+   console.log("procesLogedIn mode:",this.modeLogin);
    switch (user.userTipo) {
      case 'Administrador':
+     console.log("gerente o mantenimiento");
      sessionStorage.setItem('administrador', 'true');
      this.empresasService.administrador = true;
 
-       if (this.empresasService.login){
-        window.open('../empresas','_parent')
-       }else{
-       this.router.navigate(['empresas']);
-       }
+//       if (this.empresasService.login){
+//        window.open('../empresas','_parent')
+//       }else{
+         if (this.modeLogin == 'empresas'){
+          
+           this.loggedIn.emit(true);
+         }else{
+          this.router.navigate(['empresas']);
+         }
+//       }
 
        break;
      case "Mantenimiento":
@@ -196,14 +206,18 @@ export class LoginComponent implements OnInit {
        this.empresasService.empresaActiva = idEmpresa;
        sessionStorage.setItem('administrador', 'false');
        this.empresasService.administrador = false;
-       this.setPermisos(idEmpresa);
+      //  this.setPermisos(idEmpresa);
        console.log(idEmpresa);
 
-      if (this.empresasService.login){
-        window.open('../empresas','_parent')
-      }else{
-       this.router.navigate(['empresas']);
-      }
+//      if (this.empresasService.login){
+//        window.open('../empresas','_parent')
+//      }else{
+        if (this.modeLogin == 'empresas'){
+          this.loggedIn.emit(true);
+        }else{
+          this.router.navigate(['empresas']);
+        }
+//      }
        break;
      default:
        // Se queda en login

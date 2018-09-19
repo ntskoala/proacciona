@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import {DataTable,Column} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
@@ -68,8 +68,9 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
-        
+        window.scrollTo(0, 0)
   }
+
 incidenciaSelection(){
   let x=0;
   this.route.paramMap.forEach((param)=>{
@@ -81,11 +82,13 @@ incidenciaSelection(){
           console.log(param["params"]["id"],param["params"]["modulo"]);
           let idOrigen = param["params"]["id"];
           let index = this.items.findIndex((item)=>item.id==idOrigen);
-          this.selectedItem = this.items[index]
-          // let x= 5;
-          // do {x--} while ((index -x) % 5 != 0 || x > 0)
-          this.tablaPosition = index;
-          //console.log("SELECCION AÇUTOMATICA",index,x);
+          if (index > -1){
+            this.selectedItem = this.items[index]
+            this.tablaPosition = index;
+            console.log('***_',index,this.selectedItem)
+            }else{
+              this.setAlerta('incidencia.noencontrada')
+            }
         }
       }
     });
@@ -123,7 +126,7 @@ seleccion(evento){
                   element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
                   supervisor,element.doc,element.imagen));
                   this.motivo.push(false);
-                  this.incidencia[element.id]={'origen':'limpiezas','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
+                  this.incidencia[element.id]={'origen':'limpiezas','origenasociado':'limpieza_realizada','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
@@ -212,7 +215,10 @@ onEdit(event){
           if (response.success) {
             let controlBorrar = this.items.find(mantenimiento => mantenimiento.id == this.idBorrar);
             let indice = this.items.indexOf(controlBorrar);
+            this.selectedItem=null;
             this.items.splice(indice, 1);
+            this.items = this.items.slice();
+            this.setAlerta('alertas.borrar');
           }
       });
     }
@@ -356,7 +362,7 @@ exportData(tabla: DataTable){
 
 getIncidencias(){
   let params = this.empresasService.seleccionada;
-  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.limpieza.id;
+  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.limpieza.id+"&WHERE=origen=&valor=limpiezas";
       this.servidor.getObjects(URLS.STD_SUBITEM, parametros2).subscribe(
         response => {
           

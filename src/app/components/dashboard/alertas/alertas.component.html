@@ -1,16 +1,16 @@
 
-<mat-card class="card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Controles hoy</mat-card-title>
-    <mat-card-subtitle>Eventos que se tienen que realizar hoy</mat-card-subtitle>
+<mat-card class="card" [ngStyle]="{'height':altura}">
+  <mat-card-header >
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title>{{'Dashboard.controlesHoyT' | translate}}</mat-card-title>
+    <mat-card-subtitle>{{'Dashboard.controlesHoyST' | translate}}</mat-card-subtitle>
   </mat-card-header>
   <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
   <mat-card-content>
     <!-- <div *ngFor="let alerta of alertas">
       {{alerta.nombre}} {{alerta.fecha}}
       </div> -->
-      <mat-expansion-panel>
+      <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)">
         <mat-expansion-panel-header> 
               <mat-panel-title>
                 {{'Controles'|translate}}
@@ -30,7 +30,7 @@
    </mat-list>
         </mat-expansion-panel>
 
-        <mat-expansion-panel>
+        <mat-expansion-panel  (closed)="closePanel(1)" (opened)="openPanel(1)">
           <mat-expansion-panel-header> 
                 <mat-panel-title>
                   {{'Checklists'|translate}}
@@ -52,7 +52,7 @@
 
 
 </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel  (closed)="closePanel(2)" (opened)="openPanel(2)">
             <mat-expansion-panel-header> 
                   <mat-panel-title>
                     {{'Limpiezas'|translate}}
@@ -73,7 +73,7 @@
 
 </mat-expansion-panel>
 
-        <mat-expansion-panel>
+        <mat-expansion-panel  (closed)="closePanel(3)" (opened)="openPanel(3)">
             <mat-expansion-panel-header> 
                   <mat-panel-title>
                     {{'Mantenimientos'|translate}}

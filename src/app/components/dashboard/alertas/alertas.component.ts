@@ -19,6 +19,8 @@ public controles = [];
 public checklists = [];
 public limpiezas = [];
 public mantenimientos = [];
+public panels: boolean[] = [false,false,false,false];
+public altura:string='';
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
 
   ngOnInit() {
@@ -61,5 +63,21 @@ public mantenimientos = [];
                  console.log('Logs',this.alertas);
                 }
             });
+    }
+
+
+    closePanel(panel){
+      this.panels[panel]=false;
+      console.log(this.panels.find((item)=>item==true))
+      if (this.panels.find((item)=>item==true)){
+        this.altura = "100%"
+      }else{
+      this.altura = ""
+      }
+    }
+    
+    openPanel(panel){
+      this.panels[panel]=true;
+      this.altura = "100%"
     }
 }

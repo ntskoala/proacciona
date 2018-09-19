@@ -39,7 +39,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 <div class="cabeceraItems">
   <form>
-    <mat-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (change)="seleccionarItem($event)">
+    <mat-select class="cabeceraSelect" placeholder="selecciona"  #choicer  (selectionChange)="seleccionarItem($event)">
       <mat-option *ngFor="let item of items; let i = index" [value]="i">
         {{item.nombre}}
       </mat-option>

@@ -2,6 +2,7 @@
 @import '~font-awesome/css/font-awesome.min.css';*/
  @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
  /* @import '~primeng/resources/themes/Lightness/theme.css'; */
+ @import '~primeicons/primeicons.css';
 @import 'assets/css/theme.css';
  @import '~primeng/resources/primeng.min.css'; 
  
@@ -48,6 +49,14 @@ nav {
   background-color: #ffffff;
   z-index: 10;
 
+}
+
+.cabeceraNavEmpresa{
+  float: right;
+  margin-right: 50px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 .logo,
@@ -253,11 +262,23 @@ background-color: #fff;
 }
 
 /* LoginComponent */
+.login-redirected {
+  position: relative;
+  display: flex;
+  max-width: 250px !important;
+  width: 250px !important;
+  min-width: 250px !important;
+  margin-top: 100px;
+  left: calc(50% - 125px);
+  z-index: 10;
+  height: 400px !important;
+}
 .login-form {
   max-width: 200px;
   margin: auto;
   margin-top: 0px;
-      position: fixed;
+      /* position: fixed; */
+      position: absolute;    
     float: right;
     top: 0px;
     right: 0px;
@@ -333,7 +354,7 @@ top: 0px;
 
 /* SeleccionarEmpresaComponent */
 seleccionar-empresa {
-  width: 48%;
+  width: 58%;
   float: left;
   padding-right: 2%;
 }
@@ -360,7 +381,7 @@ seleccionar-empresa {
 
 /* NuevaEmpresaComponent */
 nueva-empresa {
-  width: 48%;
+  width: 38%;
   float: right;
   padding-left: 2%;
 }
@@ -716,6 +737,16 @@ width: 400px;
 }
 .ui-column-title{
   font-size: 14px; 
+}
+
+/*
+***********************
+* INCIDENCIAS *
+***********************
+*/
+.incidenciaItem{
+  /* display: table-caption; */
+  float:right;
 }
 
 /*

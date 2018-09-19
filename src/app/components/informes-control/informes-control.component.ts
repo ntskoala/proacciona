@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
@@ -20,6 +21,7 @@ export class InformesControlComponent implements OnInit {
   public subscription: Subscription;
   public columnOptions: SelectItem[];
   public controles: any[] = [];
+  public selectedItem: any;
   public resultadoscontrol: ResultadoControl[] = [];
   public cols=[];
   public columnas: object[] = [];
@@ -32,10 +34,12 @@ export class InformesControlComponent implements OnInit {
   public exportar_informes: boolean =false;
   public es;
   public brands: string[]=['>','<','='];
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
+    public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
   ngOnInit() {
     // Conseguir controles
+    console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"]);
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
@@ -79,7 +83,12 @@ export class InformesControlComponent implements OnInit {
       //this.fecha['inicio']= new Date('2017-01-01'); //moment().subtract(7,'d').date();
       this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
       this.fecha['fin']= new Date();//moment().date();
-      this.filtrarFechas(this.fecha)
+      if (this.route.params["_value"]["modulo"] == "Controles" && this.route.params["_value"]["id"] > 0){
+        this.getDateInicio();
+     }else{
+      this.filtrarFechas(this.fecha);
+
+     }
     });
   }
 
@@ -93,12 +102,33 @@ setColOptions(){
         }
 } 
 
+getDateInicio(){
+  let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=ResultadosControl&field=id&idItem='+this.route.params["_value"]["id"]; 
+  this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+    response => {
+      if (response.success && response.data) {
+        for (let element of response.data) {
+          this.fecha['inicio']= new Date(moment(element.fecha).format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
+          this.filtrarFechas(this.fecha);
+        }
+      }
+  },
+  error=>{console.log('Error getting control',error)});
+
+}
+
   filtrarFechas(fecha) {
    // console.log (fecha.inicio.formatted,fecha.fin.formatted);
     console.log (moment(fecha.inicio).format('YYYY-MM-DD'),moment(fecha.fin).format('YYYY-MM-DD'));
-    let parametros = '&idempresa=' + this.empresasService.seleccionada +
-    //  '&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+    let parametros;
+    if (this.route.params["_value"]["modulo"] == "Controles" && this.route.params["_value"]["id"] > 0){
+     parametros = '&idempresa=' + this.empresasService.seleccionada +
       '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
+  }else{
+     parametros = '&idempresa=' + this.empresasService.seleccionada +
+    '&fechainicio=' + moment(fecha.inicio).format('YYYY-MM-DD') + '&fechafin=' + moment(fecha.fin).format('YYYY-MM-DD');
+  }
+
     this.servidor.getObjects(URLS.RESULTADOS_CONTROL, parametros).subscribe(
       response => {
         this.resultadoscontrol = [];
@@ -142,8 +172,10 @@ setColOptions(){
                 
               }
               this.tabla.push(resultado);
+              if (element.idr == this.route.params["_value"]["id"]) this.selectedItem = resultado;
             }
           }
+          
         }
     },
     (error)=>console.log(error),
@@ -223,6 +255,11 @@ this.tabla = this.tabla.filter((fila)=>{
 });
 return result;
 });
+}
+
+gotoIncidencia(evento){
+  console.log(evento);
+
 }
 
 }

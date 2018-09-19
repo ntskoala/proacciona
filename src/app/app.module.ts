@@ -4,10 +4,13 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { Http } from '@angular/http';
+import { HttpClientModule,HttpClient } from '@angular/common/http';
 
 //import { MaterialModule } from '@angular/material';
 //import {MatSelectModule} from '@angular/material';
-import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+// import { TranslateModule, TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+import {TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 //**********DATEPICKER    ALERT!!!!! SUBSTITUIR POR CALENDARMODULE PRIMENG EN INFORMES */
     //import { DatePickerModule } from 'ng2-datepicker';
 //**********REQUIRED FOR CALENDAR */
@@ -32,6 +35,10 @@ import {SpinnerModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
 import {ChartModule} from 'primeng/chart';
+import {MenuModule} from 'primeng/menu';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {PickListModule} from 'primeng/picklist';
+import {MenuItem} from 'primeng/api';
 //import {ChartModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
@@ -114,6 +121,7 @@ import { routing } from './app.routing';
 import { Servidor } from './services/servidor.service';
 import { EmpresasService } from './services/empresas.service';
 import { PermisosService } from './services/permisos.service';
+import { ZohoService } from './services/zoho.service';
 
 import { InformesControlComponent } from './components/informes-control/informes-control.component';
 import { MigraCheckListComponent } from './components/migra-check-list/migra-check-list.component';
@@ -175,12 +183,20 @@ import {
     MatTooltipModule,
     MatSortModule,
     MatPaginatorModule,
+    MatBadgeModule,
     MAT_DATE_LOCALE
   } from '@angular/material';
 import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.component';
 import { TablaIncidenciasComponent } from './components/incidencias/tabla-incidencias/tabla-incidencias.component';
 import { CalendariosIncidenciasComponent } from './components/incidencias/calendarios-incidencias/calendarios-incidencias.component';
 import { LoginComponent } from './components/login/login.component';
+import { TrazabilidadAdComponent } from './components/trazabilidad-ad/trazabilidad-ad.component';
+import { DashincidenciasComponent } from './components/dashboard/dashincidencias/dashincidencias.component';
+import { HelpComponent } from './components/help/help.component';
+import { ZohoComponent } from './components/zoho/zoho.component';
+import { AdminIncidenciasClienteComponent } from './components/dashboard/admin-incidencias-cliente/admin-incidencias-cliente.component';
+import { AdminControlesClienteComponent } from './components/dashboard/admin-controles-cliente/admin-controles-cliente.component';
+import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins-cliente/admin-logins-cliente.component';
 
 @NgModule({
     exports: [
@@ -216,14 +232,17 @@ import { LoginComponent } from './components/login/login.component';
       MatTooltipModule,
       MatNativeDateModule,
       MatSortModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      MatBadgeModule
     ],
     declarations: []
   })
   export class PlunkerMaterialModule {}
 
-export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
-
+// export function translateLoader(http: Http) { return new TranslateStaticLoader(http, './assets/i18n', '.json')}
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  }
 
 @NgModule({
   imports: [
@@ -232,6 +251,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     PlunkerMaterialModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     JsonpModule,
     MomentModule,
     ScheduleModule,
@@ -253,17 +273,24 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     SpinnerModule,
     GrowlModule,
     ChartModule,
+    MenuModule,
+    ContextMenuModule,
+    PickListModule,
 /**********MATERIAL */
    // MaterialModule,
    // MatSelectModule,
    // DatePickerModule,
+    // TranslateModule.forRoot({
+    //   provide: TranslateLoader,
+    //   useFactory: translateLoader,
+    //   deps: [Http]
+    // }),
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      //useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
-      // useFactory: (http: Http) => new TranslateStaticLoader(http, '/app/assets/i18n', '.json'),
-//    TranslateService, { provide: TranslateLoader, useFactory: TranslateLoader, deps: [Http] },
-      useFactory: translateLoader,
-      deps: [Http]
+        loader: {
+            provide: TranslateLoader,
+            useFactory: createTranslateLoader,
+            deps: [HttpClient]
+        }
     }),
     routing
   ],
@@ -293,6 +320,8 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
 //******GENERALES */
     FilterDatesComponent,
     AlertasComponent,
+    HelpComponent,
+    ZohoComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,
@@ -336,6 +365,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     AlmacenesComponent,
 
     TrazabilidadComponent,
+    TrazabilidadAdComponent,
     AlergenosComponent,
 //*******COMUNES     */
     ModalComponent,
@@ -364,6 +394,10 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     AlertasControlesComponent,
     DashrealizadosComponent,
     DashproduccionComponent,
+    DashincidenciasComponent,
+    AdminIncidenciasClienteComponent, 
+    AdminControlesClienteComponent, 
+    AdminLoginsClienteComponent,
 //*******INCIDENCIAS     */
     IncidenciasComponent,
     TablaIncidenciasComponent,
@@ -377,6 +411,7 @@ export function translateLoader(http: Http) { return new TranslateStaticLoader(h
     Servidor,
     PermisosService,
     MessageService,
+    ZohoService,
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
   ],
   

@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { DataTable,Column } from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment';
 
@@ -29,6 +31,10 @@ export class MantenimientosRealizadosComponent implements OnInit {
 @Input() nuevo: number;
 
 public mantenimientos: MantenimientoRealizado[];
+public incidencia:any[];
+public tablaPosition=0;
+public selectedItem: MantenimientoRealizado;
+
 public images: string[];
 public docs: string[];
 public es:any;
@@ -53,7 +59,7 @@ public top = '50px';
 //************** */
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer
-    , public translate: TranslateService, private messageService: MessageService) {}
+    , public translate: TranslateService, private messageService: MessageService,private route: ActivatedRoute) {}
 
 
 
@@ -71,6 +77,7 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        window.scrollTo(0, 0)
   }
   // photoURL(i) {
   //   this.verdoc=!this.verdoc;
@@ -78,11 +85,32 @@ public top = '50px';
   // }
   ngOnChanges(){
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
-    
     this.setMantenimientos();
-
 }
 
+incidenciaSelection(){
+  let params = this.route.paramMap["source"]["_value"];
+      if (params["modulo"] == "mantenimientos_realizados" && params["id"]){
+          let idOrigen =params["id"];
+          let index = this.mantenimientos.findIndex((item)=>item.id==idOrigen);
+        if (index > -1){
+          this.selectedItem = this.mantenimientos[index]
+          this.tablaPosition = index;
+          console.log('***_',index,this.selectedItem)
+        }else{
+          this.setAlerta('incidencia.noencontrada')
+        }
+        }
+}
+seleccion(evento){
+  console.log("SELECCION",evento);
+}
+
+onRowSelect(evento, tabla: DataTable){
+//   console.log('****ROWSELECTED',tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
+//   let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);
+//  this.tablaPosition = index;
+}
 
   setMantenimientos(){
     let params = this.maquina.id;
@@ -91,6 +119,7 @@ public top = '50px';
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {
             this.mantenimientos = [];
+            this.incidencia =[];
             this.images=[];
             this.docs=[];
             if (response.success && response.data) {
@@ -99,13 +128,19 @@ public top = '50px';
                   element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),
                   new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,
                   element.idusuario,element.responsable,element.id,element.tipo_evento,element.idempresa,element.imagen))
+
+                  this.incidencia[element.id]={'origen':'maquinaria','origenasociado':'mantenimientos_realizados','idOrigenasociado':element.idmaquina,'idOrigen':element.id}
+                  
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                 }
+                console.log(this.mantenimientos,this.incidencia)
+                this.incidenciaSelection();
+                this.getIncidencias();
             }
         },
         error=>console.log(error),
-        ()=> console.log("mantenimientos",this.mantenimientos,this.images)
+        ()=> {}
         );
   }
   onEdit(evento){
@@ -272,22 +307,22 @@ uploadFunciones(event:any,idItem: number,field?:string) {
 cerrarFoto(){
   this.verdoc=false;
 }
-// checkBorrar(){}
-//   uploadImg(event, idItem,i) {
-//     console.log(event)
-//     var target = event.target || event.srcElement; //if target isn't there then take srcElement
-//     let files = target.files;
-//     //let files = event.srcElement.files;
-//     let idEmpresa = this.empresasService.seleccionada.toString();
-//     this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'mantenimientos_realizados',idItem, this.empresasService.seleccionada.toString()).subscribe(
-//       response => {
-//         console.log('doc subido correctamente',files[0].name);
-//         this.mantenimientos[i].doc = files[0].name;
-//         this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' +  idItem +'_'+files[0].name;
-//         // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
-//         // activa.logo = '1';
-//       }
-//     )
-//   }
+
+getIncidencias(){
+  let params = this.empresasService.seleccionada;
+  let parametros2 = "&entidad=incidencias"+'&idempresa=' + params+"&field=idOrigenasociado&idItem="+this.maquina.id+"&WHERE=origen=&valor=maquinaria";
+      this.servidor.getObjects(URLS.STD_SUBITEM, parametros2).subscribe(
+        response => {
+          
+          if (response.success && response.data) {
+
+            for (let element of response.data) {  
+              this.incidencia[element.idOrigen]["idIncidencia"]=element.id; 
+              this.incidencia[element.idOrigen]["estado"]=element.estado;                              
+           }
+           
+          }
+      });
+}
 
 }

@@ -1,13 +1,16 @@
 import { Injectable, Component } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
 import 'rxjs/add/operator/map';
+
 import { Router } from '@angular/router';
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 import {EmpresasService} from './empresas.service';
 
-import * as moment from 'moment/moment';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -16,7 +19,7 @@ import * as moment from 'moment/moment';
 // })
 export class Servidor {
 
-  constructor (private llamada: Http, private empresasService: EmpresasService,public router: Router,
+  constructor (private http: HttpClient,private llamada: Http, private empresasService: EmpresasService,public router: Router,
     private messageService: MessageService, public translate: TranslateService) {}
   
   login(url: string, param: string, payload = '') {
@@ -35,6 +38,15 @@ export class Servidor {
     }
   }
 
+  // getObjects2(url: string, param: string) {
+  //   if (this.istokenExpired()){
+  //     this.setAlerta();
+  //   }else{
+  //   let parametros = '?token=' + sessionStorage.getItem('token') + param; 
+  //   return this.http.get(url + parametros)
+  //     //.map((res: Response) => JSON.parse(res.json()));
+  //   }
+  // }
   postObject(url: string, object: Object, param?: string) {
     if (this.istokenExpired()){
       this.setAlerta();
@@ -72,12 +84,12 @@ export class Servidor {
     }
   }
 
-  postLogo(url: string, files: File[], idEmpresa: string) {
+  postLogo(url: string, files: File[], idEmpresa: string, params?:string) {
     if (this.istokenExpired()){
       this.setAlerta();
     }else{
     let formData: FormData = new FormData();
-    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice";
+    let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice"+params;
     formData.append('logo', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));

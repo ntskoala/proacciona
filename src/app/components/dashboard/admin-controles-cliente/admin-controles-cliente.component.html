@@ -1,0 +1,153 @@
+<mat-card class="card" [ngStyle]="{'height':altura}">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>ADMIN {{'Dashboard.controlesT' | translate}}</mat-card-title>
+      <mat-card-subtitle>{{'Dashboard.controlesST' | translate}}</mat-card-subtitle>
+      
+    </mat-card-header>
+    <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
+    <mat-card-content>
+        <mat-accordion>
+        <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)" *ngFor="let empresa of emps">
+            <mat-expansion-panel-header> 
+                  <mat-panel-title >         
+                    {{empresa["nombre"]}}
+            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["controles"].length + empresa["checklists"].length + empresa["limpiezas"].length + empresa["mantenimientos"].length}} </mat-chip></mat-chip-list>
+
+                  </mat-panel-title> 
+                
+                   <!-- <mat-panel-description>
+                    {{'para realizar'|translate}}
+                  </mat-panel-description> -->
+                </mat-expansion-panel-header> 
+
+      <mat-list class="sombraListado">
+        
+
+        <!--********************        CONTROLES        -->
+        <mat-list-item class="itemCabecera">
+            {{'Controles'|translate}}
+            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["controles"].length}}</mat-chip></mat-chip-list>
+          </mat-list-item>
+
+            <!-- <mat-accordion>
+            <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)">
+                <mat-expansion-panel-header> 
+                      <mat-panel-title>
+                        {{'Controles'|translate}}
+                      </mat-panel-title> 
+                       <mat-panel-description>
+                       {{empresa["controles"].length}} {{'Controles'|translate}} {{'para realizar'|translate}}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>  -->
+                    
+        
+           <!-- <mat-list> -->
+            <mat-list-item  *ngFor="let control of empresa['controles']">
+                <span class="elem" [ngClass]="{'onDate':!control.isbeforedate,'beforeOnDate':control.isbeforedate}">             
+              {{control.nombre}} {{control.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+
+                </span>
+            </mat-list-item>
+           <!-- </mat-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-list-item> -->
+        <!--********************        FIN ----CONTROLES        -->
+        <!--********************        CHECKLISTS        -->
+        <mat-list-item class="itemCabecera">
+           {{'Checklists'|translate}} 
+            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["checklists"].length}}</mat-chip></mat-chip-list>
+
+        </mat-list-item>
+            <!-- <mat-accordion>
+            <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)">
+                <mat-expansion-panel-header> 
+                      <mat-panel-title>
+                        {{'Checklists'|translate}}
+                      </mat-panel-title> 
+                       <mat-panel-description>
+                       {{empresa["checklists"].length}} {{'Checklists'|translate}} {{'para realizar'|translate}}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header> 
+                    
+        
+           <mat-list *ngFor="let checklist of empresa['checklists']"> -->
+            <mat-list-item  *ngFor="let checklist of empresa['checklists']">
+                <span class="elem" [ngClass]="{'onDate':!checklist.isbeforedate,'beforeOnDate':checklist.isbeforedate}">             
+              {{checklist.nombre}} {{checklist.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+                </span>
+            </mat-list-item>
+           <!-- </mat-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-list-item> -->
+        <!--********************        FIN ----CHECKLISTS        -->
+        <!--********************        LIMPIEZAS        -->
+        <mat-list-item class="itemCabecera">
+            {{'Limpiezas'|translate}}
+            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["limpiezas"].length}}</mat-chip></mat-chip-list>
+
+        </mat-list-item>
+            <!-- <mat-accordion>
+            <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)">
+                <mat-expansion-panel-header> 
+                      <mat-panel-title>
+                        {{'Limpiezas'|translate}}
+                      </mat-panel-title> 
+                       <mat-panel-description>
+                       {{empresa["limpiezas"].length}} {{'Limpiezas'|translate}} {{'para realizar'|translate}}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header> 
+                    
+        
+           <mat-list> -->
+            <mat-list-item  *ngFor="let limpieza of empresa['limpiezas']">
+                <span class="elem" [ngClass]="{'onDate':!limpieza.isbeforedate,'beforeOnDate':limpieza.isbeforedate}">             
+              {{limpieza.nombre}} {{limpieza.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+                </span>
+            </mat-list-item>
+           <!--  </mat-list>
+               </mat-expansion-panel>
+            </mat-accordion>
+        </mat-list-item> -->
+        <!--********************        FIN ----LIMPIEZAS        -->
+        <!--********************        MANTENIMIENTOS        -->
+        <mat-list-item class="itemCabecera">
+            {{'Mantenimientos'|translate}}
+            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["mantenimientos"].length}}</mat-chip></mat-chip-list>
+
+        </mat-list-item>
+            <!-- <mat-accordion>
+            <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)">
+                <mat-expansion-panel-header> 
+                      <mat-panel-title>
+                        {{'Mantenimientos'|translate}}
+                      </mat-panel-title> 
+                       <mat-panel-description>
+                       {{empresa["mantenimientos"].length}} {{'Mantenimientos'|translate}} {{'para realizar'|translate}}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header> 
+                    
+           <mat-list *ngFor="let mantenimiento of empresa['mantenimientos']"> -->
+            <mat-list-item  *ngFor="let mantenimiento of empresa['mantenimientos']">
+                <span class="elem" [ngClass]="{'onDate':!mantenimiento.isbeforedate,'beforeOnDate':mantenimiento.isbeforedate}">             
+              {{mantenimiento.nombre}} {{mantenimiento.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+                </span>
+            </mat-list-item>
+           <!-- </mat-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-list-item> -->
+        <!--********************        FIN ----MANTENIMIENTOS        -->
+
+
+      </mat-list>
+    </mat-expansion-panel>
+        </mat-accordion>
+      <mat-spinner *ngIf="calculando"></mat-spinner>  
+      <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart> -->
+  
+    </mat-card-content>
+    
+  </mat-card>

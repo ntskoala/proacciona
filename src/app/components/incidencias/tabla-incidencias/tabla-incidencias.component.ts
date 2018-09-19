@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewEncapsulation, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { DataTable, Column } from 'primeng/primeng';
 import { Table } from 'primeng/table';
 import {Calendar} from 'primeng/primeng';
@@ -18,6 +18,7 @@ import { Incidencia } from '../../../models/incidencia';
 import { Modal } from '../../../models/modal';
 import {MatSelect,MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-tabla-incidencias',
@@ -25,8 +26,11 @@ import * as moment from 'moment';
   styleUrls: ['./tabla-incidencias.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TablaIncidenciasComponent implements OnInit {
+export class TablaIncidenciasComponent implements OnInit,OnChanges {
 @Output() incidenciasCargadas: EventEmitter<Incidencia[]> = new EventEmitter<Incidencia[]>();
+@ViewChild('dt') tablaIncidencias: Table;
+@Input() nuevaIncidenciaFromIncidencias: Incidencia;
+@Input() IncidenciaModificadaFromCalendar: Incidencia;
   public modal: Modal = new Modal();
   public procesando:boolean=false;
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
@@ -52,7 +56,7 @@ public verdoc: boolean = false;
 // public url=[];
 public foto:string;
 public top:string;
-
+public modo:string='';
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public sanitizer: DomSanitizer
     , public translate: TranslateService, private messageService: MessageService, public router: Router,
   public route: ActivatedRoute) { }
@@ -67,18 +71,66 @@ public top:string;
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
       firstDayOfWeek: 1
   }; 
+
+  //   this.cols = [
+  //     { field: 'incidencia', header: 'Incidencia' },
+  //     {field: 'fecha', header: 'Fecha' },
+  //     { field: 'solucion', header: 'Solucion' },
+  //     { field: 'responsable', header: 'Responsable' },
+  //     { field: 'nc', header: 'No conformidad' },
+  //     { field: 'foto', header: 'Foto' }
+  // ];
+
     this.cols = [
       { field: 'incidencia', header: 'Incidencia' },
       {field: 'fecha', header: 'Fecha' },
-      { field: 'solucion', header: 'Solucion' },
+      { field: 'descripcion', header: 'Descripción' },
+      { field: 'solucion', header: 'Solución' },
       { field: 'responsable', header: 'Responsable' },
-      { field: 'nc', header: 'No conformidad' },
-      { field: 'foto', header: 'Foto' }
+      { field: 'estado', header: 'Estado' },
+      { field: 'origen', header: 'Origen' },
+      { field: 'responsable_cierre', header: 'Responsable cierre' },
+      { field: 'fecha_cierre', header: 'Fecha cierre' }
   ];
-  this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
+  this.translate.get(['incidencia.estado-1','incidencia.estado0','incidencia.estado1','incidencia.estado2']).subscribe((respuesta)=>{
+    console.log(respuesta);
+    this.estados = [{'nombre':respuesta['incidencia.estado-1'],'valor':-1},{'nombre':respuesta['incidencia.estado0'],'valor':0},{'nombre':respuesta['incidencia.estado1'],'valor':1},{'nombre':respuesta['incidencia.estado2'],'valor':2}]
+    window.scrollTo(0, 0)
+  })
+  // this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
+  // window.scrollTo(0, 0)
+}
+test(item: Incidencia){
+
 
 }
-
+  ngOnChanges(){
+    if (this.selectedItem) this.selectedItem = null;
+    console.log('nueva:',this.nuevaIncidenciaFromIncidencias,'modificada:',this.IncidenciaModificadaFromCalendar);
+    if (this.nuevaIncidenciaFromIncidencias){
+      
+    this.incidencias.push(this.nuevaIncidenciaFromIncidencias)
+    this.incidencias = this.incidencias.slice();
+    let index = this.incidencias.findIndex((incidencia)=>incidencia.id==this.nuevaIncidenciaFromIncidencias.id);
+    this.incidencias[index].responsable_cierre =this.nuevaIncidenciaFromIncidencias.responsable_cierre;
+    this.incidencias[index].responsable =this.nuevaIncidenciaFromIncidencias.responsable.toString();
+    this.incidencias[index].estado =this.nuevaIncidenciaFromIncidencias.estado.toString();
+    this.nuevaIncidenciaFromIncidencias = null;
+    this.incidencias = this.incidencias.slice();
+    this.selectedItem = this.incidencias[index];
+    }
+    if (this.IncidenciaModificadaFromCalendar){
+    // let indice = this.incidencias.findIndex((item)=>item.id==this.IncidenciaModificadaFromCalendar.id);
+    //   this.incidencias[indice]=this.IncidenciaModificadaFromCalendar;     
+    console.log(this.IncidenciaModificadaFromCalendar)
+      let index = this.incidencias.findIndex((incidencia)=>incidencia.id==this.IncidenciaModificadaFromCalendar.id);
+      this.incidencias[index].responsable_cierre =this.IncidenciaModificadaFromCalendar.responsable_cierre;
+      this.incidencias[index].responsable =this.IncidenciaModificadaFromCalendar.responsable;
+      this.incidencias[index].estado =this.IncidenciaModificadaFromCalendar.estado.toString();
+      this.IncidenciaModificadaFromCalendar = null;
+      this.incidencias = this.incidencias.slice();
+    }
+  }
   loadSupervisores(){
     let params = this.empresasService.seleccionada;
     let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
@@ -108,22 +160,17 @@ public top:string;
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.incidencias = [];
-            //this.url=[];
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                let fecha_Valoracion;
-                if (moment(element.fecha_valoracion).isValid()){
-                  fecha_Valoracion = moment(new Date(element.fecha_valoracion)).utc().toDate();
-                }else{
-                  fecha_Valoracion = null;
-                }
+                let fecha:Date;
+                let fechaCierre:Date;
+                if (moment(element.fecha).isValid()) fecha = moment(new Date(element.fecha)).utc().toDate();              
+                if (moment(element.fecha_cierre).isValid()) fechaCierre = moment(new Date(element.fecha_cierre)).utc().toDate();
                 this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,element.responsable,
-                  moment(new Date(element.fecha)).utc().toDate(),element.responsable_cierre,
-                  moment(new Date(element.fecha_cierre)).utc().toDate(),element.solucion,
+                  fecha,element.responsable_cierre,
+                  fechaCierre,element.solucion,
                   element.nc,element.origen,element.idOrigen,element.origenasociado,element.idOrigenasociado,element.foto,
                   element.descripcion,element.estado));
-                // this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/incidencias/' + element.id +'_'+element.foto);
-
               }
               this.incidenciasCargadas.emit(this.incidencias);
               this.incidenciaSelection();
@@ -135,30 +182,34 @@ public top:string;
               }
         );
    }
-   incidenciaSelection(){
-console.log('Seleccion***');
-    let x=0;
-    this.route.paramMap.forEach((param)=>{
-      x++;
-      console.log(param["params"]["modulo"],param["params"]["id"]);
-        if (param["params"]["modulo"] == "incidencias"){
-          if (param["params"]["id"]){
-            let idOrigen = param["params"]["id"];
+
+  incidenciaSelection(){
+    let params = this.route.paramMap["source"]["_value"];
+        if (params["modulo"] == "incidencias" && params["id"]){
+            let idOrigen =params["id"];
             let index = this.incidencias.findIndex((item)=>item.id==idOrigen);
-            console.log(index);
             this.selectedItem = this.incidencias[index]
-            this.tablaPosition = index;
+            console.log('***_',index,this.selectedItem,idOrigen)
           }
-        }
-      });
   }
-  
+
+
+
+  onRowSelect(evento, tabla: Table){
+    console.log('****ROWSELECTED',evento,this.selectedItem)
+    if (this.selectedItem){
+    console.log('****ROWSELECTED',evento,tabla.value.findIndex((item)=>item.id==this.selectedItem.id))
+    let index =tabla.value.findIndex((item)=>item.id==this.selectedItem.id);
+   this.tablaPosition = index;
+    }
+  }
+
    changeItem(event,idItem:number,fuente:string){
 console.log(event);
-    if (fuente == 'responsable'){
-      let index = this.incidencias.findIndex((incidencia)=>incidencia.id==idItem);
-      if (this.incidencias[index].responsable_cierre == 0) this.incidencias[index].responsable_cierre = event.value;
-    }
+    // if (fuente == 'responsable'){
+    //   let index = this.incidencias.findIndex((incidencia)=>incidencia.id==idItem);
+    //   if (this.incidencias[index].responsable_cierre == 0 || isNullOrUndefined(this.incidencias[index].responsable_cierre)) this.incidencias[index].responsable_cierre = event.value;
+    // }
     this.itemEdited(idItem);
    }
 
@@ -286,20 +337,34 @@ setAlerta(concept:string){
 
 
   exportData(tabla: Table){
-    console.log(tabla.value);
+    console.log(tabla);
+    
+    this.modo="export";
     let origin_Value = tabla.value;
-//  tab._value.
     let mitabla: Table = tabla;
-    //tabla._value = tabla.da
+    //  let mitabla = new Table(tabla.el,tabla.domHandler,tabla.objectUtils,tabla.zone,tabla.tableService);
+    //  mitabla.value = origin_Value;
+    //  mitabla.columns = tabla.columns;
     mitabla.value.map((incidencia)=>{
-        (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).format("DD/MM/YYYY hh:mm"):'';
+        // (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).format("DD/MM/YYYY hh:mm"):'';
+        // (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).format("DD/MM/YYYY hh:mm"):'';
+        (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).toJSON():'';
+        (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).toJSON():'';
+        let indice_responsable = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable);
+        if (indice_responsable > -1)  incidencia.responsable = this.usuarios[indice_responsable].usuario;
+        let indice_responsable_cierre = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable_cierre);
+        if (indice_responsable_cierre > -1) incidencia.responsable_cierre = this.usuarios[indice_responsable_cierre].usuario;
+        if (parseInt(incidencia.estado)>=-1)  incidencia.estado=this.estados[this.estados.findIndex((estado)=>parseInt(estado.valor)==incidencia.estado)]["nombre"]
         });
-  
+
     mitabla.csvSeparator = ";";
     mitabla.exportFilename = "Incidencias";
     mitabla.exportCSV();
   tabla.value = origin_Value;
+  tabla._value = origin_Value;
    // tabla.value = origin_Value;
+   this.modo="normal";
+   this.loadSupervisores();
   }
 
   okDate(cal:Calendar){
@@ -373,13 +438,15 @@ setAlerta(concept:string){
 
   gotoOrigen(item){
     console.log('goto Origen',item);
-    let url = 'empresas/limpieza_realizada/'+item.idOrigenasociado+'/'+item.idOrigen
-    let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ item.origenasociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
+    //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
-    //this.router.navigate([url]);
-    this.router.navigateByUrl(url).catch(
-      (error)=>{console.log('ERROR:',error)}
-    )
+    this.router.navigate([url]);
+    // this.router.navigateByUrl(url).then(
+    //   (ok)=>{console.log('ok',ok)}
+    // ).catch(
+    //   (error)=>{console.log('ERROR:',error)}
+    // )
   }
 
   getColor(estado){
@@ -387,7 +454,7 @@ setAlerta(concept:string){
       case "-1":
       return '#673ab7';
       case "0":
-      return 'green';
+      return '#cccccc';
       case "1":
       return 'red';
       case "2":

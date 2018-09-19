@@ -1,0 +1,12 @@
+<p>
+  zoho works!VERSION {{version}}
+</p>
+
+
+<!-- <button type="button" mat-raised-button (click)="zohoAuthgetToken('')">{{'zoho Token' | translate}}</button> -->
+<button type="button" mat-raised-button (click)="zohoAuth(3)">{{'getCode' | translate}}</button>
+<button type="button" mat-raised-button (click)="zohoAuthgetToken()">{{'getTokent' | translate}}</button>
+<button type="button" mat-raised-button (click)="zohoRefereshToken()">{{'Referesh Tokent' | translate}}</button>
+<button type="button" mat-raised-button (click)="testZoho('https://desk.zoho.eu/api/v1/organizations')">{{'zoho Test EU' | translate}}</button>
+<button type="button" mat-raised-button (click)="getTickets()">{{'zoho Get Tickets' | translate}}</button>
+<button type="button" mat-raised-button (click)="postTicket()">{{'zoho Crea Tickets' | translate}}</button>

@@ -39,9 +39,9 @@
 <div *ngIf="alertas[0]">
         {{'alertas.nota' | translate}}<BR>
 {{'alertas.enviar' | translate}}
-      <mat-input-container class="example-margin">
+      <mat-form-field class="example-margin">
         <input matInput type="number" maxlength="5" style="width:40px" size="5" max="100"  [(ngModel)]="alertas[0].tiempo_alerta">
-      </mat-input-container>
+      </mat-form-field>
 
 {{'alertas.diasantes' | translate}}
 

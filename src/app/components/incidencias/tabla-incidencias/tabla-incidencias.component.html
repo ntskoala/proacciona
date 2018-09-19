@@ -51,11 +51,12 @@
       </span>
     </form>
     <div style="height: 15px" ></div>
-  </div>
+  </div>   
   </span> -->
   
   <p-table #dt [columns]="cols" [value]="incidencias" (onEdit)="onEdit($event)" [csvSeparator]="';'" [exportFilename]="'Incidencias'"
-      dataKey="incidencia" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem"
+      dataKey="incidencia" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem" 
+      (onSort)="onRowSelect($event,dt)" sortField="fecha" [sortOrder]="-1" 
       [paginator]="true" [rows]="10" [first]="tablaPosition" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
   
       <ng-template pTemplate="caption">
@@ -78,14 +79,16 @@
               <th style="width: 2.25em"></th>
               <th style="width:100px" class="header-cell">{{"incidencia.incidencia" | translate}}</th>
               <th style="width:120px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>              
-              <th style="width:150px" class="header-cell">{{"incidencia.fecha" | translate}}</th>
+              <th style="width:150px" class="header-cell" [pSortableColumn]="fecha">{{"incidencia.fecha" | translate}}
+                    <p-sortIcon [field]="fecha"></p-sortIcon>
+              </th>
               <th style="width:120px" class="medium header-cell">{{"incidencia.r_cierre" | translate}}</th>
               <th style="width:150px" class="header-cell">{{"incidencia.fecha_cierre" | translate}}</th>              
               <!-- <th style="width:180px" class="medium header-cell">{{"incidencia.nc" | translate}}</th> -->
               <th style="width:120px" class="medium header-cell">{{"incidencia.estado" | translate}}</th>            
               <th style="width:100px" class="medium header-cell">{{"incidencia.origen" | translate}}</th>
               <!-- <th style="width:100px" class="medium header-cell">{{"foto" | translate}}</th> -->
-              <th style="width:130px" class="medium header-cell">{{"acciones" | translate}}</th>
+              <th style="width:140px; min-width: 140px" class="medium header-cell">{{"acciones" | translate}}</th>
           </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item let-i="rowIndex" let-columns="columns" let-expanded="expanded">
@@ -128,7 +131,7 @@
                           </p-calendar>
                       </ng-template>
                       <ng-template pTemplate="output">
-                          {{item.fecha | date:"dd-MM-yyyy hh:mm"}}
+                          <span *ngIf="modo!='export'">{{item.fecha | date:"dd-MM-yyyy hh:mm"}}</span>
                       </ng-template>
                   </p-cellEditor>
               </td>
@@ -155,8 +158,8 @@
                             </ng-template>
                         </p-calendar>
                     </ng-template>
-                    <ng-template pTemplate="output">
-                        {{item.fecha_cierre | date:"dd-MM-yyyy hh:mm"}}
+                    <ng-template pTemplate="output" *ngIf="modo!='export'">
+                        <span *ngIf="modo!='export'">{{item.fecha_cierre | date:"dd-MM-yyyy hh:mm"}}</span>
                     </ng-template>
                 </p-cellEditor>
             </td>
@@ -173,7 +176,7 @@
               </td> -->
               <td pEditableColumn>
                     <mat-form-field style="width:100px;">
-                            <mat-select style="width:100px;" [ngStyle]="{'border-style':'solid','border-color':getColor(item.estado)}" placeholder="Estado" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
+                            <mat-select style="width:100px;" [ngStyle]="{'border-style':'solid','border-color':getColor(item.estado)}" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
                               <mat-option  *ngFor="let estado of estados" value="{{estado.valor}}">
                                 {{ estado.nombre }}
                               </mat-option>
@@ -186,7 +189,7 @@
                               <input type="text" [(ngModel)]="item.origen">
                           </ng-template>
                           <ng-template pTemplate="output">
-                              {{item.origen}}
+                              {{'incidencia.'+item.origen | translate}}
                           </ng-template>
                       </p-cellEditor>
                   </td>
@@ -221,7 +224,7 @@
                       </button>
                   </span>
                   <span #saveTT="matTooltip" class="cell tooltip" matTooltip="{{'incidencia.Goto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
-                      [matTooltipPosition]="'right'">
+                      [matTooltipPosition]="'right'" (click)="test(item)">
                       <!-- <a [routerLink]="['/empresas','limpieza_realizada',item.idOrigenasociado,item.idOrigen]"> -->
                       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="item.idOrigen==0"
                           type="button" (click)="gotoOrigen(item)">

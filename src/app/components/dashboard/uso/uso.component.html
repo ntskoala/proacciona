@@ -1,19 +1,40 @@
 
 
-        <mat-card class="card">
+        <mat-card class="card"  [ngStyle]="{'height':altura}">
                 <mat-card-header>
-                  <div mat-card-avatar class="example-header-image"></div>
-                  <mat-card-title>Uso</mat-card-title>
-                  <mat-card-subtitle>Uso de la aplicación en los últimos dias</mat-card-subtitle>
+                  <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                  <mat-card-title>{{'Dashboard.logginsT' | translate}}</mat-card-title>
+                  <mat-card-subtitle>{{'Dashboard.logginsST' | translate}}</mat-card-subtitle>
                 </mat-card-header>
                 <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
                 <mat-card-content>
+
                                 <mat-spinner *ngIf="calculando"></mat-spinner>  
-                <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart>
+
+                <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart> -->
+                <mat-expansion-panel  (closed)="closePanel(i)" (opened)="openPanel(i)"  *ngFor="let usuario of usuarios; let i = index">
+                    <mat-expansion-panel-header> 
+                          <mat-panel-title>
+                            {{usuario.usuario}}
+                          </mat-panel-title> 
+                           <!-- <mat-panel-description>
+                              {{usuario.usuario}}
+                          </mat-panel-description> -->
+                        </mat-expansion-panel-header> 
+                        <mat-list >
+                          <span *ngFor="let log of logs">
+                            <mat-list-item  *ngIf="log['idusuario']==usuario.id">
+                                <span class="elem" >{{log['total']}} {{"Dashboard.tablas."+log['tabla'] | translate}} {{"Dashboard.acciones."+log['accion']  | translate}} desde {{log['plataforma'] }}</span>
+                            </mat-list-item>
+                          </span>
+                           </mat-list>
+                  </mat-expansion-panel>
+
           </mat-card-content>
           <mat-card-actions>
-            <button mat-button (click)="loadLogs(7)">7 días</button>
-            <button mat-button (click)="loadLogs(14)">14 días</button>
+            <button  [ngClass]="{'selected2':dias==7}" mat-button (click)="loadLogs(7)">7 {{'dias' | translate}}</button>
+            <button  [ngClass]="{'selected2':dias==14}" mat-button (click)="loadLogs(14)">14 {{'dias' | translate}}</button>
+            <button  [ngClass]="{'selected2':dias==30}" mat-button (click)="loadLogs(30)">30 {{'dias' | translate}}</button>
           </mat-card-actions>
         </mat-card>
 

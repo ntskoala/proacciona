@@ -34,6 +34,9 @@
   "Tablas":"Configuració",
   "Usuarios":"Usuaris",
   "Controles":"Controls",
+  "Checklists":"Checklists",
+  "Limpiezas":"Neteges",
+  "Mantenimientos":"Manteniments",
   "Opciones":"Opcions premium",
   "Opciones2":"Opcions",
   "Modulos":"Mòduls actius",
@@ -59,6 +62,8 @@
   "borrarPlanST":"S'esborraran els resultats associats.",
   "borrarT":"Estàs segur de voler eliminar el registre seleccionat?",
   "borrarST":"S'esborraran les dades associades.",
+  "borrarIncidenciaT":"Eliminar incidència",
+  "borrarIncidenciaST":"S'esborrara la incidència, ¿confirmar? ",
   "Supervisores":"Supervisors",
   "Supervisor":"Supervisor",
   "PermisosSupervisores":"Permisos supervisors",
@@ -98,6 +103,7 @@
   "bienvenido":"Benvingut a TFC PROACCIONA",
   "introducirtexto":"Introduïr text",
   "expandir":"Expandir",
+  "Retrasado":"Retardart",
   "menu":{
     "login":"Tanca sessió",
     "empresas":"Selecctor d'empresa",
@@ -110,7 +116,8 @@
     "produccion":"Mòdul producció",
     "personal":"Mòdul personal",
     "planificaciones":"Mòdul planificacions",
-    "incidencias":"Mòdul incidències"
+    "incidencias":"Mòdul incidències",
+    "dashboard":"Dashboard"
   },
   "configuracion":{
     "nuevoUsuario":"Nou usuari",
@@ -129,7 +136,8 @@
     "Modulo Clientes":"Mòdul clients",
     "Modulo Producción":"Mòdul producció",
     "Traspasos":"Mòdul traspassos",
-    "Personal":"Mòdul personal"
+    "Personal":"Mòdul personal",
+    "Modulo Incidencias":"Mòdul incidències"
   },
   "maquinas": {
     "CalendarioGeneralMantenimiento":"Calendari general manteniment",
@@ -351,7 +359,9 @@
     "origen":"Origen",
     "fecha orden":"Data ordre",
     "proveedor":"Proveïdor",
-    "remanente_origen": "Quantitat romanent al origen"
+    "remanente_origen": "Quantitat romanent al origen",
+    "trazaAtras":"Traçabilitat enrera",
+    "trazaAdelante":"Traçabilitat endevant"
   },
   "clientes":{
     "crear":"Crear",
@@ -457,6 +467,7 @@
       "nohaymail":"No té email",
       "guardar":"S'ha modificat un registre, es necessari polsar el botó <span class='material-icons'>check</span> per desar els canvis",
       "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desar' per confirmar els canvis",
+      "borrar":"S'ha esborrat el registre",
       "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
       "showAlerts":"Mostrar alertes",
@@ -468,11 +479,13 @@
     },
     "incidencia":
     {
-      "nueva":"Nova incidència",
+      "listadoincidencia":"Llistat incidències",
+      "calendario":" Calendari incidències",
+      "nueva":"Obrir nova incidència",
       "incidencia":"Incidència",
       "fecha":"Data",
       "solucion":"Solució inmediata",
-      "responsable":"Resp. apertura",
+      "responsable":"Oberta per",
       "r_seguimiento":"Responsable seguiment",
       "r_cierre":"Responsable tancament",
       "fecha_cierre":"Data tancament",
@@ -482,12 +495,13 @@
         "1":"No Conforme",
         "2":"Resolt"
       },
-      "null":"Nova incidència",
+      "null":"Obrir nova incidència",
       "-1":"Anar a la incidència sense estat definit",
       "0":"Anar a la incidència amb estat 'No aplica'",
       "1":"Anar a la incidència oberta",
       "2":"Anar a la incidència tancada",
       "Goto":"Anar a l'element origen de la incidència",
+      "estado-1":"Sense definir",
       "estado0":"No aplica",
       "estado1":"Obert",
       "estado2":"Tancat",
@@ -496,6 +510,44 @@
       "acciones":"Accions",
       "estado":"Estat",
       "fecha_termini":"Data termini",
+      "descripcion":"Descripció",
+      "noencontrada":" No s'ha trobat la incidéncia seleccionada",
+      "Controles":"Controls",
+      "Checklists":"Checklists",
+      "Mantenimientos":"Manteniment",
+      "Limpiezas":"Neteges",
+      "Incidencias":"Incidències"
+    },
+    "Dashboard":{
+      "incidenciasT":"INCIDÈNCIES",
+      "incidenciasST":"Darreres incidèncias",
+      "controlesHoyT":"REGISTRES",
+      "controlesHoyST":"Registres pendents a dia d'avui",
+      "controlesRealizadosT":"REGISTRES REALITZATS",
+      "controlesRealizadosST":"Registres realizats els darrers díes",
+      "logginsT":"ACCESSOS",
+      "logginsST":"Accessos y accions per usuari",
+      "tablas":{
+        "limpieza_realizada":"neteges",
+        "incidencias":"incidencies",
+        "ResultadosControl":"controls",
+        "resultadoschecklist":"checklists",
+        "mantenimientos_realizados":"mantenimients",
+        "login": "conexions"
+      },
+      "acciones":{
+        "PUT":"actualitzats",
+        "POST":"afegits",
+        "login": ""
+      }
+    },
+    "ticket":{
+      "help":"Ticket de suport",
+      "subject":"Assumpte",
+      "prioridad":"Prioritat",
+      "baja":"baixa",
+      "standard":"standard",
+      "urgente":"urgent",
       "descripcion":"Descripció"
     },
   "alergenos":"Al·lergògens",

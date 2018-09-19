@@ -4,13 +4,13 @@
   </div>
 </modal> -->
 
-  <div style="position:absolute; left:0px; top:40px; min-width: 1000px">
+  <div style="position:absolute; left:0px; top:40px; min-width: 1100px">
 
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
 [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50]"
-[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1000px'}"
- [sortOrder]="0">
+[csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1100px'}"
+ [sortOrder]="0" [(selection)]="selectedItem"  [(first)]="tablaPosition">
     <p-header>
         <div class="ui-helper-clearfix">
             <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">                              
@@ -80,10 +80,10 @@
    <!--//************--> 
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.descripcion' | translate}}">
-                   <!-- <mat-input-container class="full-width textareacontainer">
+                   <!-- <mat-form-field class="full-width textareacontainer">
       <textarea matInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important" placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
                      
-      </mat-input-container>  -->
+      </mat-form-field>  -->
     <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
     
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
@@ -92,9 +92,9 @@
     </span>
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.detalles_supervision' | translate}}">
-                   <!-- <mat-input-container class="full-width textareacontainer">
+                   <!-- <mat-form-field class="full-width textareacontainer">
       <textarea matInput mdTextareaAutosize="false" rows="8" cols="54" style="background-color:#fff; height:170px !important"  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
-    </mat-input-container> -->
+    </mat-form-field> -->
     <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
       <!-- <input [readonly]="true" type="text" [(ngModel)]="item.descripcion" name="nombre" (keyup)="itemEdited(item.id)"> -->
     <!-- <textarea pInputTextarea rows="7" cols="50" autoResize="autoresize" [(ngModel)]="item.descripcion"></textarea>        -->
@@ -134,7 +134,7 @@
 
    <!--//************-->
   </ng-template>
-  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'100px'}">
+  <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'150px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
                <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
       <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
@@ -147,6 +147,10 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
+
+    <app-boton-incidencia class="incidenciaItem" id="botonIncidencia" [origen]="incidencia[item.id]"></app-boton-incidencia>
+
+
 </ng-template>  
   </p-column>  
 </p-dataTable>

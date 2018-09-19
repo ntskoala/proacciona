@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 
 import {MessageService} from 'primeng/components/common/messageservice';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { DataTable, Column } from 'primeng/primeng';
 import { Table } from 'primeng/table';
 import {Calendar} from 'primeng/primeng';
@@ -35,6 +35,8 @@ public myTop;
 public myLeft;
 public ayuda;
 public incidencias: Incidencia[];
+public nuevaIncidenciaFromIncidencias: Incidencia;
+public IncidenciaModificada: Incidencia;
 // public limpieza: LimpiezaZona;
 // public elementosLimpieza: LimpiezaElemento[];
 // public misProdusctosLimpieza: LimpiezaProducto[];
@@ -72,8 +74,8 @@ public subMenu:string=null;
 
     this.snCalendar.toggle().then(
     (valor)=>{
-      console.log ('$$$$',valor.type,this.subMenu, opcion)
-      if (valor.type=="open")
+      console.log ('$$$$',valor,this.subMenu, opcion)
+      if (valor=="open")
         {
           console.log ('abriendo.-..')
         this.closeSideNav().then(
@@ -96,7 +98,7 @@ public subMenu:string=null;
           });
         }
         
-       if (valor.type=="close"){
+       if (valor=="close"){
           console.log ('cerrando.-..')
           //console.log ('$$$',this.subMenu, opcion)
           this.closeSideNav().then(
@@ -145,9 +147,16 @@ public subMenu:string=null;
   }
   nuevaIncidenciaCreada(evento){
     console.log(evento);
+    this.nuevaIncidenciaFromIncidencias = evento;
+
   }
   cargaIncidencias(incidencias: Incidencia[]){
     this.incidencias= incidencias;
 
+  }
+
+  actualizarIncidenciaFromCalendar(evento){
+    console.log('incidencia Actualizada',evento)//evento = incidencia guardada
+    this.IncidenciaModificada = evento;
   }
 }

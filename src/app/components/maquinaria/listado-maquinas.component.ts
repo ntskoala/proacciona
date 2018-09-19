@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -15,11 +15,12 @@ import {MatSelect} from '@angular/material';
   templateUrl: './listado-maquinas.component.html',
   styleUrls:['./listado-maquinas.css']
 })
-export class ListadoMaquinasComponent implements OnInit {
+export class ListadoMaquinasComponent implements OnInit, OnChanges {
   //@ViewChild('choicer') Choicer: ElementRef;
   @ViewChild('choicer') Choicer: MatSelect;
   @Output() maquinaSeleccionada: EventEmitter<Maquina>=new EventEmitter<Maquina>();
   @Output() listaMaquinas: EventEmitter<Maquina[]>=new EventEmitter<Maquina[]>();
+  @Input() idSelected: number;
   public subscription: Subscription;
   maquinaActiva: number = 0;
   public myItem: number = null;
@@ -35,6 +36,15 @@ ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadMaquinas(this.empresasService.seleccionada.toString());
 
+}
+
+ngOnChanges(){
+  if (this.idSelected >0){
+    this.unExpand();
+    this.Choicer.disabled = true;
+  }else{
+    if (this.empresasService.seleccionada) this.loadMaquinas(this.empresasService.seleccionada.toString());
+  }
 }
 
      loadMaquinas(emp: Empresa | string) {

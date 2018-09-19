@@ -35,6 +35,7 @@ export const URLS = {
   STD_SUBITEM: base + 'std_subitem.php',
   DASHCONTROLES: base + 'dashControles.php',
   ALERTES: base + 'alertes.php',
+  GETDASHBOARDADMIN: base + 'views/getDashboardAdmin.php',
   //***********ZOHO API    */
   GET_ZOHO_TOKEN: base + 'zoho.php',
   SET_ZOHO_TICKET: base + 'zoho2.php',

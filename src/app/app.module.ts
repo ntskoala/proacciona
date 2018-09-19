@@ -183,6 +183,7 @@ import {
     MatTooltipModule,
     MatSortModule,
     MatPaginatorModule,
+    MatBadgeModule,
     MAT_DATE_LOCALE
   } from '@angular/material';
 import { NcSelectComponent } from './components/incidencias/nc-select/nc-select.component';
@@ -193,6 +194,9 @@ import { TrazabilidadAdComponent } from './components/trazabilidad-ad/trazabilid
 import { DashincidenciasComponent } from './components/dashboard/dashincidencias/dashincidencias.component';
 import { HelpComponent } from './components/help/help.component';
 import { ZohoComponent } from './components/zoho/zoho.component';
+import { AdminIncidenciasClienteComponent } from './components/dashboard/admin-incidencias-cliente/admin-incidencias-cliente.component';
+import { AdminControlesClienteComponent } from './components/dashboard/admin-controles-cliente/admin-controles-cliente.component';
+import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins-cliente/admin-logins-cliente.component';
 
 @NgModule({
     exports: [
@@ -228,7 +232,8 @@ import { ZohoComponent } from './components/zoho/zoho.component';
       MatTooltipModule,
       MatNativeDateModule,
       MatSortModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      MatBadgeModule
     ],
     declarations: []
   })
@@ -390,6 +395,9 @@ export function createTranslateLoader(http: HttpClient) {
     DashrealizadosComponent,
     DashproduccionComponent,
     DashincidenciasComponent,
+    AdminIncidenciasClienteComponent, 
+    AdminControlesClienteComponent, 
+    AdminLoginsClienteComponent,
 //*******INCIDENCIAS     */
     IncidenciasComponent,
     TablaIncidenciasComponent,

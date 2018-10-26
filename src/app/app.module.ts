@@ -156,6 +156,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {MatIconModule } from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -170,7 +171,7 @@ import {
     MatListModule,
     MatMenuModule,
     MatNativeDateModule,
-    MatProgressBarModule,
+   // MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatRippleModule,
@@ -197,7 +198,9 @@ import { ZohoComponent } from './components/zoho/zoho.component';
 import { AdminIncidenciasClienteComponent } from './components/dashboard/admin-incidencias-cliente/admin-incidencias-cliente.component';
 import { AdminControlesClienteComponent } from './components/dashboard/admin-controles-cliente/admin-controles-cliente.component';
 import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins-cliente/admin-logins-cliente.component';
-import { InformesExcelComponent } from './components/informes-excel/informes-excel.component';
+
+import { DownloadInformeComponent } from './components/informes/download-informe/download-informe.component';
+
 
 @NgModule({
     exports: [
@@ -323,6 +326,7 @@ export function createTranslateLoader(http: HttpClient) {
     AlertasComponent,
     HelpComponent,
     ZohoComponent,
+    DownloadInformeComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,
@@ -389,7 +393,6 @@ export function createTranslateLoader(http: HttpClient) {
     ProtocolosComponent,
     ProtocolosCuadroComponent,
     ComponentsComponent,
-    InformesExcelComponent,
 //*******DASHBOARDS     */
     DashboardComponent,
     UsoComponent,

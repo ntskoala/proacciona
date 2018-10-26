@@ -9,10 +9,8 @@ import { EmpresasComponent } from '../empresas.component';
 import { URLS } from '../../models/urls';
 import { ResultadoControl } from '../../models/resultadocontrol';
 import * as moment from 'moment';
-import * as XLSX from 'xlsx';
-import * as Chart from 'chart.js';
-import {SelectItem, DataTable} from 'primeng/primeng';
-import { HttpClientXsrfModule } from '@angular/common/http';
+import {SelectItem} from 'primeng/primeng';
+//import { Promise } from 'q';
 
 @Component({
   selector: 'app-informes-control',
@@ -35,13 +33,17 @@ export class InformesControlComponent implements OnInit {
   public modal: boolean = false;
   public fotoSrc: string;
   public exportar_informes: boolean =false;
+  public exportando:boolean=false;
+  public informeData:any;
   public es;
   public brands: string[]=['>','<','='];
+
+
   constructor(public servidor: Servidor, public empresasService: EmpresasService, 
     public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.newChart();
+    //this.newChart();
     // Conseguir controles
     console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"]);
     this.getControles();
@@ -206,77 +208,71 @@ var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     var a = document.createElement("a");
     a.setAttribute('style', 'display:none;');
     document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url= window.URL.createObjectURL(blob);
-    //window.open(url,'_blank');
-    a.href = url;
+   // var blob = new Blob([csvData], { type: 'text/csv' });
+   // var url= window.URL.createObjectURL(blob);
+//    a.href = url;
     
     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
     a.click();
 }
-excel(fecha,dt: DataTable){
-  
-  /* generate worksheet */
-// let ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.tabla2);
-let ws2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.tabla);
-// let ws2: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table, {raw:true});
-
-
-/* Find desired cell */
-var celda: XLSX.CellAddress = ws2['A1'];
-
-/* Get the value */
-
-// let celda: XLSX.CellAddress;
-let formatCelda:  XLSX.CellObject = {t:'s'};
-
-formatCelda.v = 'columna1';
-formatCelda.t='s'
-// formatCelda.s={ alignment: {textRotation: 90 },font: {sz: 14, bold: true, color:' #0000FF',name:'verdana' },fill:{bgColor: {rgb:'#FF0000' }}};
-XLSX.utils.cell_set_hyperlink(formatCelda,'https://tfc.proacciona.es');
-XLSX.utils.cell_add_comment(formatCelda,'Prueba','Proacciona');
-XLSX.utils.format_cell(formatCelda,{ alignment: {textRotation: 90 },font: {sz: 14, bold: true, color:' #0000FF',name:'verdana' },fill:{patternType:'solid',bgColor: {rgb:'#FF0000' }}});
-
-ws2['A1'] = formatCelda;
-
-
-/* generate workbook and add the worksheet */
-const wb: XLSX.WorkBook = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws2, 'Controles');
-/* save to file */
-XLSX.writeFile(wb, 'Informe_Controles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.xlsx');
+logTabla(){
+console.log(this.tabla);
 }
-gapps(){
-// let url = "https://docs.google.com/spreadsheets/d/1S_xFw1p0AdfN2mX9Z6BcmHXZCV96fphT9dkRK6L9hNg/edit?usp=sharing&data=hola"
-// window.open(url,'_blank');
-}
+
+async downloads(){
+    let informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+     let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada+"&informes=controles";
+    let params = {'tabla':this.tabla};
+  }
+
+  async excel2(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+  }
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
 
 ConvertToCSV(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+console.log(cabecera,array)
+let informeCabecera=[];
+let informeRows=[];
             var str = '';
             var row = "";
             row += "Usuario;Fecha;"
             for (var i = 0; i < cabecera.length; i++) {
-              row += cabecera[i] + ';';
+              row += cabecera[i]["header"] + ';';
             }
             row = row.slice(0, -1);
             //append Label row with line break
-            str += row + '\r\n';
- 
+            //str += row + '\r\n';
+            informeCabecera = row.split(";");
+            str='';
             for (var i = 0; i < array.length; i++) {
                 
                 var line =array[i].usuario+";"+array[i].fecha + ";";
 
               for (var x = 0; x < cabecera.length; x++) {
-                let columna = cabecera[x];
-                let resultado = array[i][cabecera[x]];
-              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+                let columna = cabecera[x]["header"];
+                //let resultado = array[i][cabecera[x]];
+                let resultado = array[i]["nombre"];
+              //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+              line += ((columna == resultado && array[i]["valor"] !== undefined) ?array[i]["valor"] + ';':';');
             }
             line = line.slice(0,-1);
-                str += line + '\r\n';
+                //str += line + '\r\n';
+                informeRows.push(line.split(";"))
             }
-            return str;
+            //return str;
+            return {'cabecera':[informeCabecera],'rows':informeRows,'informes':'Controles'};
 }
 
 formatFecha(fecha: Date):string{
@@ -302,40 +298,40 @@ gotoIncidencia(evento){
 
 }
 
-newChart(){
-  let canvas = document.createElement("canvas")
-  canvas.style.visibility = 'hidden';
-  document.body.appendChild(canvas);
-  let ctx = canvas.getContext("2d");
+// newChart(){
+//   let canvas = document.createElement("canvas")
+//   canvas.style.visibility = 'hidden';
+//   document.body.appendChild(canvas);
+//   let ctx = canvas.getContext("2d");
 
-  let options = {
-    title: {
-        display: true,
-        text: 'My Title',
-        fontSize: 16
-    },
-    legend: {
-        position: 'bottom'
-    }
-};
-  let datos = {
-    labels:['uno','dos','tres','cuatro'],
-    datasets: [
-    {
-      label: "line1",
-      data: [10,5,15,25]
-    }
-  ]
-  }
-  let config ={
-    // this is the string the constructor was registered at, ie Chart.controllers.MyType
-    type: 'line',
-    data: datos,
-    options: options
-};
-  let myLineChart = new Chart(ctx, config);
-  let img = myLineChart.toBase64Image();
-  //console.log(img);
-}
+//   let options = {
+//     title: {
+//         display: true,
+//         text: 'My Title',
+//         fontSize: 16
+//     },
+//     legend: {
+//         position: 'bottom'
+//     }
+// };
+//   let datos = {
+//     labels:['uno','dos','tres','cuatro'],
+//     datasets: [
+//     {
+//       label: "line1",
+//       data: [10,5,15,25]
+//     }
+//   ]
+//   }
+//   let config ={
+//     // this is the string the constructor was registered at, ie Chart.controllers.MyType
+//     type: 'line',
+//     data: datos,
+//     options: options
+// };
+//   let myLineChart = new Chart(ctx, config);
+//   let img = myLineChart.toBase64Image();
+//   //console.log(img);
+// }
 
 }

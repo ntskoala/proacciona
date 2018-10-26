@@ -37,10 +37,14 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
     }
   }
-getSimple(url){
-  return this.llamada.get(url)
-      //.map((res: Response) => JSON.parse(res.json()));
-}
+  getSimple(url: string, param: string) {
+    return this.llamada.get(url)
+  }
+
+  postSimple(url: string, object: Object, param?: string) {
+    let payload = JSON.stringify(object);
+    return this.llamada.post(url, payload)
+  }
   // getObjects2(url: string, param: string) {
   //   if (this.istokenExpired()){
   //     this.setAlerta();

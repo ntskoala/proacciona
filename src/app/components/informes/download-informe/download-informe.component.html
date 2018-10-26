@@ -1,0 +1,19 @@
+<div class="download-window">
+    <section class="example-section">
+      <mat-checkbox class="example-margin" [(ngModel)]="pdf">PDF</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="xls">XLSX</mat-checkbox>
+    </section>
+    <button mat-mini-fab class="downbutton" color="primary" (click)="downloads()">
+      <span class="material-icons">cloud_download</span>
+    </button>
+    <div class="space"></div>
+    <div *ngIf="innerHtml.length>=1">
+      <mat-spinner></mat-spinner>
+      <!-- <mat-progress-bar mode="buffer"></mat-progress-bar> -->
+      
+      <div class="space"></div>
+      procesando, (puede tardar un par de minutos)...
+      <br><span>{{innerHtml}}</span>
+    </div>
+    <span class="close material-icons" (click)="close()">close</span>
+  </div>

@@ -10,6 +10,7 @@ import { URLS } from '../../models/urls';
 import { ResultadoControl } from '../../models/resultadocontrol';
 import * as moment from 'moment';
 import {SelectItem} from 'primeng/primeng';
+//import { Promise } from 'q';
 
 @Component({
   selector: 'app-informes-control',
@@ -32,8 +33,12 @@ export class InformesControlComponent implements OnInit {
   public modal: boolean = false;
   public fotoSrc: string;
   public exportar_informes: boolean =false;
+  public exportando:boolean=false;
+  public informeData:any;
   public es;
   public brands: string[]=['>','<','='];
+
+
   constructor(public servidor: Servidor, public empresasService: EmpresasService, 
     public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
@@ -202,41 +207,71 @@ var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     var a = document.createElement("a");
     a.setAttribute('style', 'display:none;');
     document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url= window.URL.createObjectURL(blob);
-    //window.open(url,'_blank');
-    a.href = url;
+   // var blob = new Blob([csvData], { type: 'text/csv' });
+   // var url= window.URL.createObjectURL(blob);
+//    a.href = url;
     
     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
     a.click();
 }
+logTabla(){
+console.log(this.tabla);
+}
+
+async downloads(){
+    let informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+     let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada+"&informes=controles";
+    let params = {'tabla':this.tabla};
+  }
+
+  async excel2(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+  }
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
 
 ConvertToCSV(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+console.log(cabecera,array)
+let informeCabecera=[];
+let informeRows=[];
             var str = '';
             var row = "";
             row += "Usuario;Fecha;"
             for (var i = 0; i < cabecera.length; i++) {
-              row += cabecera[i] + ';';
+              row += cabecera[i]["header"] + ';';
             }
             row = row.slice(0, -1);
             //append Label row with line break
-            str += row + '\r\n';
- 
+            //str += row + '\r\n';
+            informeCabecera = row.split(";");
+            str='';
             for (var i = 0; i < array.length; i++) {
                 
                 var line =array[i].usuario+";"+array[i].fecha + ";";
 
               for (var x = 0; x < cabecera.length; x++) {
-                let columna = cabecera[x];
-                let resultado = array[i][cabecera[x]];
-              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+                let columna = cabecera[x]["header"];
+                //let resultado = array[i][cabecera[x]];
+                let resultado = array[i]["nombre"];
+              //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+              line += ((columna == resultado && array[i]["valor"] !== undefined) ?array[i]["valor"] + ';':';');
             }
             line = line.slice(0,-1);
-                str += line + '\r\n';
+                //str += line + '\r\n';
+                informeRows.push(line.split(";"))
             }
-            return str;
+            //return str;
+            return {'cabecera':[informeCabecera],'rows':informeRows,'informes':'Controles'};
 }
 
 formatFecha(fecha: Date):string{

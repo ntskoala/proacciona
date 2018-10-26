@@ -35,6 +35,8 @@ export class InformeChecklistsComponent implements OnInit{
   modal: boolean = false;
   fotoSrc: string;
   exportar_informes: boolean =false;
+  public exportando:boolean=false;
+  public informeData:any;
 public es;
   constructor(public servidor: Servidor, public empresasService: EmpresasService, 
     public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
@@ -220,46 +222,104 @@ scroll(){
 
 excel(fecha){
   console.log("send to excel");
-var csvData = this.ConvertToCSV(this.columnas, this.tabla);
-    var a = document.createElement("a");
-    a.setAttribute('style', 'display:none;');
-    document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url= window.URL.createObjectURL(blob);
-    //window.open(url,'_blank');
-    a.href = url;
-    a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
-    a.click();
+// var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+//     var a = document.createElement("a");
+//     a.setAttribute('style', 'display:none;');
+//     document.body.appendChild(a);
+//     var blob = new Blob([csvData], { type: 'text/csv' });
+//     var url= window.URL.createObjectURL(blob);
+//     a.href = url;
+//     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
+//     a.click();
 }
+async downloads(){
+  
+  let informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+  // let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
+  //let params = {'tabla':this.tabla};
+}
+
+async excel2(fecha){
+  this.exportando=true;
+  this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+}
+informeRecibido(resultado){
+  console.log('informe recibido:',resultado);
+  if (resultado){
+    setTimeout(()=>{this.exportando=false},1500)
+  }else{
+    this.exportando=false;
+  }
+}
+
 ConvertToCSV(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-            var str = '';
-            var row = "";
-            row += "Usuario;Fecha;"
-            for (var i = 0; i < cabecera.length; i++) {
-              row += cabecera[i].nombre + ';descripcion;';
-            }
-            row = row.slice(0, -1);
-            //append Label row with line break
-            str += row + '\r\n';
+            // var str = '';
+            // var row = "";
+            // row += "Usuario;Fecha;"
+            // for (var i = 0; i < cabecera.length; i++) {
+            //   row += cabecera[i].nombre + ';descripcion;';
+            // }
+            // row = row.slice(0, -1);
+            // //append Label row with line break
+            // str += row + '\r\n';
  
-            for (var i = 0; i < array.length; i++) {
+            // for (var i = 0; i < array.length; i++) {
                 
-                var line = array[i].usuario +";"+ array[i].fecha + ";";
+            //     var line = array[i].usuario +";"+ array[i].fecha + ";";
 
-              for (var x = 0; x < cabecera.length; x++) {
-                let columna = cabecera[x].nombre;
-                let resultado = array[i][cabecera[x]];
-              //line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
-              line += array[i][cabecera[x].id] +';';
-              line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
-            }
-            line = line.slice(0,-1);
-                str += line + '\r\n';
-            }
-            return str;
-}
+            //   for (var x = 0; x < cabecera.length; x++) {
+            //     let columna = cabecera[x].nombre;
+            //     let resultado = array[i][cabecera[x]];
+            //   //line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
+            //   line += array[i][cabecera[x].id] +';';
+            //   line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
+            // }
+            // line = line.slice(0,-1);
+            //     str += line + '\r\n';
+            // }
+            // return str;
+            let informeCabecera=[];
+            let informeRows=[];
+            let informeFotos=[];
+            let informeComentarios=[];
+                        var str = '';
+                        var row = "";
+                        row += "Usuario;Fecha;Foto;"
+                        for (var i = 0; i < cabecera.length; i++) {
+                          row += cabecera[i]["nombre"] + ';';
+                        }
+                        row = row.slice(0, -1);
+                        //append Label row with line break
+                        //str += row + '\r\n';
+                        informeCabecera = row.split(";");
+                        str='';
+                        for (var i = 0; i < array.length; i++) {
+                          let fotoUrl = ''
+                          if (array[i].foto){
+                            fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
+                         }                            
+                            var line =array[i].usuario+";"+array[i].fecha + ";"+fotoUrl+";";
+                            
+                          for (var x = 0; x < cabecera.length; x++) {
+                            let columna = cabecera[x]["nombre"];
+                            //let resultado = array[i][cabecera[x]];
+                            let resultado = array[i]["nombre"];
+
+                          line += ((array[i][cabecera[x].id] !== undefined) ?array[i][cabecera[x].id] + ';':';');
+                          //line += ((columna == resultado && array[i][cabecera[x]] !== undefined) ?array[i]["valor"] + ';':';');
+                        }
+                        line = line.slice(0,-1);
+                            //str += line + '\r\n';
+                            informeRows.push(line.split(";"))
+                        }
+                        //return str;
+                        let nombreChecklist = this.checklists.findIndex((item)=>item.id==this.checklistSeleccionada);
+                        let nomInforme = 'Checklist'+nombreChecklist;
+                        return {'cabecera':[informeCabecera],'rows':informeRows,'informes':nomInforme};
+
+          }
 formatFecha(fecha: Date):string{
 let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getHours())).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
 console.log(mifecha);

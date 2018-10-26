@@ -10,6 +10,8 @@
         (click)="cambiarTab(1)">Checklists</button>
       <button [ngClass]="{'selected2':tabs[2]}" mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
         (click)="cambiarTab(2)">{{'Periodicidad' | translate}}</button>
+      <button [ngClass]="{'selected3':tabs[3]}" mat-button color="primary" [attr.mat-raised-button]="tabs[3]"
+        (click)="cambiarTab(3)">{{'Informes x mail' | translate}}</button>
     </mat-card-subtitle>
     <mat-card-content>
       <!--<informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>-->

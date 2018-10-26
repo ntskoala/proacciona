@@ -1,82 +1,91 @@
 <div class="modal" *ngIf="modal" (click)="cerrarFoto()">
-    <div class="foto-window"  >
-        <span class="close material-icons" (click)="cerrarFoto()">close</span>
-        <div class="foto">
-          <img src="{{fotoSrc}}">
-        </div>
+  <div class="foto-window">
+    <span class="close material-icons" (click)="cerrarFoto()">close</span>
+    <div class="foto">
+      <img src="{{fotoSrc}}">
     </div>
   </div>
+</div>
 
-<p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'"
-[(selection)]="selectedItem" (click)="gotoIncidencia($event)">
-    <p-header>
-      <div class="informe-header">
-        <div style="text-align:left;float:left">
-            <p-multiSelect displaySelectedLabel="false" [options]="columnOptions" [(ngModel)]="columnas" (onChange)="setChanges()"></p-multiSelect>
-        </div>
-
-  <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
-  <div style="width:550px;float:left">
-    <div class="filtro-dates">
-    <div  class="filtro">
-    <p-calendar name="inicio" [(ngModel)]="fecha['inicio']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
-    </div>
-    <div class="filtro">
-    <p-calendar name="fin" [(ngModel)]="fecha['fin']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
-    </div>
-
-    </div>
-    <div style="float:left; margin-left:20px">
-    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
-      <span class="material-icons">check</span>
-    </button>
-    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="dt.exportCSV()">
-      <span class="material-icons">cloud_download</span>
-    </button>  
-    </div>      
-    </div>            
-  </form>
+<p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'" [(selection)]="selectedItem"
+  (click)="gotoIncidencia($event)">
+  <p-header>
+    <div class="informe-header">
+      <div style="text-align:left;float:left">
+        <p-multiSelect displaySelectedLabel="false" [options]="columnOptions" [(ngModel)]="columnas" (onChange)="setChanges()"></p-multiSelect>
       </div>
-    </p-header>
+
+      <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
+        <div style="width:550px;float:left">
+          <div class="filtro-dates">
+            <div class="filtro">
+              <p-calendar name="inicio" [(ngModel)]="fecha['inicio']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+            </div>
+            <div class="filtro">
+              <p-calendar name="fin" [(ngModel)]="fecha['fin']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+            </div>
+
+          </div>
+          <div style="float:left; margin-left:20px">
+            <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+              <span class="material-icons">check</span>
+            </button>
+            <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"
+              (click)="dt.exportCSV()">
+              <span class="material-icons">cloud_download</span>
+            </button>
+            <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"
+              (click)="excel2()">
+              <span class="material-icons">cloud_download</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-header>
 
 
 
-    <p-column field="usuario" header="usuario">
-              <ng-template pTemplate="header">
-           <span id="user-link" class="material-icons">perm_identity</span>
-        </ng-template>
-        <ng-template let-user="rowData" let-col pTemplate="body">
-       <span id="user-link" class="material-icons">perm_identity</span> {{user[col.field]}}
+  <p-column field="usuario" header="usuario">
+    <ng-template pTemplate="header">
+      <span id="user-link" class="material-icons">perm_identity</span>
+    </ng-template>
+    <ng-template let-user="rowData" let-col pTemplate="body">
+      <span id="user-link" class="material-icons">perm_identity</span> {{user[col.field]}}
       <!--<div id="usuario"><span>{{user[col.field]}}</span></div> -->
-        </ng-template>
-      </p-column>    
-    <p-column field="fecha" header="fecha">
-        <!-- <ng-template pTemplate="body" let-data="rowData" let-col>
+    </ng-template>
+  </p-column>
+  <p-column field="fecha" header="fecha">
+    <!-- <ng-template pTemplate="body" let-data="rowData" let-col>
      {{data[col.field] | date:"yyyy-MM-dd HH:mm"}}  
         </ng-template>   -->
-    </p-column>  
+  </p-column>
 
-    <p-column field="foto" header="foto">
-              <ng-template pTemplate="header">
-           <span class="foto-link material-icons">photo_camera</span>
-        </ng-template>
-        <ng-template let-foto="rowData" let-col pTemplate="body">
-    <span class="cell center" *ngIf="foto[col.field]">
-      <span class="foto-link material-icons" (click)="ventanaFoto(foto['id'])">photo_camera</span>
-    </span>
-        </ng-template>
-      </p-column>     
+  <p-column field="foto" header="foto">
+    <ng-template pTemplate="header">
+      <span class="foto-link material-icons">photo_camera</span>
+    </ng-template>
+    <ng-template let-foto="rowData" let-col pTemplate="body">
+      <span class="cell center" *ngIf="foto[col.field]">
+        <span class="foto-link material-icons" (click)="ventanaFoto(foto['id'])">photo_camera</span>
+      </span>
+    </ng-template>
+  </p-column>
 
-    <p-column *ngFor="let col of columnas" [field]="col.field" [header]="col.header">
-        <ng-template pTemplate="body" let-data="rowData" let-col>
-          <span class="cell right" [class.wrong]="data['error']" title="{{data[col.field + 'mensaje'] | translate}}">
-            <span *ngIf="col.header != 'fecha'">{{data[col.field]}}</span>
-          </span>
-        </ng-template>
-    </p-column>
+  <p-column *ngFor="let col of columnas" [field]="col.field" [header]="col.header">
+    <ng-template pTemplate="body" let-data="rowData" let-col>
+      <span class="cell right" [class.wrong]="data['error']" title="{{data[col.field + 'mensaje'] | translate}}">
+        <span *ngIf="col.header != 'fecha'">{{data[col.field]}}</span>
+      </span>
+    </ng-template>
+  </p-column>
 
 </p-dataTable>
 <!--<p-dataTable [value]="tabla">
     <p-column field="valor" header="nombre"></p-column>
 
 </p-dataTable>-->
+
+<div class="modal" *ngIf="exportando">
+<app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
@@ -9,7 +9,10 @@ import { EmpresasComponent } from '../empresas.component';
 import { URLS } from '../../models/urls';
 import { ResultadoControl } from '../../models/resultadocontrol';
 import * as moment from 'moment';
-import {SelectItem} from 'primeng/primeng';
+import * as XLSX from 'xlsx';
+import * as Chart from 'chart.js';
+import {SelectItem, DataTable} from 'primeng/primeng';
+import { HttpClientXsrfModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-informes-control',
@@ -17,7 +20,7 @@ import {SelectItem} from 'primeng/primeng';
   styleUrls: ['./informes-control.component.css']
 })
 export class InformesControlComponent implements OnInit {
-
+  @ViewChild('table') table: ElementRef;
   public subscription: Subscription;
   public columnOptions: SelectItem[];
   public controles: any[] = [];
@@ -38,6 +41,7 @@ export class InformesControlComponent implements OnInit {
     public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.newChart();
     // Conseguir controles
     console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"]);
     this.getControles();
@@ -196,7 +200,7 @@ scroll(){
   console.log("dateclicked");
   this.empresasComponent.scrolldown();
 }
-excel(fecha){
+excelOld(fecha){
   console.log("send to excel");
 var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     var a = document.createElement("a");
@@ -209,6 +213,42 @@ var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     
     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
     a.click();
+}
+excel(fecha,dt: DataTable){
+  
+  /* generate worksheet */
+// let ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.tabla2);
+let ws2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.tabla);
+// let ws2: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table, {raw:true});
+
+
+/* Find desired cell */
+var celda: XLSX.CellAddress = ws2['A1'];
+
+/* Get the value */
+
+// let celda: XLSX.CellAddress;
+let formatCelda:  XLSX.CellObject = {t:'s'};
+
+formatCelda.v = 'columna1';
+formatCelda.t='s'
+// formatCelda.s={ alignment: {textRotation: 90 },font: {sz: 14, bold: true, color:' #0000FF',name:'verdana' },fill:{bgColor: {rgb:'#FF0000' }}};
+XLSX.utils.cell_set_hyperlink(formatCelda,'https://tfc.proacciona.es');
+XLSX.utils.cell_add_comment(formatCelda,'Prueba','Proacciona');
+XLSX.utils.format_cell(formatCelda,{ alignment: {textRotation: 90 },font: {sz: 14, bold: true, color:' #0000FF',name:'verdana' },fill:{patternType:'solid',bgColor: {rgb:'#FF0000' }}});
+
+ws2['A1'] = formatCelda;
+
+
+/* generate workbook and add the worksheet */
+const wb: XLSX.WorkBook = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws2, 'Controles');
+/* save to file */
+XLSX.writeFile(wb, 'Informe_Controles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.xlsx');
+}
+gapps(){
+// let url = "https://docs.google.com/spreadsheets/d/1S_xFw1p0AdfN2mX9Z6BcmHXZCV96fphT9dkRK6L9hNg/edit?usp=sharing&data=hola"
+// window.open(url,'_blank');
 }
 
 ConvertToCSV(controles,objArray){
@@ -260,6 +300,42 @@ return result;
 gotoIncidencia(evento){
   console.log(evento);
 
+}
+
+newChart(){
+  let canvas = document.createElement("canvas")
+  canvas.style.visibility = 'hidden';
+  document.body.appendChild(canvas);
+  let ctx = canvas.getContext("2d");
+
+  let options = {
+    title: {
+        display: true,
+        text: 'My Title',
+        fontSize: 16
+    },
+    legend: {
+        position: 'bottom'
+    }
+};
+  let datos = {
+    labels:['uno','dos','tres','cuatro'],
+    datasets: [
+    {
+      label: "line1",
+      data: [10,5,15,25]
+    }
+  ]
+  }
+  let config ={
+    // this is the string the constructor was registered at, ie Chart.controllers.MyType
+    type: 'line',
+    data: datos,
+    options: options
+};
+  let myLineChart = new Chart(ctx, config);
+  let img = myLineChart.toBase64Image();
+  //console.log(img);
 }
 
 }

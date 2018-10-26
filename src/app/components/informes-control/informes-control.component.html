@@ -7,7 +7,7 @@
     </div>
   </div>
 
-<p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'"
+<p-dataTable [value]="tabla" #dt #table [csvSeparator]="';'" [exportFilename]="'Informe_Controles'"
 [(selection)]="selectedItem" (click)="gotoIncidencia($event)">
     <p-header>
       <div class="informe-header">
@@ -30,9 +30,14 @@
     <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="dt.exportCSV()">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"  (click)="excel(fecha,dt)" >
+        <!-- (click2)="dt.exportCSV()" -->
       <span class="material-icons">cloud_download</span>
     </button>  
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"  (click)="gapps()" >
+        <!-- (click2)="dt.exportCSV()" -->
+      <span class="material-icons">cloud_download</span>
+    </button> 
     </div>      
     </div>            
   </form>
@@ -80,3 +85,7 @@
     <p-column field="valor" header="nombre"></p-column>
 
 </p-dataTable>-->
+
+
+
+<app-informes-excel></app-informes-excel>

@@ -37,7 +37,10 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
     }
   }
-
+getSimple(url){
+  return this.llamada.get(url)
+      //.map((res: Response) => JSON.parse(res.json()));
+}
   // getObjects2(url: string, param: string) {
   //   if (this.istokenExpired()){
   //     this.setAlerta();

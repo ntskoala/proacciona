@@ -197,6 +197,7 @@ import { ZohoComponent } from './components/zoho/zoho.component';
 import { AdminIncidenciasClienteComponent } from './components/dashboard/admin-incidencias-cliente/admin-incidencias-cliente.component';
 import { AdminControlesClienteComponent } from './components/dashboard/admin-controles-cliente/admin-controles-cliente.component';
 import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins-cliente/admin-logins-cliente.component';
+import { InformesExcelComponent } from './components/informes-excel/informes-excel.component';
 
 @NgModule({
     exports: [
@@ -388,6 +389,7 @@ export function createTranslateLoader(http: HttpClient) {
     ProtocolosComponent,
     ProtocolosCuadroComponent,
     ComponentsComponent,
+    InformesExcelComponent,
 //*******DASHBOARDS     */
     DashboardComponent,
     UsoComponent,

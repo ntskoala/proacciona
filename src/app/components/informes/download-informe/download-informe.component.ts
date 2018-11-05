@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer} from '@angular/platform-browser';
 import { Servidor } from '../../../services/servidor.service';
 import { EmpresasService } from '../../../services/empresas.service';
 import { URLS } from '../../../models/urls';
@@ -18,9 +19,11 @@ public exportando:boolean=false;
 public innerHtml='';
 public xls:boolean;
 public pdf: boolean;
+public html;
   constructor(
     public servidor: Servidor, 
-    public empresasService: EmpresasService
+    public empresasService: EmpresasService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -95,5 +98,17 @@ async downloads(){
   });
   }
 
-
+test(){
+  let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
+  //let params = {'tabla':this.tabla};
+  this.innerHtml += 'solicitado...';
+  this.servidor.getSimple(url,'').subscribe(
+    (respuesta)=>{
+      console.log(respuesta);
+      this.html=respuesta
+      //this.html=  this.sanitizer.sanitize(5,respuesta)
+      
+      //this.innerHtml += respuesta.json()["contenido"];
+    });
+}
 }

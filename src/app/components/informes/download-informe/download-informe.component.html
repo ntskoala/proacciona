@@ -6,11 +6,14 @@
     <button mat-mini-fab class="downbutton" color="primary" (click)="downloads()">
       <span class="material-icons">cloud_download</span>
     </button>
+    <button mat-mini-fab class="downbutton" color="primary" (click)="test()">
+      <span class="material-icons">cloud_download</span>
+    </button>
     <div class="space"></div>
     <div *ngIf="innerHtml.length>=1">
       <mat-spinner></mat-spinner>
       <!-- <mat-progress-bar mode="buffer"></mat-progress-bar> -->
-      
+      <!-- <iframe src="{{html}}"></iframe> -->
       <div class="space"></div>
       procesando, (puede tardar un par de minutos)...
       <br><span>{{innerHtml}}</span>

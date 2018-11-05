@@ -16,6 +16,7 @@ import { LimpiezaZona } from '../../models/limpiezazona';
 
 import { Modal } from '../../models/modal';
 import * as moment from 'moment';
+import { isDate } from '@angular/common/src/i18n/format_date';
 @Component({
   selector: 'limpiezas-realizadas',
   templateUrl: './limpiezas-realizadas.component.html',
@@ -51,6 +52,11 @@ public image;
 public foto;
 public top = '50px';
 //************** */
+
+//******EXPORT INFORME */
+public exportando:boolean=false;
+public informeData:any;
+//******EXPORT INFORME */
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService,private route: ActivatedRoute
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -319,45 +325,128 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     dt.toggleRow(row);
   }
 
-exportData(tabla: DataTable){
+async exportData(tabla: DataTable){
 
-  console.log(tabla);
-  let origin_Value = tabla._value;
-  tabla.columns.push(new Column())
-  tabla.columns[tabla.columns.length-1].field='descripcion';
-  tabla.columns[tabla.columns.length-1].header='descripcion';
-  tabla.columns.push(new Column())
-  tabla.columns[tabla.columns.length-1].field='detalles_supervision';
-  tabla.columns[tabla.columns.length-1].header='detalles_supervision';
-  tabla._value = tabla.dataToRender;
-  tabla._value.map((limpieza)=>{
-      (moment(limpieza.fecha_prevista).isValid())?limpieza.fecha_prevista = moment(limpieza.fecha_prevista).format("DD/MM/YYYY"):'';
-      (moment(limpieza.fecha).isValid())?limpieza.fecha = moment(limpieza.fecha).format("DD/MM/YYYY"):'';
-      (moment(limpieza.fecha_supervision).isValid())?limpieza.fecha_supervision= moment(limpieza.fecha_supervision).format("DD/MM/YYYY"):'';    
+  
+  let campos=Object.keys(tabla.dataToRender[0]);
+  console.log(campos);
+  let columnas=['nombre','fecha_prevista','fecha','tipo','responsable','supervision','supervisor'	,'fecha_supervision',	'descripcion'	,'detalles_supervision'];
+  let camposDelete = campos.filter((elem)=>!columnas.includes(elem));
+  console.log(campos,camposDelete);
+   let datos = tabla.dataToRender.map((item)=>{
+    camposDelete.forEach((keyToDelete)=>{
+      delete item[keyToDelete];
+    })
+     return item;
+   })
+  console.log(datos);
+  this.exportando=true;
+  this.informeData = await this.ConvertToCSV(columnas, datos);
+  console.log(this.informeData);
+  // let origin_Value = tabla._value;
+  // tabla.columns.push(new Column())
+  // tabla.columns[tabla.columns.length-1].field='descripcion';
+  // tabla.columns[tabla.columns.length-1].header='descripcion';
+  // tabla.columns.push(new Column())
+  // tabla.columns[tabla.columns.length-1].field='detalles_supervision';
+  // tabla.columns[tabla.columns.length-1].header='detalles_supervision';
+  // tabla._value = tabla.dataToRender;
+  // tabla._value.map((limpieza)=>{
+  //     (moment(limpieza.fecha_prevista).isValid())?limpieza.fecha_prevista = moment(limpieza.fecha_prevista).format("DD/MM/YYYY"):'';
+  //     (moment(limpieza.fecha).isValid())?limpieza.fecha = moment(limpieza.fecha).format("DD/MM/YYYY"):'';
+  //     (moment(limpieza.fecha_supervision).isValid())?limpieza.fecha_supervision= moment(limpieza.fecha_supervision).format("DD/MM/YYYY"):'';    
       
-      switch (limpieza.supervision){
-        case "0":
-        limpieza.supervision = "Sin supervisar";
-        break;
-        case "1":
-        limpieza.supervision = "Correcte";
-        break;
-        case "2":
-        limpieza.supervision = "Incorrecte";        
-        break;       
-      }
-      limpieza.idsupervisor = limpieza.supervisor;
-      // planificacion.descripcion = 'test';
-      limpieza.detalles_supervision = limpieza.detalles_supervision;
-    
-    });
-
-  tabla.csvSeparator = ";";
-  tabla.exportFilename = "Limpiezas_Realizadas_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
-  tabla.exportCSV();
-  tabla._value = origin_Value;
-  tabla.columns.splice(tabla.columns.length-2,2);
+  //     switch (limpieza.supervision){
+  //       case "0":
+  //       limpieza.supervision = "Sin supervisar";
+  //       break;
+  //       case "1":
+  //       limpieza.supervision = "Correcte";
+  //       break;
+  //       case "2":
+  //       limpieza.supervision = "Incorrecte";        
+  //       break;       
+  //     }
+  //     limpieza.idsupervisor = limpieza.supervisor;
+  //     // planificacion.descripcion = 'test';
+  //     limpieza.detalles_supervision = limpieza.detalles_supervision;
+  //   });
+  // tabla.csvSeparator = ";";
+  // tabla.exportFilename = "Limpiezas_Realizadas_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+  // tabla.exportCSV();
+  // tabla._value = origin_Value;
+  // tabla.columns.splice(tabla.columns.length-2,2);
 }
+
+
+// async excel2(tabla: DataTable){
+// let columnas;
+//   this.exportando=true;
+//   this.informeData = await this.ConvertToCSV(columnas, tabla);
+// }
+
+informeRecibido(resultado){
+  console.log('informe recibido:',resultado);
+  if (resultado){
+    setTimeout(()=>{this.exportando=false},1500)
+  }else{
+    this.exportando=false;
+  }
+}
+
+
+ConvertToCSV(controles,objArray){
+var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+console.log(cabecera,array)
+let informeCabecera=[];
+let informeRows=[];
+let comentarios = [];
+          var str = '';
+          var row = "";
+          row += "Foto;"
+          for (var i = 0; i < cabecera.length; i++) {
+            row += cabecera[i] + ';';
+          }
+          row = row.slice(0, -1);
+          //append Label row with line break
+          //str += row + '\r\n';
+          informeCabecera = row.split(";");
+          str='';
+          for (var i = 0; i < array.length; i++) {
+            let fotoUrl = ''
+            let comentario='';
+            if (array[i].foto){
+              //+ '/control' + idResultado + '.jpg';
+              //fotoUrl = '=hyperlink("'+URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg";"foto")';
+              fotoUrl =URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+           }                            
+              var line = fotoUrl+";";
+              //var line =array[i].usuario+";"+array[i].fecha +";";
+              //var line =array[i].usuario+";"+array[i].fecha + ";";
+
+            for (var x = 0; x < cabecera.length; x++) {
+              let columna = cabecera[x];
+              let resultado = array[i][cabecera[x]];
+              if (moment(resultado).isValid()) resultado = moment(resultado).format('DD/MM/YYYY');
+              //let resultado = array[i];
+            //   if (array[i][columna + 'mensaje']) {
+            //     this.translateService.get(array[i][columna + 'mensaje']).subscribe((mensaje)=>{comentario +=  columna +": "+mensaje})
+            //   } 
+            // //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+            line += (resultado!== undefined && resultado !== null) ? resultado + ';':';';
+          }
+          line = line.slice(0,-1);
+              //str += line + '\r\n';
+              informeRows.push(line.split(";"));
+              comentarios.push(comentario);
+
+          }
+          //return str;
+          return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':comentarios,'informes':'Limpiezas realizadas'};
+}
+
+
 
 
 getIncidencias(){

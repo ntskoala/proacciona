@@ -217,5 +217,7 @@
    <img   class="iframe"  [src]="foto">
    </div>
   
-   
+   <div class="modal" *ngIf="exportando">
+    <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+    </div>
    

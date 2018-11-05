@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
+import { TranslateService} from '@ngx-translate/core';
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
 import { PermisosService } from '../../services/permisos.service';
@@ -39,8 +40,14 @@ export class InformesControlComponent implements OnInit {
   public brands: string[]=['>','<','='];
 
 
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
-    public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
+  constructor(
+    public servidor: Servidor, 
+    public empresasService: EmpresasService, 
+    public empresasComponent: EmpresasComponent, 
+    public permisos: PermisosService,
+    private route: ActivatedRoute,
+    public translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     //this.newChart();
@@ -202,9 +209,10 @@ scroll(){
   console.log("dateclicked");
   this.empresasComponent.scrolldown();
 }
+
 excelOld(fecha){
   console.log("send to excel");
-var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+  var csvData = this.ConvertToCSV(this.columnas, this.tabla);
     var a = document.createElement("a");
     a.setAttribute('style', 'display:none;');
     document.body.appendChild(a);
@@ -245,9 +253,10 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 console.log(cabecera,array)
 let informeCabecera=[];
 let informeRows=[];
+let comentarios = [];
             var str = '';
             var row = "";
-            row += "Usuario;Fecha;"
+            row += "Usuario;Foto;Fecha;"
             for (var i = 0; i < cabecera.length; i++) {
               row += cabecera[i]["header"] + ';';
             }
@@ -257,22 +266,35 @@ let informeRows=[];
             informeCabecera = row.split(";");
             str='';
             for (var i = 0; i < array.length; i++) {
-                
-                var line =array[i].usuario+";"+array[i].fecha + ";";
+              let fotoUrl = ''
+              let comentario='';
+              if (array[i].foto){
+                //+ '/control' + idResultado + '.jpg';
+                //fotoUrl = '=hyperlink("'+URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg";"foto")';
+                fotoUrl =URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+             }                            
+                var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
+                //var line =array[i].usuario+";"+array[i].fecha +";";
+                //var line =array[i].usuario+";"+array[i].fecha + ";";
 
               for (var x = 0; x < cabecera.length; x++) {
                 let columna = cabecera[x]["header"];
                 //let resultado = array[i][cabecera[x]];
                 let resultado = array[i]["nombre"];
+                if (array[i][columna + 'mensaje']) {
+                  this.translateService.get(array[i][columna + 'mensaje']).subscribe((mensaje)=>{comentario +=  columna +": "+mensaje})
+                } 
               //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
               line += ((columna == resultado && array[i]["valor"] !== undefined) ?array[i]["valor"] + ';':';');
             }
             line = line.slice(0,-1);
                 //str += line + '\r\n';
-                informeRows.push(line.split(";"))
+                informeRows.push(line.split(";"));
+                comentarios.push(comentario);
+
             }
             //return str;
-            return {'cabecera':[informeCabecera],'rows':informeRows,'informes':'Controles'};
+            return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':comentarios,'informes':'Controles'};
 }
 
 formatFecha(fecha: Date):string{

@@ -2,6 +2,8 @@ import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
+import { TranslateService} from '@ngx-translate/core';
+
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
@@ -38,8 +40,14 @@ export class InformeChecklistsComponent implements OnInit{
   public exportando:boolean=false;
   public informeData:any;
 public es;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
-    public empresasComponent: EmpresasComponent, public permisos: PermisosService,private route: ActivatedRoute) {}
+  constructor(
+    public servidor: Servidor, 
+    public empresasService: EmpresasService, 
+    public empresasComponent: EmpresasComponent, 
+    public permisos: PermisosService,
+    private route: ActivatedRoute,
+    public translateService: TranslateService  
+  ) {}
 
   ngOnInit() {
     console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"],this.route.params["_value"]["idOrigenasociado"])
@@ -286,7 +294,7 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             let informeComentarios=[];
                         var str = '';
                         var row = "";
-                        row += "Usuario;Fecha;Foto;"
+                        row += "Usuario;Foto;Fecha;"
                         for (var i = 0; i < cabecera.length; i++) {
                           row += cabecera[i]["nombre"] + ';';
                         }
@@ -297,27 +305,31 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
                         str='';
                         for (var i = 0; i < array.length; i++) {
                           let fotoUrl = ''
+                          let comentario='';
                           if (array[i].foto){
                             fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
                          }                            
-                            var line =array[i].usuario+";"+array[i].fecha + ";"+fotoUrl+";";
+                         var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
                             
                           for (var x = 0; x < cabecera.length; x++) {
                             let columna = cabecera[x]["nombre"];
                             //let resultado = array[i][cabecera[x]];
                             let resultado = array[i]["nombre"];
-
+                            if (array[i][cabecera[x].id2]) {
+                              this.translateService.get(array[i][cabecera[x].id2]).subscribe((mensaje)=>{comentario += columna +": "+ mensaje + "\n"})
+                            }
                           line += ((array[i][cabecera[x].id] !== undefined) ?array[i][cabecera[x].id] + ';':';');
                           //line += ((columna == resultado && array[i][cabecera[x]] !== undefined) ?array[i]["valor"] + ';':';');
                         }
                         line = line.slice(0,-1);
                             //str += line + '\r\n';
                             informeRows.push(line.split(";"))
+                            informeComentarios.push(comentario);
                         }
                         //return str;
                         let nombreChecklist = this.checklists.findIndex((item)=>item.id==this.checklistSeleccionada);
                         let nomInforme = 'Checklist'+nombreChecklist;
-                        return {'cabecera':[informeCabecera],'rows':informeRows,'informes':nomInforme};
+                        return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':informeComentarios,'informes':nomInforme};
 
           }
 formatFecha(fecha: Date):string{

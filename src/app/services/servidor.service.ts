@@ -37,8 +37,9 @@ export class Servidor {
       .map((res: Response) => JSON.parse(res.json()));
     }
   }
+  
   getSimple(url: string, param: string) {
-    return this.llamada.get(url)
+    return this.http.get(url,{responseType: 'text'})
   }
 
   postSimple(url: string, object: Object, param?: string) {

@@ -21,6 +21,7 @@ public guardar = [];
 public idBorrar;
 public modal: Modal = new Modal();
 public modal2: Modal;
+public destino: boolean=false;
 
 public entidad:string="&entidad=proveedores_familia";
 
@@ -28,6 +29,9 @@ public entidad:string="&entidad=proveedores_familia";
 
   ngOnInit() {
       this.setItems();
+      if ((URLS.SERVER == 'https://tfc.proacciona.es/' && this.empresasService.seleccionada == 26) || ((URLS.SERVER == 'https://tfc1-181808.appspot.com/' && this.empresasService.seleccionada == 77))) {
+        this.destino=true;
+      }
   }
 
 

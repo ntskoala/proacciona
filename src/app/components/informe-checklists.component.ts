@@ -228,17 +228,17 @@ scroll(){
 }
 
 
-excel(fecha){
+excel2(fecha){
   console.log("send to excel");
-// var csvData = this.ConvertToCSV(this.columnas, this.tabla);
-//     var a = document.createElement("a");
-//     a.setAttribute('style', 'display:none;');
-//     document.body.appendChild(a);
-//     var blob = new Blob([csvData], { type: 'text/csv' });
-//     var url= window.URL.createObjectURL(blob);
-//     a.href = url;
-//     a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
-//     a.click();
+var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'InformeControles_del'+fecha.inicio.formatted+"_al_"+fecha.fin.formatted+'.csv';
+    a.click();
 }
 async downloads(){
   
@@ -247,7 +247,7 @@ async downloads(){
   //let params = {'tabla':this.tabla};
 }
 
-async excel2(fecha){
+async excel(fecha){
   this.exportando=true;
   this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
 }
@@ -263,73 +263,73 @@ informeRecibido(resultado){
 ConvertToCSV(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-            // var str = '';
-            // var row = "";
-            // row += "Usuario;Fecha;"
-            // for (var i = 0; i < cabecera.length; i++) {
-            //   row += cabecera[i].nombre + ';descripcion;';
-            // }
-            // row = row.slice(0, -1);
-            // //append Label row with line break
-            // str += row + '\r\n';
+            var str = '';
+            var row = "";
+            row += "Usuario;Fecha;"
+            for (var i = 0; i < cabecera.length; i++) {
+              row += cabecera[i].nombre + ';descripcion;';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            str += row + '\r\n';
  
-            // for (var i = 0; i < array.length; i++) {
+            for (var i = 0; i < array.length; i++) {
                 
-            //     var line = array[i].usuario +";"+ array[i].fecha + ";";
+                var line = array[i].usuario +";"+ array[i].fecha + ";";
 
-            //   for (var x = 0; x < cabecera.length; x++) {
-            //     let columna = cabecera[x].nombre;
-            //     let resultado = array[i][cabecera[x]];
-            //   //line += ((array[i][cabecera[x].id] !== undefined) ?  'ok;':'x;');
-            //   line += array[i][cabecera[x].id] +';';
-            //   line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
-            // }
-            // line = line.slice(0,-1);
-            //     str += line + '\r\n';
-            // }
-            // return str;
-            let informeCabecera=[];
-            let informeRows=[];
-            let informeFotos=[];
-            let informeComentarios=[];
-                        var str = '';
-                        var row = "";
-                        row += "Usuario;Foto;Fecha;"
-                        for (var i = 0; i < cabecera.length; i++) {
-                          row += cabecera[i]["nombre"] + ';';
-                        }
-                        row = row.slice(0, -1);
-                        //append Label row with line break
-                        //str += row + '\r\n';
-                        informeCabecera = row.split(";");
-                        str='';
-                        for (var i = 0; i < array.length; i++) {
-                          let fotoUrl = ''
-                          let comentario='';
-                          if (array[i].foto){
-                            fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
-                         }                            
-                         var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
+              for (var x = 0; x < cabecera.length; x++) {
+                let columna = cabecera[x].nombre;
+                let resultado = array[i][cabecera[x]];
+              line += ((array[i][cabecera[x].id] !== undefined) ?  array[i][cabecera[x].id]+';':'x;');
+              // line += array[i][cabecera[x].id] +';';
+              line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
+            }
+            line = line.slice(0,-1);
+                str += line + '\r\n';
+            }
+            return str;
+            // let informeCabecera=[];
+            // let informeRows=[];
+            // let informeFotos=[];
+            // let informeComentarios=[];
+            //             var str = '';
+            //             var row = "";
+            //             row += "Usuario;Foto;Fecha;"
+            //             for (var i = 0; i < cabecera.length; i++) {
+            //               row += cabecera[i]["nombre"] + ';';
+            //             }
+            //             row = row.slice(0, -1);
+            //             //append Label row with line break
+            //             //str += row + '\r\n';
+            //             informeCabecera = row.split(";");
+            //             str='';
+            //             for (var i = 0; i < array.length; i++) {
+            //               let fotoUrl = ''
+            //               let comentario='';
+            //               if (array[i].foto){
+            //                 fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
+            //              }                            
+            //              var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
                             
-                          for (var x = 0; x < cabecera.length; x++) {
-                            let columna = cabecera[x]["nombre"];
-                            //let resultado = array[i][cabecera[x]];
-                            let resultado = array[i]["nombre"];
-                            if (array[i][cabecera[x].id2]) {
-                              this.translateService.get(array[i][cabecera[x].id2]).subscribe((mensaje)=>{comentario += columna +": "+ mensaje + "\n"})
-                            }
-                          line += ((array[i][cabecera[x].id] !== undefined) ?array[i][cabecera[x].id] + ';':';');
-                          //line += ((columna == resultado && array[i][cabecera[x]] !== undefined) ?array[i]["valor"] + ';':';');
-                        }
-                        line = line.slice(0,-1);
-                            //str += line + '\r\n';
-                            informeRows.push(line.split(";"))
-                            informeComentarios.push(comentario);
-                        }
-                        //return str;
-                        let nombreChecklist = this.checklists.findIndex((item)=>item.id==this.checklistSeleccionada);
-                        let nomInforme = 'Checklist'+nombreChecklist;
-                        return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':informeComentarios,'informes':nomInforme};
+            //               for (var x = 0; x < cabecera.length; x++) {
+            //                 let columna = cabecera[x]["nombre"];
+            //                 //let resultado = array[i][cabecera[x]];
+            //                 let resultado = array[i]["nombre"];
+            //                 if (array[i][cabecera[x].id2]) {
+            //                   this.translateService.get(array[i][cabecera[x].id2]).subscribe((mensaje)=>{comentario += columna +": "+ mensaje + "\n"})
+            //                 }
+            //               line += ((array[i][cabecera[x].id] !== undefined) ?array[i][cabecera[x].id] + ';':';');
+            //               //line += ((columna == resultado && array[i][cabecera[x]] !== undefined) ?array[i]["valor"] + ';':';');
+            //             }
+            //             line = line.slice(0,-1);
+            //                 //str += line + '\r\n';
+            //                 informeRows.push(line.split(";"))
+            //                 informeComentarios.push(comentario);
+            //             }
+            //             //return str;
+            //             let nombreChecklist = this.checklists.findIndex((item)=>item.id==this.checklistSeleccionada);
+            //             let nomInforme = 'Checklist'+nombreChecklist;
+            //             return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':informeComentarios,'informes':nomInforme};
 
           }
 formatFecha(fecha: Date):string{

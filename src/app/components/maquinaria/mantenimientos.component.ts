@@ -20,6 +20,8 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 })
 export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
+@Input() Piezas;
+public piezas:object[]
 momento: any;
 //  date: DateModel[]=[];
  // options: DatePickerOptions;
@@ -49,10 +51,15 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        this.nuevoMantenimiento.pieza=0;
+        this.nuevoMantenimiento.cantidadPiezas=0;
     }
 
 ngOnChanges(){
     this.setMantenimientos();
+    
+    this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
+    this.piezas.unshift({'label':"ninguna",'value':0});
 
 }
   setMantenimientos(){
@@ -77,7 +84,7 @@ ngOnChanges(){
                     this.guardar[element.id] = false;
                   }
                 this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
-                  element.tipoperiodo, element.doc,element.usuario,element.responsable,0+orden));
+                  element.tipoperiodo, element.doc,element.usuario,element.responsable,0+orden,element.pieza,element.cantidadPiezas));
                 
 //                this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
                 i++;
@@ -162,12 +169,14 @@ ngOnChanges(){
        orden = this.nuevoMantenimiento.orden=0;
       }
       if (x>0) this.nuevoMantenimiento.nombre= nombreOrigen + x;
-      this.addItem(this.nuevoMantenimiento,nombreOrigen + x,orden).then(
+      this.addItem(this.nuevoMantenimiento,nombreOrigen,orden).then(
         (valor)=>{
           this.cantidad--;
           console.log(this.cantidad,valor,typeof(valor))
           if (valor && this.cantidad == 0){
             this.nuevoMantenimiento = new MantenimientosMaquina(0,0,'','');
+            this.nuevoMantenimiento.pieza=0;
+            this.nuevoMantenimiento.cantidadPiezas=0;
             this.mantenimientos = this.mantenimientos.slice();
           }
         }
@@ -183,7 +192,7 @@ ngOnChanges(){
         if (response.success) {
           item.id = response.id;
           this.mantenimientos.push(new MantenimientosMaquina(response.id,item.idmaquina,nombre,item.fecha,item.tipo,
-          item.periodicidad,item.tipo_periodo,item.doc,item.usuario,item.responsable,orden));
+          item.periodicidad,item.tipo_periodo,item.doc,item.usuario,item.responsable,orden,item.pieza,item.cantidadPiezas));
           resolve(true);
         }
     },

@@ -10,6 +10,8 @@ export class MantenimientosMaquina {
     public doc?: string,
     public usuario?:number,
     public responsable?: string,
-    public orden?:number
+    public orden?:number,
+    public pieza?:number,
+    public cantidadPiezas?:number
   ) {}
 }

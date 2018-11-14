@@ -25,6 +25,7 @@ public estadoSideNav:string="cerrado";
 public subMenu:string=null;
 public selectedTab: number=null;
 public idmaquinaURL:number=null;
+public piezas:any;
   constructor(public empresasService: EmpresasService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -137,5 +138,9 @@ lubricantes(){
 
 nuevoMantenimientoRealizado(evento){
 this.nuevoMantenimientoR = evento;
+}
+
+setPiezas(piezas){
+  this.piezas=piezas
 }
 }

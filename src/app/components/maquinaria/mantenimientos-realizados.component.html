@@ -92,8 +92,13 @@ sortField="fecha" [sortOrder]="0" (onSort)="onRowSelect($event,dt)"-->
       <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
     </ng-template>
   </p-column>
-
-  <p-column field="elemento" header="{{'maquinas.elemento' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+  <p-column field="pieza" header="{{'pieza' | translate }}" [style]="{'width':'130px'}">
+    <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+    <p-dropdown [options]="piezas" [(ngModel)]="item.pieza" appendTo="body" [style]="{'width':'120px'}" [disabled]="true" (onChange)="itemEdited(item.id)"></p-dropdown>
+  </ng-template>
+</p-column>
+<p-column field="cantidadPiezas" header="{{'cantidadPiezas' | translate }}" [editable]="true" [style]="{'width':'110px'}"></p-column>  
+  <!-- <p-column field="elemento" header="{{'maquinas.elemento' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
   <!-- <p-column field="descripcion" header="{{'maquinas.descripcion' | translate }}" [editable]="true" [style]="{'width':'100px'}"></p-column>
   <p-column field="causas" header="{{'maquinas.causa' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
   <p-column field="responsable" header="{{'maquinas.responsable' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>

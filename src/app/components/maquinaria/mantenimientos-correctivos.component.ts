@@ -26,7 +26,8 @@ import { Empresa } from '../../models/empresa';
 export class MantenimientosCorrectivosComponent implements OnInit {
 
 @Input() maquina:Maquina;
-
+@Input() Piezas;
+public piezas;
 
 public mantenimientos: MantenimientoRealizado[];
 public images: string[];
@@ -77,7 +78,8 @@ public top = '50px';
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
     
     this.setMantenimientos();
-
+    this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
+    this.piezas.unshift({'label':"ninguna",'value':0});
 }
 
 
@@ -96,7 +98,7 @@ public top = '50px';
                     element.maquina,element.mantenimiento,element.descripcion,new Date(element.fecha_prevista),
                     new Date(element.fecha),element.tipo,element.elemento,element.causas,element.tipo2,element.doc,
                     element.idusuario,element.responsable,element.id,element.tipo_evento,element.idempresa,
-                    element.imagen))
+                    element.imagen,element.pieza,element.cantidadPiezas))
             //       this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/' + element.id +'_'+element.doc);
             this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
             this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;

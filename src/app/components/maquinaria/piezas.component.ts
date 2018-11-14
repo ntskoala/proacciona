@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input,Output, OnChanges, EventEmitter } from '@angular/core';
 
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -20,6 +20,7 @@ import { PiezasMaquina } from '../../models/piezasmaquina';
 })
 export class PiezasComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
+@Output() onPiezas:EventEmitter<PiezasMaquina[]>= new EventEmitter();
 public piezas: PiezasMaquina[] =[]; 
 public nuevoPieza: PiezasMaquina = new PiezasMaquina(0,0,'');
 public guardar =[];
@@ -66,6 +67,7 @@ ngOnChanges(){
                 this.guardar[element.id] = false;
                 this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/maquina_piezas/' + element.id +'_'+element.doc);
               }
+              this.onPiezas.emit(this.piezas);
             }
         },
        error=>console.log(error),

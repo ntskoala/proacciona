@@ -46,11 +46,11 @@
       <div  style="margin-top: 60px">
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>
-  <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" *ngIf="maquina"></mantenimientos></mat-tab>  
-<mat-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR" *ngIf="maquina"></mantenimientos-realizados></mat-tab>  
-<mat-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina" *ngIf="maquina"></mantenimientos-correctivos></mat-tab>
+  <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" [Piezas]="piezas" *ngIf="maquina"></mantenimientos></mat-tab>  
+<mat-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR"  [Piezas]="piezas"  *ngIf="maquina"></mantenimientos-realizados></mat-tab>  
+<mat-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina"  [Piezas]="piezas"  *ngIf="maquina"></mantenimientos-correctivos></mat-tab>
   <mat-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></mat-tab>
-  <mat-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" *ngIf="maquina"></piezas></mat-tab>
+  <mat-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" (onPiezas)="setPiezas($event)" *ngIf="maquina"></piezas></mat-tab>
 </mat-tab-group>
       </div>
 </mat-sidenav-content><!--   Fin example-sidenav-content  -->

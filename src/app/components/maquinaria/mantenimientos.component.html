@@ -7,6 +7,8 @@
         <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
         <span class="header-cell">{{"maquinas.proximafecha" | translate}}</span>
         <span class="header-cell">{{"maquinas.tipo" | translate}}</span>
+        <span class="header-cell">{{"maquinas.pieza" | translate}}</span>
+        <span class="header-cell">{{"maquinas.cantidad_piezas" | translate}}</span>
         <span class="header-cell" style="padding-right: 10px">{{"maquinas.periodicidad" | translate}}</span>
         <span class="header-cell">{{"maquinas.responsable" | translate}}</span>
         <span class="header-cell medium" style="min-width:100px;padding-right: 5px">{{"cantidad" | translate}}</span>                 
@@ -26,7 +28,14 @@
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
-
+    <span class="cell">
+      <select class="white-select" required [(ngModel)]="nuevoMantenimiento.pieza" name="pieza">
+      <option [ngValue]="pieza['value']" *ngFor="let pieza of piezas">{{pieza['label']}}</option>
+    </select>
+  </span>
+  <span class="cell">
+    <input type="text" [placeholder]="'maquinas.cantidadPiezas' | translate" required [(ngModel)]="nuevoMantenimiento.cantidadPiezas" name="cantidadPiezas">
+  </span>
     <span class="cell center">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoMantenimiento.fecha"></periodicidad>
     </span>
@@ -107,10 +116,10 @@
 
 
 
-<div style="position:absolute; left:0px; top:140px; min-width:900px">
+<div style="position:absolute; left:0px; top:140px; min-width:1000px">
     <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
     [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
-    [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'">
+    [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'" [tableStyle]="{'width':'1000px'}">
     <p-header>
         <div class="ui-helper-clearfix">
             <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -144,11 +153,17 @@
         <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
         </ng-template>
       </p-column>
-      <p-column field="tipo" header="{{'tipo' | translate }}">
+      <p-column field="tipo" header="{{'tipo' | translate }}" [style]="{'width':'120px'}">
           <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
           <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
         </ng-template>
       </p-column>
+      <p-column field="pieza" header="{{'pieza' | translate }}" [style]="{'width':'130px'}">
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
+        <p-dropdown [options]="piezas" [(ngModel)]="item.pieza" appendTo="body" [style]="{'width':'120px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
+      </ng-template>
+    </p-column>
+    <p-column field="cantidadPiezas" header="{{'cantidadPiezas' | translate }}" [editable]="true"></p-column>     
       <p-column field="periodicidad" header="{{'periodicidad' | translate }}" [style]="{'width':'100px','text-align': 'center'}">
         <ng-template let-col let-item="rowData" pTemplate="body">
         <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>

@@ -18,6 +18,7 @@ export class EmpresasService {
   showTooltips: boolean = true;
   showAlerts:boolean = true;
   login:boolean=false;
+  hayLogoEmpresa:number;
   nombreEmpresa:string='';
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
@@ -39,6 +40,7 @@ export class EmpresasService {
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
       this.empresaActiva = empresa.id;
+      this.hayLogoEmpresa = parseInt(empresa.logo);
   }
 
   empresaCreada(empresa: Empresa) {

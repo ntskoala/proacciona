@@ -95,8 +95,8 @@
   <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
-  [rows]="10" [paginator]="true" [alwaysShowPaginator]="false" [pageLinks]="5" 
-  [rowsPerPageOptions]="[10,20,30,50]">
+  [rows]="25" [paginator]="true" [alwaysShowPaginator]="false" [pageLinks]="5" 
+  [rowsPerPageOptions]="[10,25,50]">
   <p-header>
       <div class="ui-helper-clearfix">
           <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              

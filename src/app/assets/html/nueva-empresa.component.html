@@ -13,3 +13,19 @@
     </mat-card-footer>
   </form>
 </mat-card>
+<div class="space"></div>
+<mat-card *ngIf="empresaActiva">
+  <mat-card-title >
+    <mat-toolbar color="accent">{{'Modificar' | translate}} empresa</mat-toolbar>
+  </mat-card-title>
+  <form #cambiaEmpresaForm="ngForm" (ngSubmit)="updateActiva(cambiaEmpresaForm.value)">
+    <mat-card-content>
+      <mat-form-field  >
+      <input matInput class="cabeceraSelect full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresaActiva.nombre" name="nombre">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+      <button mat-raised-button color="accent" [disabled]="!cambiaEmpresaForm.form.valid" type="submit">Guardar</button>
+    </mat-card-footer>
+  </form>
+</mat-card>

@@ -8,7 +8,7 @@
 
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
-[rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50]"
+[rows]="25" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50]"
 [csvSeparator]="';'" [exportFilename]="'Planes_Realizados'" [tableStyle]="{'width':'1100px'}"
  [sortOrder]="0" [(selection)]="selectedItem"  [(first)]="tablaPosition">
     <p-header>

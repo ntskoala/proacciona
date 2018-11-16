@@ -55,9 +55,9 @@
   </span> -->
   
   <p-table #dt [columns]="cols" [value]="incidencias" (onEdit)="onEdit($event)" [csvSeparator]="';'" [exportFilename]="'Incidencias'"
-      dataKey="incidencia" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem" 
+      dataKey="id" (onRowExpand)="expandedRow($event)"  [(selection)]="selectedItem" 
       (onSort)="onRowSelect($event,dt)" sortField="fecha" [sortOrder]="-1" 
-      [paginator]="true" [rows]="10" [first]="tablaPosition" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
+      [paginator]="true" [rows]="25" [first]="tablaPosition" [pageLinks]="5" [rowsPerPageOptions]="[5,10,25,50,100]">
   
       <ng-template pTemplate="caption">
           <div class="ui-helper-clearfix">
@@ -77,16 +77,17 @@
                     </div></tr> -->
           <tr class="header-row">
               <th style="width: 2.25em"></th>
-              <th style="width:100px" class="header-cell">{{"incidencia.incidencia" | translate}}</th>
-              <th style="width:120px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>              
-              <th style="width:150px" class="header-cell" [pSortableColumn]="fecha">{{"incidencia.fecha" | translate}}
-                    <p-sortIcon [field]="fecha"></p-sortIcon>
-              </th>
-              <th style="width:120px" class="medium header-cell">{{"incidencia.r_cierre" | translate}}</th>
-              <th style="width:150px" class="header-cell">{{"incidencia.fecha_cierre" | translate}}</th>              
-              <!-- <th style="width:180px" class="medium header-cell">{{"incidencia.nc" | translate}}</th> -->
+              <th style="width:200px" class="header-cell">{{"incidencia.incidencia" | translate}}</th>
               <th style="width:120px" class="medium header-cell">{{"incidencia.estado" | translate}}</th>            
               <th style="width:100px" class="medium header-cell">{{"incidencia.origen" | translate}}</th>
+              <th style="width:90px" class="medium header-cell">{{"incidencia.responsable" | translate}}</th>              
+              <th style="width:120px" class="header-cell" [pSortableColumn]="fecha">{{"incidencia.fecha" | translate}}
+                    <p-sortIcon [field]="fecha"></p-sortIcon>
+              </th>
+              <th style="width:90px" class="medium header-cell">{{"incidencia.r_cierre" | translate}}</th>
+              <th style="width:120px" class="header-cell">{{"incidencia.fecha_cierre" | translate}}</th>              
+              <!-- <th style="width:180px" class="medium header-cell">{{"incidencia.nc" | translate}}</th> -->
+
               <!-- <th style="width:100px" class="medium header-cell">{{"foto" | translate}}</th> -->
               <th style="width:140px; min-width: 140px" class="medium header-cell">{{"acciones" | translate}}</th>
           </tr>
@@ -108,9 +109,32 @@
                       </ng-template>
                   </p-cellEditor>
               </td>
+
               <td pEditableColumn>
                 <mat-form-field style="width:100px;">
-                    <mat-select style="width:100px;" [(ngModel)]="item.responsable"  (selectionChange)="changeItem($event,item.id,'responsable')">
+                        <mat-select style="width:100px;" [ngStyle]="{'border-style':'solid','border-color':getColor(item.estado)}" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
+                          <mat-option  *ngFor="let estado of estados" value="{{estado.valor}}">
+                            {{ estado.nombre }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+              </td>
+          <td pEditableColumn>
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input type="text" [(ngModel)]="item.origen">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                          {{'incidencia.'+item.origen | translate}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+
+
+
+              <td pEditableColumn>
+                <mat-form-field style="width:90px;">
+                    <mat-select style="width:87px;" [(ngModel)]="item.responsable"  (selectionChange)="changeItem($event,item.id,'responsable')">
                       <mat-option  *ngFor="let usuario of usuarios" value="{{usuario.id}}">
                         {{ usuario.usuario }}
                       </mat-option>
@@ -137,8 +161,8 @@
               </td>
 
             <td pEditableColumn>
-                    <mat-form-field style="width:100px;">
-                            <mat-select style="width:100px;" [(ngModel)]="item.responsable_cierre"  (selectionChange)="changeItem($event,item.id,'responsable_cierre')">
+                    <mat-form-field style="width:90px;">
+                            <mat-select style="width:87px;" [(ngModel)]="item.responsable_cierre"  (selectionChange)="changeItem($event,item.id,'responsable_cierre')">
                               <mat-option  *ngFor="let usuario of usuarios" value="{{usuario.id}}">
                                 {{ usuario.usuario }}
                               </mat-option>
@@ -174,25 +198,7 @@
                       </ng-template>
                   </p-cellEditor>
               </td> -->
-              <td pEditableColumn>
-                    <mat-form-field style="width:100px;">
-                            <mat-select style="width:100px;" [ngStyle]="{'border-style':'solid','border-color':getColor(item.estado)}" [(ngModel)]="item.estado" (selectionChange)="changeItem($event,item.id,'estado')">
-                              <mat-option  *ngFor="let estado of estados" value="{{estado.valor}}">
-                                {{ estado.nombre }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                  </td>
-              <td pEditableColumn>
-                      <p-cellEditor>
-                          <ng-template pTemplate="input">
-                              <input type="text" [(ngModel)]="item.origen">
-                          </ng-template>
-                          <ng-template pTemplate="output">
-                              {{'incidencia.'+item.origen | translate}}
-                          </ng-template>
-                      </p-cellEditor>
-                  </td>
+
               <!-- <td>
                       <span class="cell small">
                               <span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      

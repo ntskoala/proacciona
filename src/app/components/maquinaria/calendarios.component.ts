@@ -68,7 +68,7 @@ public estado;
                 this.calendario.push(new CalendarioMantenimiento(element.maquina, element.ubicacion, element.nombre, element.tipo, element.periodicidad,
                   element.tipoperiodo));
                   let color = this.setColor(element.tipo_m,element.fecha)
-                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.maquina + " " + element.nombre,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color,"tipoevento":element.tipo_m,"estado":"pendiente"});  
+                  this.events.push({"idmantenimiento":element.id,"idmaquina":element.idmaquina,"title":element.nombre + " " + element.maquina,"start":element.fecha,"tipo":element.tipo,"usuario":element.idusuario,"responsable":element.responsable,"tipo2":"preventivo","periodicidad":element.periodicidad,"color":color,"tipoevento":element.tipo_m,"estado":"pendiente"});  
                    this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
                   element.tipoperiodo, element.doc,element.usuario,element.responsable));
               }
@@ -89,7 +89,7 @@ loadRealizados(){
             if (response.success && response.data) {
               for (let element of response.data) {  
                   let color2 = this.setColor2(element.tipo_evento);
-                  this.events.push({"idmantenimiento":element.idmantenimiento,"idmaquina":element.idmaquina,"title":element.mantenimiento + ' ' + element.maquina,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"causas":element.causas,"tipo2":element.tipo2,"usuario":element.idusuario,"responsable":element.responsable,"color":color2,"tipoevento":element.tipo_evento,"estado":"realizado"});
+                  this.events.push({"idmantenimiento":element.idmantenimiento,"idmaquina":element.idmaquina,"title":element.mantenimiento,"descripcion":element.descripcion,"start":element.fecha,"tipo":element.tipo,"elemento":element.elemento,"causas":element.causas,"tipo2":element.tipo2,"usuario":element.idusuario,"responsable":element.responsable,"color":color2,"tipoevento":element.tipo_evento,"estado":"realizado"});
              }
              console.log("realizadost",this.events_realizados);
              this.events.concat(this.events_realizados);

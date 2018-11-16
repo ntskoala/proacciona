@@ -69,6 +69,7 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
   }
   // photoURL(i) {
   //   this.verdoc=!this.verdoc;
@@ -78,8 +79,12 @@ public top = '50px';
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
     
     this.setMantenimientos();
-    this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
-    this.piezas.unshift({'label':"ninguna",'value':0});
+    if(this.Piezas){
+      this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
+      this.piezas.unshift({'label':"ninguna",'value':0});
+      }else{
+        this.piezas =[{'label':"ninguna",'value':0}];
+      }
 }
 
 

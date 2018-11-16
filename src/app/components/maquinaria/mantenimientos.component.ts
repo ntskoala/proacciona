@@ -51,15 +51,20 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+
         this.nuevoMantenimiento.pieza=0;
         this.nuevoMantenimiento.cantidadPiezas=0;
     }
 
 ngOnChanges(){
     this.setMantenimientos();
-    
+    if(this.Piezas){
     this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
     this.piezas.unshift({'label':"ninguna",'value':0});
+    }else{
+      this.piezas =[{'label':"ninguna",'value':0}];
+    }
 
 }
   setMantenimientos(){

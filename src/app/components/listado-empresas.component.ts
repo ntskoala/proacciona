@@ -123,10 +123,10 @@ setPermisos(idempresa){
 
 expand(){
 //setTimeout(()=>{this.Choicer.open();},200)
-this.Choicer.nativeElement.size=15;
+//this.Choicer.nativeElement.size=15;
 }
 unExpand(){
-  this.Choicer.nativeElement.size=1;
+  //this.Choicer.nativeElement.size=1;
 }
 
 }

@@ -51,6 +51,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
       firstDayOfWeek: 1
     };
+    if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+
   }
 
   ngOnChanges() {

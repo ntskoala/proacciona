@@ -11,19 +11,22 @@
     <form   #newTicketForm="ngForm" (ngSubmit)="newTicket()">
         <div class="space"></div>
               <span class="elem">
-                <label class="label">{{'ticket.subject' | translate}}</label>
+                <label class="label"></label>
+                <!-- {{'ticket.subject' | translate}} -->
                 <mat-form-field class="example-full-width" style="margin-top: -25px;">
-                <input   matInput class="itemElem" type="text" required [(ngModel)]="ticket.subject" name="subject">
+                <input   matInput placeholder="{{'ticket.subject' | translate}}" class="itemElem" type="text" required [(ngModel)]="ticket.subject" name="subject">
               </mat-form-field>
               </span>
               
               <div class="elem">
-                  <label  class="label">{{'ticket.prioridad' | translate}}</label>
+                  <label  class="label"></label>
+                  <!-- {{'ticket.prioridad' | translate}} -->
             <p-dropdown class="itemElem" styleClass="itemElem"  [style]="{'width':'200px'}" [options]="prioridades" [(ngModel)]="ticket.priority" placeholder="{{'ticket.prioridad' | translate}}"  name="priority"></p-dropdown>    
       </div>
       
               <span class="elem">
-                  <label class="label">{{'ticket.descripcion' | translate}}</label>
+                  <label class="label"></label>
+                  <!-- {{'ticket.descripcion' | translate}} -->
                  <textarea class="itemElem descrip"  pInputTextarea [placeholder]="'ticket.descripcion' | translate" [(ngModel)]="ticket.description" name="description">
                  </textarea>
               </span>
@@ -31,14 +34,10 @@
 
               <span class="elem mini-fab">
                   <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
-                          <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'foto'}}"><span style="margin-left:60px">foto</span></label>                
+                          <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'foto'}}"><span style="margin-left:60px"></span></label>                
                           <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'foto'}}" class="inputfile" type="file" name="logo" (change)="setImg($event)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>  
                         </span>
                         </span>
-
-
-
-            <div style="height: 15px" ></div>
       
                         
           <div class="buttons">

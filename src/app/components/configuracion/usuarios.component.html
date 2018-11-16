@@ -100,7 +100,7 @@ sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'900px'}">
         </select> -->
   </p-column>
   <p-column field="email" header="{{'email' | translate}}"  [editable]="true"  [style]="{'width':'190px'}"></p-column>
-  <p-column field="superuser" header="{{'Usuario' | translate}} +"  [style]="{'width':'150px'}">
+  <p-column field="superuser" header="{{'Mantenimiento' | translate}}"  [style]="{'width':'150px'}">
     <ng-template  let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
       <p-dropdown  [panelStyleClass]="clase"  appendTo="body" [options]="superusers" [(ngModel)]="item.superuser" [style]="{'width':'140px'}" (onChange)="itemEdited(item.id)">
 

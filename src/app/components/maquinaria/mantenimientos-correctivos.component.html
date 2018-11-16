@@ -1,14 +1,15 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 
-<span class="cell tooltip" matTooltip="{{'maquinas.nuevoMantenimientoR' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
+<span class="cell tooltip" matTooltip="{{'maquinas.nuevoMantenimientoC' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
 <div class="table">
     <div class="header-row">
-        <span class="header-cell">{{"maquinas.mantenimiento" | translate}}</span>
+        <span class="header-cell">{{"maquinas.nuevoMantenimientoC" | translate}}</span>
         <span class="header-cell">{{"maquinas.fecha" | translate}}</span>
         <span class="header-cell  medium">{{"maquinas.tipo" | translate}}</span>
-        <span class="header-cell">{{"maquinas.elemento" | translate}}</span>
+        <span class="header-cell">{{"pieza" | translate}}</span>
+        <span class="header-cell">{{"maquinas.cantidadPiezas" | translate}}</span>
         <span class="header-cell medium">{{"maquinas.descripcion" | translate}}</span>
-        <span class="header-cell medium">{{"maquinas.causa" | translate}}</span>
+        <!-- <span class="header-cell medium">{{"maquinas.causa" | translate}}</span> -->
         <span class="header-cell  medium">{{"maquinas.responsable" | translate}}</span>
         <span class="header-cell small">{{"add" | translate}}</span>
       </div>
@@ -16,26 +17,29 @@
   <!--<div  *ngIf="empresasService.administrador"  class="row">-->
     <input type="hidden" [(ngModel)]="nuevoMantenimiento.id" name="id">
     <span class="cell">
-      <input type="text" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoMantenimiento.mantenimiento" name="mantenimiento">
+      <input type="text" size="40" [placeholder]="'maquinas.nombre' | translate" required [(ngModel)]="nuevoMantenimiento.mantenimiento" name="mantenimiento">
     </span>
     <span class="cell">
-      <p-calendar [inputStyle]="{'width':'100px'}" appendTo="body" placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
+      <p-calendar [inputStyle]="{'width':'120px'}" appendTo="body" placeholder="fecha" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell small">
-        <select class="white-select  medium" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
+        <select class="white-select  medium" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo" style="width:90px;min-width: 90px !important;">
         <option value="interno">{{'maquinas.interno' | translate}}</option>
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
+    <span class="cell small">
+    <p-dropdown [options]="piezas" [(ngModel)]="nuevoMantenimiento.pieza" appendTo="body" [style]="{'width':'120px'}" (onChange)="itemEdited(item.id)"  name="pieza"></p-dropdown>
+  </span>
     <span class="cell">
-      <input type="text"  size="12" [placeholder]="'maquinas.elemento' | translate" [(ngModel)]="nuevoMantenimiento.elemento" name="elemento">
+      <input type="text"  size="2" [placeholder]="'maquinas.cantidadPiezas' | translate" [(ngModel)]="nuevoMantenimiento.cantidadPiezas" name="cantidadPiezas">
     </span>
     <span class="cell medium">
       <input type="text" size="12" [placeholder]="'maquinas.descripcion' | translate" [(ngModel)]="nuevoMantenimiento.descripcion" name="descripcion">
     </span>
-    <span class="cell medium">
+    <!-- <span class="cell medium">
       <input type="text" size="12" [placeholder]="'maquinas.causa' | translate" [(ngModel)]="nuevoMantenimiento.causas" name="causas">
-    </span>
+    </span> -->
     <span class="cell medium">
       <input type="text" size="12" [placeholder]="'maquinas.responsable' | translate" [(ngModel)]="nuevoMantenimiento.responsable" name="responsable">
     </span>
@@ -100,10 +104,10 @@
   </form> -->
 
 
-  <div style="position:absolute; left:0px; top:140px; min-width:900px">
+  <div style="position:absolute; left:0px; top:140px; min-width:1090px">
       <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
       [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="1" 
-      [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Correctivos'" [tableStyle]="{'width':'900px'}">
+      [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Correctivos'" [tableStyle]="{'width':'1090px'}">
       <p-header>
           <div class="ui-helper-clearfix">
               <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -120,15 +124,15 @@
          </ng-template> 
        </p-column>
   
-        <p-column field="mantenimiento" header="{{'Mantenimiento' | translate }}" [editable]="true" ></p-column>
-        <p-column field="fecha" header="{{'fecha' | translate }}" [sortable]="true">
+        <p-column field="mantenimiento" header="{{'Mantenimiento' | translate }}" [editable]="true" [style]="{'width':'280px'}"></p-column>
+        <p-column field="fecha" header="{{'fecha' | translate }}" [sortable]="true" [style]="{'width':'125px'}">
           <ng-template let-col let-item="rowData" pTemplate="body">      
           <p-calendar appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
           </ng-template>
         </p-column>
-        <p-column field="tipo" header="{{'tipo' | translate }}">
+        <p-column field="tipo" header="{{'tipo' | translate }}" [style]="{'width':'110px'}">
             <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-            <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
+            <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'90px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
           </ng-template>
         </p-column>
         <p-column field="pieza" header="{{'pieza' | translate }}" [style]="{'width':'130px'}">
@@ -136,10 +140,10 @@
           <p-dropdown [options]="piezas" [(ngModel)]="item.pieza" appendTo="body" [style]="{'width':'120px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
         </ng-template>
       </p-column>
-      <p-column field="cantidadPiezas" header="{{'cantidadPiezas' | translate }}" [editable]="true"></p-column>  
-        <p-column field="elemento" header="{{'maquinas.elemento' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
-        <!-- <p-column field="descripcion" header="{{'maquinas.descripcion' | translate }}" [editable]="true" [style]="{'width':'100px'}"></p-column>
-        <p-column field="causas" header="{{'maquinas.causa' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
+      <p-column field="cantidadPiezas" header="{{'maquinas.cantidadPiezas' | translate }}" [editable]="true"></p-column>  
+        <!-- <p-column field="elemento" header="{{'maquinas.elemento' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
+       <p-column field="descripcion" header="{{'maquinas.descripcion' | translate }}" [editable]="true" [style]="{'width':'100px'}"></p-column>
+         <!-- <p-column field="causas" header="{{'maquinas.causa' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column> -->
         <p-column field="responsable" header="{{'maquinas.responsable' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
         
         <!-- <p-column field="doc" header="{{'doc' | translate }}">

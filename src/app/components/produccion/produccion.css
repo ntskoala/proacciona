@@ -18,8 +18,10 @@ margin-top: 20px;
 
 
 .contenido{
-  display:block;
-  clear:both;
+  /* display:block;
+  clear:both; */
+  margin-left:50px;
+  min-height: 1200px;
 }
 .space{
   display:block;
@@ -199,6 +201,15 @@ md-grid-list{
     top:65px;
     left:0px;
 }
+.cabecerabuttons{
+    display: inline !important;
+    margin-left: 60px;
+}
+.opcionBoton{
+    margin-left:6px;
+    margin-top:25px;
+  }
+  
 #select_proveedor{
     margin-top: -30px;
 }

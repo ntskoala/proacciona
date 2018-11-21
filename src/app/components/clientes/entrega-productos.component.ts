@@ -1,4 +1,8 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from '@ngx-translate/core';
+
+
 import * as moment from 'moment/moment';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
@@ -51,7 +55,12 @@ public entidad:string="&entidad=clientes_distribucion";
 public field:string="&field=idcliente&idItem=";//campo de relación con tabla padre
 public es;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+  constructor(
+    public servidor: Servidor,
+    public empresasService: EmpresasService,
+    public translate: TranslateService,
+    private messageService: MessageService
+    ) {}
 
   ngOnInit() {
      // this.setItems();
@@ -275,13 +284,27 @@ console.log(this.nuevoItem);
 
 
 check(){
-  console.log('cheking',!isNaN(this.nuevoItem.cantidad),+this.nuevoItem.cantidad <= +this.cantidadMaxima, this.cantidadMaxima);
+  console.log('cheking',!isNaN(this.nuevoItem.cantidad),+this.nuevoItem.cantidad <= +this.cantidadMaxima, moment(this.nuevoItem.fecha_caducidad).isValid(), this.cantidadMaxima);
 
-if (!isNaN(this.nuevoItem.cantidad) && +this.nuevoItem.cantidad <= +this.cantidadMaxima){
+if (!isNaN(this.nuevoItem.cantidad) && moment(this.nuevoItem.fecha_caducidad).isValid()){
   let index = this.ordenes.findIndex((orden) => orden.id== this.nuevoItem.idordenproduccion);
   this.ordenes[index].remanente -= this.nuevoItem.cantidad;
   return true
-}else{ return false}
+}else{ 
+  this.setAlerta("alertas.entregaNotOk");
+  return false
+}
+}
+
+setAlerta(concept:string){
+  let concepto;
+  this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+  this.messageService.clear();this.messageService.add(
+    {severity:'warn', 
+    summary:'Info', 
+    detail: concepto
+    }
+  );
 }
 
 setDates(dates:any){

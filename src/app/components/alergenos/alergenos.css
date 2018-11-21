@@ -5,3 +5,24 @@
     background-color: gainsboro;
     border-radius: 5px;
 }
+
+.cabeceraPar{
+    background-color:rgba(201, 235, 79, 0.418);
+    height: 60px;
+}
+.cabeceraImpar{
+    background-color:rgba(238, 118, 70, 0.418);
+    height: 60px;
+}
+.TRZPar{
+    background-color: rgba(240, 222, 65, 0.452);
+}
+.INGPar{
+    background-color:rgba(201, 235, 79, 0.418);
+}
+.TRZImpar{
+    background-color:rgba(235, 149, 79, 0.418);
+}
+.INGImpar{
+    background-color:rgba(238, 118, 70, 0.418);
+}

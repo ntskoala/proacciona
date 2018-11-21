@@ -476,7 +476,8 @@
       "saveOk":"S'ha desat correctament",
       "saveNotOk":"S'ha produit un error al desar",
       "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició",
-      "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió"      
+      "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió",
+      "entregaNotOk":"La quantitat o la data de caducitat son erroneas"    
     },
     "incidencia":
     {

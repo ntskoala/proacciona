@@ -476,7 +476,8 @@
       "saveOk":"Se ha guardado correctamente",
       "saveNotOk":"Se ha producido un error al guardar",
       "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición",
-      "tokenExpired":"La sesión ha caducado, por favor vuelve a iniciar sesión"
+      "tokenExpired":"La sesión ha caducado, por favor vuelve a iniciar sesión",
+      "entregaNotOk":"La cantidad o la fecha de caducidad son erroneos"
     },
     "incidencia":
     {

@@ -106,11 +106,11 @@
   </form>
 </div>
  </div>  -->
- <div style="position:absolute; left:0px; top:140px; min-width: 1000px">
+ <div style="position:absolute; left:0px; top:140px; min-width: 900px">
     
  <p-dataTable #dt [value]="planes"   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" 
  sortField="orden" [sortOrder]="1"
- [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'">
+ [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'" [style]="{'width':'936px'}">
  <p-header>
      <div class="ui-helper-clearfix">
          <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              

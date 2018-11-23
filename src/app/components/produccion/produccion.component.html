@@ -41,7 +41,7 @@
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <productos-propios *ngIf="productos"></productos-propios>
    <almacenes *ngIf="almacenes"></almacenes>
-   <select-alergenos  *ngIf="alergenos"></select-alergenos>
+   <app-alergenos-tabla   [parentAlergenos]="'productos'"  *ngIf="alergenos"></app-alergenos-tabla>
   </mat-sidenav> 
 
    <mat-sidenav-content class="sidenav-content">

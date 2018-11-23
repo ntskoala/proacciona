@@ -98,6 +98,7 @@ export class Servidor {
     }else{
     let formData: FormData = new FormData();
     let parametros = '?token=' + sessionStorage.getItem('token') + '&idempresa=' + idEmpresa+ "&origen=backoffice"+params;
+    if (files)
     formData.append('logo', files[0], files[0].name);
     return this.llamada.post(url + parametros, formData)
       .map((res: Response) => JSON.parse(res.json()));

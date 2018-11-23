@@ -91,12 +91,12 @@
 
 
 
-<div style="position:absolute; left:0px; top:140px; min-width: 950px">
+<div style="position:absolute; left:0px; top:140px; min-width: 900px">
   <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
   [rows]="25" [paginator]="true" [alwaysShowPaginator]="false" [pageLinks]="5" 
-  [rowsPerPageOptions]="[10,25,50]">
+  [rowsPerPageOptions]="[10,25,50]" [style]="{'width':'900px'}">
   <p-header>
       <div class="ui-helper-clearfix">
           <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              

@@ -20,7 +20,7 @@
       </div>
 
    <div class="tooltip" matTooltip="{{'planificaciones.permisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
-  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" mat-mini-fab (click)="cambioMenu('permiso')"><mat-icon>vpn_key</mat-icon></button>
+  <button class="opcionBoton" [disabled]="!limpieza" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" mat-mini-fab (click)="cambioMenu('permiso')"><mat-icon>vpn_key</mat-icon></button>
   </div>
 
      <div class="tooltip" matTooltip="{{'limpieza.productos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">

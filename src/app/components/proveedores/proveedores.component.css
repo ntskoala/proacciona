@@ -18,11 +18,17 @@ margin-top: -20px;
 
 
 .contenido{
-  display:block;
-  clear:both;
-}
+    /* display:block;
+    clear:both; */
+    margin-left:50px;
+    min-height: 1200px;
+  }
 
-
+  .opcionBoton{
+    margin-left:6px;
+    margin-top:25px;
+  }
+  
 .tabs{
   min-height: 430px;
     display: flex;

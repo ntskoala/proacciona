@@ -200,6 +200,7 @@ import { AdminControlesClienteComponent } from './components/dashboard/admin-con
 import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins-cliente/admin-logins-cliente.component';
 
 import { DownloadInformeComponent } from './components/informes/download-informe/download-informe.component';
+import { AlergenosTablaComponent } from './components/alergenos-tabla/alergenos-tabla.component';
 
 
 @NgModule({
@@ -322,6 +323,8 @@ export function createTranslateLoader(http: HttpClient) {
     InformeChecklistsComponent,
     InformePeriodicidadComponent,
 //******GENERALES */
+    AlergenosComponent,
+    AlergenosTablaComponent,
     FilterDatesComponent,
     AlertasComponent,
     HelpComponent,
@@ -371,7 +374,6 @@ export function createTranslateLoader(http: HttpClient) {
 
     TrazabilidadComponent,
     TrazabilidadAdComponent,
-    AlergenosComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,

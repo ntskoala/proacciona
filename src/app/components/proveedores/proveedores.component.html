@@ -7,18 +7,38 @@
     </mat-card-title>
  <mat-card-subtitle>
 
-     <button color="accent" mat-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>
+     <!-- <button color="accent" mat-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button> -->
 
-
+     <div class="botonera">
+     
+          <div class="tooltip" matTooltip="{{'proveedores.familias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+              <button class="opcionBoton" color="accent" mat-mini-fab (click)="cambioMenu('familias')" ><mat-icon>category</mat-icon></button>
+       </div>
+       <div class="tooltip" matTooltip="{{'alergenos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+          <button class="opcionBoton" [disabled]="!proveedor" color="accent" mat-mini-fab (click)="cambioMenu('alergenos')"><mat-icon>bug_report</mat-icon></button>
+           </div>
+     </div>
  </mat-card-subtitle>
 
  <div class="contenido">
-   <familias-producto *ngIf="familias"></familias-producto>   
+    <mat-sidenav-container class="contenedorSidenav">
+        <mat-sidenav   #sidenavCalendar  (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
+                <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+        <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
+        </div>
+
+        <familias-producto *ngIf="familias"></familias-producto>  
+        <app-alergenos-tabla  [parentAlergenos]="proveedor.id" *ngIf="alergenos"></app-alergenos-tabla>
+       </mat-sidenav>       
+
+       <mat-sidenav-content class="sidenav-content">   
  <mat-toolbar color="accent" *ngIf="proveedor && proveedor.id >0"><h2 class="center" >{{proveedor.nombre}}</h2></mat-toolbar>
 <mat-tab-group *ngIf="proveedor && proveedor.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'proveedores.ficha' | translate}}"><span class="space"></span><ficha-proveedor class="tabs"  [proveedor]="proveedor" *ngIf="proveedor"></ficha-proveedor></mat-tab>  
   <mat-tab label="{{'proveedores.productos' | translate}}"><span class="space"></span><productos-proveedor class="tabs"  [proveedor]="proveedor" (nuevoProducto)="cambioEnProductos($event)" *ngIf="proveedor"></productos-proveedor></mat-tab>
 <mat-tab label="{{'proveedores.entradaproductos' | translate}}"><span class="space"></span><entrada-productos class="tabs" [proveedor]="proveedor" [cambioProductos]="cambioProds" *ngIf="proveedor"></entrada-productos></mat-tab>  
 </mat-tab-group>
+</mat-sidenav-content>
+</mat-sidenav-container>
  </div>
   </mat-card>

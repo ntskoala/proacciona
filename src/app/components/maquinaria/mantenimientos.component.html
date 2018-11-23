@@ -22,19 +22,19 @@
     <span class="cell">
       <p-calendar [placeholder]="'fecha' | translate" [(ngModel)]="nuevoMantenimiento.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
-    <span class="cell">
-        <select class="white-select" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
+    <span class="cell medium">
+        <select class="white-select" style="min-width: 90px !important;" required [(ngModel)]="nuevoMantenimiento.tipo" name="tipo">
         <option value="interno">{{'maquinas.interno' | translate}}</option>
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>
     </span>
     <span class="cell">
-      <select class="white-select" required [(ngModel)]="nuevoMantenimiento.pieza" name="pieza">
+      <select class="white-select" style="min-width: 90px !important;" required [(ngModel)]="nuevoMantenimiento.pieza" name="pieza">
       <option [ngValue]="pieza['value']" *ngFor="let pieza of piezas">{{pieza['label']}}</option>
     </select>
   </span>
-  <span class="cell">
-    <input type="text" [placeholder]="'maquinas.cantidadPiezas' | translate" required [(ngModel)]="nuevoMantenimiento.cantidadPiezas" name="cantidadPiezas">
+  <span class="cell medium" style="width:60px !important;">
+    <input type="text" style="width:60px" [placeholder]="'maquinas.cantidadPiezas' | translate" required [(ngModel)]="nuevoMantenimiento.cantidadPiezas" name="cantidadPiezas">
   </span>
     <span class="cell center">
       <periodicidad (periodo)="setPeriodicidad($event)" [miperiodo]="false" [fechaPrevista]="nuevoMantenimiento.fecha"></periodicidad>

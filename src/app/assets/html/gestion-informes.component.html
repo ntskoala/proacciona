@@ -8,16 +8,16 @@
         (click)="cambiarTab(0)">{{'Controles' | translate}}</button>
       <button [ngClass]="{'selected2':tabs[1]}" mat-button color="primary" [attr.mat-raised-button]="tabs[1]"
         (click)="cambiarTab(1)">Checklists</button>
-      <button [ngClass]="{'selected2':tabs[2]}" mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
+      <!-- <button [ngClass]="{'selected2':tabs[2]}" mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
         (click)="cambiarTab(2)">{{'Periodicidad' | translate}}</button>
       <button [ngClass]="{'selected3':tabs[3]}" mat-button color="primary" [attr.mat-raised-button]="tabs[3]"
-        (click)="cambiarTab(3)">{{'Informes x mail' | translate}}</button>
+        (click)="cambiarTab(3)">{{'Informes x mail' | translate}}</button> -->
     </mat-card-subtitle>
     <mat-card-content>
       <!--<informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>-->
       <app-informes-control class="tab" [class.active]="tabActivo == 0"></app-informes-control>
       <informe-checklists class="tab" [class.active]="tabActivo == 1"></informe-checklists>
-      <informe-periodicidad class="tab" [class.active]="tabActivo == 2"></informe-periodicidad>
+      <!-- <informe-periodicidad class="tab" [class.active]="tabActivo == 2"></informe-periodicidad> -->
     </mat-card-content>
   </mat-card>
 </div>

@@ -50,13 +50,13 @@
 
 
 
-  <div style="margin-top:40px;width:100%">
+  <div style="margin-top:40px;width:900px">
       
 <p-dataTable #dt [value]="usuarios" [csvSeparator]="';'" [exportFilename]="'Usuarios'"
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" 
 sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'900px'}">
 <!-- ********** HEADER  ORDEN    -->
-<p-header>
+<p-header [style]="{'width':'900px'}">
   <div class="ui-helper-clearfix">
       <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
       <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left"></button>

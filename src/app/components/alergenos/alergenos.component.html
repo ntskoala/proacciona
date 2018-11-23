@@ -1,4 +1,4 @@
-      <!-- <button mat-raised-button color="accent"  type="button" (click)="setAlergenos('save')">{{'alergenos' | translate}}</button>
+      <button mat-raised-button color="accent"  type="button" (click)="setAlergenos('save')">{{'alergenos' | translate}}</button>
 
       <div class="selalergenos" *ngIf="viewAlergenos">
           <mat-list *ngFor="let alergeno of alergenos;let i = index">
@@ -9,64 +9,11 @@
         <span class="material-icons">check</span>
       </button>                
     </span>
-      </div> -->
+      </div>
 
       <!-- <div class="modal" *ngIf="procesando">
           <mat-spinner></mat-spinner>
           </div> -->
-          <mat-toolbar style="width: 1600px !important;" color="accent">{{'PermisosGenerales' | translate}}
-          </mat-toolbar>
-
-
-
-
-      <p-table #dt [value]="tabla"  [style]="{'width':'1800px'}"  [loading]="procesando">
-            <ng-template pTemplate="caption">
-                    <div class="ui-helper-clearfix">
-                        <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Descarga Excel" (click)="downloads()" style="float:left"></button>
-                    </div>
-            </ng-template>
-
-
-
-
-        <ng-template pTemplate="header">
-            <tr [style]="{'width':'1800px','padding':'0px !important'}">
-                <th style="width:200px; background-color: #eee">{{'Producto' | translate}}</th>
-                <span *ngFor="let col of cols;let i = index">
-                <th style="width:100px" colspan="2" [ngClass]="{'cabeceraPar':i%2==0,'cabeceraImpar':i%2!=0}">{{col.header | translate}}</th>
-              </span>
-            </tr>
-          <tr>
-            <td  style="width:200px; background-color: #eee"></td>
-              <span *ngFor="let col of cols;let i = index">
-                  <td style="width:50px;"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >ING</td>
-                  <td style="width:50px;"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >TRZ</td>
-              </span>
-          </tr>
-      </ng-template>
-        <ng-template pTemplate="body" let-producto>
-            <tr>
-                <td  style="width:200px; background-color:#eee">
-                   {{producto["Producto"]}}
-                      </td>
-                <span *ngFor="let col of cols;let i = index">
-                    <td style="width:50px"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >
-                    <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Ing',col.header,$event.checked)"
-                    [checked]="producto['cols'][i]['Ing']">
-                </mat-slide-toggle>
-                    </td>
-                    <td style="width:50px"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >
-                        <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Trz',col.header,$event.checked)"
-                        [checked]="producto['cols'][i]['Trz']">
-                    </mat-slide-toggle>
-                        </td>
-                </span>
-            </tr>
-        </ng-template>
-    </p-table>
-
-
 
         <!-- <p-dataTable [value]="tabla" [style]="{'width':ancho,'overflow-y':'hidden','overflow-x':'auto','padding-right':'60px','min-width':'600px'}">
             <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'producto'">

@@ -14,6 +14,9 @@
 .cabeceraImpar{
     background-color:rgba(238, 118, 70, 0.418);
     height: 60px;
+    
+}
+.vertical{
     writing-mode: vertical-lr;
 }
 .TRZPar{

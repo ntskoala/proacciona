@@ -30,7 +30,7 @@
       <p-calendar [placeholder]="'fecha' | translate"  [(ngModel)]="nuevoCalibracion.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="cell">
-        <select class="white-select" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
+        <select class="white-select"  style="min-width: 90px !important;" required [(ngModel)]="nuevoCalibracion.tipo" name="tipo">
         <option value="interno">{{'maquinas.interno' | translate}}</option>
         <option value="externo">{{'maquinas.externo' | translate}}</option>
       </select>

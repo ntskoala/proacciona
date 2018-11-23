@@ -81,6 +81,7 @@ private code='1000.0f66ccdef4558f4c6b8f7e21a01e00ce.948fd202bcb8271d23d14b926a69
           response => {
             if (response.success && response.data) {
               console.log('email ticket enviado');
+              this.support = false;
             }
         },
         error =>{

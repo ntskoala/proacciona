@@ -4,12 +4,19 @@
     <mat-toolbar color="accent">{{'protocolo.cuadroProtocolo' | translate}}
     </mat-toolbar>
     <p-dataTable [value]="tabla" [responsive]="true">
-        <p-column *ngFor="let col of cols; let x = index" [field]="col.field" [header]="col.header | translate" [frozen]="col.field == 'protocolo'">
+        <p-column *ngFor="let col of cols; let x = index" [field]="col.field" [header]="col.header | translate"  [frozen]="col.field == 'protocolo'">
+                <ng-template pTemplate="header">
+                       
+                        <span class="vertical cabecera">{{col.header}}</span>
+                    
+                </ng-template>
              <ng-template let-col let-i="rowIndex" let-protocolo="rowData" pTemplate="body">
+                
                 <span *ngIf="col.field == 'protocolo'">{{protocolo[col.field]}}</span>
                 <mat-slide-toggle class="options" (change)="setPermiso(protocolo['idprotocolo'],$event.checked,x,i)" *ngIf="col.field == 'protocolo'"
               [checked]="protocolo['generalSwitch']">
           </mat-slide-toggle>
+        
                 <mat-slide-toggle class="option" (change)="setPermiso(protocolo['idprotocolo'],$event.checked,x,i,col['header'])" *ngIf="col.field != 'protocolo'"
               [checked]="protocolo[col.field]">
           </mat-slide-toggle>

@@ -39,7 +39,15 @@
    </div>
  </mat-card-subtitle>
 
-
+<div class="modal popup" *ngIf="protocolos">
+    <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+        <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
+        </div>
+  <app-protocolos *ngIf="protocolos" (onProtocolosReady)="setProtocolos($event)"></app-protocolos>
+  <div  *ngIf="protocolos" style="height:35px" ></div>
+  <app-protocolos-cuadro *ngIf="protocolos" [items]="elementosLimpieza" [protocolos]="misProtocolosLimpieza"></app-protocolos-cuadro>
+  <div  *ngIf="protocolos" style="height:35px" ></div>
+</div>
 
 
  <div class="contenido">
@@ -59,10 +67,10 @@
    <app-productos-cuadro *ngIf="productos" [items]="elementosLimpieza" [productos]="misProdusctosLimpieza"></app-productos-cuadro>
    <div  *ngIf="productos" style="height:35px" ></div>
 
-   <app-protocolos *ngIf="protocolos" (onProtocolosReady)="setProtocolos($event)"></app-protocolos>
+   <!-- <app-protocolos *ngIf="protocolos" (onProtocolosReady)="setProtocolos($event)"></app-protocolos>
    <div  *ngIf="protocolos" style="height:35px" ></div>
    <app-protocolos-cuadro *ngIf="protocolos" [items]="elementosLimpieza" [protocolos]="misProtocolosLimpieza"></app-protocolos-cuadro>
-   <div  *ngIf="protocolos" style="height:35px" ></div>
+   <div  *ngIf="protocolos" style="height:35px" ></div> -->
   </mat-sidenav> 
 
 

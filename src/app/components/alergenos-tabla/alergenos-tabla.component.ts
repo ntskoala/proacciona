@@ -28,7 +28,7 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
   public productos: ProductoAlergia[];
   public viewAlergenos: boolean;
   //public alergenos:string[]=['Ing Cereales con gluten','Trz Cereales con gluten','Ing Huevos','Trz Huevos','Ing Leche','Trz Leche','Ing Cacahuetes','Trz Cacahuetes','Ing Soja','Trz Soja','Ing Fruits secs de closca','Trz Fruits secs de closca','Ing Apio','Trz Apio','Ing Mostaza','Trz Mostaza','Ing Sésamo','Trz Sésamo','Ing Pescado','Trz Pescado','Ing Crustaceos','Trz Crustaceos','Ing Moluscos','Trz Moluscos','Ing Altramuces','Trz Altramuces','Ing Dioxido de azufre y sulfitos','Trz Dioxido de azufre y sulfitos'];
-  public alergenos:string[]=['Cereales con gluten','Huevos','Leche','Cacahuetes','Soja','Fruits secs de closca','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Dioxido de azufre y sulfitos'];
+  public alergenos:string[]=['Gluten','Huevos','Leche','Cacahuetes','Soja','Fruits secs','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Sulfitos'];
   //public alergenos:string[]=['frutos secos','lacteos','gluten','huevos','otros'];
   public selectedAlergenos:string[]=[];
   public tabla: object[];
@@ -105,7 +105,9 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
         this.tabla.push(JSON.parse(row));
         //let row = '{';
           this.tabla[x]['cols']=[];
-          this.alergenos.forEach(alergeno => {this.tabla[x]['cols'].push({ Ing:false, Trz:false })});
+          // this.alergenos.forEach(alergeno => {this.tabla[x]['cols'].push({ Ing:false, Trz:false })});
+          this.alergenos.forEach(alergeno => {this.tabla[x]['cols'].push({Ing:null})});
+
         let alergenosProducto = [];
   
         if (producto.alergenos)
@@ -117,20 +119,24 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
           let indice = this.alergenos.findIndex((alergia)=>alergia ==ingrediente);
           if (indice >= 0){
           if (tipo == 'Trz'){
-              this.tabla[x]['cols'][indice]['Trz'] =true;
+              this.tabla[x]['cols'][indice]['Ing'] ='Trz';
           }else{
-              this.tabla[x]['cols'][indice]['Ing'] =true;
-          }}
+              this.tabla[x]['cols'][indice]['Ing'] ='Ing';
+          }
+        }else{
+          //this.tabla[x]['cols'][indice]['Ing'] =null;
+          alergenosProducto.splice(alergenosProducto.findIndex((alergiaBorrar)=>alergiaBorrar==alergeno),1);
+        }
           console.log("Alergeno:",alergeno,"indice:",indice);
         });
-   
         x++;
       })
-      console.log("TABLA:",this.tabla)
+      // console.log("TABLA:",this.tabla);
+      // console.log("PRODS:",this.productos)
       this.procesando = false;
     }
   
-    setPermiso(idproducto,tipo,ingrediente,estado){
+    setPermiso(idproducto,tipo,ingrediente,estado,i){
         console.log(idproducto,tipo,ingrediente,estado);
         let indiceProducto = this.productos.findIndex((prod)=>prod.id==idproducto);
           if (!this.productos[indiceProducto].alergenos) this.productos[indiceProducto].alergenos = '[]';
@@ -141,17 +147,36 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
         if ( estado == true){
           if (indice<0){
               alergenosProd.push(alergiaModificar);
+              this.tabla[indiceProducto]['cols'][i]['Ing']=tipo;
           }else{console.log('yatá ese ingrediente')}
         }else{
           if (indice>=0){
               alergenosProd.splice(indice,1);
+              this.tabla[indiceProducto]['cols'][i]['Ing']=null;
           }else{console.log('no estaba ese ingrediente')}
         }
         this.productos[indiceProducto].alergenos = JSON.stringify(alergenosProd);
         console.log(this.productos[indiceProducto].alergenos);
+        if (tipo != 'Ing' || estado != false)
         this.saveItem(this.productos[indiceProducto]);
     }
   
+    cambiaEstado(idproducto,tipo,ingrediente,i){
+      console.log(idproducto,tipo,ingrediente);
+      switch(tipo){
+        case null:
+        this.setPermiso(idproducto,'Ing',ingrediente,true,i);
+        break;
+        case 'Trz':
+        this.setPermiso(idproducto,tipo,ingrediente,false,i);
+        break;
+        case 'Ing':
+        this.setPermiso(idproducto,tipo,ingrediente,false,i);
+        this.setPermiso(idproducto,'Trz',ingrediente,true,i);
+        break;
+      }
+
+    }
   // cambiaEstadoAlergeno(alergeno: string){
   //     let index = this.selectedAlergenos.indexOf(alergeno);
   //     if (index < 0){
@@ -214,7 +239,7 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
     }
     async excel2(){
       this.exportando=true;
-      this.informeData = await this.ConvertToCSV(this.cols, this.tabla);
+      this.informeData = await this.ConvertToCSV(this.alergenos, this.tabla);
     }
     informeRecibido(resultado){
       console.log('informe recibido:',resultado);
@@ -231,12 +256,14 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
       console.log(cabecera,array)
       let informeCabecera=[];
       let informeRows=[];
-      let comentarios = [];
+      let comentarios = ["",""];
+      let lineLeyenda='';
                   var str = '';
                   var row = "";
-                  row += "Producto;"
+                  row += "Producto;" 
                   for (var i = 0; i < cabecera.length; i++) {
-                    row += 'Ing '+cabecera[i]["header"] + ';Trz '+cabecera[i]["header"] + ';';
+                    lineLeyenda+=';';
+                    row += cabecera[i] + ';';
                   }
                   row = row.slice(0, -1);
                   //append Label row with line break
@@ -244,12 +271,24 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
                   informeCabecera = row.split(";");
                   str='';
                   for (var i = 0; i < array.length; i++) {
-                                 
+                              
                       var line =array[i].Producto+";";
       
                     for (var x = 0; x < cabecera.length; x++) {
                     //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
-                    line += array[i]["cols"][x]["Ing"] + ';'+array[i]["cols"][x]["Trz"]+';';
+                    let valor='';
+                    switch (array[i]["cols"][x]["Ing"]){
+                      case 'Ing':
+                      valor = 'Si';
+                      break;
+                      case 'Trz':
+                      valor = 'Trz';
+                      break;
+                      default:
+                      valor = '';
+                      break;
+                    }
+                    line += valor + ';';
                   }
                   line = line.slice(0,-1);
                       //str += line + '\r\n';
@@ -262,7 +301,13 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
                   }else{
                     informe = "Alergias productos proveedores";
                   }
+                  
+                 this.translate.get('produccion.contieneIngrediente').subscribe((desc)=>{comentarios[0]='Si:'+desc+lineLeyenda});
+                 this.translate.get('produccion.contieneTrazas').subscribe((desc)=>{comentarios[1]='Trz:'+desc+lineLeyenda});
+                 console.log(comentarios);
+                 informeRows.push(comentarios[0].split(";"),comentarios[1].split(";"));
                   //return str;
+                  
                   return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
       }
   

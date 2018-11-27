@@ -10,7 +10,7 @@
 
 
 
-<div class="table">
+<div class="table" style="width: 600px;">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
     <span class="cell">
@@ -19,9 +19,9 @@
     <span class="cell">
       <input type="text" [placeholder]="'proveedores.descripcion' | translate" required [(ngModel)]="nuevoItem.descripcion" name="descripcion">
     </span>
-     <span class="cell">
+     <!-- <span class="cell">
     <select-alergenos name="alergenos" [parentAlergenos]="" (selectedAlergenosChange)="setAlergenos($event)"></select-alergenos>
- </span>
+ </span> -->
 
     <span class="cell medium">   
       </span>
@@ -37,10 +37,9 @@
   <div class="header-row">
     <span class="header-cell">{{"produccion.producto" | translate}}</span>
     <span class="header-cell">{{"proveedores.descripcion" | translate}}</span>
-    <span class="header-cell">{{"alergenos" | translate}}</span>
+    <!-- <span class="header-cell">{{"alergenos" | translate}}</span> -->
     <span class="header-cell">{{"proveedores.fichatecnica" | translate}}</span>
-    <span class="header-cell">
-      </span><!--Borrar-->
+    <span class="header-cell"></span><!--Borrar-->
     <span class="header-cell"></span><!--Guardar-->
   </div>
   <div class="divrow"  *ngFor="let item of items; let i = index">
@@ -52,9 +51,9 @@
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)">
     </span>
-     <span class="cell">
+     <!-- <span class="cell">
     <select-alergenos name="alergenos" [parentAlergenos]="item.alergenos" (selectedAlergenosChange)="setAlergenos($event,item.id,i)"></select-alergenos>
- </span>
+ </span> -->
 
 
 

@@ -8,26 +8,49 @@
 
 .cabeceraPar{
     background-color:rgba(201, 235, 79, 0.418);
-    height: 60px;
-    writing-mode: vertical-lr;
+    height: 95px;
+    font-size: 12px;
+    text-align: center;
 }
 .cabeceraImpar{
     background-color:rgba(238, 118, 70, 0.418);
-    height: 60px;
+    height: 95px;
+    font-size: 12px;
+    text-align: center;
     
 }
 .vertical{
     writing-mode: vertical-lr;
+    height: 95px;
 }
 .TRZPar{
     background-color: rgba(240, 222, 65, 0.452);
+    text-align: center;
 }
 .INGPar{
     background-color:rgba(201, 235, 79, 0.418);
+    text-align: center;
 }
 .TRZImpar{
     background-color:rgba(235, 149, 79, 0.418);
+    text-align: center;
 }
 .INGImpar{
     background-color:rgba(238, 118, 70, 0.418);
+    text-align: center;
+}
+
+.myCheck{
+    margin: auto;
+    width: 14px;
+    height: 14px;
+    border: 1px solid black;
+    background-color: azure;
+}
+.checkIng{
+    background-color:blue;
+}
+.checkTrz{
+    background-image: linear-gradient(to bottom right, #fff  50%, blue  50%);
+    min-height: 14px;
 }

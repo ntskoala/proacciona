@@ -345,6 +345,8 @@
     "fecha":"Fecha entrega",
     "tipo medida":"Tipo medida",
     "alergenos":"Alérgenos",
+    "contieneIngrediente":"Contiene el ingrediente",
+    "contieneTrazas":"Contiene trazas de el ingrediente",
     "alert_tanque_origen":"No se ha seleccionado un tanque o lote de origen",
     "alert_cantidad_mayor_cero":"Cantidad tiene que ser un número mayor de cero",
     "alert_cantidad_menor_disponible_origen":"Cantidad tiene que ser menor o igual al disponible en origen",
@@ -528,18 +530,23 @@
       "controlesRealizadosT":"REGISTROS REALIZADOS",
       "controlesRealizadosST":"Registros realizados en los últimos días",
       "logginsT":"ACCESOS",
-      "logginsST":"Accesos y acciones por usuario",
+      "logginsST":"Accesos y acciones de usuario",
       "tablas":{
         "limpieza_realizada":"limpiezas",
         "incidencias":"incidencias",
         "ResultadosControl":"controles",
         "resultadoschecklist":"checklists",
         "mantenimientos_realizados":"mantenimientos",
-        "login": "conexiones"
+        "login": "conexiones",
+        "clientes_distribucion":"entregas cliente",
+        "proveedores_productos":"productos de proveedor",
+        "produccion_orden":"ordenes de produccion",
+        "productos":"productos"
       },
       "acciones":{
         "PUT":"actualizados",
         "POST":"nuevos",
+        "DELETE":"borrados",
         "login":""
       }
     },

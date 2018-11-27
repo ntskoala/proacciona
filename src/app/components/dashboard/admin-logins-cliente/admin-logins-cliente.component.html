@@ -1,4 +1,4 @@
-<mat-card class="card" [ngStyle]="{'height':altura}">
+<mat-card class="cardAdmin" [ngStyle]="{'height':altura}">
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
       <mat-card-title>{{'Dashboard.logginsST' | translate}}</mat-card-title>
@@ -23,7 +23,8 @@
         
         <mat-list-item *ngFor="let log of empresa['logs']"  class="elem" >
             <!-- <span>  -->
-              {{log.usuario}} {{log.total}} {{log.accion}} {{log.tabla}} 
+              {{log.usuario}} {{log.total}} {{"Dashboard.tablas."+log.tabla | translate}} {{"Dashboard.acciones."+log.accion  | translate}} desde {{log['plataforma'] }} 
+              <!-- //{{log.accion}} {{log.tabla}}  -->
           <!-- {{incidencia.origen}} -->
             <!-- </span> -->
         </mat-list-item>

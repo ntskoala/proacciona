@@ -345,6 +345,8 @@
     "fecha":"Data entega",
     "tipo medida":"Tipus messura",
     "alergenos":"al·lergògens",
+    "contieneIngrediente":"Conté l'ingredient",
+    "contieneTrazas":"Conté traces de l'ingredient",
     "alert_tanque_origen":"No ha seleccionat un tanc o lot d'origen",
     "alert_cantidad_mayor_cero":"Quantitat ha de ser un número més gran de zero",
     "alert_cantidad_menor_disponible_origen":"Quantitat ha de ser menor o igual al disponible en origen",
@@ -528,18 +530,23 @@
       "controlesRealizadosT":"REGISTRES REALITZATS",
       "controlesRealizadosST":"Registres realizats els darrers díes",
       "logginsT":"ACCESSOS",
-      "logginsST":"Accessos y accions per usuari",
+      "logginsST":"Accessos y accions d'usuari",
       "tablas":{
         "limpieza_realizada":"neteges",
         "incidencias":"incidencies",
         "ResultadosControl":"controls",
         "resultadoschecklist":"checklists",
         "mantenimientos_realizados":"mantenimients",
-        "login": "conexions"
+        "login": "conexions",
+        "clientes_distribucion":"entregas client",
+        "proveedores_productos":"productes de proveïdor",
+        "produccion_orden":"ordres de producció",
+        "productos":"productes"
       },
       "acciones":{
         "PUT":"actualitzats",
         "POST":"afegits",
+        "DELETE":"esborrats",
         "login": ""
       }
     },

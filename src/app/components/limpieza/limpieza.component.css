@@ -6,6 +6,9 @@
     min-height: 1200px;
     /* overflow: auto; */
 }
+.popup{
+    background: #fff;
+}
 
 .tituloLimpieza{
     position: absolute;

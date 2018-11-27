@@ -39,6 +39,7 @@ import {MenuModule} from 'primeng/menu';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import {PickListModule} from 'primeng/picklist';
 import {MenuItem} from 'primeng/api';
+import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 //import {ChartModule} from 'primeng/primeng';
 
 //**********MY COMPONENTS */
@@ -281,6 +282,7 @@ export function createTranslateLoader(http: HttpClient) {
     MenuModule,
     ContextMenuModule,
     PickListModule,
+    TriStateCheckboxModule,
 /**********MATERIAL */
    // MaterialModule,
    // MatSelectModule,

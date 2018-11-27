@@ -45,7 +45,7 @@ export class AdminLoginsClienteComponent implements OnInit {
               element.tipouser, element.email, element.idempresa,0+orden,element.superuser));
               // this.panels.push(false);
           }
-          // this.loadLogs(7);
+          this.loadResultados(7)
           
           this.calculando=false;
 
@@ -74,16 +74,16 @@ export class AdminLoginsClienteComponent implements OnInit {
                 let accion = '';
                 switch (element.accion){
                   case "login":
-                  accion = '';
+                  accion = 'login';
                   break;
                   case "POST":
-                  accion = 'Nuevos registros';
+                  accion = 'POST';
                   break;
                   case "PUT":
-                  accion = 'Actualizaciones';
+                  accion = 'PUT';
                   break;
                   case "DELETE":
-                  accion = 'Registros Borrados';
+                  accion = 'DELETE';
                   break;
                 }
                 let log = {

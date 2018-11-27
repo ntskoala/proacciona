@@ -99,3 +99,12 @@
     <button mat-button>SHARE</button>
   </mat-card-actions> -->
 </mat-card>
+
+<div class="modal" *ngIf="panels[0] || panels[1] ||panels[2] ||panels[3]">
+  <div class="modalWindowDashboard">
+      <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+          <button  top-left color="accent" mat-mini-fab (click)="closePanel(3)"><mat-icon>skip_previous</mat-icon></button>
+          </div>
+    aa
+  </div>
+</div>

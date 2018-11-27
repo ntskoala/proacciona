@@ -1,10 +1,10 @@
-<mat-toolbar style="width: 1600px !important;" color="accent">{{'PermisosGenerales' | translate}}
+<mat-toolbar style="width: 900px !important;" color="accent">{{'PermisosGenerales' | translate}}
   </mat-toolbar>
 
 
 
 
-<p-table #dt [value]="tabla"  [style]="{'width':'1800px'}"  [loading]="procesando">
+<p-table #dt [value]="tabla"  [style]="{'width':'900px'}"  [loading]="procesando">
     <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
                 <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Descarga Excel" (click)="excel2()" style="float:left"></button>
@@ -15,19 +15,19 @@
 
 
 <ng-template pTemplate="header">
-    <tr [style]="{'width':'1800px','padding':'0px !important'}">
+    <tr [style]="{'width':'900px','padding':'0px !important'}">
         <th style="width:200px; background-color: #eee">{{'Producto' | translate}}</th>
         <span *ngFor="let col of cols;let i = index">
-        <th style="width:100px" colspan="2" [ngClass]="{'cabeceraPar':i%2==0,'cabeceraImpar':i%2!=0}"><span class="vertical">{{col.header | translate}}</span></th>
+        <th style="width:50px; height: 95px;" [ngClass]="{'cabeceraPar':i%2==0,'cabeceraImpar':i%2!=0}"><span class="vertical">{{col.header | translate}}</span></th>
       </span>
     </tr>
-  <tr>
+  <!-- <tr>
     <td  style="width:200px; background-color: #eee"></td>
       <span *ngFor="let col of cols;let i = index">
           <td style="width:50px;"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >ING</td>
           <td style="width:50px;"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >TRZ</td>
       </span>
-  </tr>
+  </tr> -->
 </ng-template>
 <ng-template pTemplate="body" let-producto>
     <tr>
@@ -36,17 +36,22 @@
               </td>
         <span *ngFor="let col of cols;let i = index">
             <td style="width:50px"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >
-            <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Ing',col.header,$event.checked)"
+            <!-- <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Ing',col.header,$event.checked)"
             [checked]="producto['cols'][i]['Ing']">
-        </mat-slide-toggle>
+        </mat-slide-toggle> -->
+        <div class="myCheck" [ngClass]="{'checkIng':producto['cols'][i]['Ing']=='Ing','checkTrz':producto['cols'][i]['Ing']=='Trz'}" (click)="cambiaEstado(producto['idproducto'],producto['cols'][i]['Ing'],col.header,i)"></div>
             </td>
-            <td style="width:50px"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >
+            <!-- <td style="width:50px"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >
                 <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Trz',col.header,$event.checked)"
                 [checked]="producto['cols'][i]['Trz']">
             </mat-slide-toggle>
-                </td>
+                </td> -->
         </span>
     </tr>
+</ng-template>
+<ng-template pTemplate="summary">
+    <div style="display:inline-flex;"><div class="myCheck checkIng"></div><span> {{'produccion.contieneIngrediente' | translate}}</span></div>
+    <div style="display:inline-flex;margin-left: 20px;"><div class="myCheck checkTrz"></div><span> {{'produccion.contieneTrazas' | translate}}</span></div>
 </ng-template>
 </p-table>
 

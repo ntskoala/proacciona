@@ -1,12 +1,19 @@
 .card{
     display: block;
     float: left;
+    width: 400px;
+    height: 280px;
+    padding: 55px 30px 20px 30px;
+    margin: 1px 10px 30px 10px;
+}
+.cardAdmin{
+    display: block;
+    float: left;
     width: 320px;
     height: 280px;
     padding: 55px 30px 20px 30px;
     margin: 1px 10px 30px 10px;
 }
-
 .example-header-image {
     background-image: url('../../../assets/images/logo.jpg');
     background-size: cover;

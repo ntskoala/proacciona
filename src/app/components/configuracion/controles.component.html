@@ -2,7 +2,7 @@
 <div class="modal" *ngIf="procesando">
   <mat-spinner></mat-spinner>
   </div>
-<div class="table">
+<div class="table" style="width: 800px;">
 <span class="tooltip" style="display:table-row-group " matTooltip="{{'configuracion.nuevoControl' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">                         
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #crearControlForm="ngForm" (ngSubmit)="crearControl(crearControlForm.value)">
     <input type="hidden" [(ngModel)]="nuevoControl.id" name="id">
@@ -18,12 +18,12 @@
     <span class="cell">
       <input class="small" type="text" [(ngModel)]="nuevoControl.valormaximo" name="valormaximo">
     </span>
-    <span class="cell">
+    <!-- <span class="cell">
       <input class="small" type="text" [(ngModel)]="nuevoControl.objetivo" name="objetivo">
     </span>
     <span class="cell">
       <input class="small" type="text" [(ngModel)]="nuevoControl.tolerancia" name="tolerancia">
-    </span>
+    </span> -->
     <span class="cell">
       <input class="small" type="text" [(ngModel)]="nuevoControl.critico" name="critico">
     </span>
@@ -46,8 +46,8 @@
     <span class="header-cell">Pla</span>
     <span class="header-cell right">min</span>
     <span class="header-cell right">max</span>
-    <span class="header-cell right">obj</span>
-    <span class="header-cell right">tol</span>
+    <!-- <span class="header-cell right">obj</span>
+    <span class="header-cell right">tol</span> -->
     <span class="header-cell right">crit</span>
     <span class="header-cell right">per</span>
     <span class="header-cell">{{'Periodo' | translate}}</span>
@@ -105,7 +105,7 @@
     
 <p-dataTable #dt [value]="controles"  [csvSeparator]="';'" [exportFilename]="'Controles'"
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)"
- sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'1100px'}">
+ sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'800px'}">
  
 
 <!-- ********** HEADER  ORDEN    -->
@@ -141,8 +141,8 @@
   <p-column field="pla" header="{{'Pla' | translate}}"  [editable]="true" [style]="{'width':'100px'}"></p-column>
   <p-column field="valorminimo" header="{{'min' | translate}}"  [editable]="true"  [style]="{'width':'50px'}"></p-column>
   <p-column field="valormaximo" header="{{'max' | translate}}" [editable]="true"  [style]="{'width':'50px'}"></p-column>
-  <p-column field="objetivo" header="{{'obj' | translate}}"  [editable]="true" [style]="{'width':'50px'}"></p-column>
-  <p-column field="tolerancia" header="{{'tol' | translate}}"  [editable]="true"  [style]="{'width':'50px'}"></p-column>
+  <!-- <p-column field="objetivo" header="{{'obj' | translate}}"  [editable]="true" [style]="{'width':'50px'}"></p-column>
+  <p-column field="tolerancia" header="{{'tol' | translate}}"  [editable]="true"  [style]="{'width':'50px'}"></p-column> -->
   <p-column field="critico" header="{{'crit' | translate}}" [editable]="true"  [style]="{'width':'50px'}"></p-column>
   <p-column  field="fecha" header="{{'fecha' | translate}}" [sortable]="true" [style]="{'width':'110px'}">
       <ng-template let-col let-item="rowData" pTemplate="body" >      

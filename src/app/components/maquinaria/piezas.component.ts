@@ -16,13 +16,18 @@ import { PiezasMaquina } from '../../models/piezasmaquina';
 @Component({
   selector: 'piezas',
   templateUrl: './piezas.component.html',
-  styleUrls:['ficha-maquina.css']
+  styleUrls:['piezas.component.css','ficha-maquina.css']
 })
 export class PiezasComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
+@Input() maquinas:Maquina[];
+public maquinasSelect:any[]=[{label:'cualquiera', value:0}];
 @Output() onPiezas:EventEmitter<PiezasMaquina[]>= new EventEmitter();
 public piezas: PiezasMaquina[] =[]; 
-public nuevoPieza: PiezasMaquina = new PiezasMaquina(0,0,'');
+public cols:any[];
+public nuevoPieza: PiezasMaquina = new PiezasMaquina(0,0,'',0);
+public editPieza: PiezasMaquina;
+public selectedItem:PiezasMaquina;
 public guardar =[];
 public alertaGuardar:boolean=false;
 public cantidad:number=1;
@@ -33,6 +38,8 @@ public verdoc: boolean = false;
 public url=[];
 public foto:string;
 public top:string;
+public displayDialog:boolean;
+
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -40,8 +47,20 @@ public top:string;
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
  //   this.setMantenimientos();
-    
+ this.cols = [
+  { field: 'nombre', header: 'Nombre' },
+  { field: 'maquina', header: 'Maquina' },
+  { field: 'cantidad', header: 'Cantidad' },
+  { field: 'material', header: 'Material' },
+  { field: 'foto', header: 'Foto' }
+];
+this.maquinas.forEach((maquina)=>{this.maquinasSelect.push({label:maquina.nombre, value:maquina.id})})
+
+console.log('Init',this.maquina,this.maquinas);
+  
+  //this.setMantenimientos();
   }
+
   photoURL(i) {
    
     let calc = window.scrollY;
@@ -52,18 +71,27 @@ public top:string;
   }
 
 ngOnChanges(){
+  console.log('Changes',this.maquina,this.maquinas);
     this.setMantenimientos();
 }
   setMantenimientos(){
-    let params = this.maquina.id;
-    let parametros = '&idmaquina=' + params;
+    let parametros
+    if (this.maquina.id > 0){
+     parametros = '&idmaquina=' + this.maquina.id + '&idempresa=' + this.empresasService.seleccionada;;
+    }else{
+       parametros = '&idempresa=' + this.empresasService.seleccionada;
+    }
+    //params=2;
+
+    
+
        // let parametros = '&idempresa=' + seleccionada.id; 
         this.servidor.getObjects(URLS.PIEZAS, parametros).subscribe(
           response => {
             this.piezas = [];
             if (response.success && response.data) {
               for (let element of response.data) {
-                this.piezas.push(new PiezasMaquina(element.id, element.idmaquina, element.nombre, element.cantidad,element.material, element.doc));
+                this.piezas.push(new PiezasMaquina(element.id, element.idmaquina, element.nombre, element.idempresa, element.cantidad,element.material, element.doc));
                 this.guardar[element.id] = false;
                 this.url.push(URLS.DOCS + this.empresasService.seleccionada + '/maquina_piezas/' + element.id +'_'+element.doc);
               }
@@ -71,7 +99,7 @@ ngOnChanges(){
             }
         },
        error=>console.log(error),
-        ()=> console.log("piezas",this.piezas)
+        ()=> {}//console.log("piezas",this.piezas)
         );
   }
 
@@ -85,6 +113,7 @@ ngOnChanges(){
       this.setAlerta('alertas.guardar');
       }
   }
+
   setAlerta(concept:string){
     let concepto;
     this.translate.get(concept).subscribe((valor)=>concepto=valor)  
@@ -98,17 +127,19 @@ ngOnChanges(){
 
  saveItem(pieza: PiezasMaquina) {
     this.guardar[pieza.id] = false;
+    pieza.idempresa = this.empresasService.seleccionada;
     this.alertaGuardar = false;
     let parametros = '?id=' + pieza.id;        
     this.servidor.putObject(URLS.PIEZAS, parametros, pieza).subscribe(
       response => {
         if (response.success) {
           console.log('Pieza updated');
+          this.piezas[this.piezas.findIndex((pz)=>pz.id==pieza.id)] = pieza;
         }
     });
   }
   crearItem() {
-    this.nuevoPieza.idmaquina = this.maquina.id;
+   // this.nuevoPieza.idmaquina = this.maquina.id;
     let nombreOrigen = this.nuevoPieza.nombre;
     for (let x=0;x<this.cantidad;x++){
       if (x>0) this.nuevoPieza.nombre= nombreOrigen + x;
@@ -117,7 +148,7 @@ ngOnChanges(){
           this.cantidad--;
           console.log(this.cantidad,valor,typeof(valor))
           if (valor && this.cantidad == 0){
-            this.nuevoPieza = new PiezasMaquina(0,0,'');
+            this.nuevoPieza = new PiezasMaquina(0,0,'',0);
             this.piezas = this.piezas.slice();
           }
         }
@@ -131,7 +162,7 @@ ngOnChanges(){
       response => {
         if (response.success) {
           item.id = response.id;
-          this.piezas.push(new PiezasMaquina(response.id,item.idmaquina,nombre,item.cantidad,item.material));
+          this.piezas.push(new PiezasMaquina(response.id,item.idmaquina,nombre,item.idempresa,item.cantidad,item.material));
           this.url.push('');
           resolve(true);
         }
@@ -181,6 +212,7 @@ ngOnChanges(){
     let files = target.files;
     //let files = event.srcElement.files;
     let idEmpresa = this.empresasService.seleccionada.toString();
+    i = this.piezas.findIndex((pz)=>pz.id==idItem);
     this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'maquina_piezas',idItem, this.empresasService.seleccionada.toString(),tipo).subscribe(
       response => {
         console.log('doc subido correctamente',files[0].name);
@@ -202,5 +234,48 @@ ngOnChanges(){
     tabla.exportCSV();
     tabla._value = origin_Value;
   }
+
+//************ */
+//************ */
+//************ */
+save() {
+  if (this.editPieza.id>0){
+      this.saveItem(this.editPieza)
+  }else{
+    this.nuevoPieza = this.editPieza;
+    this.crearItem();
+  }
+  this.displayDialog = false;
+}
+close(){
+  this.displayDialog = false;
+}
+delete() {
+  this.checkBorrar(this.editPieza.id);
+  this.displayDialog = false;
+}
+
+showDialogToAdd() {
+  this.alertaGuardar = false;
+  this.editPieza = this.nuevoPieza;
+  this.editPieza.idempresa = this.empresasService.seleccionada;
+  this.displayDialog = true;
+}
+
+onRowSelect(event) {
+  //this.newCar = false;
+  this.alertaGuardar = true;
+  this.editPieza = this.cloneItem(event.data);
+  this.fotoSrc = URLS.DOCS + this.empresasService.seleccionada + '/'+ 'maquina_piezas' + "/" + this.editPieza.id+ "_"+ this.editPieza.doc;
+  this.displayDialog = true;
+}
+cloneItem(p: PiezasMaquina): PiezasMaquina {
+  let pieza: PiezasMaquina=new PiezasMaquina(null,null,null,null);
+  for (let prop in p) {
+      pieza[prop] = p[prop];
+  }
+  return pieza;
+}
+
 
 }

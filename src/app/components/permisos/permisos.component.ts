@@ -63,7 +63,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     ngOnChanges(){
   //    if (this.items.length>=1){
       this.procesando=true;
-      let num = (this.items.length * 90)
+      let num = (this.items.length * 45)
       this.ancho = num + 'px';
       
     switch (this.tipoControl) {

@@ -3,9 +3,31 @@
   /* display:block;
   clear:both; */
       margin-left:50px;
-    min-height: 1200px;
+    /* min-height: 1200px; */
     /* overflow: auto; */
 }
+.tabs{
+    /* min-height: 1100px; */
+    /* height: 280vh; */
+      display: block;
+      /* min-width: 1050px; */
+      /* float: left; */
+      /* overflow-x: hidden; */
+      /* overflow-y: auto; */
+  }
+  .listados{
+/* height: 100vh; */
+  }
+
+.panel-sidenav2 {/* Panel que se abre */
+    /* width:1100px;
+    height:1450px;
+    padding-left: 50px;
+    padding-right: 50px;
+    z-index:9997 !important;
+    overflow: auto !important; */
+     /* overflow: scroll; */
+  }
 .popup{
     background: #fff;
 }
@@ -20,15 +42,7 @@
   width: 100%;
 }
 
-.tabs{
-  /* min-height: 1100px; */
-  height: 280vh;
-    display: flex;
-    min-width: 1050px;
-    float: left;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+
 
 .campo{
   background-color: #fff9c4;

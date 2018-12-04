@@ -106,7 +106,7 @@ incidenciaSelection(){
         if (index > -1){
           this.selectedItem = this.mantenimientos[index]
           this.tablaPosition = index;
-          console.log('***_',index,this.selectedItem)
+          //console.log('***_',index,this.selectedItem)
         }else{
           this.setAlerta('incidencia.noencontrada')
         }
@@ -144,7 +144,7 @@ onRowSelect(evento, tabla: DataTable){
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                 }
-                console.log(this.mantenimientos,this.incidencia)
+                //console.log(this.mantenimientos,this.incidencia)
                 this.incidenciaSelection();
                 this.getIncidencias();
             }
@@ -281,7 +281,7 @@ uploadFunciones(event:any,idItem: number,field?:string) {
   }
 
   exportData(tabla: DataTable) {
-    console.log(tabla);
+    //console.log(tabla);
     let origin_Value = tabla._value;
     tabla.columns.push(new Column())
     tabla.columns[tabla.columns.length-1].field='descripcion';
@@ -327,6 +327,7 @@ getIncidencias(){
           if (response.success && response.data) {
 
             for (let element of response.data) {  
+              //console.log(element.idOrigen)
               this.incidencia[element.idOrigen]["idIncidencia"]=element.id; 
               this.incidencia[element.idOrigen]["estado"]=element.estado;                              
            }

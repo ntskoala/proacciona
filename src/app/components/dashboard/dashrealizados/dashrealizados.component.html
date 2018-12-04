@@ -22,8 +22,13 @@
       </mat-list-item>
     </mat-list> -->
     <mat-spinner *ngIf="calculando"></mat-spinner>  
-    <p-chart type="line" [data]="data"  *ngIf="!calculando" (onDataSelect)="selectData($event)"></p-chart>
-
+    <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando" (onDataSelect)="selectData($event)"></p-chart> -->
+    <mat-list>
+        <mat-list-item (click)="open()">
+          {{resultadoscontrol.length}} {{'lecturas' | translate}} de {{columnas.length}} {{'Controles' | translate}}
+      </mat-list-item>
+      <mat-divider></mat-divider>
+     </mat-list> 
   </mat-card-content>
   <mat-card-actions>
       <button [ngClass]="{'selected2':days==7}" mat-button (click)="loadResultados(7)">7 {{'dias' | translate}}</button>
@@ -31,3 +36,12 @@
       <button [ngClass]="{'selected2':days==30}" mat-button (click)="loadResultados(30)">30 {{'dias' | translate}}</button>
     </mat-card-actions>
 </mat-card>
+
+<div class="modal" *ngIf="verGrafico">
+    <div class="modalWindowDashboard">
+        <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+            <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>
+            </div>
+            <p-chart type="line" [data]="data"  *ngIf="!calculando" (onDataSelect)="selectData($event)"></p-chart>
+    </div>
+  </div>

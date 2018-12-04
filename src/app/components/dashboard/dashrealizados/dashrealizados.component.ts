@@ -34,6 +34,7 @@ export class DashrealizadosComponent implements OnInit {
   public tabla: Object[] = [];
   public tabla2: Object[] = [];
   public days:number;
+  public verGrafico:boolean=false;
   constructor(public servidor: Servidor,public empresasService: EmpresasService,
     public router: Router,
     public route: ActivatedRoute) { }
@@ -302,4 +303,12 @@ filtrarFechas(fecha) {
   //     }
   //     this.calculando = false;
   // }
+
+  open(){
+    console.log('ver Gráfico')
+    this.verGrafico=true;
+  }
+  close(){
+    this.verGrafico=false;
+  }
   }

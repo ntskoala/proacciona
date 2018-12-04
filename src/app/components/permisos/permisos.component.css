@@ -1,6 +1,10 @@
 .options{
-    float: right;
+    /* float: right; */
 }
 .option{
-    margin-left:40%;
+    /* margin-left:40%; */
+}
+.cabecera{
+    height: 95px;
+    font-size: 12px;
 }

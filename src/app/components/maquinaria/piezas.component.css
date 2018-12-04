@@ -1,0 +1,10 @@
+.fotoPieza{
+    width:295px;
+    float: left;
+    height:300px;
+}
+
+.fotoP{
+    max-width: 260px;
+    max-height: 260px;
+}

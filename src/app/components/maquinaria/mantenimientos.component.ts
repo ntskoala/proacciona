@@ -105,7 +105,7 @@ ngOnChanges(){
         let widz = 430 + (this.mantenimientos.length*50);
             if ( document.getElementById("testid") !== null)
             document.getElementById("testid").style.minHeight= widz+"px";
-            console.log("mantenimientos preventivos",this.mantenimientos);
+           // console.log("mantenimientos preventivos",this.mantenimientos);
         }
         );
   }

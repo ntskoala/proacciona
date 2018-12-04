@@ -104,10 +104,11 @@
   </form> 
  expandableRows="true"  rowExpandMode="single"-->
 
- <div style="position:absolute; left:0px; top:140px; min-width:900px">
+ <!-- <div style="position:absolute; left:0px; top:140px; min-width:900px"> -->
   <p-dataTable #DT [value]="calibraciones" 
   [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
-  [csvSeparator]="';'" [exportFilename]="'Maquinaria_calibraciones'" [tableStyle]="{'width':'900px'}">
+  [csvSeparator]="';'" [exportFilename]="'Maquinaria_calibraciones'" [tableStyle]="{'width':'900px'}"
+  [rows]="25" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]">
   <p-header>
       <div class="ui-helper-clearfix">
           <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -176,4 +177,4 @@
     </p-column>
 
 </p-dataTable>
- </div>
+ <!-- </div> -->

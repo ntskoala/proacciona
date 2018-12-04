@@ -113,8 +113,31 @@ nav {
   min-height: 500px;
   margin: auto;
   padding: 40px;
-
+  margin-top: 20px;
 }
+
+.modalPanel {
+  position: absolute;
+  top: -80px;
+  left: -25px;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+.modalPopup{
+  background: #fff;
+  border: 2px solid #fbc02d;
+  width: 90%;
+  height: 285vh;
+  /* height: 90%; */
+  /* min-height: 500px; */
+  margin: auto;
+  padding: 40px;
+  margin-top: 10px;
+  overflow-y: auto;
+}
+
 .titulo {
   font-size: 1.2rem;
   color: #f44336;
@@ -218,7 +241,7 @@ background-color: #fff;
   margin-top: -20px;
   width: 55px;
   min-width: 40px;
-  height: 300vh;
+  height: calc(100VH - 170px);
   float: left;
   background-color: grey;
 }
@@ -324,7 +347,7 @@ top: 0px;
   flex-wrap: wrap;
   /*max-width: 1050px;
   left: 75px;*/
-  margin: 25px;
+  margin: 10px 10px 0px 25px;
   min-width: calc(100% - 120px);
   padding-right: 75px;
 }
@@ -867,4 +890,20 @@ width: 400px;
  border-width: 3px;
  border-radius: calc(.2em + 3px);
  box-shadow: inset 0 0 0 1px hsl(216, 80%, 50%);
+}
+
+.ui-datatable{
+  border-radius: 5px !important;
+}
+/*
+***********************
+* CUSTOM CONTROLS MATEIRAL *
+***********************
+*/
+
+.mat-toolbar{
+  border-radius: 5px;
+}
+.mat-card{
+  border-radius: 5px !important;
 }

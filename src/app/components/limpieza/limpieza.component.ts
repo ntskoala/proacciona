@@ -106,6 +106,7 @@ cambioMenu(opcion: string){
     console.log ('$$$$',valor,this.subMenu, opcion)
     if (valor=="open")
       {
+        
         console.log ('abriendo.-..')
       this.closeSideNav().then(
         (resultado)=>{

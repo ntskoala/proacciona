@@ -1,8 +1,7 @@
 <mat-card>
 <h2 class="center">{{'maquinas.CalendarioGeneralMantenimiento' | translate}}</h2>
 <p-schedule [height]="410"  [contentHeight]="410"  [aspectRatio]="3" [events]="events" [header]="headerCalendar"  [locale]="locale" 
- [eventLimit]="2" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar
- [style]="{'width':'900px'}">
+ [eventLimit]="2" [editable]="false" dateFormat="dd-mm-yy" (onEventClick)="handleEventClick($event)" #calendar>
 </p-schedule>
 <!--(onDayClick)="handleDayClick($event)"-->
 <mat-card style="height:66px">

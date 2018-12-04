@@ -19,6 +19,7 @@ public controles = [];
 public checklists = [];
 public limpiezas = [];
 public mantenimientos = [];
+public items =[];
 public panels: boolean[] = [false,false,false,false];
 public altura:string='';
   constructor(public servidor: Servidor,public empresasService: EmpresasService) { }
@@ -78,6 +79,13 @@ public altura:string='';
     
     openPanel(panel){
       this.panels[panel]=true;
-      this.altura = "100%"
+      this.altura = "100%";
+    }
+
+    open(data){
+      this.items=data;
+    }
+    close(){
+      this.items=[]
     }
 }

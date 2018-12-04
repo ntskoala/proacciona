@@ -111,7 +111,7 @@ public top = '50px';
             }
         },
         error=>console.log(error),
-        ()=> console.log("mantenimientos",this.mantenimientos)
+        ()=> {}//console.log("mantenimientos",this.mantenimientos)
         );
         
   }

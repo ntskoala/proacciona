@@ -116,10 +116,11 @@
 
 
 
-<div style="position:absolute; left:0px; top:140px; min-width:1100px">
+<!-- <div style="position:absolute; left:0px; top:140px; min-width:1100px"> -->
     <p-dataTable #DT [value]="mantenimientos"  expandableRows="true"  rowExpandMode="single"
     [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
-    [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'" [tableStyle]="{'width':'1100px'}">
+    [csvSeparator]="';'" [exportFilename]="'Mantenimientos_Preventivos'" [tableStyle]="{'width':'1100px'}"
+    [rows]="25" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]">
     <p-header>
         <div class="ui-helper-clearfix">
             <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -132,11 +133,11 @@
     </p-header>
 
     <!--************ ORDEN ***************************-->
-        <p-column field="orden" header="orden" [sortable]="true" [editable]="false">
+        <p-column field="orden" header="orden" [sortable]="true" [editable]="false" [style]="{'width':'115px'}">
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
         <mat-icon>import_export</mat-icon>
         </ng-template>
-        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
+        <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >    
          <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
         <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>
         <!-- <div class="orden" >{{item.orden}}</div>         -->
@@ -189,4 +190,4 @@
 
   </p-dataTable>
 
-</div>
+<!-- </div> -->

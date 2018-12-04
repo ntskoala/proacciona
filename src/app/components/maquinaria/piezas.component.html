@@ -7,7 +7,7 @@
       </div>
   </div>
 </div>
-<span class="cell tooltip" matTooltip="{{'maquinas.nuevaPieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">        
+<!-- <span class="cell tooltip" matTooltip="{{'maquinas.nuevaPieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">        
 <div class="table">
     <div class="header-row">
         <span class="header-cell">{{'maquinas.pieza' | translate}}</span>
@@ -59,41 +59,7 @@
 </div>
 </span>
 
-  <!-- <form class=" row" #actualizaForm="ngForm" (ngSubmit)="actualizarItem(actualizaForm.value)" *ngFor="let pieza of piezas; let i = index">
-    <input type="hidden" [(ngModel)]="pieza.id" name="id">
-    <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.nombre" name="nombre" (keyup)="modificarItem(pieza.id)">
-    </span>
-    <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="small" type="text" [(ngModel)]="pieza.cantidad" name="cantidad" (keyup)="modificarItem(pieza.id)">
-    </span>
-  <span class="cell">
-      <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="pieza.material" name="material" (keyup)="modificarItem(pieza.id)">
-    </span>
-    <span class="cell">
-     <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!pieza.doc" mat-mini-fab color="accent" (click)="photoURL(i)" type="button">
-        <span class="material-icons">photo_camera</span>
-      </button>
-    </span>
-    <span class="cell mini-fab">
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, pieza.id,i)" accept=".gif,.jpg,.jpeg,.png"/>
-    </span>    
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" (click)="checkBorrar(pieza.id)" type="submit">
-        <span class="material-icons">close</span>
-      </button>
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" [disabled]="!guardar[pieza.id]" type="submit">
-        <span class="material-icons">check</span>
-      </button>                
-    </span>
-  </form> -->
 
-<div style="position:absolute; left:0px; top:140px; min-width:650px">
 <p-dataTable #DT [value]="piezas" 
 [editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="0" 
 [csvSeparator]="';'" [exportFilename]="'PiezasMaquinaria'" [tableStyle]="{'width':'650px'}"
@@ -111,7 +77,7 @@
   <p-column field="cantidad" header="{{'maquinas.cantidad' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
   <p-column field="material" header="{{'maquinas.material' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
  
-  <!--*****  subir/ver FOTO  *********-->
+  
   <p-column field="doc" header="{{'foto' | translate}}" [style]="{'width':'130px'}">
       <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
     <span class="cell small">
@@ -145,8 +111,7 @@
     </ng-template>   
   </p-column>
 
-</p-dataTable>
-</div>
+</p-dataTable> -->
 
 
 
@@ -154,4 +119,104 @@
     <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
   <img   class="iframe" [src]="foto">
   </div>
+  
+
+
+  <p-table [columns]="cols" [value]="piezas" selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+      <ng-template pTemplate="caption">
+          {{'maquinas.piezas' | translate}}
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+          <tr class="yellow">
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns">
+                <span *ngIf="col.field != 'maquina'">
+                  {{rowData[col.field]}}
+                </span>
+                <span *ngIf="col.field == 'maquina'">
+                    <p-dropdown readonly="true" [options]="maquinasSelect" [(ngModel)]="rowData['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                </span>
+              </td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="summary" let-rowData>
+          <div style="text-align:left">
+              <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="{{'add' | translate}}"></button>
+          </div>
+      </ng-template>    
+  </p-table>
+
+
+
+
+
+
+  <p-dialog header="Edit {{'maquinas.pieza' | translate}}" [(visible)]="displayDialog" [closeOnEscape]="true" [responsive]="true"  [width]="630">
+    <div class="fotoPieza" *ngIf="editPieza"><img class="fotoP" [src]="fotoSrc" (error)="fotoSrc='/assets/images/noimage.png'" width="260px" height="260px">
+    
+      <!-- <span class="cell small">
+          <span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+                <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!editPieza.doc" mat-mini-fab color="accent" (click)="photoURL(i,'doc',editPieza.doc)" type="button">
+                  <span class="material-icons">photo_camera</span>
+                </button>
+          </span>
+              </span>-->
+              <span class="cell mini-fab" *ngIf="alertaGuardar">
+          <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
+                  <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'}}"></label>                
+                  <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'}}" class="inputfile" type="file" (change)="uploadImg($event, editPieza.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
+          </span>
+                </span> 
+    </div>
+    
+      <div style="width:300px" class="ui-g ui-fluid" *ngIf="editPieza">
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                  <label for="nombre">Nombre</label>
+              </div>
+              <div class="ui-g-8">
+                  <input pInputText id="nombre" [(ngModel)]="editPieza.nombre" />
+              </div>
+          </div>
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                  <label for="year">Maquina</label>
+              </div>
+              <div class="ui-g-8">
+                  <p-dropdown [options]="maquinasSelect" [(ngModel)]="editPieza.idmaquina" [style]="{'width':'160px'}"></p-dropdown>
+              </div>
+          </div>
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                  <label for="cantidad">Cantidad</label>
+              </div>
+              <div class="ui-g-8">
+                  <input pInputText id="cantidad" [(ngModel)]="editPieza.cantidad" />
+              </div>
+          </div>
+          <!-- <div class="ui-g-12">
+              <div class="ui-g-4">
+                  <label for="foto">Foto</label>
+              </div>
+              <div class="ui-g-8">
+                  <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'}}" class="uploadFotoButton" type="file" (change)="uploadImg($event, editPieza.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
+              </div>
+          </div> -->
+      </div>
+      <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-close" (click)="close()" label="{{'cerrar' | translate}}"></button>
+              <button *ngIf="alertaGuardar" type="button" pButton icon="fa fa-close" (click)="delete()" label="{{'eliminar' | translate}}"></button>
+              <button *ngIf="alertaGuardar" type="button" pButton icon="fa fa-check" (click)="save()" label="{{'guardar' | translate}}"></button>
+              <button *ngIf="!alertaGuardar" type="button" pButton icon="fa fa-check" (click)="save()" label="{{'nuevo' | translate}}"></button>
+          </div>
+      </p-footer>
+  </p-dialog>
   

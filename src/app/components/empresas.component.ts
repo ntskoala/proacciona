@@ -157,7 +157,7 @@ if (evento){
         // this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
         // this.empresasService.seleccionarEmpresa(this.empresa);
         // this.permiso = true;
-        this.irAlMenu('informes')
+        this.irAlMenu('dashboard')
         break;
       default:
         // USUARIO SIN PERMISOS, COMO HA LLEGADO HASTA AQUI???
@@ -184,6 +184,9 @@ irAlMenu(menuDefecto?:string){
   this.setPermisos(empresa);
   this.permiso=true;
       switch(menuDefecto){
+        case "dashboard":
+        this.selectedMenu = "dashboard";
+        break;
         case "limpieza_realizada":
         this.selectedMenu = "limpieza";
         break;

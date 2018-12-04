@@ -40,8 +40,14 @@ export class UsuariosComponent implements OnInit {
     if (this.empresasService.administrador == false) {
       this.setEmpresa(this.empresasService.empresaActiva.toString());
     }
+    this.traduceOpciones();
   }
-
+  traduceOpciones(){
+    if (localStorage.idioma=='cat'){
+    this.tipos=[{label:'Operari', value:'Operario'},{label:'Gerent', value:'Gerente'},{label:'Manteniment', value:'Mantenimiento'}];
+    this.superusers=[{label:'Activat', value:1},{label:'Desactivat', value:0}];
+    } 
+  }
   setEmpresa(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
     let parametros = '&idempresa=' + params;

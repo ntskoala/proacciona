@@ -26,6 +26,7 @@ public subMenu:string=null;
 public selectedTab: number=null;
 public idmaquinaURL:number=null;
 public piezas:any;
+public inventarioPiezas:boolean;
   constructor(public empresasService: EmpresasService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -69,6 +70,9 @@ cambioMenu(opcion: string){
               case "lubricante":
                 this.lubricante=true;
                 break;
+                case "inventarioPiezas":
+                this.inventarioPiezas=true;
+                break;
             }
              this.subMenu = opcion;   
           });
@@ -88,6 +92,9 @@ cambioMenu(opcion: string){
               case "lubricante":
                 this.lubricante=true;
                 break;
+                case "inventarioPiezas":
+                this.inventarioPiezas=true;
+                break;
             }
               this.subMenu = opcion;
               this.snCalendar.toggle();
@@ -105,6 +112,7 @@ cambioMenu(opcion: string){
     //this.snCalendar.close();
     this.calendario=false;
     this.lubricante=false;
+    this.inventarioPiezas=false;
      resolve('ok')
       });
   }

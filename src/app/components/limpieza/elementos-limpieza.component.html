@@ -1,12 +1,5 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<!-- <div class="modal" *ngIf="modal2">
-  <div class="foto-window">
-      <span class="close material-icons" (click)="cerrarFoto()">close</span>
-      <div class="foto">
-        <img src="{{fotoSrc}}">
-      </div>
-  </div>
-</div> -->
+
  <div class="modal" *ngIf="procesando">
 <mat-spinner></mat-spinner>
 </div>
@@ -31,7 +24,6 @@
       <input type="text" [placeholder]="'limpieza.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
     </span>
     <span class="medium cell">
-      <!--<ng2-datepicker type="date" name="fecha" [(ngModel)]="nuevoMantenimiento.fecha"></ng2-datepicker>-->
       <p-calendar [inputStyle]="{'width':'100px'}" placeholder="fecha" [(ngModel)]="nuevoItem.fecha" [locale]="es" dateFormat="dd/mm/yy"  name="fecha"></p-calendar>
     </span>
     <span class="medium cell small">
@@ -79,6 +71,7 @@
     </span>
   </form>
   </div>
+
  
 
 </span>
@@ -91,7 +84,8 @@
 
 
 
-<div style="position:absolute; left:0px; top:140px; min-width: 900px">
+<!-- <div style="position:absolute; left:0px; top:140px; min-width: 900px"> -->
+  <!-- <div> -->
   <p-dataTable #DT [value]="items"  expandableRows="true"  rowExpandMode="single" (onRowExpand)="setExpanded($event)"
   [editable]="true"  [responsive]="true" (onEditInit)="onEdit($event)" sortField="orden" [sortOrder]="1" 
   [csvSeparator]="';'" [exportFilename]="'Elementos_limpieza'"
@@ -237,7 +231,7 @@
     <!-- <p-column field="orden" header="orden" [sortable]="true"></p-column>     -->
     <!-- <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer> -->
 </p-dataTable>
-</div>
+<!-- </div> -->
 
 
 

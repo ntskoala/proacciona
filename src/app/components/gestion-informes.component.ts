@@ -32,7 +32,7 @@ export class GestionInformesComponent implements OnInit{
           this.cambiarTab(1);
           break;
           default:
-          this.cambiarTab(0);
+          this.cambiarTab(2);
           break;
 
         }

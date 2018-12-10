@@ -5,13 +5,15 @@
         
 
         <app-dashrealizados></app-dashrealizados> -->
-        <div *ngIf="!empresasService.administrador">
+        <div *ngIf="empresasService.seleccionada" class="companyDash">
         <app-dashincidencias class="module"></app-dashincidencias>
         <app-alertasControles class="module"></app-alertasControles>
         <app-dashrealizados class="module"></app-dashrealizados>
         <app-uso class="module"></app-uso>
         </div>
-        <div *ngIf="empresasService.administrador">
+        
+        <div *ngIf="empresasService.administrador" class="adminDash">
+                <h2 class="center">Admin Dashboard</h2>
                 <app-admin-controles-cliente></app-admin-controles-cliente>
                 <app-admin-incidencias-cliente></app-admin-incidencias-cliente>
                 <app-admin-logins-cliente></app-admin-logins-cliente>

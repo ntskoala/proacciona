@@ -23,6 +23,7 @@ export class UsoComponent implements OnInit {
   acciones:number[];
   labels:string[];
   usuarios: Usuario[] = [];
+  public items =[];
   public panels: boolean[] = [];
   public altura:string;
 public calculando: boolean=false;
@@ -117,9 +118,19 @@ loadLogs(periodo?:number){
                         "total":element.total});
                 }
                  console.log('Logs',this.logs);
+                 this.applyTotalsToUsers();
                 }
                 this.calculando = false;
             });
+    }
+
+    applyTotalsToUsers(){
+      this.usuarios.forEach((user)=>{
+        //*****USO EL CAMPO SUPERUSER QUE AQUÍ NO SE UTILIZA PARA ALMACENAR EL TOTAL DE ACCIONES */
+        user.superuser = this.logs.filter((log)=>log.idusuario==user.id).map((log)=>{return log.total}).reduce((Acumulado,actual)=>{
+          return parseInt(Acumulado) + parseInt(actual);
+        },0);
+      })
     }
 
     closePanel(panel){
@@ -150,6 +161,14 @@ loadLogs(periodo?:number){
       return altura+'px';
     }
     
+    open(data){
+      this.items=this.logs.filter((log)=>log.idusuario==data);
+    }
+    close(){
+      this.items=[]
+    }
+
+
 
 // loadLogs(periodo?:number){
 //     if (!periodo) periodo = 7;

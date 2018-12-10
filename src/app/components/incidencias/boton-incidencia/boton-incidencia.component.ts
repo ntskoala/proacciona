@@ -102,6 +102,7 @@ setOrigen(){
   }
 }
 loadUsuarios(){
+  console.log('LoadUsersIncidencias',this.origen);
   let params = this.empresasService.seleccionada;
   let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
       this.servidor.getObjects(URLS.STD_ITEM, parametros2).subscribe(

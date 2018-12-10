@@ -16,6 +16,12 @@
        <div  class="tooltip" matTooltip="{{'maquinas.calendarios' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
         <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" mat-mini-fab (click)="cambioMenu('calendario')"><mat-icon>date_range</mat-icon></button> 
         </div>
+
+
+    <div class="tooltip" matTooltip="{{'planificaciones.permisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+            <button class="opcionBoton" [disabled]="!maquina" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" mat-mini-fab (click)="cambioMenu('permiso')"><mat-icon>vpn_key</mat-icon></button>
+    </div>
+
      <div class="tooltip" matTooltip="{{'maquinas.lubricantes' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
     <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('lubricante')"><mat-icon>opacity</mat-icon></button>
     </div>
@@ -35,6 +41,10 @@
 
 
         <calendarios *ngIf="calendario" [maquinas]="maquinas" (newMantenimientoRealizadoEmit)="nuevoMantenimientoRealizado($event)"></calendarios>
+        <app-permisos *ngIf="permiso" [tipoControl]="'maquinaria'" [items]="mantenimientosMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+        <div class="space"></div>
+        <app-permisos *ngIf="permiso" [tipoControl]="'calibracion'" [items]="calibracionesMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+
         <lubricantes *ngIf="lubricante"></lubricantes>
         <piezas  [maquina]="maquinas[0]" [maquinas]="maquinas" *ngIf="inventarioPiezas"></piezas>
       </div>
@@ -59,10 +69,10 @@
       <div  style="margin-top:0px">
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>
-  <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  [maquina]="maquina" [Piezas]="piezas" *ngIf="maquina"></mantenimientos></mat-tab>  
+  <mat-tab label="{{'maquinas.mantenimientos_preventivos' | translate}}"><span class="space"></span><mantenimientos id="testid" class="tabs"  (onMantenimientosMaquina)="setElementosMantenimiento($event)" [maquina]="maquina" [Piezas]="piezas" *ngIf="maquina"></mantenimientos></mat-tab>  
 <mat-tab label="{{'maquinas.mantenimientos_realizados' | translate}}"><span class="space"></span><mantenimientos-realizados class="tabs" [maquina]="maquina" [nuevo]="nuevoMantenimientoR"  [Piezas]="piezas"  *ngIf="maquina"></mantenimientos-realizados></mat-tab>  
 <mat-tab label="{{'maquinas.mantenimientos correctivos' | translate}}"><span class="space"></span><mantenimientos-correctivos class="tabs" [maquina]="maquina"  [Piezas]="piezas"  *ngIf="maquina"></mantenimientos-correctivos></mat-tab>
-  <mat-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" [maquina]="maquina" *ngIf="maquina"></calibraciones></mat-tab>
+  <mat-tab label="{{'maquinas.calibraciones' | translate}}"><span class="space"></span><calibraciones id="calibraciones" class="tabs" (onCalibracionesMaquina)="setElementosCalibracion($event)" [maquina]="maquina" *ngIf="maquina"></calibraciones></mat-tab>
   <mat-tab label="{{'maquinas.piezas' | translate}}"><span class="space"></span><piezas class="tabs" [maquina]="maquina" [maquinas]="maquinas"  (onPiezas)="setPiezas($event)" *ngIf="maquina"></piezas></mat-tab>
 </mat-tab-group>
       </div>

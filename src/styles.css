@@ -116,12 +116,13 @@ nav {
   margin-top: 20px;
 }
 
+
 .modalPanel {
   position: absolute;
   top: -80px;
   left: -25px;
   width: 100vw;
-  height: 100vh;
+  height: 290vh;
   background: rgba(0, 0, 0, 0.6);
   z-index: 10;
 }
@@ -137,7 +138,17 @@ nav {
   margin-top: 10px;
   overflow-y: auto;
 }
-
+.Dashcard{
+  display: block;
+  float: left;
+  width: 480px;
+  height: 280px;
+  padding: 55px 30px 20px 30px;
+  margin: 1px 10px 30px 10px;
+  min-height: 280px !important;
+  max-height: 280px !important;
+  overflow-y: auto;
+}
 .titulo {
   font-size: 1.2rem;
   color: #f44336;
@@ -247,8 +258,8 @@ background-color: #fff;
 }
 
 .opcionBoton{
-  margin-left:6px;
-  margin-top:25px;
+  margin-left:6px !important;
+  margin-top:25px !important;
 }
 
 .selected{
@@ -801,7 +812,7 @@ width: 400px;
   height:1450px;
   padding-left: 50px;
   padding-right: 50px;
-  z-index:9997 !important;
+  /* z-index:9997 !important; */
   overflow: auto !important;
    /* overflow: scroll; */
 }
@@ -906,4 +917,7 @@ width: 400px;
 }
 .mat-card{
   border-radius: 5px !important;
+}
+.mat-list-item{
+  border-bottom: lightgrey solid 1px;
 }

@@ -157,7 +157,7 @@ if (evento){
         // this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
         // this.empresasService.seleccionarEmpresa(this.empresa);
         // this.permiso = true;
-        this.irAlMenu('dashboard')
+        this.irAlMenu('Controles')
         break;
       default:
         // USUARIO SIN PERMISOS, COMO HA LLEGADO HASTA AQUI???

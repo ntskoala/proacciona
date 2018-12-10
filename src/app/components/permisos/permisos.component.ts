@@ -8,6 +8,7 @@ import { URLS } from '../../models/urls';
 import { Usuario } from '../../models/usuario';
 import { PermissionUserPlan } from '../../models/permissionuserplan';
 import { PermissionUserLimpieza } from '../../models/permissionuserlimpieza';
+import { PermissionMaquinaria,PermissionCalibracion } from '../../models/permissionmaquinaria';
 import { PermissionUserControl } from '../../models/permissionusercontrol';
 import { PermissionUserChecklist } from '../../models/permissionuserchecklist';
 
@@ -73,7 +74,12 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
       case "limpiezas":
         this.entidad = "&entidad=permissionlimpieza";
         break;
-
+        case "maquinaria":
+        this.entidad = "&entidad=permissionMaquinaria";
+        break;
+        case "calibracion":
+        this.entidad = "&entidad=permissionCalibracion";
+        break;
       case "conroles":
 
         break;
@@ -167,7 +173,12 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
                 case "limpiezas":
                   idItem = element.idelementolimpieza;
                   break;
-
+                case "maquinaria":
+                  idItem = element.idmantenimiento;
+                  break;
+                case "calibracion":
+                  idItem = element.idcalibracion;
+                  break;
                 case "conroles":
 
                   break;
@@ -303,6 +314,12 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
         break;
       case "limpiezas":
         permiso = new PermissionUserLimpieza(null,user, idControl, this.empresasService.seleccionada);
+        break;
+      case "maquinaria":
+        permiso = new PermissionMaquinaria(null,user, idControl, this.empresasService.seleccionada);
+        break;
+        case "calibracion":
+        permiso = new PermissionCalibracion(null,user, idControl, this.empresasService.seleccionada);
         break;
       case "conroles":
         break;

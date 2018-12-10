@@ -5,6 +5,7 @@ import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
+ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 
 @Component({
   selector: 'maquinaria',
@@ -17,6 +18,8 @@ public maquina: Maquina;
 public calendario: boolean = false;
 public lubricante: boolean = false;
 public maquinas: Maquina[];
+public mantenimientosMaquina: MantenimientosMaquina[];
+public calibracionesMaquina: MantenimientosMaquina[];
 public nuevoMantenimientoR: number;
 public incidencia: any;
 public permiso:boolean=false;
@@ -66,6 +69,9 @@ cambioMenu(opcion: string){
             switch (opcion){
               case "calendario":
                 this.calendario=true;
+                break;
+            case "permiso":
+            this.permiso=true;
                 break;
               case "lubricante":
                 this.lubricante=true;
@@ -133,6 +139,13 @@ seleccionMaquina($event){
 
 loadMaquinas($event){
 this.maquinas = $event;
+}
+
+setElementosMantenimiento(mantenimientosRecibidos){
+  this.mantenimientosMaquina = mantenimientosRecibidos;
+}
+setElementosCalibracion(calibracionesRecibidas){
+  this.calibracionesMaquina = calibracionesRecibidas;
 }
 
 calendarios(){

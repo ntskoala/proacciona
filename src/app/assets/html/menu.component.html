@@ -5,8 +5,8 @@
         <span class="material-icons">business</span>
       </button>
       </div>
-      <div class="tooltip" matTooltip="{{'menu.dashboard' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
-          <button [ngClass]="{'selected': subMenu == 'dashboard'}" [disabled]="!empresasService.empresaActiva" (click)="setSeleccion('dashboard')" class="opcion" mat-mini-fab color="accent" >
+      <div *ngIf="empresasService.administrador" class="tooltip" matTooltip="{{'menu.dashboard' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+          <button [ngClass]="{'selected': subMenu == 'dashboard'}" [disabled]="!empresasService.empresaActiva && !empresasService.administrador" (click)="setSeleccion('dashboard')" class="opcion" mat-mini-fab color="accent" >
           <span class="material-icons">slow_motion_video</span>
         </button>
         </div>

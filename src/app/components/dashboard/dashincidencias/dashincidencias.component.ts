@@ -71,7 +71,8 @@ export class DashincidenciasComponent implements OnInit {
   }
   gotoOrigen(item){
     console.log('goto Origen',item);
-    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ item.origenasociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
+    let origenAsociado = item.origenasociado || 'incidencias'
+    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ origenAsociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
     //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     this.router.navigate([url]);

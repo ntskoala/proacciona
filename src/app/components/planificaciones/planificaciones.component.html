@@ -1,9 +1,10 @@
 <div class="modal" *ngIf="planRealizado">
   <div class="ficha">
-    <!-- <button color="accent" mat-raised-button (click)="planRealizado=NULL">{{'planificaciones.cerrar' | translate}}</button> -->
     <app-plan-realizado class="tabs" [planRealizado]="planRealizado" (opnenedmodal)="planRealizado=$event"></app-plan-realizado>
   </div>
 </div>
+
+
 <mat-card>
     <mat-card-title>
       <mat-toolbar color="accent" class="toolbar-principal">
@@ -14,22 +15,13 @@
     </mat-card-title>
  <mat-card-subtitle>
 
-  <!-- <div class="calendarios">
-  <button color="accent" mat-raised-button (click)="calendarios()">{{'planificaciones.calendarios' | translate}}</button>
-  <button color="accent" mat-raised-button (click)="familias()">{{'planificaciones.familias' | translate}}</button>
-  <button color="accent" mat-raised-button (click)="permisos()">{{'planificaciones.permisos' | translate}}</button>
-   </div> -->
+
 
    
   <div class="botonera">
-    
      <div  class="tooltip" matTooltip="{{'planificaciones.calendario' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
       <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" mat-mini-fab (click)="cambioMenu('calendario')"><mat-icon>date_range</mat-icon></button> 
       </div>
-
-   <!-- <div class="tooltip" matTooltip="{{'planificaciones.familias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
-  <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'calendario'}" color="accent" mat-mini-fab (click)="cambioMenu('familia')"><mat-icon>group</mat-icon></button>
-</div> -->
 
    <div class="tooltip" matTooltip="{{'planificaciones.permisos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'permiso'}" color="accent" mat-mini-fab (click)="cambioMenu('permiso')"><mat-icon>vpn_key</mat-icon></button>
@@ -39,40 +31,58 @@
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('alerta')"><mat-icon>notifications_active</mat-icon></button>
   </div>
 
-  <!-- <app-boton-incidencia id="botonIncidencia" class="opcionBoton" [origen]="incidencia"></app-boton-incidencia> -->
-
-
    </div>
  </mat-card-subtitle>
 
+ <div class="modalPanel" *ngIf="subMenu">
+    <div class="modalPopup">
+        <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+        <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
+        </div>
+
+
+        <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
+        <app-permisos *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+        <div  *ngIf="permiso" style="height:35px" ></div>
+        <app-supervisores *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-supervisores>
+        
+        <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas>
+      </div>
+    </div>
+
+
+
+
+
+
  <div class="contenido">
 
-   <mat-sidenav-container class="example-container">
+   <!-- <mat-sidenav-container class="example-container"> -->
   <mat-sidenav  #sidenavCalendar (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-          <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+
+          <!-- <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
   <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
-  </div>
-   <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
-<!-- 
-   <app-familias-planificaciones *ngIf="familia"  (onFamilias)="actulizaFamilias($event)"></app-familias-planificaciones>
-    -->
+  </div> -->
+   <!-- <calendarios-planificaciones *ngIf="calendario"  (nuevoPlanRealizado)="nuevoPlanRealizado($event)"></calendarios-planificaciones>
    <app-permisos *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
    <div  *ngIf="permiso" style="height:35px" ></div>
    <app-supervisores *ngIf="permiso" [tipoControl]="'planes'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-supervisores>
    
-   <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas>
+   <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas> -->
    
   </mat-sidenav> 
-        <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
-   <mat-sidenav-content class="sidenav-content">
+ 
+ 
+ 
+        <!-- <mat-sidenav-content class="sidenav-content"> -->
 <mat-tab-group  [selectedIndex]="selectedTab" [dynamicHeight]="false">
 
   <mat-tab label="{{'planificaciones.planificaciones_programadas' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></mat-tab>
-  <!-- <mat-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="nuevoPlanRealizado" [plan]="'normal'" (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></mat-tab>   -->
   <mat-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="newPlanRealizado"  (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></mat-tab>
 
 </mat-tab-group>
-   </mat-sidenav-content><!--   Fin example-sidenav-content  -->
- </mat-sidenav-container>
+   <!-- </mat-sidenav-content> -->
+   <!--   Fin example-sidenav-content  -->
+ <!-- </mat-sidenav-container> -->
  </div>
   </mat-card>

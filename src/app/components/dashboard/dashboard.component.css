@@ -1,7 +1,7 @@
 .card{
     display: block;
     float: left;
-    width: 400px;
+    width: 500px;
     height: 280px;
     padding: 55px 30px 20px 30px;
     margin: 1px 10px 30px 10px;
@@ -18,3 +18,12 @@
     background-image: url('../../../assets/images/logo.jpg');
     background-size: cover;
   }
+.companyDash{
+    width: 100%;
+    display: inline-block;
+}
+.adminDash{
+    background: lightgoldenrodyellow;
+    width: 100%;
+    display: inline-block;
+}

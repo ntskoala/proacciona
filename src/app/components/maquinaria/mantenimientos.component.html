@@ -149,7 +149,7 @@
     <!--************ FIN ORDEN ***************************--> 
 
       <p-column field="nombre" header="{{'Nombre' | translate }}" [editable]="true"  [style]="{'width':'210px'}"></p-column>
-      <p-column field="fecha" header="{{'fecha' | translate }}" [style]="{'width':'110px'}">
+      <p-column field="fecha" header="{{'fecha' | translate }}" [style]="{'width':'120px'}">
         <ng-template let-col let-item="rowData" pTemplate="body">      
         <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item.fecha"  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
         </ng-template>
@@ -159,12 +159,12 @@
           <p-dropdown [options]="tipos" [(ngModel)]="item.tipo" appendTo="body" [style]="{'width':'110px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
         </ng-template>
       </p-column>
-      <p-column field="pieza" header="{{'pieza' | translate }}" [style]="{'width':'130px'}">
+      <p-column field="pieza" header="{{'maquinas.pieza' | translate }}" [style]="{'width':'130px'}">
         <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
         <p-dropdown [options]="piezas" [(ngModel)]="item.pieza" appendTo="body" [style]="{'width':'120px'}" (onChange)="itemEdited(item.id)"></p-dropdown>
       </ng-template>
     </p-column>
-    <p-column field="cantidadPiezas" header="{{'cantidadPiezas' | translate }}" [editable]="true"></p-column>     
+    <p-column field="cantidadPiezas" header="{{'maquinas.cantidadPiezas' | translate }}" [editable]="true"></p-column>     
       <p-column field="periodicidad" header="{{'periodicidad' | translate }}" [style]="{'width':'100px','text-align': 'center'}">
         <ng-template let-col let-item="rowData" pTemplate="body">
         <periodicidad (periodo)="setPeriodicidad($event, item.id, i)" [miperiodo]="item.periodicidad" [fechaPrevista]="item.fecha" [origen]="tipo" name="periodicidad"></periodicidad>

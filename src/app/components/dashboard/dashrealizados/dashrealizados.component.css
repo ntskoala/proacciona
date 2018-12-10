@@ -1,0 +1,11 @@
+.card{
+    display: block;
+    float: left;
+    width: 400px;
+    height: 280px;
+    padding: 55px 30px 20px 30px;
+    margin: 1px 10px 30px 10px;
+    min-height: 280px !important;
+    max-height: 280px !important;
+    overflow-y: auto;
+}

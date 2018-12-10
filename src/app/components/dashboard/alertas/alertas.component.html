@@ -1,5 +1,5 @@
 
-<mat-card class="card" [ngStyle]="{'height':altura}">
+<mat-card class="Dashcard">
   <mat-card-header >
     <mat-card-title>{{'Dashboard.controlesHoyST' | translate}}</mat-card-title>
   </mat-card-header>
@@ -86,20 +86,20 @@
 
 <mat-list>
     <mat-list-item (click)="open(controles)">{{controles.length}} {{'Controles'|translate}} {{'para realizar'|translate}}</mat-list-item>
-    <mat-divider></mat-divider>
+    <!-- <mat-divider></mat-divider> -->
     <mat-list-item  (click)="open(checklists)">{{checklists.length}} {{'Checklists'|translate}} {{'para realizar'|translate}}</mat-list-item>
-    <mat-divider></mat-divider>
+    <!-- <mat-divider></mat-divider> -->
     <mat-list-item  (click)="open(limpiezas)">{{limpiezas.length}} {{'Limpiezas'|translate}} {{'para realizar'|translate}}</mat-list-item>
-    <mat-divider></mat-divider>
+    <!-- <mat-divider></mat-divider> -->
     <mat-list-item  (click)="open(mantenimientos)">{{mantenimientos.length}} {{'Mantenimientos'|translate}} {{'para realizar'|translate}}</mat-list-item>
-    <mat-divider></mat-divider>
+    <!-- <mat-divider></mat-divider> -->
   </mat-list>
 
   </mat-card-content>
 
 </mat-card>
 
-<div class="modal" *ngIf="items.length">
+<div class="modalPanel" *ngIf="items.length">
   <div class="modalWindowDashboard">
       <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>

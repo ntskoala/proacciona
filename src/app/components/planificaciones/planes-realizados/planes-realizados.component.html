@@ -4,7 +4,7 @@
   </div>
 </modal> -->
 
-  <div style="position:absolute; left:0px; top:40px; min-width: 1100px">
+  <!-- <div style="position:absolute; left:0px; top:40px; min-width: 1100px"> -->
 
 <p-dataTable #DT [value]="items" [editable]="true" expandableRows="true"
 (onEditComplete)="onEdit($event)" (onEditInit)="onEdit($event)" 
@@ -154,7 +154,7 @@
 </ng-template>  
   </p-column>  
 </p-dataTable>
-  </div>
+  <!-- </div> -->
 
 
 <div class="iframeDiv" [ngStyle]="{'top': top}" *ngIf="verdoc" (click)="verdoc=!verdoc">

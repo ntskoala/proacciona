@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 //import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -21,6 +21,7 @@ import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
 export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
 @Input() Piezas;
+@Output() onMantenimientosMaquina: EventEmitter<MantenimientosMaquina[]> = new EventEmitter;
 public piezas:object[]
 momento: any;
 //  date: DateModel[]=[];
@@ -106,6 +107,7 @@ ngOnChanges(){
             if ( document.getElementById("testid") !== null)
             document.getElementById("testid").style.minHeight= widz+"px";
            // console.log("mantenimientos preventivos",this.mantenimientos);
+           this.onMantenimientosMaquina.emit(this.mantenimientos);
         }
         );
   }

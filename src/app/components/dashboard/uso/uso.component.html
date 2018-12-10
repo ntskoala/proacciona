@@ -1,35 +1,30 @@
 
 
-        <mat-card class="card"  [ngStyle]="{'height':altura}">
+        <mat-card class="Dashcard">
                 <mat-card-header>
-                  <!-- <div mat-card-avatar class="example-header-image"></div> -->
                   <mat-card-title>{{'Dashboard.logginsST' | translate}}</mat-card-title>
-                  <!-- <mat-card-subtitle>{{'Dashboard.logginsST' | translate}}</mat-card-subtitle> -->
                 </mat-card-header>
-                <!-- <img mat-card-image src="" alt="Photo of a Shiba Inu"> -->
                 <mat-card-content>
-
-                                <mat-spinner *ngIf="calculando"></mat-spinner>  
-
-                <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando"></p-chart> -->
-                <mat-expansion-panel  (closed)="closePanel(i)" (opened)="openPanel(i)"  *ngFor="let usuario of usuarios; let i = index">
+                                 <mat-spinner *ngIf="calculando"></mat-spinner>  
+               <!-- <mat-expansion-panel  (closed)="closePanel(i)" (opened)="openPanel(i)"  *ngFor="let usuario of usuarios; let i = index">
                     <mat-expansion-panel-header> 
                           <mat-panel-title>
                             {{usuario.usuario}}
                           </mat-panel-title> 
-                           <!-- <mat-panel-description>
-                              {{usuario.usuario}}
-                          </mat-panel-description> -->
+
                         </mat-expansion-panel-header> 
                         <mat-list >
                           <span *ngFor="let log of logs">
                             <mat-list-item  *ngIf="log['idusuario']==usuario.id">
-                                <span class="elem" >{{log['total']}} {{"Dashboard.tablas."+log['tabla'] | translate}} {{"Dashboard.acciones."+log['accion']  | translate}} desde {{log['plataforma'] }}</span>
+                                <span class="elem" >{{log['total']}} {{"Dashboard.tablas."+log['tabla'] | translate}} {{"Dashboard.acciones."+log['accion']  | translate}} {{"Dashboard.desde"  | translate}} {{log['plataforma'] }}</span>
                             </mat-list-item>
                           </span>
                            </mat-list>
-                  </mat-expansion-panel>
-
+                  </mat-expansion-panel> -->
+                  <mat-list>
+                      <mat-list-item (click)="open(usuario.id)" *ngFor="let usuario of usuarios; let i = index">{{usuario.usuario}} {{usuario.superuser}}  {{'acciones'|translate}}
+                      </mat-list-item>
+                    </mat-list>
           </mat-card-content>
           <mat-card-actions>
             <button  [ngClass]="{'selected2':dias==7}" mat-button (click)="loadLogs(7)">7 {{'dias' | translate}}</button>
@@ -39,4 +34,18 @@
         </mat-card>
 
         
-
+        <div class="modalPanel" *ngIf="items.length">
+            <div class="modalWindowDashboard">
+                <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+                    <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>
+                    </div>
+                    <mat-list>
+                        <span *ngFor="let log of items">
+                            <mat-list-item>
+                                <span class="elem" >{{log['total']}} {{"Dashboard.tablas."+log['tabla'] | translate}} {{"Dashboard.acciones."+log['accion']  | translate}} {{"Dashboard.desde"  | translate}} {{log['plataforma'] }}</span>
+                            </mat-list-item>
+                          </span>
+                     </mat-list>  
+          
+            </div>
+          </div>

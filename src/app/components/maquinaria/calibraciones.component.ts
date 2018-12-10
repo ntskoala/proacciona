@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 
 import { DataTable } from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -21,6 +21,7 @@ import { Usuario } from '../../models/usuario';
 })
 export class CalibracionesComponent implements OnInit, OnChanges {
   @Input() maquina: Maquina;
+  @Output() onCalibracionesMaquina: EventEmitter<CalibracionesMaquina[]> = new EventEmitter;
   @ViewChild('DT') dt: DataTable;
   public nuevaFecha: Date;
   public calibraciones: CalibracionesMaquina[] = [];
@@ -80,11 +81,14 @@ export class CalibracionesComponent implements OnInit, OnChanges {
               element.tipo_periodo, element.doc, element.usuario, element.responsable, 0 + orden));
             this.guardar[element.id] = false;
           }
+          this.onCalibracionesMaquina.emit(this.calibraciones);
         }
 
       },
       error => console.log(error),
-      () => console.log('calibraciones ok')
+      () => {
+        console.log('calibraciones ok')
+      }
     );
   }
 

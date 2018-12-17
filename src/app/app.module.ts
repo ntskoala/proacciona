@@ -16,6 +16,9 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 //**********REQUIRED FOR CALENDAR */
 //import {CalendarComponent} from "angular2-fullcalendar/src/calendar/calendar";
 import {MomentModule} from 'angular2-moment';
+
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 //**********PRIME NG MODULES */
 import {CalendarModule} from 'primeng/primeng';
 import {ScheduleModule} from 'primeng/primeng';
@@ -202,6 +205,7 @@ import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins
 
 import { DownloadInformeComponent } from './components/informes/download-informe/download-informe.component';
 import { AlergenosTablaComponent } from './components/alergenos-tabla/alergenos-tabla.component';
+import { VerDocsComponent } from './components/ver-docs/ver-docs.component';
 
 
 @NgModule({
@@ -261,6 +265,7 @@ export function createTranslateLoader(http: HttpClient) {
     JsonpModule,
     MomentModule,
     ScheduleModule,
+    PdfViewerModule,
 /**********PRIME NG MODULES */
     CalendarModule,
     DialogModule,
@@ -332,6 +337,7 @@ export function createTranslateLoader(http: HttpClient) {
     HelpComponent,
     ZohoComponent,
     DownloadInformeComponent,
+    VerDocsComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,

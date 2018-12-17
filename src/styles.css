@@ -138,6 +138,21 @@ nav {
   margin-top: 10px;
   overflow-y: auto;
 }
+.pdfWindow{
+  background: #fff;
+  border: 2px solid #fbc02d;
+  width: 800px;
+  height: 100vh;
+  margin: auto;
+  margin-top: 0px;
+  overflow-y: auto;
+}
+.pdfToolbar{
+  width:100%;
+  background: grey;
+  height: 40px;
+}
+
 .Dashcard{
   display: block;
   float: left;
@@ -208,7 +223,9 @@ background-color: #fff;
 .center {
   text-align: center;
 }
-
+.middle{
+  vertical-align: middle;
+}
 .red {
   color: red;
 }
@@ -242,6 +259,24 @@ background-color: #fff;
   border-radius: 5px;
 }
 
+.camera{
+  float:left;
+  margin-left: 5px;
+}
+.inputlabelRound {
+    margin-top: 0px;
+    margin-left: 5px;
+    display: block;
+    width: 40px;
+    height:40px;
+    float:left;
+    cursor: pointer;
+    background-image: url('/assets/images/upload.png');
+}
+.inputfile{
+  width: 0.1px;
+  opacity: 0;
+}
 /*
 ***********************
 * SUB MENU *
@@ -628,12 +663,14 @@ gestion-informes {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  background: #fff;
+  /* background: #fff; */
 }
 
 .header-row {
   display: table-row;
-  background: #ffd740;
+  /* background: #ffd740; */
+  background: #eee;
+  border-bottom: grey 1px solid;
 }
 
 .header-cell {
@@ -675,6 +712,19 @@ gestion-informes {
   vertical-align: middle;
 }
 
+
+.TablaRegistros{
+
+}
+.CabeceraRegistros{
+
+}
+.PieRegistros{
+
+}
+
+
+
 /*
 ***********************
 * Material components *
@@ -708,7 +758,10 @@ button[mat-mini-fab] {
 }
 
 mat-grid-tile-header{
-  background: #ffd740 !important;
+  /* background: #ffd740 !important; */
+  background: rgba(255,255,255,0.1) !important;
+  border-bottom: lightgrey 1px solid;
+  color: #000 !important;
   height: 30px !important;
 }
 
@@ -829,26 +882,6 @@ width: 400px;
 }
 
 
-/* .example-sidenav-content {
-  display: flex;
-  height: 300vh;
-  min-height: 1600px;
-  width: 100%;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: auto !important;
-} */
-
-
-
-/* .example-sidenav {
-  width:900px;
-  height:1450px;
-  padding-left: 50px;
-  padding-right: 50px;
-  z-index:9997 !important;
-   overflow: hidden;
-} */
 
 
 @keyframes marquee {
@@ -905,6 +938,19 @@ width: 400px;
 
 .ui-datatable{
   border-radius: 5px !important;
+  /* background-color: #EEEAF5 !important; */
+}
+.ui-widget-header{
+  /* background-color: rgba(238, 234, 245, 0.3) !important; */
+  /* border: #6739b6 solid 0px; */
+  /* color: #000; */
+  border-radius: 5px;
+}
+.ui-button{
+  color: rgba(103, 58, 183,1);
+}
+.fa{
+  color: rgba(103, 58, 183,1);
 }
 /*
 ***********************
@@ -921,3 +967,173 @@ width: 400px;
 .mat-list-item{
   border-bottom: lightgrey solid 1px;
 }
+
+
+
+/*
+***********************
+* TABS DESIGN *
+***********************
+*/
+.mat-tab-body{
+  display:contents !important;
+}
+.mat-tab-body-wrapper{
+  /* background-color: rgba(238, 234, 245, 0.5) !important; */
+  border: #673ab7 solid 1px;
+  border-radius: 5px;
+  /* border-top: 0.1px */
+}
+.mat-tab-label-active{
+  background-color:rgba(238, 234, 245, 1) !important;
+  border: #673ab7 solid 1px;
+  border-bottom: 0px;
+  border-radius: 5px;
+} 
+
+.mat-tab-label{
+  color: rgba(103, 58, 183,1);
+  opacity: 1 !important;
+}
+.mat-tab-label :hover{
+  background-color: rgba(238, 234, 245,1);
+  color: rgba(103, 58, 183,1);
+  width: 100%;
+  height: 100%;
+  opacity: 1 !important;
+}
+.mat-ink-bar{
+  height: 1px !important;
+}
+
+
+
+/*
+***********************
+* P-TABLES DESIGN *
+***********************
+*/
+
+.dataTable{
+  width: 100%;
+  max-width: 1200px;
+  padding: 0px 25px;
+}
+.ui-table-caption{
+  background-color: rgba(238, 234, 245, 0.1) !important; 
+  border: #6739b6 solid 0px;
+  color: #000;
+  border-radius: 5px;
+}
+.ui-paginator{
+  background-color: rgba(238, 234, 245, 0.1) !important; 
+  border: #6739b6 solid 0px;
+  color: #000;
+  border-radius: 5px;
+}
+.ui-table-summary{
+  background-color: rgba(238, 234, 245, 0.1) !important; 
+  border: #6739b6 solid 0px;
+  color: #000;
+  border-radius: 5px;
+}
+.rowImpar{
+/* background: rgba(238, 234, 245, 0.1) */
+/* background: rgba(255, 255, 255, 0.1) */
+border-bottom: lightgrey solid 0.5px;
+}
+
+.rowPar{
+  background: rgba(238, 234, 245, 0.2);
+  border-bottom: lightgrey solid 0.5px;
+  z-index: 1;
+}
+
+.ui-state-highlight {
+  border-color: #fed22f;
+  background: #ffe45c !important;
+  color: #363636;
+  z-index: 10 !important;
+}
+.ui-state-hover{
+  border-color: #fed22f;
+  background: #6739b6 !important;
+  color: #fff;
+  /* z-index: 10 !important; */
+}
+/* tbody tr.rowRegistro {
+  display: table-row;
+} */
+/* tr.rowRegistro :hover{
+  border-color: #fed22f;
+  background: #6739b6 !important;
+  color: #fff;
+  z-index: 9999 !important;
+} */
+tr:hover{
+  /* border: #6739b6 solid 1px; */
+  background: rgba(103, 57, 182, 0.26) !important;
+  /* background: #fff !important; */
+  color: #6739b6;
+  /* z-index: 9999 !important;  */
+} 
+.marcoFoto{
+  width: 90%;
+  margin: auto;
+  margin-top: 100px;
+  min-height: 300px;
+  background: rgba(103, 57, 182, 0.02) !important;
+  border: lightgrey solid 1 px;
+
+}
+/*
+*********
+* NUEVO REGISTRO *
+*********
+*/
+.NuevoRegistro{
+  background: rgba(103, 58, 183,0.2);
+  border: solid 1px #fed22f;
+  min-height: 90px;
+  height: 90px;
+  vertical-align: middle;
+}
+.formNewRegister{
+  display:contents !important;
+  vertical-align: middle;
+}
+.NewRow{
+  /* margin-top: -150px; */
+  position: relative;
+  /* background: #fff; */
+}
+
+.NewRowOpen{
+  visibility: visible;
+  animation:  mostrar 1s linear 1 forwards;
+  -webkit-animation: mostrar 1s linear 1 forwards;
+}
+
+.NewRowClose{
+  visibility: collapse;
+  animation:  ocultar 400ms ease 1 forwards;
+  -webkit-animation: ocultar 400ms ease 1 forwards;
+}
+
+@keyframes mostrar {
+    0%   { margin-top: -150px; opacity:0}
+    100% { margin-top: 0px;  opacity:1 }
+}
+@-webkit-keyframes mostrar {
+      0%   { margin-top: -150px;  opacity:0}
+      100% { margin-top: 0px;  opacity:1}
+}
+@keyframes ocultar {
+  0%   { margin-top: 0px;  opacity:1}
+  100% { margin-top: -150px;  opacity:0}
+}
+@-webkit-keyframes ocultar {
+    0%   { margin-top: 0px;  opacity:1}
+    100% { margin-top: -1500px;  opacity:0}
+}
+

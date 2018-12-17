@@ -20,7 +20,8 @@
     
 }
 .vertical{
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
     height: 95px;
 }
 .TRZPar{
@@ -46,7 +47,11 @@
     height: 14px;
     border: 1px solid black;
     background-color: azure;
+    border-radius: 50%;
+    z-index: 999 !important;
+    cursor: pointer;
 }
+
 .checkIng{
     background-color:blue;
 }

@@ -22,21 +22,22 @@ export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
 @Input() Piezas;
 @Output() onMantenimientosMaquina: EventEmitter<MantenimientosMaquina[]> = new EventEmitter;
-public piezas:object[]
+public pieza:object[]
 momento: any;
 //  date: DateModel[]=[];
  // options: DatePickerOptions;
 public mantenimientos: MantenimientosMaquina[] =[]; 
 public nuevoMantenimiento: MantenimientosMaquina = new MantenimientosMaquina(0,0,'','');
+public newRow:boolean=false;
 public guardar =[];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
 public cantidad:number=1;  
-
+public cols:any[];
 public idBorrar;
 public es:any;
 public procesando: boolean = false;
 
-public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -52,8 +53,16 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
-        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
-
+        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+        this.cols = [
+          { field: 'nombre', header: 'Nombre', type: 'std', width:180,orden:true,'required':true },
+          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:110,orden:true,'required':true },
+          { field: 'pieza', header: 'maquinas.pieza', type: 'dropdown', width:120,orden:false,'required':false },
+          { field: 'cantidadPiezas', header: 'maquinas.cantidadPiezas', type: 'std', width:60,orden:false,'required':false },
+          { field: 'periodicidad', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':false },
+          { field: 'responsable', header: 'responsable', type: 'std', width:150,orden:true,'required':false }
+        ];
         this.nuevoMantenimiento.pieza=0;
         this.nuevoMantenimiento.cantidadPiezas=0;
     }
@@ -61,13 +70,22 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
 ngOnChanges(){
     this.setMantenimientos();
     if(this.Piezas){
-    this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
-    this.piezas.unshift({'label':"ninguna",'value':0});
+    this.pieza = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
+    this.pieza.unshift({'label':"ninguna",'value':0});
     }else{
-      this.piezas =[{'label':"ninguna",'value':0}];
+      this.pieza =[{'label':"ninguna",'value':0}];
     }
 
 }
+getOptions(option){
+if (option=='tipo'){
+return this.tipo;
+}else{
+return this.pieza;
+}
+}
+
+
   setMantenimientos(){
     let params = this.maquina.id;
     let parametros = '&idmaquina=' + params;
@@ -126,9 +144,9 @@ ngOnChanges(){
           this.alertaGuardar['guardar'] = true;
           this.setAlerta('alertas.guardar');
           }
-
       }
-      setAlerta(concept:string){
+
+setAlerta(concept:string){
         let concepto;
         this.translate.get(concept).subscribe((valor)=>concepto=valor)  
         this.messageService.clear();this.messageService.add(
@@ -189,8 +207,7 @@ ngOnChanges(){
         }
       )
   }
-
-    }
+}
 
   addItem(item: MantenimientosMaquina, nombre,orden){
     return new Promise((resolve,reject)=>{
@@ -344,4 +361,13 @@ checkPeriodo(periodicidad: string): string{
       }
   }
 
+  openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
 }

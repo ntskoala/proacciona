@@ -1,173 +1,247 @@
-<modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div class="modal" *ngIf="modal2">
-  <div class="foto-window">
-      <span class="close material-icons" (click)="cerrarFoto()">close</span>
-      <div class="foto">
-        <img src="{{fotoSrc}}">
-      </div>
-  </div>
-</div>
-<!-- <span class="cell tooltip" matTooltip="{{'maquinas.nuevaPieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">        
-<div class="table">
-    <div class="header-row">
-        <span class="header-cell">{{'maquinas.pieza' | translate}}</span>
-        <span class="header-cell"style="min-width:90px;padding-right: 5px">{{'maquinas.cantidad' | translate}}</span>
-        <span class="header-cell">{{'maquinas.material' | translate}}</span>
-        <span class="header-cell medium" style="min-width:100px;padding-right: 5px">{{"cantidad" | translate}}</span>                         
-        <span class="header-cell">{{"add" | translate}}</span>
-      </div>
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row addItem" #creaForm="ngForm" (ngSubmit)="crearItem()">
-    <input type="hidden" [(ngModel)]="nuevoPieza.id" name="id">
-    <span class="cell">
-      <input type="text" [placeholder]="'nombre' | translate" required [(ngModel)]="nuevoPieza.nombre" name="nombre">
-    </span>
-
-    <span class="cell tooltip" matTooltip="{{'cantidadPiezas' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">             
-    <span class="cell">
-      <input class="small" type="text" placeholder="0" required [(ngModel)]="nuevoPieza.cantidad" name="cantidad">
-        </span>
-    </span>
-    <span class="cell">
-      <input type="text" placeholder="material" required [(ngModel)]="nuevoPieza.material" name="material">
-    </span>
-    <span class="cell tooltip" matTooltip="{{'numero' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">
-        <span class="cell">num.
-          <select class="smallselect" required [(ngModel)]="cantidad" [ngModelOptions]="{standalone: true}">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          </span>
-        </span>
-    <span class="cell">
-        <span class="cell tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">            
-      <button mat-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
-        <span class="material-icons">add</span>
-      </button>
-        </span>
-    </span>
-  </form>
-</div>
-</span>
 
 
-<p-dataTable #DT [value]="piezas" 
-[editable]="true"  [responsive]="false" (onEditInit)="onEdit($event)" sortField="fecha" [sortOrder]="0" 
-[csvSeparator]="';'" [exportFilename]="'PiezasMaquinaria'" [tableStyle]="{'width':'650px'}"
-[rows]="25" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]">
-<p-header>
-    <div class="ui-helper-clearfix">
-        <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
-        <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="exportData(DT)" style="float:left"></button>
-        </span>
-      </div>
-</p-header>
 
 
-  <p-column field="nombre" header="{{'Nombre' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
-  <p-column field="cantidad" header="{{'maquinas.cantidad' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
-  <p-column field="material" header="{{'maquinas.material' | translate }}" [editable]="true" [style]="{'width':'100px'}" [sortable]="true"></p-column>
- 
-  
-  <p-column field="doc" header="{{'foto' | translate}}" [style]="{'width':'130px'}">
-      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-    <span class="cell small">
-<span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
-      <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!item.doc" mat-mini-fab color="accent" (click)="photoURL(i,'doc',item.doc)" type="button">
-        <span class="material-icons">photo_camera</span>
-      </button>
-</span>
-    </span>
-    <span class="cell mini-fab">
-<span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
-        <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'+i}}"></label>                
-        <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
-</span>
-      </span>
-      </ng-template>
-    </p-column>
 
-  <p-column header="{{'acciones' | translate }}" [style]="{'width':'100px'}">
-    <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">
-        <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="button">
-      <span class="material-icons">close</span>
+<!-- <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc" [ngStyle]="{'top':top}">
+    <button mat-mini-fab style="position:absolute;right:0px;top:0px">
+        <mat-icon>close</mat-icon>
     </button>
-  </span>
-  <span class="cell tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
-      <span class="material-icons">check</span>
-    </button>
-  </span>
-    </ng-template>   
-  </p-column>
+    <img class="iframe" [src]="foto">
+</div> -->
 
-</p-dataTable> -->
+<!-- <div [ngClass]="{'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" >
+ <span class="cell tooltip NuevoRegistro" matTooltip="{{'maquinas.nuevaPieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">        
+        <p-table [columns]="cols" [value]="editPieza" [tableStyleClass]="dataTable">
+            <ng-template pTemplate="header" let-columns>
+                <span style="display:table-row">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                  </span>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" pEditableColumn>
+                            <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                      <span *ngIf="col.field != 'maquina'">
+                            <input pInputText type="text" [(ngModel)]="item[col.field]">
+                      </span>
+                      <span *ngIf="col.field == 'maquina'">
+                        <p-dropdown readonly="true" [options]="maquinasSelect" [(ngModel)]="item['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                      </span>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                                <span *ngIf="col.field != 'maquina'">
+                                      <input pInputText type="text" [(ngModel)]="item[col.field]">
+                                </span>
+                                <span *ngIf="col.field == 'maquina'">
+                                  <p-dropdown readonly="true" [options]="maquinasSelect" [(ngModel)]="item['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                                </span>
+                                  </ng-template>
+                    </p-cellEditor>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary" let-item>
+                <div style="text-align:left">
+                    <button type="button" pButton icon="fa fa-save" (click)="crearItem()" label="{{'save' | translate}}"></button>
+                </div>
+            </ng-template>    
+        </p-table>
+ </span>
+</div> -->
 
 
 
-<div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc" [ngStyle]="{'top':top}">
-    <button mat-mini-fab style="position:absolute;right:0px;top:0px"><mat-icon>close</mat-icon></button>
-  <img   class="iframe" [src]="foto">
-  </div>
-  
+
+<!-- 
+  <p-table [columns]="cols" [value]="piezas" selectionMode="single" [(selection)]="selectedItem" 
+  (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15"  [tableStyleClass]="dataTable"> -->
 
 
-  <p-table [columns]="cols" [value]="piezas" selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
-      <ng-template pTemplate="caption">
-          {{'maquinas.piezas' | translate}}
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-          <tr class="yellow">
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                  {{col.header}}
-                  <p-sortIcon [field]="col.field"></p-sortIcon>
-              </th>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-              <td *ngFor="let col of columns">
-                <span *ngIf="col.field != 'maquina'">
-                  {{rowData[col.field]}}
+<!-- ********* INICIO TABLA REGISTROS-->
+<p-table [columns]="cols" [value]="piezas" dataKey="id" [paginator]="true" [rows]="15"
+    (onEditInit)="onEdit($event)"
+    [style]="{'width':'100%','padding':'0px 25px 0px 25px'}">
+    <ng-template pTemplate="caption">
+        <div style="text-align:left;margin-left:10px">
+            <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+            <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+
+        </div>
+    </ng-template>
+    <!-- ********* INICIO CABECERA-->
+    <ng-template pTemplate="header" let-columns>
+        <span style="display:table-row">
+            <th style="width: 3em"></th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th [style.width]="'85px'">
+                {{'acciones' | translate}}
+            </th>
+        </span>
+        <!-- ********* NUEVOREGISTRO   ***-->
+        <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row">
+            <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
+                class="formNewRegister" #creaForm="ngForm" (ngSubmit)="crearItem()">
+                <td style="width: 3em"></td>
+                <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}">
+                    <span *ngIf="col.type == 'std'">
+                        <input pInputText type="text" [required]="col.required" [(ngModel)]="nuevoPieza[col.field]"
+                            style="margin-left:4px" [style.width]="(col.width -7)+'px'" [name]="col.field">
+                    </span>
+                    <span *ngIf="col.type != 'std' && col.field == 'maquina'">
+                        <p-dropdown [options]="maquinasSelect" [required]="col.required" [(ngModel)]="nuevoPieza['idmaquina']"
+                            [style]="{'width':'160px'}" [name]="col.field"></p-dropdown>
+                    </span>
+                      <!--*****  subir/ver FOTO  *********-->
+                      <span  *ngIf="col.type != 'std' && col.field == 'foto'">
+                            <span class="tooltip middle" style="margin-left: 45px;" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'left'">
+                            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" 
+                                attr.for="{{'doc'}}"></label>
+                            <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'}}"
+                                class="inputfile" type="file" (change)="uploadImg($event, nuevoPieza.id,0,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                            </span>
+                        </span>
+                        <!--****** FIN ********************-->
+                </td>
+
+                <!-- ********* ACCIONES   ***-->
+                <td>
+                    <span class="tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                        [matTooltipPosition]="'above'">
+                        <button mat-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </span>
+                </td>
+            </form>
+        </span>
+
+        <!-- ********* FIN NUEVOREGISTRO   ***-->
+    </ng-template>
+    <!-- ********* FIN CABECERA   ***-->
+
+     <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="false"> <!--let-expanded="expanded" -->
+        <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+            <td><span  *ngIf="expanded!=null">
+                <a disabled href="#" [pRowToggler]="item">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                </a></span>
+            </td>
+            <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item"
+                [pEditableColumnField]="col">
+                <p-cellEditor>
+                    <!-- ********* VER DATA   ***-->
+                    <ng-template pTemplate="output">
+                        <span *ngIf="col.type == 'std'">
+                            {{item[col.field]}}
+                        </span>
+                        <span *ngIf="col.type != 'std' && col.field == 'maquina'">
+                            <p-dropdown [options]="maquinasSelect" [(ngModel)]="item['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                        </span>
+                      <!--*****  subir/ver FOTO  *********-->
+                    <span  *ngIf="col.type == 'foto'">
+                            <span class="tooltip middle" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                            [matTooltipPosition]="'left'">
+                            <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"
+                                [disabled]="!item.doc" mat-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+                                <span class="material-icons">photo_camera</span>
+                            </button>
+                            </span>
+                            <span class="tooltip middle" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'left'">
+                            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
+                                attr.for="{{'doc'+i}}"></label>
+                            <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
+                                class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                            </span>
+                        </span>
+                        <!--****** FIN ********************-->
+                    </ng-template>
+                    <!-- ********* EDIT DATA   ***-->
+                    <ng-template pTemplate="input">
+                        <span *ngIf="col.type == 'std'">
+                            <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+                        </span>
+                        <span *ngIf="col.type != 'std' && col.field == 'maquina'">
+                            <p-dropdown [options]="maquinasSelect" [(ngModel)]="item['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                        </span>
+                      <!--*****  subir/ver FOTO  *********-->
+                      <span  *ngIf="col.type == 'foto'">
+                            <span class="tooltip middle" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                            [matTooltipPosition]="'left'">
+                            <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"
+                                [disabled]="!item.doc" mat-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+                                <span class="material-icons">photo_camera</span>
+                            </button>
+                            </span>
+                            <span class="tooltip middle" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'left'">
+                            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
+                                attr.for="{{'doc'+i}}"></label>
+                            <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
+                                class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                            </span>
+                        </span>
+                        <!--****** FIN ********************-->
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+                <!--*****  ACCIONES  *********-->
+            <td>
+                <span class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'left'">
+                    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab
+                        color="primary" (click)="checkBorrar(item.id)" type="button">
+                        <span class="material-icons">close</span>
+                    </button>
                 </span>
-                <span *ngIf="col.field == 'maquina'">
-                    <p-dropdown readonly="true" [options]="maquinasSelect" [(ngModel)]="rowData['idmaquina']" [style]="{'width':'160px'}"></p-dropdown>
+                <span class="tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'right'">
+                    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab
+                        color="primary" [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+                        <span class="material-icons">check</span>
+                    </button>
                 </span>
-              </td>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="summary" let-rowData>
-          <div style="text-align:left">
-              <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="{{'add' | translate}}"></button>
-          </div>
-      </ng-template>    
-  </p-table>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-item>
+        <div style="text-align:left">
+            <button type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+        </div>
+    </ng-template>
+
+
+    <!-- ********* EXPANSION-->
+    <ng-template *ngIf="expanded!=null" pTemplate="rowexpansion" let-item let-columns="columns">
+        <tr>
+            <td [attr.colspan]="columns.length + 2">
+                <div style="text-align:center">
+                    <img [attr.alt]="item.foto" src="assets/showcase/images/noimage.png">
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- ********* FIN TABLA REGISTROS-->
+
+<app-ver-docs [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
 
 
 
-
-
-
-  <p-dialog header="Edit {{'maquinas.pieza' | translate}}" [(visible)]="displayDialog" [closeOnEscape]="true" [responsive]="true"  [width]="630">
+<!--<p-dialog header="Edit {{'maquinas.pieza' | translate}}" [(visible)]="displayDialog" [closeOnEscape]="true" [responsive]="true"  [width]="630">
     <div class="fotoPieza" *ngIf="editPieza"><img class="fotoP" [src]="fotoSrc" (error)="fotoSrc='/assets/images/noimage.png'" width="260px" height="260px">
-    
-      <!-- <span class="cell small">
-          <span class="tooltip" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
-                <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" [disabled]="!editPieza.doc" mat-mini-fab color="accent" (click)="photoURL(i,'doc',editPieza.doc)" type="button">
-                  <span class="material-icons">photo_camera</span>
-                </button>
-          </span>
-              </span>-->
               <span class="cell mini-fab" *ngIf="alertaGuardar">
           <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">      
                   <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="inputlabelRound" attr.for="{{'doc'}}"></label>                
@@ -175,7 +249,6 @@
           </span>
                 </span> 
     </div>
-    
       <div style="width:300px" class="ui-g ui-fluid" *ngIf="editPieza">
           <div class="ui-g-12">
               <div class="ui-g-4">
@@ -201,14 +274,6 @@
                   <input pInputText id="cantidad" [(ngModel)]="editPieza.cantidad" />
               </div>
           </div>
-          <!-- <div class="ui-g-12">
-              <div class="ui-g-4">
-                  <label for="foto">Foto</label>
-              </div>
-              <div class="ui-g-8">
-                  <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" id="{{'doc'}}" class="uploadFotoButton" type="file" (change)="uploadImg($event, editPieza.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png"/>
-              </div>
-          </div> -->
       </div>
       <p-footer>
           <div class="ui-dialog-buttonpane ui-helper-clearfix">
@@ -218,5 +283,4 @@
               <button *ngIf="!alertaGuardar" type="button" pButton icon="fa fa-check" (click)="save()" label="{{'nuevo' | translate}}"></button>
           </div>
       </p-footer>
-  </p-dialog>
-  
+  </p-dialog> -->

@@ -15,12 +15,12 @@
 
 
 <ng-template pTemplate="header">
-    <tr [style]="{'width':'900px','padding':'0px !important'}">
-        <th style="width:200px; background-color: #eee">{{'Producto' | translate}}</th>
+    <span style="display:table-row">
+        <th style="width:200px;">{{'Producto' | translate}}</th>
         <span *ngFor="let col of cols;let i = index">
-        <th style="width:50px; height: 95px;" [ngClass]="{'cabeceraPar':i%2==0,'cabeceraImpar':i%2!=0}"><span class="vertical">{{col.header | translate}}</span></th>
+        <th style="width:50px; height: 95px;"><span class="vertical">{{col.header | translate}}</span></th>
       </span>
-    </tr>
+    </span>
   <!-- <tr>
     <td  style="width:200px; background-color: #eee"></td>
       <span *ngFor="let col of cols;let i = index">
@@ -29,13 +29,13 @@
       </span>
   </tr> -->
 </ng-template>
-<ng-template pTemplate="body" let-producto>
-    <tr>
-        <td  style="width:200px; background-color:#eee">
+<ng-template pTemplate="body" let-producto let-i="rowIndex">
+    <tr [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+        <td  style="width:200px;">
            {{producto["Producto"]}}
               </td>
         <span *ngFor="let col of cols;let i = index">
-            <td style="width:50px"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >
+            <td style="width:50px" >
             <!-- <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Ing',col.header,$event.checked)"
             [checked]="producto['cols'][i]['Ing']">
         </mat-slide-toggle> -->

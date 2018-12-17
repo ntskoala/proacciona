@@ -55,6 +55,10 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
 //public url; 
 public baseurl;
 public verdoc:boolean=false;
+public pdfSrc: string=null;
+public paginaPdf:number=1;
+public maxPdf:number=1;
+public zoomPdf:number=1;
 public image;
 public foto;
 public top = '50px';
@@ -230,7 +234,8 @@ verFoto(foto:string,idItem){
 if (foto=="doc"){
   if (this.mantenimientos[index].doc){
 if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
-  window.open(this.docs[idItem],"_blank")
+  //window.open(this.docs[idItem],"_blank")
+  this.pdfSrc = this.docs[idItem];
 }else{
   this.verdoc =  true;
   this.foto = this.docs[idItem];
@@ -244,7 +249,9 @@ if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){
 }
 }
 }
-
+cerrarPdf(){
+  this.pdfSrc = null;
+}
 photoURL(url){
 return this.sanitizer.bypassSecurityTrustResourceUrl(url);
 }
@@ -336,4 +343,28 @@ getIncidencias(){
       });
 }
 
+PageAnterior(){
+  if (this.paginaPdf >1)
+  this.paginaPdf--
+}
+PageSiguiente(){
+  if (this.paginaPdf < this.maxPdf)
+  this.paginaPdf++;
+}
+onPDFError(event){
+console.log('ERROR PDF:',event)
+}
+onProgress(event){
+  console.log('Progress',event)
+}
+zoomIn(){
+this.zoomPdf+=0.2
+}
+zoomOut(){
+  this.zoomPdf-=0.2
+}
+pdfLoaded(event){
+  console.log('Loaded',event)
+  this.maxPdf = event._pdfInfo.numPages;
+}
 }

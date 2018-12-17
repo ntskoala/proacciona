@@ -26,7 +26,9 @@ public maquinasSelect:any[]=[{label:'cualquiera', value:0}];
 public piezas: PiezasMaquina[] =[]; 
 public cols:any[];
 public nuevoPieza: PiezasMaquina = new PiezasMaquina(0,0,'',0);
-public editPieza: PiezasMaquina;
+public fotoNuevoPieza:any=null;
+public newRow:boolean=false;
+public editPieza: PiezasMaquina[]=[];
 public selectedItem:PiezasMaquina;
 public guardar =[];
 public alertaGuardar:boolean=false;
@@ -48,11 +50,11 @@ public displayDialog:boolean;
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
  //   this.setMantenimientos();
  this.cols = [
-  { field: 'nombre', header: 'Nombre' },
-  { field: 'maquina', header: 'Maquina' },
-  { field: 'cantidad', header: 'Cantidad' },
-  { field: 'material', header: 'Material' },
-  { field: 'foto', header: 'Foto' }
+  { field: 'nombre', header: 'Nombre', type: 'std', width:180,'required':true },
+  { field: 'maquina', header: 'Maquina', type: 'maquina', width:180,'required':true },
+  { field: 'cantidad', header: 'Cantidad', type: 'std', width:95,'required':true },
+  { field: 'material', header: 'Material', type: 'std', width:180,'required':false },
+  { field: 'doc', header: 'Foto', type: 'foto', width:100,'required':false }
 ];
 this.maquinas.forEach((maquina)=>{this.maquinasSelect.push({label:maquina.nombre, value:maquina.id})})
 
@@ -104,6 +106,7 @@ ngOnChanges(){
   }
 
   onEdit(evento){
+    console.log(evento);
     this.itemEdited(evento.data.id);
     }
     itemEdited(idItem: number) {
@@ -141,6 +144,7 @@ ngOnChanges(){
   crearItem() {
    // this.nuevoPieza.idmaquina = this.maquina.id;
     let nombreOrigen = this.nuevoPieza.nombre;
+    this.nuevoPieza.idempresa = this.empresasService.seleccionada;
     for (let x=0;x<this.cantidad;x++){
       if (x>0) this.nuevoPieza.nombre= nombreOrigen + x;
       this.addItem(this.nuevoPieza,this.nuevoPieza.nombre).then(
@@ -164,6 +168,9 @@ ngOnChanges(){
           item.id = response.id;
           this.piezas.push(new PiezasMaquina(response.id,item.idmaquina,nombre,item.idempresa,item.cantidad,item.material));
           this.url.push('');
+          if (this.fotoNuevoPieza){
+            this.uploadImg(this.fotoNuevoPieza,item.id,0,'doc');
+          }
           resolve(true);
         }
     },
@@ -207,6 +214,9 @@ ngOnChanges(){
   }
 
   uploadImg(event, idItem,i,tipo) {
+    if (idItem==0){
+      this.fotoNuevoPieza=event;
+    }else{
     console.log(event)
     var target = event.target || event.srcElement; //if target isn't there then take srcElement
     let files = target.files;
@@ -218,10 +228,9 @@ ngOnChanges(){
         console.log('doc subido correctamente',files[0].name);
         this.piezas[i].doc = files[0].name;
         this.url[i]= URLS.DOCS + this.empresasService.seleccionada + '/maquina_piezas/' +  idItem +'_'+files[0].name;
-        // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
-        // activa.logo = '1';
       }
-    )
+    )     
+  }
   }
 
   exportData(tabla: DataTable){
@@ -239,34 +248,31 @@ ngOnChanges(){
 //************ */
 //************ */
 save() {
-  if (this.editPieza.id>0){
-      this.saveItem(this.editPieza)
-  }else{
-    this.nuevoPieza = this.editPieza;
+
+    this.nuevoPieza = this.editPieza[0];
     this.crearItem();
-  }
-  this.displayDialog = false;
+  this.closeNewRow();
 }
 close(){
   this.displayDialog = false;
 }
 delete() {
-  this.checkBorrar(this.editPieza.id);
+  this.checkBorrar(this.editPieza[0].id);
   this.displayDialog = false;
 }
 
 showDialogToAdd() {
   this.alertaGuardar = false;
-  this.editPieza = this.nuevoPieza;
-  this.editPieza.idempresa = this.empresasService.seleccionada;
+  this.editPieza[0] = this.nuevoPieza;
+  this.editPieza[0].idempresa = this.empresasService.seleccionada;
   this.displayDialog = true;
 }
 
 onRowSelect(event) {
   //this.newCar = false;
   this.alertaGuardar = true;
-  this.editPieza = this.cloneItem(event.data);
-  this.fotoSrc = URLS.DOCS + this.empresasService.seleccionada + '/'+ 'maquina_piezas' + "/" + this.editPieza.id+ "_"+ this.editPieza.doc;
+  this.editPieza[0] = this.cloneItem(event.data);
+  this.fotoSrc = URLS.DOCS + this.empresasService.seleccionada + '/'+ 'maquina_piezas' + "/" + this.editPieza[0].id+ "_"+ this.editPieza[0].doc;
   this.displayDialog = true;
 }
 cloneItem(p: PiezasMaquina): PiezasMaquina {
@@ -276,6 +282,18 @@ cloneItem(p: PiezasMaquina): PiezasMaquina {
   }
   return pieza;
 }
+
+
+openNewRow(){
+  this.editPieza.push(this.nuevoPieza);
+  console.log('newRow',this.newRow,this.editPieza);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+
 
 
 }

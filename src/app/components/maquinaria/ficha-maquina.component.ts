@@ -45,7 +45,7 @@ public foto;
   }
 
   verFoto(foto:string){
-    this.verdoc =  true;
+    //this.verdoc =  true;
     if (foto=="ficha"){
     this.foto=this.url;
     }else{

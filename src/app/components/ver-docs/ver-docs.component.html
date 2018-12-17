@@ -1,0 +1,38 @@
+<div class="modal" *ngIf="doc">
+  <div class="pdfWindow">
+    <div class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+      [matTooltipPosition]="'before'">
+      <button top-left color="accent" mat-mini-fab (click)="cerrarPdf()">
+        <mat-icon>skip_previous</mat-icon>
+      </button>
+    </div>
+
+
+    <div *ngIf="pdfSrc =='pdf'">
+    <div class="pdfToolbar">
+      <button mat-icon-button>
+        <mat-icon (click)="PageAnterior()">keyboard_arrow_left</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon (click)="PageSiguiente()">keyboard_arrow_right</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon (click)="zoomIn()">add</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon (click)="zoomOut()">substract</mat-icon>
+      </button>
+
+    </div>
+    <div style="display: block;margin: auto;width:798px;height:94vh;border:black solid 1px;background-color: antiquewhite">
+      <pdf-viewer [src]="doc" [fit-to-page]="false" [show-all]="false" [page]="paginaPdf" [autoresize]="false"
+        [render-text]="true" [zoom]="zoomPdf" style="display: block" (error)="onPDFError($event)" (on-progress)="onProgress($event)"
+        (after-load-complete)="pdfLoaded($event)">
+      </pdf-viewer>
+    </div>
+    </div>
+    <div *ngIf="pdfSrc !='pdf'" class="marcoFoto round">
+        <img class="iframe" [src]="foto">
+    </div>
+  </div>
+</div>

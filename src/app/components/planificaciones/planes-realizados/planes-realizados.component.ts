@@ -33,6 +33,7 @@ export class PlanesRealizadosComponent implements OnInit {
 @Output() planRealizado: EventEmitter<PlanRealizado> = new EventEmitter<PlanRealizado>();
 // public items: LimpiezaRealizada[];
 public items: PlanRealizado[];
+public cols:any[];
 public images: string[];
 public docs: string[];
 public usuarios:object[];
@@ -45,6 +46,8 @@ public selectedItem: PlanRealizado;
  public alertaGuardar:boolean=false;
 public idBorrar;
 public motivo:boolean[]=[];
+public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+
 public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"label":"correcto"},{"value":2,"label":"incorrecto"}];
   modal: Modal = new Modal();
   public stacked:boolean=false;
@@ -57,10 +60,22 @@ autoresize:boolean=true;
 //public url; 
 public baseurl;
 public verdoc:boolean=false;
+public pdfSrc: string=null;
+public paginaPdf:number=1;
+public maxPdf:number=1;
+public zoomPdf:number=1;
 public image;
 public foto;
 public top = '50px';
 //************** */
+//************** */
+public expanded:boolean=false;
+public currentExpandedId: number;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
   constructor(public servidor: Servidor,public empresasService: EmpresasService, 
     public translate: TranslateService, private messageService: MessageService,private route: ActivatedRoute) {}
 
@@ -76,7 +91,21 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
+        this.cols = [
+          { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
+          { field: 'fecha_prevista', header: 'limpieza.fecha_prevista', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
+          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false },
+          { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:110,orden:false,'required':false },
+          { field: 'idsupervisor', header: 'limpieza.supervisor', type: 'dropdown', width:110,orden:false,'required':false },
+          { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:true,'required':true },
+        ];
+        if (localStorage.getItem("idioma")=="cat") {
+          this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+          this.supervisar=[{"value":0,"label":"Per Supervisar"},{"value":1,"label":"Correcte"},{"value":2,"label":"Incorrecte"}];
+        }
   }
 
   ngOnChanges(){
@@ -89,6 +118,22 @@ public top = '50px';
     //this.image= this.baseurl + this.plan.id + "_"+"imagen_qr_TFC_IOS.jpg";
   //************* */
   }
+
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'tipo':
+    return this.tipos;
+    break;
+    case 'supervision':
+    return this.supervisar;
+    break;
+    case 'idsupervisor':
+    return this.usuarios;
+    break;
+    }
+    }
+
 
   incidenciaSelection(){
     let params = this.route.paramMap["source"]["_value"];
@@ -376,4 +421,109 @@ getIncidencias(){
       });
 }
 
+
+
+
+rowExpanded(evento){
+  console.log(evento)
+  this.currentExpandedId = evento.data.id;
+  this.expanded=true;
+}
+rowCollapsed(evento){
+  console.log(evento)
+  this.expanded=false;
+}
+
+      //**** EXPORTAR DATA */
+
+      async exportarTable(){
+        this.exportando=true;
+        this.informeData = await this.ConvertToCSV(this.cols, this.items);
+      }
+    
+      informeRecibido(resultado){
+        console.log('informe recibido:',resultado);
+        if (resultado){
+          setTimeout(()=>{this.exportando=false},1500)
+        }else{
+          this.exportando=false;
+        }
+      }
+    
+      ConvertToCSV(controles,objArray){
+        var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        console.log(cabecera,array)
+        let informeCabecera=[];
+        let informeRows=[];
+                    var str = '';
+                    var row = "";
+                    let titulo="";
+                    for (var i = 0; i < cabecera.length; i++) {
+                      this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                      row += titulo + ';';
+                    }
+                    row = row.slice(0, -1);
+                    informeCabecera = row.split(";");
+    
+                    str='';
+                    for (var i = 0; i < array.length; i++) {
+                      var line ="";
+                       for (var x = 0; x < cabecera.length; x++) {
+                      
+                        let valor='';
+                        
+                        switch (cabecera[x]['type']){
+                          case 'fecha':
+                          if (moment(array[i][cabecera[x]['field']]).isValid())
+                          valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                          break;
+                          case 'dropdown':
+                          valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                          break;
+                          case 'periodicidad':
+                          valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                          break;
+                          default:
+                          valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                          break;
+                        }
+    
+                      line += valor + ';';
+                    }
+                    line = line.slice(0,-1);
+    
+                        informeRows.push(line.split(";"));
+        
+                    }
+                    let informe='';
+                    this.translate.get('planificaciones.planificaciones_realizadas').subscribe((desc)=>{informe=desc});
+                    return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+        }
+    
+        getDropDownValor(tabla,valor){
+          console.log(tabla,valor);
+          let Value ='';
+          let index;
+          switch (tabla){
+            case 'tipo':
+            index=this.tipos.findIndex((tipo)=>tipo["value"]==valor);
+            if (index>-1)
+            Value = this.tipos[index]["label"];
+            break;
+            case 'supervision':
+            index=this.supervisar.findIndex((sup)=>sup["value"]==valor);
+            if (index>-1)
+            Value = this.supervisar[index]["label"];
+            break;
+            case 'idsupervisor':
+            index=this.usuarios.findIndex((user)=>user["value"]==valor);
+            if (index>-1)
+            Value = this.usuarios[index]["label"];
+            break;
+            }
+          console.log(tabla,valor,Value);
+          return Value;
+        }
+    
 }

@@ -66,13 +66,16 @@
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table [columns]="cols" [value]="piezas" dataKey="id" [paginator]="true" [rows]="15"
     (onEditInit)="onEdit($event)"
-    [style]="{'width':'100%','padding':'0px 25px 0px 25px'}">
+    [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}">
     <ng-template pTemplate="caption">
         <div style="text-align:left;margin-left:10px">
             <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
             <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+            <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Descarga Excel" (click)="exportarTable()" style="margin-left:10px"></button>
 
         </div>
+        <div class="ui-helper-clearfix">
+            </div>
     </ng-template>
     <!-- ********* INICIO CABECERA-->
     <ng-template pTemplate="header" let-columns>
@@ -82,7 +85,7 @@
                 {{col.header}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
             </th>
-            <th [style.width]="'85px'">
+            <th [style.width]="'95px'">
                 {{'acciones' | translate}}
             </th>
         </span>
@@ -236,8 +239,13 @@
 
 <!-- ********* FIN TABLA REGISTROS-->
 
-<app-ver-docs [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+<app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
 
+
+
+<div class="modal" *ngIf="exportando">
+        <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+</div>
 
 
 <!--<p-dialog header="Edit {{'maquinas.pieza' | translate}}" [(visible)]="displayDialog" [closeOnEscape]="true" [responsive]="true"  [width]="630">

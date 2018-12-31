@@ -26,6 +26,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   public nuevaFecha: Date;
   public calibraciones: CalibracionesMaquina[] = [];
   public nuevoCalibracion: CalibracionesMaquina = new CalibracionesMaquina(0, 0, '', this.nuevaFecha);
+  public cols:any[];
+  public newRow:boolean=false;
   public guardar = [];
   public alertaGuardar:object={'guardar':false,'ordenar':false};
   public cantidad:number=1;
@@ -35,8 +37,15 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   usuarios: Usuario[] = [];
   modal: Modal = new Modal();
   public procesando: boolean = false;
+  public viewPeriodicidad: any=null;
+  public minHeight:number = 0;
+  //***   EXPORT DATA */
+  public exportar_informes: boolean =false;
+  public exportando:boolean=false;
+  public informeData:any;
+  //***   EXPORT DATA */
 
-  public tipos: object[] = [{ label: 'interno', value: 'interno' }, { label: 'externo', value: 'externo' }];
+  public tipo: object[] = [{ label: 'interno', value: 'interno' }, { label: 'externo', value: 'externo' }];
 
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) { }
@@ -52,13 +61,25 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
       firstDayOfWeek: 1
     };
-    if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+    this.cols = [
+      { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
+      { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
+      { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
+      { field: 'periodicidad', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':false },
+      { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
+    ];
+    if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
 
   }
 
   ngOnChanges() {
     this.setMantenimientos();
   }
+  getOptions(option){
+    if (option=='tipo'){
+    return this.tipo;
+    }
+    }
   setMantenimientos() {
     let params = this.maquina.id;
     let parametros = '&idmaquina=' + params;
@@ -116,6 +137,17 @@ export class CalibracionesComponent implements OnInit, OnChanges {
     );
   }
 
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.calibraciones.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.calibraciones[indice]);
+        this.saveItem(this.calibraciones[indice],indice)
+      }
+    }
+     
+    }
+
 
   saveItem(mantenimiento: CalibracionesMaquina, i: number) {
     let indice = this.calibraciones.findIndex((myitem) => myitem.id == mantenimiento.id);
@@ -128,6 +160,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       response => {
         if (response.success) {
           console.log('Mantenimiento updated');
+          this.setAlerta('alertas.saveOk');
           this.alertaGuardar['guardar'] = false;
         }
       });
@@ -222,21 +255,57 @@ export class CalibracionesComponent implements OnInit, OnChanges {
 
   //   }
   // }
-  setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number) {
-    if (!idmantenimiento) {
-      this.nuevoCalibracion.periodicidad = periodicidad;
-      console.log(this.nuevoCalibracion.periodicidad);
+  // setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number) {
+  //   if (!idmantenimiento) {
+  //     this.nuevoCalibracion.periodicidad = periodicidad;
+  //     console.log(this.nuevoCalibracion.periodicidad);
 
-    } else {
+  //   } else {
+  //     // console.log(idmantenimiento,i);
+  //     // this.itemEdited(idmantenimiento);
+  //     // this.mantenimientos[i].periodicidad = periodicidad;
+  //     this.itemEdited(idmantenimiento);
+  //     let indice = this.calibraciones.findIndex((item) => item.id == idmantenimiento);
+  //     this.calibraciones[indice].periodicidad = periodicidad;
+  //   }
+  // }
+
+  setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
+    this.viewPeriodicidad=null;
+    this.minHeight=0;
+    if (!idmantenimiento){
+    this.nuevoCalibracion.periodicidad = periodicidad;
+    console.log(this.nuevoCalibracion.periodicidad);
+  
+    }else{
       // console.log(idmantenimiento,i);
       // this.itemEdited(idmantenimiento);
       // this.mantenimientos[i].periodicidad = periodicidad;
       this.itemEdited(idmantenimiento);
-      let indice = this.calibraciones.findIndex((item) => item.id == idmantenimiento);
+      let indice = this.calibraciones.findIndex((item)=>item.id==idmantenimiento);
       this.calibraciones[indice].periodicidad = periodicidad;
     }
+    this.nuevoCalibracion  = new CalibracionesMaquina(0,0,'','');
   }
-
+  openPeriodicidad(Mantenimiento){
+    console.log('view Periodicidad Ok',Mantenimiento);
+    this.minHeight=500;
+    if (Mantenimiento.id == 0){
+      this.viewPeriodicidad='true';
+    }else{
+      this.nuevoCalibracion= Mantenimiento;
+      this.viewPeriodicidad=Mantenimiento.periodicidad;
+    }
+  }
+  closePeriodicidad(activo){
+    console.log('CLOSING',activo);
+  if (activo==false){
+    console.log('CLOSING')
+    this.minHeight=0;
+    this.nuevoCalibracion  = new CalibracionesMaquina(0,0,'','');
+    this.viewPeriodicidad=false;
+  }
+  }
   goUp(index: number, evento: Event) {
     if (index > 0) {
       this.dt._value[index].orden--;
@@ -244,14 +313,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       this.dt._value[index - 1].orden++;
       this.saveItem(this.dt._value[index - 1], index - 1);
       let temp1: any = this.dt._value.splice(index - 1, 1);
-      //console.log(this.calibraciones);
       this.dt._value.splice(index, 0, temp1[0]);
-      // console.log(this.calibraciones);
-
       this.calibraciones = this.calibraciones.slice();
-      //   setTimeout(()=>{
-      //     this.setOrden(evento,dt);
-      //   },500);
     } else {
       console.log('primer elemento');
     }
@@ -262,18 +325,12 @@ export class CalibracionesComponent implements OnInit, OnChanges {
       this.dt._value[index].orden++;
       this.saveItem(this.dt._value[index], index);
       this.dt._value[index + 1].orden--;
-
       this.saveItem(this.dt._value[index + 1], index + 1);
       let temp1: any = this.dt._value.splice(index, 1);
-
       console.log(this.dt._value);
       this.dt._value.splice(index + 1, 0, temp1[0]);
       console.log(this.dt._value);
       this.calibraciones = this.calibraciones.slice();
-
-      // setTimeout(()=>{
-      //   this.setOrden(evento,dt);
-      // },500);
     } else {
       console.log('ultimo elemento');
     }
@@ -343,4 +400,92 @@ export class CalibracionesComponent implements OnInit, OnChanges {
     }
     this.procesando = false;
   }
+
+
+  openNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    console.log('newRow',this.newRow);
+    this.newRow = !this.newRow;
+    }
+    closeNewRow(){
+      //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+      this.newRow = false;
+      }
+        //**** EXPORTAR DATA */
+  
+    async exportarTable(){
+      this.exportando=true;
+      this.informeData = await this.ConvertToCSV(this.cols, this.calibraciones);
+    }
+  
+    informeRecibido(resultado){
+      console.log('informe recibido:',resultado);
+      if (resultado){
+        setTimeout(()=>{this.exportando=false},1500)
+      }else{
+        this.exportando=false;
+      }
+    }
+  
+    ConvertToCSV(controles,objArray){
+      var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      console.log(cabecera,array)
+      let informeCabecera=[];
+      let informeRows=[];
+                  var str = '';
+                  var row = "";
+                  let titulo="";
+                  for (var i = 0; i < cabecera.length; i++) {
+                    this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                    row += titulo + ';';
+                  }
+                  row = row.slice(0, -1);
+                  informeCabecera = row.split(";");
+  
+                  str='';
+                  for (var i = 0; i < array.length; i++) {
+                    var line ="";
+                     for (var x = 0; x < cabecera.length; x++) {
+                    
+                      let valor='';
+                      
+                      switch (cabecera[x]['type']){
+                        case 'fecha':
+                        valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                        break;
+                        case 'dropdown':
+                        valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                        break;
+                        case 'periodicidad':
+                        valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                        break;
+                        default:
+                        valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                        break;
+                      }
+  
+                    line += valor + ';';
+                  }
+                  line = line.slice(0,-1);
+  
+                      informeRows.push(line.split(";"));
+      
+                  }
+                  let informe='';
+                  this.translate.get('maquinas.calibraciones').subscribe((desc)=>{informe=desc});
+                  return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+      }
+  
+      getDropDownValor(tabla,valor){
+        let Value;
+        switch (tabla){
+          case "tipo":
+          Value = valor;
+          break;
+        }
+        console.log(tabla,valor,Value);
+        return Value;
+      }
+
 }

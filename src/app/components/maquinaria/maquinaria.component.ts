@@ -117,6 +117,7 @@ cambioMenu(opcion: string){
     console.log('close sideNav')
     //this.snCalendar.close();
     this.calendario=false;
+    this.permiso=false;
     this.lubricante=false;
     this.inventarioPiezas=false;
      resolve('ok')

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output,ViewChild, OnChanges, EventEmitter } from '@angular/core';
 //import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {DataTable} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -13,6 +13,7 @@ import { Empresa } from '../../models/empresa';
 import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
  import { Maquina } from '../../models/maquina';
  import { Modal } from '../../models/modal';
+import { ValueTransformer } from '@angular/compiler/src/util';
 @Component({
   selector: 'mantenimientos',
   templateUrl: './mantenimientos.component.html',
@@ -22,6 +23,7 @@ export class MantenimientosComponent implements OnInit, OnChanges {
 @Input() maquina:Maquina;
 @Input() Piezas;
 @Output() onMantenimientosMaquina: EventEmitter<MantenimientosMaquina[]> = new EventEmitter;
+@ViewChild('DT') dt: DataTable;
 public pieza:object[]
 momento: any;
 //  date: DateModel[]=[];
@@ -36,6 +38,13 @@ public cols:any[];
 public idBorrar;
 public es:any;
 public procesando: boolean = false;
+public viewPeriodicidad: any=null;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
 
 public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
   modal: Modal = new Modal();
@@ -55,13 +64,11 @@ public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value
         }; 
         if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
         this.cols = [
-          { field: 'nombre', header: 'Nombre', type: 'std', width:180,orden:true,'required':true },
+          { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
-          { field: 'tipo', header: 'tipo', type: 'dropdown', width:110,orden:true,'required':true },
-          { field: 'pieza', header: 'maquinas.pieza', type: 'dropdown', width:120,orden:false,'required':false },
-          { field: 'cantidadPiezas', header: 'maquinas.cantidadPiezas', type: 'std', width:60,orden:false,'required':false },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
           { field: 'periodicidad', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':false },
-          { field: 'responsable', header: 'responsable', type: 'std', width:150,orden:true,'required':false }
+          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
         ];
         this.nuevoMantenimiento.pieza=0;
         this.nuevoMantenimiento.cantidadPiezas=0;
@@ -138,7 +145,8 @@ return this.pieza;
   onEdit(evento){
     this.itemEdited(evento.data.id);
     }
-        itemEdited(idItem: number, fecha?: any) {
+
+  itemEdited(idItem: number, fecha?: any) {
         this.guardar[idItem] = true;
         if (!this.alertaGuardar['guardar']){
           this.alertaGuardar['guardar'] = true;
@@ -157,7 +165,16 @@ setAlerta(concept:string){
         );
       }
 
-
+saveAll(){
+for (let x=0;x<this.guardar.length;x++){
+  if (this.guardar[x]==true) {
+    let indice = this.mantenimientos.findIndex((myitem)=>myitem.id==x);
+    console.log ("id",x,this.mantenimientos[indice]);
+    this.saveItem(this.mantenimientos[indice],indice)
+  }
+}
+ 
+}
 
 //  actualizarMantenimiento(mantenimiento: MantenimientosMaquina, i: number, event: any) {
   saveItem(mantenimiento: MantenimientosMaquina, i: number, event?: any) {
@@ -175,6 +192,7 @@ setAlerta(concept:string){
     this.servidor.putObject(URLS.MANTENIMIENTOS, parametros, mantenimiento).subscribe(
       response => {
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
           console.log('Mantenimiento updated');
         }
     });
@@ -259,7 +277,10 @@ setAlerta(concept:string){
       });
     }
   }
+
+
 setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
+  this.viewPeriodicidad=null;
   if (!idmantenimiento){
   this.nuevoMantenimiento.periodicidad = periodicidad;
   console.log(this.nuevoMantenimiento.periodicidad);
@@ -272,50 +293,86 @@ setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
     let indice = this.mantenimientos.findIndex((item)=>item.id==idmantenimiento);
     this.mantenimientos[indice].periodicidad = periodicidad;
   }
+  //this.nuevoMantenimiento  = new MantenimientosMaquina(0,0,'','');
+}
+openPeriodicidad(Mantenimiento){
+  console.log('view Periodicidad Ok',Mantenimiento);
+  if (Mantenimiento.id == 0){
+    this.viewPeriodicidad='true';
+  }else{
+    this.nuevoMantenimiento= Mantenimiento;
+    this.viewPeriodicidad=Mantenimiento.periodicidad;
+  }
+}
+closePeriodicidad(activo){
+if (activo==false){
+  this.nuevoMantenimiento  = new MantenimientosMaquina(0,0,'','');
+  this.viewPeriodicidad=false;
+}
 }
 
-goUp(index:number,evento:Event){
-  if (index >0){
-      this.mantenimientos[index].orden--;
-      this.saveItem(this.mantenimientos[index],index);
-      this.mantenimientos[index-1].orden++;
-      this.saveItem(this.mantenimientos[index-1],index-1);
-      let temp1:any = this.mantenimientos.splice(index-1,1);
-      console.log(this.mantenimientos);
-      this.mantenimientos.splice(index,0,temp1[0]);
-      console.log(this.mantenimientos);
+// goUp(index:number,evento:Event){
+//   if (index >0){
+//       this.mantenimientos[index].orden--;
+//       this.saveItem(this.mantenimientos[index],index);
+//       this.mantenimientos[index-1].orden++;
+//       this.saveItem(this.mantenimientos[index-1],index-1);
+//       let temp1:any = this.mantenimientos.splice(index-1,1);
+//       console.log(this.mantenimientos);
+//       this.mantenimientos.splice(index,0,temp1[0]);
+//       console.log(this.mantenimientos);
+//      this.mantenimientos = this.mantenimientos.slice();
+//   }else{
+//     console.log('primer elemento');
+//   }
+//   }
+  
+  // goDown(index:number,evento:Event){
+  //   if (index < this.mantenimientos.length-1){
+  //     this.mantenimientos[index].orden++;
+  //     this.saveItem(this.mantenimientos[index],index);
+  //     this.mantenimientos[index+1].orden--;
+  
+  //     this.saveItem(this.mantenimientos[index+1],index+1);
+  //     let temp1:any = this.mantenimientos.splice(index,1);
       
-     this.mantenimientos = this.mantenimientos.slice();
-    //   setTimeout(()=>{
-    //     this.setOrden(evento,dt);
-    //   },500);
-  }else{
-    console.log('primer elemento');
-  }
-  }
-  
-  goDown(index:number,evento:Event){
-    if (index < this.mantenimientos.length-1){
-      this.mantenimientos[index].orden++;
-      this.saveItem(this.mantenimientos[index],index);
-      this.mantenimientos[index+1].orden--;
-  
-      this.saveItem(this.mantenimientos[index+1],index+1);
-      let temp1:any = this.mantenimientos.splice(index,1);
-      
-      console.log(this.mantenimientos);
-      this.mantenimientos.splice(index+1,0,temp1[0]);
-      console.log(this.mantenimientos);
-    this.mantenimientos = this.mantenimientos.slice();
-  
-      // setTimeout(()=>{
-      //   this.setOrden(evento,dt);
-      // },500);
-    }else{
-      console.log('ultimo elemento');
+  //     console.log(this.mantenimientos);
+  //     this.mantenimientos.splice(index+1,0,temp1[0]);
+  //     console.log(this.mantenimientos);
+  //   this.mantenimientos = this.mantenimientos.slice();
+  //   }else{
+  //     console.log('ultimo elemento');
+  //   }
+  // }
+  goUp(index: number, evento: Event) {
+    if (index > 0) {
+      this.dt._value[index].orden--;
+      this.saveItem(this.dt._value[index], index);
+      this.dt._value[index - 1].orden++;
+      this.saveItem(this.dt._value[index - 1], index - 1);
+      let temp1: any = this.dt._value.splice(index - 1, 1);
+      this.dt._value.splice(index, 0, temp1[0]);
+      this.mantenimientos = this.mantenimientos.slice();
+    } else {
+      console.log('primer elemento');
     }
   }
 
+  goDown(index: number, evento: Event) {
+    if (index < this.mantenimientos.length - 1) {
+      this.dt._value[index].orden++;
+      this.saveItem(this.dt._value[index], index);
+      this.dt._value[index + 1].orden--;
+      this.saveItem(this.dt._value[index + 1], index + 1);
+      let temp1: any = this.dt._value.splice(index, 1);
+      console.log(this.dt._value);
+      this.dt._value.splice(index + 1, 0, temp1[0]);
+      console.log(this.dt._value);
+      this.mantenimientos = this.mantenimientos.slice();
+    } else {
+      console.log('ultimo elemento');
+    }
+  }
 
 exportData(tabla: DataTable){
   console.log(tabla);
@@ -370,4 +427,85 @@ checkPeriodo(periodicidad: string): string{
     //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
     this.newRow = false;
     }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.cols, this.mantenimientos);
+  }
+
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'periodicidad':
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get('maquinas.mantenimientos').subscribe((desc)=>{informe=desc});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+
+      switch (tabla){
+        case "pieza":
+        Value = this.pieza[this.pieza.findIndex((pza)=>pza['value']==valor)]['label'];
+        break;
+        case "tipo":
+        Value = valor;
+        break;
+      }
+      console.log(tabla,valor,Value);
+      return Value;
+    }
+
 }

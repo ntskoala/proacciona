@@ -27,9 +27,11 @@ export class MantenimientosCorrectivosComponent implements OnInit {
 
 @Input() maquina:Maquina;
 @Input() Piezas;
-public piezas;
+public pieza;
 
 public mantenimientos: MantenimientoRealizado[];
+public cols:any;
+public selectedItem: MantenimientoRealizado;
 public images: string[];
 public docs: string[];
 public es:any;
@@ -38,10 +40,11 @@ public alertaGuardar:boolean=false;
 public idBorrar;
   modal: Modal = new Modal();
 public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
+public newRow:boolean=false;
 public date = new Date();
 //public url:string[]=[];
-
-public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public expanded:boolean=false;
+public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 //******IMAGENES */
 //public url; 
 public baseurl;
@@ -50,6 +53,12 @@ public image;
 public foto;
 public top = '50px';
 //************** */
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService, public sanitizer: DomSanitizer
     , public translate: TranslateService, private messageService: MessageService) {}
 
@@ -69,7 +78,16 @@ public top = '50px';
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
-        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+        this.cols = [
+          { field: 'mantenimiento', header: 'Mantenimiento', type: 'std', width:160,orden:true,'required':true },
+          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:110,orden:true,'required':true },
+          { field: 'pieza', header: 'maquinas.pieza', type: 'dropdown', width:120,orden:false,'required':false },
+          { field: 'cantidadPiezas', header: 'maquinas.cantidadPiezas', type: 'std', width:60,orden:false,'required':false },
+          { field: 'descripcion', header: 'descripcion', type: 'std', width:130,orden:true,'required':false },
+          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
+        ];
+        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
   }
   // photoURL(i) {
   //   this.verdoc=!this.verdoc;
@@ -80,13 +98,19 @@ public top = '50px';
     
     this.setMantenimientos();
     if(this.Piezas){
-      this.piezas = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
-      this.piezas.unshift({'label':"ninguna",'value':0});
+      this.pieza = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
+      this.pieza.unshift({'label':"ninguna",'value':0});
       }else{
-        this.piezas =[{'label':"ninguna",'value':0}];
+        this.pieza =[{'label':"ninguna",'value':0}];
       }
 }
-
+getOptions(option){
+  if (option=='tipo'){
+  return this.tipo;
+  }else{
+  return this.pieza;
+  }
+  }
 
   setMantenimientos(){
     let params = this.maquina.id;
@@ -131,6 +155,7 @@ public top = '50px';
           this.mantenimientos.push(this.nuevoMantenimiento);
           this.nuevoMantenimiento = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());
           this.mantenimientos = this.mantenimientos.slice();
+          this.closeNewRow();
         }
     });
   }
@@ -284,26 +309,123 @@ uploadFunciones(event:any,idItem: number,field?:string) {
     dt.toggleRow(row);
   }
 
-  exportData(tabla: DataTable) {
-    console.log(tabla);
-    let origin_Value = tabla._value;
-    tabla.columns.push(new Column())
-    tabla.columns[tabla.columns.length-1].field='descripcion';
-    tabla.columns[tabla.columns.length-1].header='descripcion';
-    tabla.columns.push(new Column())
-    tabla.columns[tabla.columns.length-1].field='causas';
-    tabla.columns[tabla.columns.length-1].header='causas';
-    tabla._value = tabla.dataToRender;
-    tabla._value.map((mentenimientos) => {
-      (moment(mentenimientos.fecha).isValid()) ? mentenimientos.fecha = moment(mentenimientos.fecha).format("DD/MM/YYYY") : '';
-    });
+  // exportData(tabla: DataTable) {
+  //   console.log(tabla);
+  //   let origin_Value = tabla._value;
+  //   tabla.columns.push(new Column())
+  //   tabla.columns[tabla.columns.length-1].field='descripcion';
+  //   tabla.columns[tabla.columns.length-1].header='descripcion';
+  //   tabla.columns.push(new Column())
+  //   tabla.columns[tabla.columns.length-1].field='causas';
+  //   tabla.columns[tabla.columns.length-1].header='causas';
+  //   tabla._value = tabla.dataToRender;
+  //   tabla._value.map((mentenimientos) => {
+  //     (moment(mentenimientos.fecha).isValid()) ? mentenimientos.fecha = moment(mentenimientos.fecha).format("DD/MM/YYYY") : '';
+  //   });
 
-    tabla.csvSeparator = ";";
-    tabla.exportFilename = "Mantenimientos_correctivos" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
-    tabla.exportCSV();
-    tabla._value = origin_Value;
-    tabla.columns.splice(tabla.columns.length-2,2);
+  //   tabla.csvSeparator = ";";
+  //   tabla.exportFilename = "Mantenimientos_correctivos" + this.maquina.nombre+"_del_"+tabla.dataToRender[0].fecha+"_al_"+tabla.dataToRender[tabla.dataToRender.length-1].fecha+"";
+  //   tabla.exportCSV();
+  //   tabla._value = origin_Value;
+  //   tabla.columns.splice(tabla.columns.length-2,2);
+  // }
+
+  rowExpanded(evento){
+    console.log(evento)
+    this.expanded=true;
+  }
+  rowCollapsed(evento){
+    console.log(evento)
+    this.expanded=false;
   }
 
+  openNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    console.log('newRow',this.newRow);
+    this.newRow = !this.newRow;
+    }
+    closeNewRow(){
+      //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+      this.newRow = false;
+      }
+      //**** EXPORTAR DATA */
 
+      async exportarTable(){
+        this.exportando=true;
+        this.informeData = await this.ConvertToCSV(this.cols, this.mantenimientos);
+      }
+    
+      informeRecibido(resultado){
+        console.log('informe recibido:',resultado);
+        if (resultado){
+          setTimeout(()=>{this.exportando=false},1500)
+        }else{
+          this.exportando=false;
+        }
+      }
+    
+      ConvertToCSV(controles,objArray){
+        var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        console.log(cabecera,array)
+        let informeCabecera=[];
+        let informeRows=[];
+                    var str = '';
+                    var row = "";
+                    let titulo="";
+                    for (var i = 0; i < cabecera.length; i++) {
+                      this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                      row += titulo + ';';
+                    }
+                    row = row.slice(0, -1);
+                    informeCabecera = row.split(";");
+    
+                    str='';
+                    for (var i = 0; i < array.length; i++) {
+                      var line ="";
+                       for (var x = 0; x < cabecera.length; x++) {
+                      
+                        let valor='';
+                        
+                        switch (cabecera[x]['type']){
+                          case 'fecha':
+                          valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                          break;
+                          case 'dropdown':
+                          valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                          break;
+                          case 'periodicidad':
+                          valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                          break;
+                          default:
+                          valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                          break;
+                        }
+    
+                      line += valor + ';';
+                    }
+                    line = line.slice(0,-1);
+    
+                        informeRows.push(line.split(";"));
+        
+                    }
+                    let informe='';
+                    this.translate.get('maquinas.mantenimientos correctivos').subscribe((desc)=>{informe=desc});
+                    return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+        }
+    
+        getDropDownValor(tabla,valor){
+          let Value;
+    
+          switch (tabla){
+            case "pieza":
+            Value = this.pieza[this.pieza.findIndex((pza)=>pza['value']==valor)]['label'];
+            break;
+            case "tipo":
+            Value = valor;
+            break;
+          }
+          console.log(tabla,valor,Value);
+          return Value;
+        }
 }

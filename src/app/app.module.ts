@@ -70,6 +70,7 @@ import { InformePeriodicidadComponent } from './components/informe-periodicidad.
 
 import { ModalComponent } from './components/modal.component';
 import {PeriodicidadComponent} from './components/programadorfechas/periodicidad.component';
+import {PeriodicidadNewComponent} from './components/programadorfechas/periodicidadNew.component';
 import { PageNotFoundComponent } from './components/404.component';
 /********    GENERAL COMPONENTS */
 import { FilterDatesComponent } from './components/filterdates/filter-dates.component';
@@ -385,6 +386,7 @@ export function createTranslateLoader(http: HttpClient) {
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,
+    PeriodicidadNewComponent,
     PageNotFoundComponent,
     InformesControlComponent,
     MigraCheckListComponent,

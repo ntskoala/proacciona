@@ -33,8 +33,11 @@ export class ElementosLimpiezaComponent implements OnInit, OnChanges{
 @Input() limpieza: LimpiezaZona;
 @Output() onElementosLimpieza: EventEmitter<LimpiezaElemento[]> = new EventEmitter<LimpiezaElemento[]>();
 public nuevoItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
-public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');;
+public addnewItem: LimpiezaElemento = new LimpiezaElemento(0,0,'','');
 public items: LimpiezaElemento[];
+public cols:any[];
+public newRow:boolean=false;
+
 public periodicidadActivada:boolean;
 public guardar = [];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
@@ -67,7 +70,13 @@ public fotoProt:string;
 public fotourl:string;
 public currentExpandedId: number;
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
-
+public viewPeriodicidad: any=null;
+public expanded:boolean=false;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
 
@@ -84,7 +93,13 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
             firstDayOfWeek: 1
         }; 
         if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
-
+        this.cols = [
+          { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
+          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
+          { field: 'periodicidad', header: 'periodicidad', type: 'periodicidad', width:110,orden:false,'required':false },
+          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
+        ];
   }
   ngOnChanges(){
 
@@ -100,6 +115,14 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
       });
     });
   }
+
+
+  getOptions(option){
+    if (option=='tipo'){
+    return this.tipos;
+    }
+    }
+
 
   periodicidadActiva(activada){
     this.periodicidadActivada=activada;
@@ -132,10 +155,20 @@ public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', valu
    this.fotoProd = URLS.DOCS + this.empresasService.seleccionada + '/limpieza_producto/'+this.misproductos[index].id +"_"+this.misproductos[index].doc;
     console.log(evento,this.fotoProd)
   }
-  setExpanded(evento){
+  // setExpanded(evento){
+  //   console.log(evento)
+  //   this.currentExpandedId = evento.data.id;
+  // }
+  rowExpanded(evento){
     console.log(evento)
     this.currentExpandedId = evento.data.id;
+    this.expanded=true;
   }
+  rowCollapsed(evento){
+    console.log(evento)
+    this.expanded=false;
+  }
+
   openTabProtocolo(evento,index){
     this.fotoProt = null;
     console.log(this.protocolo);
@@ -239,12 +272,13 @@ getProdsElemtento(idElemento:number,index:number){
           for (let element of response.data) {
 
             let indice = this.misproductos.findIndex((producto)=>producto.id==element.idproducto);
-            //console.log('indice',indice);
+            console.log('indice',indice);
             if (indice >= 0){
             let nombre = this.misproductos[indice].nombre;
             this.productos[index].push(new prods(indice,nombre));
             }
           }
+          console.log(this.productos)
           
         }
     });
@@ -317,6 +351,18 @@ this.itemEdited(evento.data.id);
       }
     );
   }
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.items.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.items[indice]);
+        this.saveItem(this.items[indice],indice)
+      }
+    }
+     
+    }
+
+
  saveItem(item: LimpiezaElemento,i: number) {
   let indice = this.items.findIndex((myitem)=>myitem.id==item.id);
   console.log('item ',this.items[indice]);
@@ -380,19 +426,50 @@ checkBorrar(idBorrar: number) {
   //   )
   // }
 
+// setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
+//   this.viewPeriodicidad=null;
+//   this.periodicidadActivada=false;
+//   if (!idItem){
+//   this.nuevoItem.periodicidad = periodicidad;
+//   // console.log(this.nuevoItem.periodicidad);
+
+//   }else{
+//     // console.log(idItem,i,periodicidad);
+//     this.itemEdited(idItem);
+//     let indice = this.items.findIndex((item)=>item.id==idItem);
+//     this.items[indice].periodicidad = periodicidad;
+//     // console.log(this.items[indice]);
+//   }
+// }
+
+
 setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
-  this.periodicidadActivada=false;
+  this.viewPeriodicidad=null;
   if (!idItem){
   this.nuevoItem.periodicidad = periodicidad;
-  // console.log(this.nuevoItem.periodicidad);
+  console.log(this.nuevoItem.periodicidad);
 
   }else{
-    // console.log(idItem,i,periodicidad);
     this.itemEdited(idItem);
     let indice = this.items.findIndex((item)=>item.id==idItem);
     this.items[indice].periodicidad = periodicidad;
-    // console.log(this.items[indice]);
   }
+  //this.nuevoItem  = new LimpiezaElemento(0,0,'','');
+}
+openPeriodicidad(Mantenimiento){
+  console.log('view Periodicidad Ok',Mantenimiento);
+  if (Mantenimiento.id == 0){
+    this.viewPeriodicidad='true';
+  }else{
+    this.nuevoItem= Mantenimiento;
+    this.viewPeriodicidad=Mantenimiento.periodicidad;
+  }
+}
+closePeriodicidad(activo){
+if (activo==false){
+  this.nuevoItem  = new LimpiezaElemento(0,0,'','');
+  this.viewPeriodicidad=false;
+}
 }
 // setProtocol(protocol:string,i:number,itemId:number){
 //  if (i<0){
@@ -553,6 +630,93 @@ checkPeriodo(periodicidad: string): string{
       return 'Nul';
     }
   }
+//*************** */
 
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.cols, this.items);
+  }
+
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'periodicidad':
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get('limpieza.limpiezas').subscribe((desc)=>{informe=desc});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+      switch (tabla){
+        case "tipo":
+        Value = valor;
+        break;
+      }
+      console.log(tabla,valor,Value);
+      return Value;
+    }
 
 }

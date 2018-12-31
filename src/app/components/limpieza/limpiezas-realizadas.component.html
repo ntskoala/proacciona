@@ -1,72 +1,4 @@
-<!-- <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal> -->
-<!-- <div class="table">
-  <div class="header-row">
-    <span class="header-cell">{{"limpieza.limpieza" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_prevista" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_real" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.tipo" | translate}}</span>
-    <span class="header-cell">{{"limpieza.descripcion" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.responsable" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.fecha_supervision" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.supervision" | translate}}</span>
-    <span class="medium header-cell">{{"limpieza.supervisor" | translate}}</span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
-  </div>
-
-
-  <form class="row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let mantenimiento of items;let i = index">
-    <input type="hidden" [(ngModel)]="mantenimiento.id" name="id">
-    <span class="cell">
-      <input [readonly]="true" type="text" [(ngModel)]="mantenimiento.nombre" name="nombre" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell small">
-      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha_prevista" [locale]="es" dateFormat="dd/mm/yy" name="fecha_prevista" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
-    </span>
-    <span class="medium cell">
-      <p-calendar [inputStyle]="{'width':'100px'}" [(ngModel)]="mantenimiento.fecha"  [locale]="es" dateFormat="dd/mm/yy" name="fecha" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
-    </span>
-    <span class="medium cell">
-     <input class="medium small"  [placeholder]="'tipo' | translate" type="text" [(ngModel)]="mantenimiento.tipo" name="tipo" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell">
-      <input class="medium small" [placeholder]="'descripcion' | translate" type="text" [(ngModel)]="mantenimiento.descripcion" name="descripcion" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell">
-      <input  class="medium small" [placeholder]="'responsable' | translate" type="text" [(ngModel)]="mantenimiento.responsable" name="responsable" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="medium cell small">
-      <p-calendar [inputStyle]="{'width':'100px'}" placeholder="Fecha supervision" [(ngModel)]="mantenimiento.fecha_supervision" [locale]="es" dateFormat="dd/mm/yy" name="fecha_supervision" (onSelect)="itemEdited(mantenimiento.id)"></p-calendar>    
-    </span>
-     <span class="medium cell">
-      <p-dropdown (onChange)="itemEdited(mantenimiento.id)" [style]="{'width':'100px'}" [options]="supervisar" [(ngModel)]="mantenimiento.supervision" name="supervision"></p-dropdown>
-    </span>   
-    <span class="medium cell">
-      <input disabled class="medium" [placeholder]="'supervisor' | translate" type="text" [(ngModel)]="mantenimiento.supervisor" [ngModelOptions]="{standalone: true}" (keyup)="itemEdited(mantenimiento.id)">
-    </span>
-    <span class="cell detalle" [ngClass]="{'supervisionOk': mantenimiento.supervision==1, 'supervisionFail': mantenimiento.supervision==2}">
-      <span class="reason" *ngIf="motivo[i]">
-        <input   [placeholder]="'detalles_supervision' | translate" type="text" [(ngModel)]="mantenimiento.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(mantenimiento.id)">
-        </span>
-      <button [disabled]="mantenimiento.supervision==1" mat-mini-fab  (click)="detalleSupervision(mantenimiento.id,i)" type="button">
-        <span class="material-icons">info</span>
-      </button>
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" (click)="checkBorrar(mantenimiento.id)" type="button">
-        <span class="material-icons">close</span>
-      </button>
-    </span>
-    <span class="cell">
-      <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="!guardar[mantenimiento.id]" type="submit">
-        <span class="material-icons">check</span>
-      </button>                
-    </span>
-
-  </form>
-
-</div> -->
+<!-- 
 
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
 
@@ -85,7 +17,6 @@
       </div>
 </p-header>
 
-  <!-- <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['familia']}}</ng-template> -->
   <p-column expander="true" styleClass="col-icon"  [style]="{'width':'40px'}">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
          <div class="tooltip expander" matTooltip="{{'expandir' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" (click)="expandir(DT,rowIndex,$event)">
@@ -117,7 +48,6 @@
    <mat-option value="1">{{'planificaciones.correcta' | translate}}</mat-option>
     <mat-option value="2">{{'planificaciones.incorrecta' | translate}}</mat-option>
 </mat-select>
-    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
        </div>
   <div style="width:30px;position:relative;float:right">
         <figure *ngIf="item.supervision==1" style="display: block;background: #33cc33;border-radius: 50%;height: 25px;width: 25px; margin: 0;" ></figure>
@@ -129,7 +59,6 @@
   <p-column field="idsupervisor" header="{{'limpieza.supervisor' | translate}}"   [style]="{'width':'130px','overflow':'visible'}" [sortable]="true">
      <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body" >
        <div style="position:relative">
-    <!-- <p-dropdown [options]="usuarios" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'100%'}" (onChange)="doSomething(item[col.field],col.header,col,col.field)"></p-dropdown> -->
           <mat-select  [(ngModel)]="item[col.field]" name="item[col.header]">
   <mat-option *ngFor="let usuario of usuarios" [value]="usuario.id">{{usuario.usuario}}</mat-option>
 </mat-select>      
@@ -144,7 +73,6 @@
   </p-column>
 
   <ng-template let-item  pTemplate="rowexpansion" let-rowIndex="rowIndex">
-   <!--//************--> 
          <span class="plan_descripcion">
             <p-panel [style]="{'width':'100%','height':'225px','margin':'0 1%', 'float':'left'}" header="{{'limpieza.descripcion' | translate}}">
             <textarea [rows]="6" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
@@ -156,7 +84,6 @@
     </p-panel>
     </span>
 
-  <!--//************ FOTO     --> 
   <p-panel [style]="{'width':'11%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.imagen' | translate}}">
       <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
    
@@ -169,7 +96,6 @@
      </span>
        </p-panel>
  
-       <!--//************ PDF     --> 
          <p-panel [style]="{'width':'11%','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'planificaciones.doc' | translate}}">
 
       <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
@@ -186,7 +112,6 @@
 
 
 
-   <!--//************-->
   </ng-template>
   <p-column styleClass="col-icon" header="{{'planificaciones.actions' | translate}}" [style]="{'width':'150px'}">
        <ng-template let-col let-item="rowData" pTemplate="body">
@@ -202,7 +127,6 @@
       </button>                
     </span>
 
-  <!-- <app-boton-incidencia class="incidenciaItem" id="botonIncidencia" [origen]="incidencia[item.id]"></app-boton-incidencia> -->
     
 </ng-template>  
   </p-column>  
@@ -220,4 +144,205 @@
    <div class="modal" *ngIf="exportando">
     <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
     </div>
+    -->
+
+    <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
+    <div class="modal" *ngIf="procesando">
+      <mat-spinner></mat-spinner>
+    </div>
+    
+    
+    <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew>
+    <!-- ********* INICIO TABLA REGISTROS-->
+    <p-table #DT [columns]="cols" [value]="items" dataKey="id" 
+    (onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
+      [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
+      [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
+      [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" [ngStyle]="{'min-height.px': minHeight}">
+      <ng-template pTemplate="caption">
+        <div style="text-align:left;margin-left:10px">
+          <!-- <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+          <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button> -->
+          <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAll()" style="margin-left:10px"></button>
+          <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-left:10px;float:right"></button>
+    
+        </div>
+      </ng-template>
+      <!-- ********* INICIO CABECERA-->
+      <ng-template pTemplate="header" let-columns>
+        <span style="display:table-row">
+          <th style="width: 3em"></th>
+           <!--************ ORDEN ***************************-->
+           <!-- <th style="width:50px">
+                    <mat-icon>import_export</mat-icon>
+          </th> -->
+         <!--************ FIN ORDEN ***************************-->
+          <th  *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+            {{col.header | translate}}
+            <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
+          </th>
+          <th [style.width]="'95px'">
+            {{'acciones' | translate}}
+          </th>
+        </span>
+      </ng-template>
+      <!-- ********* FIN CABECERA   ***-->
+    
+    
+      <div class="tableContent">
+      <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="expanded">
+        <!--let-expanded="expanded" -->
+        <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
+          <td><span *ngIf="expanded!=null">
+              <a disabled href="#" [pRowToggler]="item">
+                <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+              </a></span>
+          </td>
+          <!--************ ORDEN ***************************-->
+          <!-- <td>    
+          <div class="orden" >
+              <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="items.length"  (onChange)="editOrden()"></p-spinner> 
+          </div>  
+        </td>    -->
+      <!--************ FIN ORDEN ***************************-->
+          <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
+              <span *ngIf="col.type == 'dropdown'">
+                  <p-dropdown  [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                    (onChange)="itemEdited(item.id)"></p-dropdown>
+                </span>
+                <span *ngIf="col.type == 'periodicidad'">
+                  <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                  [matTooltipPosition]="'right'">
+                  <button [disabled]="!item['fecha']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+                    <span class="material-icons">event</span>
+                  </button>
+                </span>
+              </span>
+                <!--*****  subir/ver FOTO  *********-->
+                <span *ngIf="col.type == 'foto'">
+                    <span class="tooltip middle" matTooltip="{{'verFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                      [matTooltipPosition]="'left'">
+                      <button class="camera" *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"
+                        [disabled]="!item.doc" mat-mini-fab color="color" (click)="photoURL(i,'doc')" type="button">
+                        <span class="material-icons">photo_camera</span>
+                      </button>
+                    </span>
+                    <span class="tooltip middle" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                      [matTooltipPosition]="'left'">
+                      <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
+                        attr.for="{{'doc'+i}}"></label>
+                      <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
+                        class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                    </span>
+                  </span>
+                  <!--****** FIN ********************-->
+            <p-cellEditor>
+              <!-- ********* VER DATA   ***-->
+              <ng-template pTemplate="output">
+                <span *ngIf="col.type =='std'">
+                  {{item[col.field]}}
+                </span>
+                  <span *ngIf="col.type == 'fecha'">
+                      {{item[col.field] | date:"dd-MM-yyyy"}}
+                </span>
+              </ng-template>
+              <!-- ********* EDIT DATA   ***-->
+              <ng-template pTemplate="input">
+                <span *ngIf="col.type == 'std'">
+                  <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+                </span>
+                <span *ngIf="col.type == 'fecha'">
+                  <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
+                    [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+                </span>
+                <!--****** FIN ********************-->
+              </ng-template>
+            </p-cellEditor>
+          </td>
+    
+          <!--*****  ACCIONES  *********-->
+          <td>
+            <span class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'left'">
+              <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+                (click)="checkBorrar(item.id)" type="button">
+                <span class="material-icons">close</span>
+              </button>
+            </span>
+            <span class="tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'right'">
+              <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+                [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+                <span class="material-icons">check</span>
+              </button>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    
+      <ng-template pTemplate="summary" let-item>
+      </ng-template>
+    </div>
+    
+      <!-- ********* EXPANSION-->
+      <ng-template pTemplate="rowexpansion" let-item let-columns="columns" let-rowIndex="rowIndex">
+        <tr [ngClass]="{'expandSelected':expanded}">
+          <td [attr.colspan]="columns.length + 2">
    
+             
+              <span class="plan_descripcion">
+                  <div [style]="{'width':'100%','height':'225px','margin':'0 1%', 'float':'left'}">
+                      <h4>{{'limpieza.descripcion' | translate}}</h4>
+                  <textarea [rows]="6" [cols]="33" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+          </div>
+          </span>
+          <span class="plan_descripcion">
+            <div [style]="{'width':'100%','height':'225px','margin':'0 1%', 'float':'left'}" >
+                <h4>{{'limpieza.detalles_supervision' | translate}}</h4>
+          <textarea [rows]="6" [cols]="33" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.detalles_supervision" name="detalles_supervision" (keyup)="itemEdited(item.id)"></textarea>
+          </div>
+          </span>
+      
+        <div style="width:11%;height:250px;margin:0 1%;float:left" >
+            <h4>{{'limpieza.imagen' | translate}}</h4>
+            <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
+         
+           <hr>
+           <span class="cell tooltip" matTooltip="{{'subirFoto' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">        
+           <span  class="but but2">
+               <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" for="{{'imagen'+item.id}}"></label>
+               <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'imagen'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'imagen')" accept=".gif,.jpg,.jpeg,.png"/>
+           </span>
+           </span>
+             </div>
+       
+               <div style="width:11%;height:250px;margin:0 1%;float:left">
+            <h4>{{'limpieza.doc' | translate}}</h4>
+
+      
+            <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
+                <hr>
+           <span  class="but but2 altPanel">
+           <span class="cell tooltip" matTooltip="{{'subirArchivo' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">                
+               <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="{{'pdf'+item.id}}"></label>
+           </span>
+               <br>
+               <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="{{'pdf'+item.id}}" class="inputfile" type="file" (change)="uploadFunciones($event,item.id,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+             
+             </span>
+               </div>
+
+   
+   
+          </td>
+        </tr>
+      </ng-template> 
+    </p-table>
+    
+    <!-- ********* FIN TABLA REGISTROS-->
+    
+    <div class="modal" *ngIf="exportando">
+        <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+    </div>
+    <app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+

@@ -6,7 +6,7 @@
   width:860px;
   height:300px;
   min-height:400px;
-  z-index:99;
+  z-index:99999;
   background-color:#fff;
   opacity:0.94;
   border: black;
@@ -14,7 +14,7 @@
     border-width: thin;
   }
 .form_period{
-    background-color: #d2d2d2;
+    background-color: rgba(238, 234, 245,1) !important;
     margin: -25px;
     padding: 20px;
     height:300px;

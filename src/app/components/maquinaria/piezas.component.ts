@@ -42,6 +42,12 @@ public foto:string;
 public top:string;
 public displayDialog:boolean;
 
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -233,16 +239,16 @@ ngOnChanges(){
   }
   }
 
-  exportData(tabla: DataTable){
-    console.log(tabla);
-    let origin_Value = tabla._value;
-    tabla._value = tabla.dataToRender;
-    //tabla._value.map((maquina)=>{});
-    tabla.csvSeparator = ";";
-    tabla.exportFilename = "Mantenimietos_preventivos_ "+this.maquina.nombre;
-    tabla.exportCSV();
-    tabla._value = origin_Value;
-  }
+  // exportData(tabla: DataTable){
+  //   console.log(tabla);
+  //   let origin_Value = tabla._value;
+  //   tabla._value = tabla.dataToRender;
+  //   //tabla._value.map((maquina)=>{});
+  //   tabla.csvSeparator = ";";
+  //   tabla.exportFilename = "Mantenimietos_preventivos_ "+this.maquina.nombre;
+  //   tabla.exportCSV();
+  //   tabla._value = origin_Value;
+  // }
 
 //************ */
 //************ */
@@ -294,6 +300,108 @@ openNewRow(){
     this.newRow = false;
     }
 
+  //**** EXPORTAR DATA */
+
+  async exportarTable(){
+      this.exportando=true;
+      this.informeData = await this.ConvertToCSV(this.cols, this.piezas);
+    }
+
+    informeRecibido(resultado){
+      console.log('informe recibido:',resultado);
+      if (resultado){
+        setTimeout(()=>{this.exportando=false},1500)
+      }else{
+        this.exportando=false;
+      }
+    }
+
+    ConvertToCSV(controles,objArray){
+      var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      console.log(cabecera,array)
+      let informeCabecera=[];
+      let informeRows=[];
+                  var str = '';
+                  var row = "";
+                  for (var i = 0; i < cabecera.length; i++) {
+                    row += cabecera[i]["header"] + ';';
+                  }
+                  row = row.slice(0, -1);
+                  informeCabecera = row.split(";");
+
+                  str='';
+                  for (var i = 0; i < array.length; i++) {
+                    var line ="";
+                     for (var x = 0; x < cabecera.length; x++) {
+                    
+                      let valor='';
+                      valor = array[i][cabecera[x]['field']]
+                    line += valor + ';';
+                  }
+                  line = line.slice(0,-1);
+
+                      informeRows.push(line.split(";"));
+      
+                  }
+                  let informe='';
+                  this.translate.get('maquinas.piezas').subscribe((desc)=>{informe=desc});
+                  return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+      }
+  
+
+
+
+
+    // ConvertToCSV(controles,objArray){
+    //   var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    //   var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    //   console.log(cabecera,array)
+    //   let informeCabecera=[];
+    //   let informeRows=[];
+    //   let comentarios = [];
+    //               var str = '';
+    //               var row = "";
+    //               row += "Usuario;Foto;Fecha;"
+    //               for (var i = 0; i < cabecera.length; i++) {
+    //                 row += cabecera[i]["header"] + ';';
+    //               }
+    //               row = row.slice(0, -1);
+    //               //append Label row with line break
+    //               //str += row + '\r\n';
+    //               informeCabecera = row.split(";");
+    //               str='';
+    //               for (var i = 0; i < array.length; i++) {
+    //                 let fotoUrl = ''
+    //                 let comentario='';
+    //                 if (array[i].foto){
+    //                   //+ '/control' + idResultado + '.jpg';
+    //                   //fotoUrl = '=hyperlink("'+URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg";"foto")';
+    //                   fotoUrl =URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+    //                }                            
+    //                   var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
+    //                   //var line =array[i].usuario+";"+array[i].fecha +";";
+    //                   //var line =array[i].usuario+";"+array[i].fecha + ";";
+      
+    //                 for (var x = 0; x < cabecera.length; x++) {
+    //                   let columna = cabecera[x]["header"];
+    //                   //let resultado = array[i][cabecera[x]];
+    //                   let resultado = array[i]["nombre"];
+    //                   if (array[i][columna + 'mensaje']) {
+    //                     this.translate.get(array[i][columna + 'mensaje']).subscribe((mensaje)=>{comentario +=  columna +": "+mensaje})
+    //                   } 
+    //                 //line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+    //                 line += ((columna == resultado && array[i]["valor"] !== undefined) ?array[i]["valor"] + ';':';');
+    //               }
+    //               line = line.slice(0,-1);
+    //                   //str += line + '\r\n';
+    //                   informeRows.push(line.split(";"));
+    //                   comentarios.push(comentario);
+      
+    //               }
+    //               //return str;
+    //               return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':comentarios,'informes':'Controles'};
+    //   }
 
 
 }

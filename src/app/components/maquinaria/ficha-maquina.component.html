@@ -144,7 +144,7 @@
 </div>
 
 
-<app-ver-docs [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+<app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
 
 <!-- <div class="iframeDiv" *ngIf="verdoc" (click)="verdoc=!verdoc">
         <button  class="close" color="accent" mat-mini-fab (click)="cerrarFoto()"><mat-icon>close</mat-icon></button>

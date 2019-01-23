@@ -3,12 +3,16 @@ import { Subscription } from 'rxjs/Subscription';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
 import { PermisosService } from '../../services/permisos.service';
 import { EmpresasComponent } from '../empresas.component';
 import { URLS } from '../../models/urls';
 import { ResultadoControl } from '../../models/resultadocontrol';
+import { Modal } from '../../models/modal';
+
 import * as moment from 'moment';
 import {SelectItem} from 'primeng/primeng';
 //import { Promise } from 'q';
@@ -29,8 +33,8 @@ export class InformesControlComponent implements OnInit {
   public columnas: object[] = [];
   public tabla: Object[] = [];
   public tabla2: Object[] = [];
-  fecha: Object ={};// = {"inicio":"2016-12-09","fin":"2016-12-12"};
-  //fecha: Object = {"inicio":"2017-01-09","fin":"2017-02-12"};
+  //fecha: Object ={};// = {"inicio":"2016-12-09","fin":"2016-12-12"};
+  fecha: Object = {"inicio":"2018-06-01","fin":"2018-09-12"};
   public modal: boolean = false;
   public fotoSrc: string;
   public exportar_informes: boolean =false;
@@ -38,7 +42,9 @@ export class InformesControlComponent implements OnInit {
   public informeData:any;
   public es;
   public brands: string[]=['>','<','='];
-
+  public foto;
+  public idBorrar;
+  public  modalW: Modal = new Modal();
 
   constructor(
     public servidor: Servidor, 
@@ -46,7 +52,8 @@ export class InformesControlComponent implements OnInit {
     public empresasComponent: EmpresasComponent, 
     public permisos: PermisosService,
     private route: ActivatedRoute,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -197,13 +204,57 @@ getDateInicio(){
   }
 
   ventanaFoto(idResultado: number) {
-    this.fotoSrc = URLS.FOTOS + this.empresasService.seleccionada + '/control' + idResultado + '.jpg'
-    this.modal = true;
+    // this.fotoSrc = URLS.FOTOS + this.empresasService.seleccionada + '/control' + idResultado + '.jpg'
+    // this.modal = true;
+    this.foto = URLS.FOTOS + this.empresasService.seleccionada + '/control' + idResultado + '.jpg';
   }
 
   cerrarFoto() {
     this.modal = false;
   }
+
+
+  setAlerta(concept:string){
+    let concepto;
+    this.translateService.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.clear();this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
+
+  checkBorrar(idBorrar: number) {
+    console.log('borrar');
+    // Guardar el id del control a borrar
+    this.idBorrar = idBorrar;
+    // Crea el modal
+    this.modalW.titulo = 'maquinas.borrarMantenimientoR';
+    this.modalW.subtitulo = 'borrarControlT';
+    this.modalW.eliminar = true;
+    this.modalW.visible = true;
+  }
+
+  cerrarModal(event: boolean) {
+    this.modalW.visible = false;
+    if (event) {
+      let parametros = '?id=' + this.idBorrar+"&entidad=ResultadosControl";
+      this.servidor.deleteObject(URLS.STD_SUBITEM, parametros).subscribe(
+        response => {
+          if (response.success) {
+            let indice = this.tabla.findIndex((item)=>item["id"]==this.idBorrar);
+            this.tabla.splice(indice, 1);
+            this.tabla = this.tabla.slice();
+            this.setAlerta('alertas.borrar');
+          }
+      });
+    }
+  }
+
+
+
+
 
 scroll(){
   console.log("dateclicked");

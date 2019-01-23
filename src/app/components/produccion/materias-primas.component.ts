@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
+import * as moment from 'moment/moment';
+import { TranslateService } from '@ngx-translate/core';
+
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
@@ -32,8 +35,10 @@ public items: ProduccionDetalle[];
 public productos: any[]=[];
 public proveedores: any[]=[];
 public entrada_productos: any[]=[];
-public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
+public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+
 public guardar = [];
+public remanentesEditados = [];
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -47,10 +52,28 @@ entidad:string="&entidad=produccion_detalle";
 field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 public es;
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
+public cols:any[];
+public newRow:boolean=false;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+  constructor(
+    public servidor: Servidor,
+    public empresasService: EmpresasService,
+    public translate: TranslateService
+    ) {}
 
   ngOnInit() {
       this.getProveedores();
+      this.cols = [
+        { field: 'proveedor', header: 'proveedores.proveedor', type: 'custom', width:160,orden:true,'required':true, 'disabled':true,'function':'getProductos($event.target.value)' },
+        { field: 'producto', header: 'proveedores.producto', type: 'custom', width:120,orden:true,'required':true, 'disabled':true,'function':'getProductos($event.target.value)' },
+        { field: 'idmateriaprima', header: 'proveedores.lote', type: 'custom', width:120,orden:true,'required':true, 'disabled':true,'function':'getProductos($event.target.value)' },
+        { field: 'cantidad', header: 'proveedores.cantidad', type: 'std', width:90,orden:true,'required':true, 'disabled':false },
+        { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':true, 'disabled':false }
+      ];
   }
 
   ngOnChanges(){
@@ -59,7 +82,23 @@ public es;
      // this.getProductos();
   }
 
-
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'proveedor':
+    return this.proveedores;
+    break;
+    case 'producto':
+    return this.productos;
+    break;
+    case 'tipo_medida':
+    return this.medidas;
+    break;
+    case 'idmateriaprima':
+    return this.entrada_productos;
+    break;    
+    }
+    }
 
 
 
@@ -74,6 +113,7 @@ public es;
               for (let element of response.data) { 
                   this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote_proveedor,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida));
              }
+             console.log(this.items)
             }
         },
         error=>console.log(error),
@@ -82,6 +122,7 @@ public es;
   }
 
 getProductos(idProveedor:number){
+  console.log(idProveedor);
   if (idProveedor > 0){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+idProveedor; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
@@ -92,7 +133,7 @@ getProductos(idProveedor:number){
             this.nuevoItem.idmateriaprima=null;
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.productos.push({"id":element.id,"nombre":element.nombre});
+                  this.productos.push({"value":element.id,"label":element.nombre});
              }
             }
         },
@@ -104,11 +145,12 @@ getProductos(idProveedor:number){
     this.entrada_productos = [];
     this.nuevoItem.producto=null;
     this.nuevoItem.idmateriaprima=null;
-    this.productos.push({"id":0,"nombre":"lote interno"});
+    this.productos.push({"value":0,"label":"lote interno"});
   }
 }
 
 getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
+  console.log('getEntradasProducto',idProducto)
   if (idProducto > 0){
          let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto+"&WHERE=cantidad_remanente>0&order=fecha_entrada"; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
@@ -117,7 +159,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.nuevoItem.idmateriaprima=null;
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
+                  this.entrada_productos.push({"value":element.id,"label":element.numlote_proveedor,"id":element.id,"lote":element.numlote_proveedor,"tipo":"lote_proveedor","cantidad":element.cantidad_remanente,"tipo_medida":element.tipo_medida});
              }
             }
         },
@@ -131,7 +173,7 @@ getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
             this.entrada_productos = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.entrada_productos.push({"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.remanente,"tipo_medida":element.tipo_medida});
+                  this.entrada_productos.push({"value":element.id,"label":element.numlote,"id":element.id,"lote":element.numlote,"tipo":"lote_interno","cantidad":element.remanente,"tipo_medida":element.tipo_medida});
              }
             }
         },
@@ -147,10 +189,10 @@ getProveedores(){
           response => {
             this.proveedores = [];
             // this.proveedores.push({"id":null,"nombre":"Selecciona"})
-            this.proveedores.push({"id":0,"nombre":"Interno"})
+            this.proveedores.push({"value":0,"label":"Interno"})
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.proveedores.push({"id":element.id,"nombre":element.nombre});
+                  this.proveedores.push({"value":element.id,"label":element.nombre});
              }
             }
         },
@@ -161,12 +203,12 @@ getProveedores(){
 
 
   newItem() {
-    console.log (this.proveedores.findIndex((prov)=>prov.id==parseInt(this.nuevoItem.proveedor)))
+    console.log (this.proveedores.findIndex((prov)=>prov.value==parseInt(this.nuevoItem.proveedor)))
     let param = this.entidad+this.field+this.orden.id;
     this.nuevoItem.id =0;
     this.nuevoItem.idorden = this.orden.id;
-    this.nuevoItem.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.id==parseInt(this.nuevoItem.proveedor))].nombre;
-    this.nuevoItem.producto = this.productos[this.productos.findIndex((prod)=>prod.id==parseInt(this.nuevoItem.producto))].nombre;
+    this.nuevoItem.proveedor = this.proveedores[this.proveedores.findIndex((prov)=>prov.value==parseInt(this.nuevoItem.proveedor))].label;
+    this.nuevoItem.producto = this.productos[this.productos.findIndex((prod)=>prod.value==parseInt(this.nuevoItem.producto))].label;
     let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==this.nuevoItem.idmateriaprima);
     this.nuevoItem.numlote_proveedor = this.entrada_productos[index_entrada_productos].lote;
     if (this.entrada_productos[index_entrada_productos].tipo == "lote_interno"){
@@ -224,17 +266,49 @@ setRemanente(detalleProduccion: ProduccionDetalle){
   }
 }
 
+onEdit(event){
+  console.log(event);
+  if (this.guardar[event.data.id] != true) this.remanentesEditados[event.data.id] = event.data.cantidad;
+  this.itemEdited(event.data.id);
+}
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
     //console.log (fecha.toString());
   }
- saveItem(item: ProveedorLoteProducto,i: number) {
+ //saveItem(item: ProveedorLoteProducto,i: number) {
+  saveItem(item: ProduccionDetalle,i: number) {
     this.guardar[item.id] = false;
     let parametros = '?id=' + item.id+this.entidad;    
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
-          alert('Si se ha modificdo la cantidad, no se ve reflejada en el remanente del lote de proveedor, Eliminar la entrada y crear una nueva, si actualiza los remanentes.');
+          if (this.remanentesEditados[item.id] != item.cantidad)
+          {
+          let valor = this.remanentesEditados[item.id] - item.cantidad;
+          if (item.idloteinterno>0){
+            this.retornoRemanenteLI(valor,item.idloteinterno).then(
+              (resultado)=>{
+                if (resultado){
+                  console.log(valor,'remanente retornado al lote de producto del proveedor')
+                }else{
+                  alert('Atención! No se ha podido devolver el remanente al lote de producto del proveedor')
+                }
+              }
+            )
+          }
+          if (item.idmateriaprima>0){
+            this.retornoRemanenteMP(valor,item.idmateriaprima).then(
+              (resultado)=>{
+                if (resultado){
+                  console.log(valor,'remanente retornado al lote de producto del proveedor')
+                }else{
+                  alert('Atención! No se ha podido devolver el remanente al lote de producto del proveedor')
+                }
+              }
+            )
+          }
+          }
+          //alert('Si se ha modificdo la cantidad, no se ve reflejada en el remanente del lote de proveedor, Eliminar la entrada y crear una nueva, si actualiza los remanentes.');
         }
     });
 
@@ -335,13 +409,120 @@ retornoRemanenteMP(valor,idLote){
 }
 
 setMaxCantidad(idLote:number){
-
+  console.log(idLote);
   let index_entrada_productos = this.entrada_productos.findIndex((lot)=>lot.id==idLote);
     this.nuevoItem.cantidad = this.entrada_productos[index_entrada_productos].cantidad;
     this.nuevoItem.tipo_medida = this.entrada_productos[index_entrada_productos].tipo_medida;
   this.maxCantidad = this.entrada_productos[index_entrada_productos].cantidad;
 //console.log(idLote,index_entrada_productos,this.entrada_productos[index_entrada_productos].cantidad);
 }
+
+
+
+
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.cols, this.items);
+  }
+
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null )?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'custom':
+                      switch (cabecera[x]['field']){
+                        case 'proveedor':
+                        valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                        break;
+                        case 'producto':
+                        valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                        break;
+                        case 'idmateriaprima':
+                        valor = (array[i]['numlote_proveedor']==null)?'':array[i]['numlote_proveedor'];
+  
+                        break;                       
+                      }
+                      break;
+                      case 'periodicidad':
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get('produccion.materias_primas').subscribe((desc)=>{informe=desc + ' Lote: ' + this.orden.numlote});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+      let index
+      switch (tabla){
+        case 'tipo_medida':
+         index=this.medidas.findIndex((medida)=>medida["value"]==valor);
+        if (index>-1)
+        Value = this.medidas[index]["label"];     
+        break;
+      }
+      return Value;
+    }
+
+
 
 
 

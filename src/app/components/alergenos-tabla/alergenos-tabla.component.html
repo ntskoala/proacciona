@@ -1,4 +1,4 @@
-<mat-toolbar style="width: 900px !important;" color="accent">{{'PermisosGenerales' | translate}}
+<mat-toolbar style="width: 900px !important;" color="accent">{{'produccion.alergenos' | translate}}
   </mat-toolbar>
 
 
@@ -7,7 +7,7 @@
 <p-table #dt [value]="tabla"  [style]="{'width':'900px'}"  [loading]="procesando">
     <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
-                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Descarga Excel" (click)="excel2()" style="float:left"></button>
+                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel2()" style="float:left"></button>
             </div>
     </ng-template>
 

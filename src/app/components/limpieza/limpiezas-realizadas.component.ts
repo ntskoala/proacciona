@@ -46,6 +46,7 @@ public supervisar:object[]=[{"value":0,"label":"Por supervisar"},{"value":1,"lab
   modal: Modal = new Modal();
 entidad:string="&entidad=limpieza_realizada";
 field:string="&field=idlimpiezazona&idItem=";
+filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
 es
 //******IMAGENES */
 //public url; 
@@ -152,7 +153,7 @@ seleccion(evento){
   setItems(){
   //  let params = this.maquina.id;
   //  let parametros = '&idmaquina=' + params;
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id+"&order=fecha DESC"; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.limpieza.id+"&order=fecha DESC"+this.filterDates; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.items = [];
@@ -175,7 +176,7 @@ seleccion(evento){
                   this.images[element.id] = this.baseurl + element.id + "_"+element.imagen;
                   this.docs[element.id] = this.baseurl + element.id + "_"+element.doc;
                 }
-                // this.incidenciaSelection();
+                 this.incidenciaSelection();
                 // this.getIncidencias();
             }
 

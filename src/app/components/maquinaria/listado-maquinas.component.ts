@@ -39,15 +39,18 @@ ngOnInit(){
 }
 
 ngOnChanges(){
+  console.log('***',this.idSelected,this.maquinas);
   if (this.idSelected >0){
     this.unExpand();
     this.Choicer.disabled = true;
+    this.loadMaquinas(this.empresasService.seleccionada.toString(),true);
+
   }else{
     if (this.empresasService.seleccionada) this.loadMaquinas(this.empresasService.seleccionada.toString());
   }
 }
 
-     loadMaquinas(emp: Empresa | string) {
+     loadMaquinas(emp: Empresa | string, maquinaSeleccionada?:boolean) {
     let params = typeof(emp) == "string" ? emp : emp.id
     let parametros = '&idempresa=' + params+"&entidad=maquinaria&order=nombre";
         //let parametros = '&idempresa=' + seleccionada.id;
@@ -68,7 +71,11 @@ ngOnChanges(){
               (error) => {console.log(error)},
               ()=>{
               this.listaMaquinas.emit(this.maquinas);
+              if(maquinaSeleccionada){
+                this.seleccionarMaquina(this.maquinas.findIndex((maquina)=>maquina.id==this.idSelected));
+              }else{
                this.expand();
+              }
               }
         );
    }
@@ -77,13 +84,14 @@ ngOnChanges(){
 
 
 seleccionarMaquina(event:any | number){
-//  console.log("changelist",valor,event);
+  console.log("changelist",this.idSelected,event);
 //this.maquinaSeleccionada.emit(this.maquinas[event.target.value]);
   this.myItem = typeof(event) == "number" ? event : event.value;
   console.log(this.myItem,this.maquinas[this.myItem].id);
   this.maquinaSeleccionada.emit(this.maquinas[this.myItem]);
   this.maquinaActiva = this.maquinas[this.myItem].id;
   this.unExpand();
+  
 }
 seleccionaSiguiente(){
   let indice = this.maquinas.findIndex((maquina)=>maquina.id==this.maquinaActiva);

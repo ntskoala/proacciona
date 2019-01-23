@@ -20,6 +20,8 @@ public innerHtml='';
 public xls:boolean;
 public pdf: boolean;
 public html;
+public progreso:number=0;
+public speed=500;
   constructor(
     public servidor: Servidor, 
     public empresasService: EmpresasService,
@@ -34,10 +36,9 @@ public html;
   }
 
 async downloads(){
-    //let informeData = await this.ConvertToCSV(this.columnas, this.tabla);
+    this.progress(10);
      let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
-    //let params = {'tabla':this.tabla};
-    this.innerHtml += 'solicitado&lt;br&gt;';
+    this.innerHtml += 'solicitado<br>...';
     this.servidor.postSimple(url,this.informeData).subscribe(
       async (respuesta)=>{
         console.log('########',respuesta.json());
@@ -64,8 +65,25 @@ async downloads(){
                   this.informeRecibido.emit(true);
                 },time)
               }
+        },
+        (error)=>{console.log('ERROR SCRIPTING ',error);},
+        ()=>{
+          this.progress(80);
         }
     )
+  }
+  progress(start){
+    clearInterval();
+    this.progreso=start;
+    //for (let x=start;x<100;x++){
+      setInterval(()=>{
+        this.progreso+=1
+        if (this.progreso>50 && this.progreso<80) this.speed = 1000;
+        if (this.progreso>60 && this.progreso<80) this.speed = 1500;
+        if (this.progreso>70 && this.progreso<80) this.speed = 3000;
+        if (this.progreso>99 ) clearInterval();
+        },this.speed)
+    //}
   }
 
   downloadInforme(file_path,a,id){
@@ -78,6 +96,8 @@ async downloads(){
     a.click();
     document.body.removeChild(a);
     this.innerHtml += 'descargado<br>';
+    clearInterval();
+    this.progreso=100;
     return (true);
   }
   close(){
@@ -100,15 +120,13 @@ async downloads(){
 
 test(){
   let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
-  //let params = {'tabla':this.tabla};
-  this.innerHtml += 'solicitado...';
-  this.servidor.getSimple(url,'').subscribe(
-    (respuesta)=>{
-      console.log(respuesta);
-      this.html=respuesta
-      //this.html=  this.sanitizer.sanitize(5,respuesta)
-      
-      //this.innerHtml += respuesta.json()["contenido"];
-    });
+  this.innerHtml += 'solicitado<br>...';
+  // this.servidor.getSimple(url,'').subscribe(
+  //   (respuesta)=>{
+  //     this.html=respuesta    });
 }
+htmlEntities(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 }

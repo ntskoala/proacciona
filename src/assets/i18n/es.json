@@ -562,6 +562,8 @@
       "descripcion":"Descripción"
     },
   "alergenos":"alérgenos",
+  "alergenosProductos":"Alérgenos productos",
+  "alergenosProveedores":"Alérgenos prods. proveedores",
   "lunes":"Lunes",
   "martes":"mMartes",
   "miercoles":"Miercoles",

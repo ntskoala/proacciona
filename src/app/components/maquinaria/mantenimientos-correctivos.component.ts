@@ -45,6 +45,8 @@ public date = new Date();
 //public url:string[]=[];
 public expanded:boolean=false;
 public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
+
 //******IMAGENES */
 //public url; 
 public baseurl;
@@ -114,7 +116,7 @@ getOptions(option){
 
   setMantenimientos(){
     let params = this.maquina.id;
-    let parametros = '&tipomantenimiento=correctivo&idmaquina=' + params;
+    let parametros = '&tipomantenimiento=correctivo&idmaquina=' + params+this.filterDates;
     //  let parametros = '&idempresa=' + this.empresasService.seleccionada; 
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {

@@ -72,6 +72,7 @@ public currentExpandedId: number;
 public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 public viewPeriodicidad: any=null;
 public expanded:boolean=false;
+public posY='';
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -351,6 +352,7 @@ this.itemEdited(evento.data.id);
       }
     );
   }
+
   saveAll(){
     for (let x=0;x<this.guardar.length;x++){
       if (this.guardar[x]==true) {
@@ -359,8 +361,7 @@ this.itemEdited(evento.data.id);
         this.saveItem(this.items[indice],indice)
       }
     }
-     
-    }
+}
 
 
  saveItem(item: LimpiezaElemento,i: number) {
@@ -456,11 +457,14 @@ setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
   }
   //this.nuevoItem  = new LimpiezaElemento(0,0,'','');
 }
-openPeriodicidad(Mantenimiento){
+openPeriodicidad(Mantenimiento,evento?){
+  this.posY='';
   console.log('view Periodicidad Ok',Mantenimiento);
   if (Mantenimiento.id == 0){
     this.viewPeriodicidad='true';
   }else{
+    if(evento.view.scrollY > 180)
+    this.posY=(evento.view.scrollY-150) + 'px';
     this.nuevoItem= Mantenimiento;
     this.viewPeriodicidad=Mantenimiento.periodicidad;
   }
@@ -598,7 +602,8 @@ ordenar() {
   this.procesando = false;
 }
 
-editOrden(){
+editOrden(idItem?){
+  if (idItem) this.itemEdited(idItem);
   if (!this.alertaGuardar['ordenar']){
     this.alertaGuardar['ordenar'] = true;
     this.setAlerta('alertas.nuevoOrden');

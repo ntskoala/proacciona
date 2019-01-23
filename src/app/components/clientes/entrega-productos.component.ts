@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from '@ngx-translate/core';
-
+import { Dropdown } from 'primeng/components/dropdown/dropdown'
 
 import * as moment from 'moment/moment';
 //import {SelectItem} from 'primeng/primeng';
@@ -32,16 +32,24 @@ export class alerg{
 export class EntregaProductosComponent implements OnInit, OnChanges{
 //@Input() orden: ProduccionOrden;
 @Input() cliente: Cliente;
-public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,0,'',new Date(),new Date(),'',null,null,'');
+@ViewChild('choiceOrden') ChoiceOrden: ElementRef;
+public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,null,'',new Date(),new Date(),'',null,null,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: Distribucion[];
+public cols:any[];
+public newRow:boolean=false;
 public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
 public filtro_inicio:String;
 public filtro_fin:String;
 public productos: ProductoPropio[]=[];
 public ordenes: ProduccionOrden[] =[];
-public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
+public dropDownProductos: object[]=[];
+public dropDownOrdenes: object[] =[];
+// public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
+public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+
 public guardar = [];
+public remanentesEditados = []
 public idBorrar;
 public url=[];
 public verdoc: boolean = false;
@@ -53,7 +61,15 @@ public modal: Modal = new Modal();
 public modal2: Modal;
 public entidad:string="&entidad=clientes_distribucion";
 public field:string="&field=idcliente&idItem=";//campo de relación con tabla padre
+filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha_inicio";
+
 public es;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
 
   constructor(
     public servidor: Servidor,
@@ -64,7 +80,7 @@ public es;
 
   ngOnInit() {
      // this.setItems();
-      
+     this.getAllLotesProducto();
                  this.es = {
             monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
                 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -73,14 +89,37 @@ public es;
             dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
             firstDayOfWeek: 1
         }; 
+        this.cols = [
+          { field: 'idproductopropio', header: 'clientes.producto', type: 'custom', width:160,orden:true,'required':true },
+          { field: 'idordenproduccion', header: 'clientes.numlote', type: 'custom', width:120,orden:true,'required':true },
+          { field: 'fecha', header: 'clientes.fecha" | translate', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'fecha_caducidad', header: 'proveedores.fecha_caducidad', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'cantidad', header: 'proveedores.cantidad', type: 'std', width:90,orden:true,'required':true },
+          { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':true }
+        ];
   }
   ngOnChanges(){
     console.log("onChange");
       //this.setItems();
       this.getProductos();
+
   }
 
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'idproductopropio':
+    return this.dropDownProductos;
+    break;
+    case 'idordenproduccion':
+    return this.dropDownOrdenes;
+    break;
+    case 'tipo_medida':
+    return this.medidas;
+    break;
 
+    }
+    }
 
 //   photoURL(i,tipo) {
 //     let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
@@ -130,6 +169,8 @@ getProductos(){
             if (response.success && response.data) {
               for (let element of response.data) { 
                   this.productos.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa));
+                  this.dropDownProductos.push({'label':element.nombre,'value':element.id});
+
              }
             }
         },
@@ -148,6 +189,10 @@ getProductos(){
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
     this.nuevoItem.idcliente = this.cliente.id;
     this.nuevoItem.id = 0;
+    console.log(this.newItem);
+    let index = this.dropDownOrdenes.findIndex((ordre)=>ordre["value"]==orden);
+    this.nuevoItem.numlote = this.dropDownOrdenes[index]["label"]
+    console.log(this.newItem)
     //this.addnewItem = this.nuevoItem;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
@@ -191,23 +236,28 @@ updateRemanente(valor,idOrden){
     });
 }
 
-
+onEdit(event){
+  console.log(event);
+  if (this.guardar[event.data.id] != true) this.remanentesEditados[event.data.id] = event.data.cantidad;
+  this.itemEdited(event.data.id);
+}
     itemEdited(idItem: number, fecha?: any) {
+     
     this.guardar[idItem] = true;
-    //console.log (fecha.toString());
+    console.log (this.remanentesEditados);
   }
-//  saveItem(item: ProveedorLoteProducto,i: number) {
-//     this.guardar[item.id] = false;
-//     let parametros = '?id=' + item.id+this.entidad;  
-//     item.fecha_caducidad =  new Date(Date.UTC(item.fecha_caducidad.getFullYear(), item.fecha_caducidad.getMonth(), item.fecha_caducidad.getDate()));
-//     item.fecha_entrada =  new Date(Date.UTC(item.fecha_entrada.getFullYear(), item.fecha_entrada.getMonth(), item.fecha_entrada.getDate()));
-    
-//     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
-//       response => {
-//         if (response.success) {
-//         }
-//     });
-//   }
+
+
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.items.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.items[indice]);
+        this.saveItem(this.items[indice],indice)
+      }
+    }
+}
+
 saveItem(item: Distribucion,i: number) {
   this.guardar[item.id] = false;
   let parametros = '?id=' + item.id+this.entidad;  
@@ -217,6 +267,11 @@ saveItem(item: Distribucion,i: number) {
   this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
     response => {
       if (response.success) {
+        if (this.remanentesEditados[item.id] != item.cantidad)
+        {
+          let valor = this.remanentesEditados[item.id] - item.cantidad;
+          this.updateRemanente(valor,item.idordenproduccion)
+        }
       }
   });
 }
@@ -247,11 +302,41 @@ checkBorrar(idBorrar: number) {
     }
   }
 
+// getLotesProducto(idProducto: any){
+//   console.log(idProducto);
+//   this.nuevoItem.idordenproduccion=null;
+//   let URL;
+//   (idProducto ==0 || idProducto == null)? URL = URLS.STD_ITEM: URL = URLS.STD_SUBITEM;
+//            let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"+"&field=idproductopropio&idItem="+idProducto; 
+//         this.servidor.getObjects(URL, parametros).subscribe(
+//           response => {
+//             this.dropDownOrdenes = [];
+//             if (response.success && response.data) {
+//               for (let element of response.data) { 
+//                   this.dropDownOrdenes.push({'label':element.numlote,'value':element.id});
+//              }
+//             }
+//         },
+//         error=>console.log(error),
+//         ()=>{
+//           }
+//         ); 
+// }
+
 getLotesProducto(idProducto: any){
-  console.log(idProducto);
-  let URL;
-  (idProducto ==0 || idProducto == null)? URL = URLS.STD_ITEM: URL = URLS.STD_SUBITEM;
-           let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"+"&field=idproductopropio&idItem="+idProducto; 
+//this.ChoiceOrden.resetFilter();
+
+this.dropDownOrdenes =  this.ordenes.filter((orden)=>orden.idproductopropio == idProducto).map((ordre)=>{
+        return {'label':ordre.numlote,'value':ordre.id}
+     })
+
+}
+
+
+getAllLotesProducto(){
+  this.nuevoItem.idordenproduccion=null;
+  let URL = URLS.STD_ITEM;
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden"+this.filterDates; ; 
         this.servidor.getObjects(URL, parametros).subscribe(
           response => {
             this.ordenes = [];
@@ -263,8 +348,6 @@ getLotesProducto(idProducto: any){
         },
         error=>console.log(error),
         ()=>{
-         // let index= this.productos.findIndex((producto) => producto.id == idProducto);
-         // this.nuevoItem.alergenos = this.productos[index].alergenos;
           }
         ); 
 }
@@ -316,56 +399,169 @@ if (dates!= 'void'){
   this.setItems("&filterdates=true&fecha_field=fecha&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
 }
 }
-excel(){
-  console.log("send to excel");
+// excel(){
+//   console.log("send to excel");
 
- let columnas=['producto','numlote','fecha','fecha_caducidad','cantidad','tipo_medida'];
- let data=[];
- this.items.forEach((item)=>{
-   let indice = this.productos.findIndex((prod)=>prod.id == item.idproductopropio);
-   let producto;
-   (indice<=0)?producto="":producto= this.productos[indice].nombre;
+//  let columnas=['producto','numlote','fecha','fecha_caducidad','cantidad','tipo_medida'];
+//  let data=[];
+//  this.items.forEach((item)=>{
+//    let indice = this.productos.findIndex((prod)=>prod.id == item.idproductopropio);
+//    let producto;
+//    (indice<=0)?producto="":producto= this.productos[indice].nombre;
    
-   data.push({'producto':producto,'numlote':item.numlote,'fecha':moment(item.fecha).format('DD-MM-YYYY'),'fecha_caducidad':moment(item.fecha_caducidad).format('DD-MM-YYYY'),'cantidad':item.cantidad,'tipo_medida':item.tipo_medida})
- });
-var csvData = this.ConvertToCSV(columnas, data);
-    var a = document.createElement("a");
-    a.setAttribute('style', 'display:none;');
-    document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url= window.URL.createObjectURL(blob);
-    //window.open(url,'_blank');
-    a.href = url;
+//    data.push({'producto':producto,'numlote':item.numlote,'fecha':moment(item.fecha).format('DD-MM-YYYY'),'fecha_caducidad':moment(item.fecha_caducidad).format('DD-MM-YYYY'),'cantidad':item.cantidad,'tipo_medida':item.tipo_medida})
+//  });
+// var csvData = this.ConvertToCSV(columnas, data);
+//     var a = document.createElement("a");
+//     a.setAttribute('style', 'display:none;');
+//     document.body.appendChild(a);
+//     var blob = new Blob([csvData], { type: 'text/csv' });
+//     var url= window.URL.createObjectURL(blob);
+//     //window.open(url,'_blank');
+//     a.href = url;
     
-    a.download = 'entrega_Productos'+this.cliente.nombre+'.csv';
-    a.click();
-}
+//     a.download = 'entrega_Productos'+this.cliente.nombre+'.csv';
+//     a.click();
+// }
 
-ConvertToCSV(controles,objArray){
-var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
-var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-            var str = '';
-            var row = "";
-            //row += "Usuario;Fecha;"
-            for (var i = 0; i < cabecera.length; i++) {
-              row += cabecera[i] + ';';
-            }
-            row = row.slice(0, -1);
-            //append Label row with line break
-            str += row + '\r\n';
+// ConvertToCSV(controles,objArray){
+// var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+// var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+//             var str = '';
+//             var row = "";
+//             //row += "Usuario;Fecha;"
+//             for (var i = 0; i < cabecera.length; i++) {
+//               row += cabecera[i] + ';';
+//             }
+//             row = row.slice(0, -1);
+//             //append Label row with line break
+//             str += row + '\r\n';
  
-            for (var i = 0; i < array.length; i++) {
+//             for (var i = 0; i < array.length; i++) {
                 
-                var line ="";//array[i].usuario+";"+array[i].fecha + ";";
+//                 var line ="";//array[i].usuario+";"+array[i].fecha + ";";
 
-              for (var x = 0; x < cabecera.length; x++) {
-                let columna = cabecera[x];
-                let resultado = array[i][cabecera[x]];
-              line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
-            }
-            line = line.slice(0,-1);
-                str += line + '\r\n';
-            }
-            return str;
-}
+//               for (var x = 0; x < cabecera.length; x++) {
+//                 let columna = cabecera[x];
+//                 let resultado = array[i][cabecera[x]];
+//               line += ((array[i][cabecera[x]] !== undefined) ?array[i][cabecera[x]] + ';':';');
+//             }
+//             line = line.slice(0,-1);
+//                 str += line + '\r\n';
+//             }
+//             return str;
+// }
+
+
+
+
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.cols, this.items);
+  }
+
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'custom':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'periodicidad':
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get('clientes.entregaproductos').subscribe((desc)=>{informe=desc + ' a ' + this.cliente.nombre});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+      let index
+      switch (tabla){
+        case 'idproductopropio':
+        index=this.dropDownProductos.findIndex((prod)=>prod["value"]==valor);
+        if (index>-1)
+        Value = this.dropDownProductos[index]["label"];
+        return Value;
+        break;
+        case 'idordenproduccion':
+        index=this.ordenes.findIndex((prod)=>prod["id"]==valor);
+        console.log(this.ordenes,index,valor);
+        if (index>-1)
+        Value = this.ordenes[index]["numlote"];
+        break;
+        case 'tipo_medida':
+         index=this.medidas.findIndex((medida)=>medida["value"]==valor);
+        if (index>-1)
+        Value = this.medidas[index]["label"];
+        return Value;       
+        break;
+      }
+      console.log(tabla,valor,Value,moment().format("HH:mm:SS"));
+      return Value;
+    }
+
+
+
+
 }

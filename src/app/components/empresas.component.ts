@@ -194,6 +194,10 @@ irAlMenu(menuDefecto?:string){
         this.setUser();
         this.selectedMenu = "maquinaria";
         break;
+        case "mantenimientos_relizados":
+        this.setUser();
+        this.selectedMenu = "maquinaria";
+        break;
         case "planificaciones_realizadas":
         this.setUser();
         this.selectedMenu = "planificaciones";

@@ -4,8 +4,14 @@
 <div class="modal" *ngIf="procesando">
   <mat-spinner></mat-spinner>
   </div>
-<!-- Nueva checklist -->
-<div name="CHECKLISTS"  style="width:600px">
+
+
+
+<!-- ********** CHECKLISTS    -->
+<!-- ********** CHECKLISTS    -->
+<!-- ********** CHECKLISTS    -->
+
+<!-- <div name="CHECKLISTS"  style="width:600px">
 <div *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="nueva-checklist">
     <h2>{{'Nueva' | translate}} checklist</h2>
     <span class="cell tooltip" matTooltip="{{'configuracion.nuevoChecklist' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">                           
@@ -43,7 +49,7 @@
 [(selection)]="selectedChecklist" (onRowSelect)="onChecklistSelect($event)"
 [rows]="25" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,25,50]">
 
-<!-- ********** HEADER  ORDEN    -->
+
 <p-header>
   <div class="ui-helper-clearfix">
       <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -54,22 +60,18 @@
           </span>
     </div>
 </p-header>
-<!-- **********  FIN HEADER ORDEN    -->
-<!-- **********  ORDEN    -->
+
 <p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'80px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
   <mat-icon>import_export</mat-icon>
   </ng-template>
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-   <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
-  <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div> -->
-  <!-- <div class="orden" >{{item.orden}}</div>         -->
+
   <div class="orden">
       <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="editOrden('check')"></p-spinner> 
   </div>  
   </ng-template>
 </p-column>
-<!-- **********  FIN ORDEN    -->
 
 
 <p-column [style]="{'width':'38px'}" selectionMode="single" dataKey="nombrechecklist">
@@ -119,20 +121,219 @@
 </div>
 
 </div>
+(onRowSelect)="onChecklistSelect($event)"
+ -->
 
 
 
+
+
+
+
+<periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, cl.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="cl.fecha_" [origen]="tipo" name="periodicidad"></periodicidadNew>
+<!-- ********* INICIO TABLA REGISTROS-->
+<p-table #DT [columns]="cols" [value]="checklists" dataKey="id" (onEditInit)="onEditCL($event)"
+  [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
+  [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
+  [style]="{'width':'620px','padding':'0px 25px 0px 25px','text-align':'left'}"
+  [(selection)]="selectedChecklist"  selectionMode="single" dataKey="nombrechecklist">
+  <ng-template pTemplate="caption">
+    <div style="text-align:left;margin-left:10px">
+      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+      <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAllCL()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-left:10px;float:right"></button>
+
+    </div>
+  </ng-template>
+  <!-- ********* INICIO CABECERA-->
+  <ng-template pTemplate="header" let-columns>
+    <span style="display:table-row">
+      <th style="width: 3em"></th>
+       <!--************ ORDEN ***************************-->
+       <th style="width:50px">
+                <mat-icon>import_export</mat-icon>
+      </th>
+     <!--************ FIN ORDEN ***************************-->
+      <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+        {{col.header | translate}}
+        <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
+      </th>
+      <th [style.width]="'150px'">
+        {{'acciones' | translate}}
+      </th>
+    </span>
+    <!-- ********* NUEVOREGISTRO   ***-->
+    <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row">
+      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
+        class="formNewRegister" #creaForm="ngForm" (ngSubmit)="nuevaChecklist(creaForm.value)">
+        <td style="width: 3em"></td>
+        <td  style="width:50px"></td>
+        <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [style.width]="col.width+'px'">
+          <span *ngIf="col.type == 'std'">
+            <input pInputText type="text" [required]="col.required" [(ngModel)]="cl[col.field]" style="margin-left:4px"
+              [style.width]="(col.width -7)+'px'" [name]="col.field">
+          </span>
+          <span *ngIf="col.type == 'fecha'">
+            <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="cl[col.field]"
+              [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
+          </span>
+            <span *ngIf="col.type == 'dropdown'">
+              <p-dropdown [options]="getOptions([col.field])" [(ngModel)]="cl[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                (onChange)="itemEdited(item.id)" [name]="col.field"></p-dropdown>
+            </span>
+          <span *ngIf="col.type == 'periodicidad'">          
+            <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'right'">
+              <button [disabled]="!cl['fecha_']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(cl)">
+                <span class="material-icons">event</span>
+              </button>
+            </span>
+          </span>
+
+        </td>
+
+        <!-- ********* ACCIONES   ***-->
+        <td>
+          <span class="tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+            [matTooltipPosition]="'above'">
+            <button mat-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+              <span class="material-icons">add</span>
+            </button>
+          </span>
+          <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+            [matTooltipPosition]="'above'">
+            <button mat-mini-fab color="primary" (click)="openNewRow()" >
+              <span class="material-icons">close</span>
+            </button>
+          </span>
+        </td>
+      </form>
+    </span>
+
+    <!-- ********* FIN NUEVOREGISTRO   ***-->
+  </ng-template>
+  <!-- ********* FIN CABECERA   ***-->
+
+
+  <div class="tableContent">
+  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="false">
+    <!--let-expanded="expanded" -->
+    <tr  [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+      <td><span *ngIf="expanded!=null">
+          <a disabled href="#" [pRowToggler]="item">
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </a></span>
+          
+            <p-tableRadioButton [value]="item" (click)="onChecklistSelect(item)"></p-tableRadioButton>
+        
+      </td>
+      <!--************ ORDEN ***************************-->
+      <td>    
+       <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
+      <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>  -->
+      <div class="orden" >
+          <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="modificarCL(item.id)"></p-spinner> 
+      </div>  
+    </td>   
+  <!--************ FIN ORDEN ***************************-->
+      <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
+          <span *ngIf="col.type == 'dropdown'">
+              <p-dropdown  [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                (onChange)="modificarCL(item.id)"></p-dropdown>
+            </span>
+            <span *ngIf="col.type == 'periodicidad'">
+              <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'right'">
+              <button [disabled]="!item['fecha_']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+                <span class="material-icons">event</span>
+              </button>
+            </span>
+          </span>
+
+        <p-cellEditor>
+          <!-- ********* VER DATA   ***-->
+          <ng-template pTemplate="output">
+            <span *ngIf="col.type =='std'">
+              {{item[col.field]}}
+            </span>
+              <span *ngIf="col.type == 'fecha'">
+                  {{item[col.field] | date:"dd-MM-yyyy"}}
+            </span>
+          </ng-template>
+          <!-- ********* EDIT DATA   ***-->
+          <ng-template pTemplate="input">
+            <span *ngIf="col.type == 'std'">
+              <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+            </span>
+            <span *ngIf="col.type == 'fecha'">
+              <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
+                [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+            </span>
+            <!--****** FIN ********************-->
+          </ng-template>
+        </p-cellEditor>
+      </td>
+
+      <!--*****  ACCIONES  *********-->
+      <td>
+        <span class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'left'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            (click)="checkBorrar(item.id)" type="button">
+            <span class="material-icons">close</span>
+          </button>
+        </span>
+        <span class="tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'right'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            [disabled]="!guardarCL[item.id]" (click)="actualizarCL(item.id)" type="button">
+            <span class="material-icons">check</span>
+          </button>
+        </span>
+        <span *ngIf="item.migrado == 0" class="tooltip" matTooltip="{{'importar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+          <button *ngIf="empresasService.administrador" mat-mini-fab color="primary" [disabled]="item.id!=checklistActiva" (click)="import(item.id)" type="button">
+              <span class="material-icons">get_app</span>
+          </button>
+        </span>
+        <span *ngIf="item.migrado == 1" class="tooltip" matTooltip="{{'migrado a limpieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+          <button mat-mini-fab color="primary" [disabled]="true"  type="button">
+              <span class="material-icons">brush</span>
+          </button>
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary" let-item>
+  </ng-template>
+</div>
+
+</p-table>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--****************  CONTROLESchecklist         ***********-->
+<!--****************  CONTROLESchecklist         ***********-->
+<!--****************  CONTROLESchecklist         ***********-->
+<!-- 
 <div name="CONTROLESchecklist" style="margin-top:-25px;margin-left:30px">
-<!-- Mostrar control checklists -->
+
  <div class="mostrar-checklist" style="margin-top:40px">
   <div *ngIf="checklistActiva != 0">
     <h2>{{'configuracion.elemento' | translate}} checklist</h2>
     <div class="table">
         <span class="cell tooltip" matTooltip="{{'configuracion.nuevoCCL' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">                     
-        <!-- <div class="header-row">
-            <span class="header-cell">{{'Nombre' | translate}}</span>
-            <span class="header-cell"></span>
-          </div> -->
+
       <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  class="row addItem" #crearCCLf="ngForm" (ngSubmit)="crearCCL(crearCCLf.value)">
         <span class="cell">
           <input [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="ccl.nombre" name="nombre">
@@ -147,22 +348,8 @@
       </form>
         </span>
     </div>
-<!--      <form class="row" *ngFor="let controlchecklist of controlchecklists"
-        #actualizarCCLf="ngForm" (ngSubmit)="actualizarCCL(controlchecklist.id)">
-        <span class="cell">
-          <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" type="text" [(ngModel)]="controlchecklist.nombre" (keyup)="modificarCCL(controlchecklist.id)" name="modNombre">
-        </span>
-        <span class="cell">
-          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrarCCL(controlchecklist.id)" type="submit">
-            <span class="material-icons">close</span>
-          </button>
-        </span>
-        <span class="cell">
-          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" [disabled]="!guardar[controlchecklist.id]" type="submit">
-            <span class="material-icons">check</span>
-          </button>                
-        </span>
-      </form>-->
+
+
 
 <div style="margin-top:40px">
     
@@ -171,7 +358,7 @@
  sortField="orden" [sortOrder]="1" [tableStyle]="{'width':'320px'}">
 
 
-<!-- ********** HEADER  ORDEN    -->
+
 <p-header>
   <div class="ui-helper-clearfix">
       <span class="cell tooltip" matTooltip="{{'exportar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">              
@@ -182,22 +369,18 @@
           </span>
     </div>
 </p-header>
-<!-- **********  FIN HEADER ORDEN    -->
-<!-- **********  ORDEN    -->
+
 <p-column field="orden" header="{{'orden' | translate}}" [sortable]="true" [style]="{'width':'70px'}">
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="header">    
   <mat-icon>import_export</mat-icon>
   </ng-template>
   <ng-template let-col let-item="rowData" let-i="rowIndex" pTemplate="body">    
-   <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
-  <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div> -->
-  <!-- <div class="orden" >{{item.orden}}</div>         -->
+
   <div class="orden" >
       <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controlchecklists.length"  (onChange)="editOrden('checkcontrol')"></p-spinner> 
   </div>  
   </ng-template>
 </p-column>
-<!-- **********  FIN ORDEN    -->
 
 
 <p-column field="nombre" header="{{'Nombre' | translate}}" [editable]="true"  [style]="{'width':'150px'}"></p-column>
@@ -225,36 +408,192 @@
 </p-dataTable>
 </div>
 
-</div> <!-- checklisgtActiva != 0 -->
-</div> <!-- mostrar-checklist-->
-</div> <!-- CONTROLES checklist-->
+</div> 
+</div> 
+</div>  -->
+<!--****************  CONTROLESchecklist         ***********-->
+<!--****************  CONTROLESchecklist         ***********-->
+<!--****************  CONTROLESchecklist         ***********-->
 
 
-<!-- Modificar checklist -->
-<!-- <div class="modificar-checklist" *ngIf="modificar">
-  <h2>Modificar Checklist</h2>
-  <div class="table">
-    <form class="row" #actCLf="ngForm" (ngSubmit)="actualizarCL()">
-      <span class="cell">
-        <input type="text" required [(ngModel)]="modCL.nombrechecklist" name="nombrechecklist">
-      </span>
-      <span class="cell">
-        <input type="text" required [(ngModel)]="modCL.periodicidad" name="periodicidad">
-      </span>
-      <span class="cell">
-        <select class="white-select" required [(ngModel)]="modCL.tipoperiodo" name="tipoperiodo">
-          <option value="Día">{{'Día' | translate}}</option>
-          <option value="Semana">{{'Semana' | translate}}</option>
-          <option>Mes</option>
-          <option value="Any">{{'Año' | translate}}</option>
-        </select>
-      </span>
-      <span class="cell">
-        <button mat-mini-fab color="accent" [disabled]="!actCLf.form.valid" type="submit">
-          <span class="material-icons">check</span>
-        </button>
-      </span>
-    </form>
-  </div>
-</div> -->
-<!--<app-migra-check-list></app-migra-check-list>-->
+<p-table #DT2 [columns]="cols2" [value]="controlchecklists" dataKey="id" (onEditInit)="onEditCCL($event)"
+  [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
+  [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
+  [style]="{'width':'460px','padding':'0px 25px 0px 25px','text-align':'left'}" *ngIf="selectedChecklist">
+  <ng-template pTemplate="caption">
+    <div style="text-align:left;margin-left:10px">
+      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+      <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAllCCL()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTableCCL()" style="margin-left:10px;float:right"></button>
+
+    </div>
+  </ng-template>
+  <!-- ********* INICIO CABECERA-->
+  <ng-template pTemplate="header" let-columns>
+    <span style="display:table-row">
+      <th style="width: 3em"></th>
+       <!--************ ORDEN ***************************-->
+       <th style="width:50px">
+                <mat-icon>import_export</mat-icon>
+      </th>
+     <!--************ FIN ORDEN ***************************-->
+      <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+        <span *ngIf="col.visible">{{col.header | translate}}</span>
+        <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
+      </th>
+      <th [style.width]="'150px'">
+        {{'acciones' | translate}}
+      </th>
+    </span>
+    <!-- ********* NUEVOREGISTRO   ***-->
+    <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row">
+      <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
+        class="formNewRegister" #creaForm2="ngForm" (ngSubmit)="crearCCL(creaForm2.value)">
+        <td style="width: 3em"></td>
+        <td  style="width:50px"></td>
+        <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [style.width]="col.width+'px'">
+          <span *ngIf="col.type == 'std'">
+            <input pInputText type="text" [required]="col.required" [(ngModel)]="ccl[col.field]" style="margin-left:4px"
+              [style.width]="(col.width -7)+'px'" [name]="col.field">
+          </span>
+          <!-- <span *ngIf="col.type == 'fecha'">
+            <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="ccl[col.field]"
+              [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
+          </span> -->
+            <!-- <span *ngIf="col.type == 'dropdown'">
+              <p-dropdown [options]="getOptions([col.field])" [(ngModel)]="cl[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                (onChange)="itemEdited(item.id)" [name]="col.field"></p-dropdown>
+            </span> -->
+          <!-- <span *ngIf="col.type == 'periodicidad'">          
+            <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'right'">
+              <button [disabled]="!ccl['fecha_']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(ccl)">
+                <span class="material-icons">event</span>
+              </button>
+            </span>
+          </span> -->
+
+        </td>
+
+        <!-- ********* ACCIONES   ***-->
+        <td>
+          <span class="tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+            [matTooltipPosition]="'above'">
+            <button mat-mini-fab color="accent" [disabled]="!creaForm2.form.valid" type="submit">
+              <span class="material-icons">add</span>
+            </button>
+          </span>
+          <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+            [matTooltipPosition]="'above'">
+            <button mat-mini-fab color="primary" (click)="openNewRow()" >
+              <span class="material-icons">close</span>
+            </button>
+          </span>
+        </td>
+      </form>
+    </span>
+
+    <!-- ********* FIN NUEVOREGISTRO   ***-->
+  </ng-template>
+  <!-- ********* FIN CABECERA   ***-->
+
+
+  <div class="tableContent">
+  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="false">
+    <!--let-expanded="expanded" -->
+    <tr  [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+      <td><span *ngIf="expanded!=null">
+          <a disabled href="#" [pRowToggler]="item">
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </a></span>
+      </td>
+      <!--************ ORDEN ***************************-->
+      <td>    
+       <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
+      <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>  -->
+      <div class="orden" >
+          <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="modificarCCL(item.id)"></p-spinner> 
+      </div>  
+    </td>   
+  <!--************ FIN ORDEN ***************************-->
+      <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
+          <!-- <span *ngIf="col.type == 'dropdown'">
+              <p-dropdown  [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                (onChange)="modificarCCL(item.id)"></p-dropdown>
+            </span>
+            <span *ngIf="col.type == 'periodicidad'">
+              <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+              [matTooltipPosition]="'right'">
+              <button [disabled]="!item['fecha_']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+                <span class="material-icons">event</span>
+              </button>
+            </span>
+          </span> -->
+
+        <p-cellEditor>
+          <!-- ********* VER DATA   ***-->
+          <ng-template pTemplate="output">
+            <span *ngIf="col.type =='std' && col.visible">
+              {{item[col.field]}}
+            </span>
+              <span *ngIf="col.type == 'fecha'">
+                  {{item[col.field] | date:"dd-MM-yyyy"}}
+            </span>
+          </ng-template>
+          <!-- ********* EDIT DATA   ***-->
+          <ng-template pTemplate="input">
+            <span *ngIf="col.type == 'std' && col.visible">
+              <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+            </span>
+            <span *ngIf="col.type == 'fecha'">
+              <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
+                [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+            </span>
+            <!--****** FIN ********************-->
+          </ng-template>
+        </p-cellEditor>
+      </td>
+
+      <!--*****  ACCIONES  *********-->
+      <td>
+        <span class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'left'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            (click)="checkBorrar(item.id)" type="button">
+            <span class="material-icons">close</span>
+          </button>
+        </span>
+        <span class="tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'right'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            [disabled]="!guardar[item.id]" (click)="actualizarCCL(item.id,i)" type="button">
+            <span class="material-icons">check</span>
+          </button>
+        </span>
+        <span *ngIf="item.migrado" class="tooltip" matTooltip="{{'migrado a limpieza' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'right'">
+          <button mat-mini-fab color="primary" [disabled]="true"  type="button">
+              <span class="material-icons">brush</span>
+          </button>
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary" let-item>
+  </ng-template>
+</div>
+
+</p-table>
+
+
+
+
+
+
+
+
+
+<div class="modal" *ngIf="exportando">
+  <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+</div>

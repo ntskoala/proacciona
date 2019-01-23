@@ -35,7 +35,7 @@ public inventarioPiezas:boolean;
   ngOnInit() {
     this.incidencia = {'origen':'maquinaria','idOrigen':null}
     let params = this.route.params["_value"]
-    if (params["modulo"] == "mantenimientos_realizados" && this.route.params["_value"]["idOrigenasociado"]){
+    if ((params["modulo"] == "mantenimientos_realizados" || params["modulo"] == "mantenimientos_relizados") && this.route.params["_value"]["idOrigenasociado"]){
       
         let event = {'id':this.route.params["_value"]["idOrigenasociado"]}
         this.seleccionZona(event);

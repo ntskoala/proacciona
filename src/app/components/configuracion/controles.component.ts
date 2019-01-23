@@ -21,7 +21,7 @@ export class ControlesComponent implements OnInit {
 
   public subscription: Subscription;
   controles: Control[] = [];
-  nuevoControl: Control;
+  nuevoControl: Control = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)
   guardar = [];
   public alertaGuardar:object={'guardar':false,'ordenar':false};  
   
@@ -30,11 +30,21 @@ export class ControlesComponent implements OnInit {
   es;
   procesando:boolean=false;
   public tipo = 'libre';
+  public cols:any[];
+  public newRow:boolean=false;
+  public viewPeriodicidad: any=null;
+  //***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
+
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
 
   ngOnInit() {
-    this.nuevoControl = new Control(null,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null)
+    this.nuevoControl = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)
     this.es = {
       monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
           'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -43,6 +53,15 @@ export class ControlesComponent implements OnInit {
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
       firstDayOfWeek: 1
   }; 
+  this.cols = [
+    { field: 'nombre', header: 'nombre', type: 'std', width:160,orden:true,'required':true },
+    { field: 'pla', header: 'pla', type: 'std', width:160,orden:true,'required':true },
+    { field: 'valorminimo', header: 'min', type: 'std', width:120,orden:true,'required':false },
+    { field: 'valormaximo', header: 'max', type: 'std', width:90,orden:false,'required':false },
+    { field: 'critico', header: 'crit', type: 'std', width:130,orden:true,'required':false },
+    { field: 'fecha_', header: 'fecha', type: 'fecha', width:130,orden:true,'required':true },
+    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:130,orden:true,'required':true }
+  ];
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       emp => {
@@ -175,6 +194,16 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
     );
   }
 
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.controles.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.controles[indice]);
+        this.actualizarControl(this.controles[indice])
+      }
+    }
+  }
+
   actualizarControl(control: Control) {
     
     for (let property in control) {
@@ -203,20 +232,49 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
   }
 
 
-  setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
-    if (!idItem){
+  // setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
+  //   if (!idItem){
+  //   this.nuevoControl.periodicidad2 = periodicidad;
+  //   // console.log(this.nuevoItem.periodicidad);
+  
+  //   }else{
+  //     // console.log(idItem,i,periodicidad);
+  //     this.modificarControl(idItem);
+  //     let indice = this.controles.findIndex((item)=>item.id==idItem);
+  //     this.controles[indice].periodicidad2 = periodicidad;
+  //     // console.log(this.items[indice]);
+  //   }
+  // }
+
+  setPeriodicidad(periodicidad: string, idcontrol?: number, i?: number){
+    this.viewPeriodicidad=null;
+    if (!idcontrol){
     this.nuevoControl.periodicidad2 = periodicidad;
-    // console.log(this.nuevoItem.periodicidad);
+    console.log(this.nuevoControl.periodicidad2);
   
     }else{
-      // console.log(idItem,i,periodicidad);
-      this.modificarControl(idItem);
-      let indice = this.controles.findIndex((item)=>item.id==idItem);
+      this.modificarControl(idcontrol);
+      let indice = this.controles.findIndex((item)=>item.id==idcontrol);
       this.controles[indice].periodicidad2 = periodicidad;
-      // console.log(this.items[indice]);
+      this.nuevoControl  = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)
+
     }
   }
-
+  openPeriodicidad(Control){
+    console.log('view Periodicidad Ok',Control);
+    if (Control.id == 0){
+      this.viewPeriodicidad='true';
+    }else{
+      this.nuevoControl= Control;
+      this.viewPeriodicidad=Control.periodicidad2;
+    }
+  }
+  closePeriodicidad(activo){
+  if (activo==false){
+    this.nuevoControl  = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)
+    this.viewPeriodicidad=false;
+  }
+  }
 
   ordenar() {
     console.log('ORDENANDO')
@@ -235,5 +293,103 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
       this.setAlerta('alertas.nuevoOrden','info','alertas.tituloAlertaInfo');
       }
   }
+
+
+
+
+
+
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+    this.informeData = await this.ConvertToCSV(this.cols, this.controles);
+  }
+
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'periodicidad':
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get('Controles').subscribe((desc)=>{informe=desc});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+      switch (tabla){
+        case "superuser":
+        break;
+        case "tipouser":
+        break;
+      }
+      console.log(tabla,valor,Value);
+      return Value;
+    }
+
+
+
+
+
 
 }

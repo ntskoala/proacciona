@@ -345,7 +345,7 @@
     "cliente":"Client",
     "fecha":"Data entega",
     "tipo medida":"Tipus mesura",
-    "alergenos":"al·lergògens",
+    "alergenos":"Al·lergògens",
     "contieneIngrediente":"Conté l'ingredient",
     "contieneTrazas":"Conté traces de l'ingredient",
     "alert_tanque_origen":"No ha seleccionat un tanc o lot d'origen",
@@ -562,6 +562,8 @@
       "descripcion":"Descripció"
     },
   "alergenos":"Al·lergògens",
+  "alergenosProductos":"Al·lergògens productes",
+  "alergenosProveedores":"Al·lergògens prods. proveïdors",
   "lunes":"Dilluns",
   "martes":"Dimarts",
   "miercoles":"Dimecres",

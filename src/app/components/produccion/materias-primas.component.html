@@ -1,14 +1,7 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<div class="modal" *ngIf="modal2">
-  <div class="foto-window">
-      <span class="close material-icons" (click)="cerrarFoto()">close</span>
-      <div class="foto">
-        <img src="{{fotoSrc}}">
-      </div>
-  </div>
-</div>
 
 
+<!-- 
 
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
@@ -68,11 +61,9 @@
     <span class="header-cell">{{"proveedores.lote" | translate}}</span>
     <span class="header-cell medium">{{"proveedores.cantidad" | translate}}</span>
     <span class="header-cell">{{"proveedores.tipo medida" | translate}}</span>
-    <!--<span class="header-cell">{{"proveedores.Foto" | translate}}</span>-->
     <span class="header-cell">
-      </span><!--Borrar-->
-    <span class="header-cell"></span><!--Guardar-->
-  </div>
+      </span>
+    <span class="header-cell"></span>
   <div class="divrow"  *ngFor="let item of items; let i = index">
   <form class=" row"  #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value,i)">
     <input type="hidden" [(ngModel)]="item.id" name="id">
@@ -118,8 +109,188 @@
   </form>
 
  </div>
+</div> -->
+
+
+
+
+
+<!-- ********* INICIO TABLA REGISTROS-->
+<p-table #DT [columns]="cols" [value]="items" dataKey="id" 
+(onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
+  [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
+  [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
+  [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" [ngStyle]="{'min-height.px': minHeight}">
+  <ng-template pTemplate="caption">
+    <div style="text-align:left;margin-left:10px">
+      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+      <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAll()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-left:10px;float:right"></button>
+
+    </div>
+  </ng-template>
+  <!-- ********* INICIO CABECERA-->
+  <ng-template pTemplate="header" let-columns>
+    <span style="display:table-row">
+      <th style="width: 3em"></th>
+       <!--************ ORDEN ***************************-->
+       <!-- <th style="width:50px">
+                <mat-icon>import_export</mat-icon>
+      </th> -->
+     <!--************ FIN ORDEN ***************************-->
+      <th  *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+        {{col.header | translate}}
+        <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
+      </th>
+      <th [style.width]="'95px'">
+        {{'acciones' | translate}}
+      </th>
+    </span>
+
+
+
+
+
+        <!-- ********* NUEVOREGISTRO   ***-->
+        <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row">
+            <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
+              class="formNewRegister" #creaForm="ngForm" (ngSubmit)="newItem()">
+              <td style="width: 3em"></td>
+              <!-- <td  style="width:50px"></td> -->
+              <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [style.width]="col.width+'px'">
+                <span *ngIf="col.type == 'std'">
+                  <input [disabled]="col.disabled" pInputText type="text" [required]="col.required" [(ngModel)]="nuevoItem[col.field]" style="margin-left:4px"
+                    [style.width]="(col.width -7)+'px'" [name]="col.field">
+                </span>
+                <span *ngIf="col.type == 'fecha'">
+                  <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="nuevoItem[col.field]"
+                    [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
+                </span>
+                  <span *ngIf="col.type == 'dropdown'">
+                    <p-dropdown [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                       [name]="col.field"></p-dropdown>
+                  </span>
+                  <span *ngIf="col.field == 'proveedor'">
+                    <p-dropdown (onChange)="getProductos($event.value)" [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                       [name]="col.field"></p-dropdown>
+                  </span>
+                  <span *ngIf="col.field == 'producto'">
+                    <p-dropdown (onChange)="getEntradasProducto($event.value)" [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                       [name]="col.field"></p-dropdown>
+                  </span>
+                  <span *ngIf="col.field == 'idmateriaprima'">
+                    <p-dropdown (onChange)="setMaxCantidad($event.value)" [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                       [name]="col.field"></p-dropdown>
+                  </span>
+              </td>
+      
+              <!-- ********* ACCIONES   ***-->
+              <td>
+                <span class="tooltip" matTooltip="{{'add' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                  [matTooltipPosition]="'above'">
+                  <button mat-mini-fab color="accent" [disabled]="!creaForm.form.valid" type="submit">
+                    <span class="material-icons">add</span>
+                  </button>
+                </span>
+                <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                  [matTooltipPosition]="'above'">
+                  <button mat-mini-fab color="primary" (click)="openNewRow()" >
+                    <span class="material-icons">close</span>
+                  </button>
+                </span>
+              </td>
+            </form>
+          </span>
+      
+          <!-- ********* FIN NUEVOREGISTRO   ***-->
+  </ng-template>
+  <!-- ********* FIN CABECERA   ***-->
+
+
+  <div class="tableContent">
+  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="expanded">
+    <!--let-expanded="expanded" -->
+    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
+      <td><span *ngIf="expanded!=null">
+          <a disabled href="#" [pRowToggler]="item">
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </a></span>
+      </td>
+      <!--************ ORDEN ***************************-->
+      <!-- <td>    
+      <div class="orden" >
+          <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="items.length"  (onChange)="editOrden()"></p-spinner> 
+      </div>  
+    </td>    -->
+  <!--************ FIN ORDEN ***************************-->
+      <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
+          <span *ngIf="col.type == 'dropdown'">
+              <p-dropdown [disabled]="col.disabled" [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
+                (onChange)="itemEdited(item.id)"></p-dropdown>
+            </span>
+            <span *ngIf="col.field == 'proveedor' || col.field == 'producto'">
+              {{item[col.field]}}
+            </span>
+            <span *ngIf="col.field == 'idmateriaprima'">
+              {{item["numlote_proveedor"]}}
+          </span>
+        <p-cellEditor>
+          <!-- ********* VER DATA   ***-->
+          <ng-template pTemplate="output">
+            <span *ngIf="col.type =='std'">
+              {{item[col.field]}}
+            </span>
+              <span *ngIf="col.type == 'fecha'">
+                  {{item[col.field] | date:"dd-MM-yyyy"}}
+            </span>
+          </ng-template>
+          <!-- ********* EDIT DATA   ***-->
+          <ng-template pTemplate="input">
+            <span *ngIf="col.type == 'std'">
+              <input [disabled]="col.disabled" pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+            </span>
+            <span *ngIf="col.type == 'fecha'">
+              <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
+                [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+            </span>
+            <!--****** FIN ********************-->
+          </ng-template>
+        </p-cellEditor>
+      </td>
+
+      <!--*****  ACCIONES  *********-->
+      <td>
+        <span class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'left'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            (click)="checkBorrar(item.id)" type="button">
+            <span class="material-icons">close</span>
+          </button>
+        </span>
+        <span class="tooltip" matTooltip="{{'guardar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'right'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+            [disabled]="!guardar[item.id]" (click)="saveItem(item,i)" type="button">
+            <span class="material-icons">check</span>
+          </button>
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary" let-item>
+  </ng-template>
 </div>
 
+</p-table>
+
+<!-- ********* FIN TABLA REGISTROS-->
+
+<div class="modal" *ngIf="exportando">
+    <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+</div>
+<app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
 
 
 

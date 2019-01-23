@@ -54,7 +54,7 @@ public es;
     if (this.route.params["_value"]["idOrigenasociado"]>0){
       this.cambioChecklist(this.route.params["_value"]["idOrigenasociado"]);
       this.selectedItem = this.route.params["_value"]["id"];
-      console.log(this.selectedItem);
+      
     }
     // Conseguir checklists
     this.fecha['inicio']= new Date(moment().subtract(7,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
@@ -126,6 +126,7 @@ public es;
               element.nombre
             ));
           }
+          console.log(this.columnas,this.selectedItem);
         if (this.route.params["_value"]["modulo"] == "Checklists" && this.route.params["_value"]["id"] > 0){
             this.getDateInicio();
          }else{
@@ -230,7 +231,7 @@ scroll(){
 
 excel2(fecha){
   console.log("send to excel");
-var csvData = this.ConvertToCSV(this.columnas, this.tabla);
+var csvData = this.ConvertToCSV_OLD(this.columnas, this.tabla);
     var a = document.createElement("a");
     a.setAttribute('style', 'display:none;');
     document.body.appendChild(a);
@@ -251,6 +252,8 @@ async excel(fecha){
   this.exportando=true;
   this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
 }
+
+
 informeRecibido(resultado){
   console.log('informe recibido:',resultado);
   if (resultado){
@@ -260,7 +263,7 @@ informeRecibido(resultado){
   }
 }
 
-ConvertToCSV(controles,objArray){
+ConvertToCSV_OLD(controles,objArray){
 var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
 var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             var str = '';
@@ -332,6 +335,103 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
             //             return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':informeComentarios,'informes':nomInforme};
 
           }
+
+
+          ConvertToCSV(controles,objArray){
+            var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+            var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+                        // var str = '';
+                        // var row = "";
+                        // row += "Usuario;Fecha;"
+                        // for (var i = 0; i < cabecera.length; i++) {
+                        //   row += cabecera[i].nombre + ';descripcion;';
+                        // }
+                        // row = row.slice(0, -1);
+                        // str += row + '\r\n';
+             
+                        // for (var i = 0; i < array.length; i++) {
+                            
+                        //     var line = array[i].usuario +";"+ array[i].fecha + ";";
+            
+                        //   for (var x = 0; x < cabecera.length; x++) {
+                        //     let columna = cabecera[x].nombre;
+                        //     let resultado = array[i][cabecera[x]];
+                        //   line += ((array[i][cabecera[x].id] !== undefined) ?  array[i][cabecera[x].id]+';':'x;');
+                        //   // line += array[i][cabecera[x].id] +';';
+                        //   line += ((array[i][cabecera[x].id2] !== undefined) ?  array[i][cabecera[x].id2] +';':';');
+                        // }
+                        // line = line.slice(0,-1);
+                        //     str += line + '\r\n';
+                        // }
+                        // return str;
+                        let informeCabecera=[];
+                        let informeRows=[];
+                        let informeFotos=[];
+                        let informeComentarios=[];
+                                    var str = '';
+                                    var row = "";
+                                    row += "Usuario;Foto;Fecha;"
+                                    for (var i = 0; i < cabecera.length; i++) {
+                                      row += cabecera[i]["nombre"] + ';';
+                                    }
+                                    row = row.slice(0, -1);
+                                    //append Label row with line break
+                                    //str += row + '\r\n';
+                                    informeCabecera = row.split(";");
+                                    str='';
+                                    for (var i = 0; i < array.length; i++) {
+                                      let fotoUrl = ''
+                                      let comentario='';
+                                      if (array[i].foto){
+                                        fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
+                                     }                            
+                                     var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
+                                        
+                                      for (var x = 0; x < cabecera.length; x++) {
+                                        let columna = cabecera[x]["nombre"];
+                                        //let resultado = array[i][cabecera[x]];
+                                        let resultado = array[i]["nombre"];
+                                        if (array[i][cabecera[x].id2]) {
+                                          this.translateService.get(array[i][cabecera[x].id2]).subscribe((mensaje)=>{comentario += columna +": "+ mensaje + "\n"})
+                                        }
+
+                                        switch (array[i][cabecera[x].id]){
+                                          case "false":
+                                          resultado = 'Incorrecto';
+                                          break;
+                                          case "true":
+                                          resultado = 'Correcto';
+                                          break;
+                                          case "na":
+                                          resultado = 'No aplica';
+                                          break;
+                                          default:
+                                          resultado = array[i][cabecera[x].id];
+                                          break
+                                        }
+                                        
+                                      line += ((array[i][cabecera[x].id] !== undefined) ?resultado + ';':';');
+                                      //line += ((columna == resultado && array[i][cabecera[x]] !== undefined) ?array[i]["valor"] + ';':';');
+                                    }
+                                    line = line.slice(0,-1);
+                                        //str += line + '\r\n';
+                                        informeRows.push(line.split(";"))
+                                        informeComentarios.push(comentario);
+                                    }
+                                    //return str;
+                                    let nombreChecklist = this.checklists.findIndex((item)=>item.id==this.checklistSeleccionada);
+                                    let nomInforme = 'Checklist'+nombreChecklist;
+                                    return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':informeComentarios,'informes':nomInforme};
+            
+                      }
+
+
+
+
+
+
+
+
 formatFecha(fecha: Date):string{
 let mifecha = ("0"+fecha.getUTCDate()).slice(-2) +"/"+("0"+(fecha.getUTCMonth()+1)).slice(-2)+"/"+fecha.getUTCFullYear()+ " - " +("0"+(fecha.getHours())).slice(-2)+":"+("0"+fecha.getUTCMinutes()).slice(-2);
 console.log(mifecha);

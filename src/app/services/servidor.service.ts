@@ -1,8 +1,11 @@
-import { Injectable, Component } from '@angular/core';
+import { Injectable, Component  } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 
-import 'rxjs/add/operator/map';
+// import 'rxjs/add/operator/map';
+// import 'rxjs/add/operator/ta';
+// import 'rxjs/add/operator/last';
+import { map, tap, last } from 'rxjs/operators';
 
 import { Router } from '@angular/router';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -42,10 +45,28 @@ export class Servidor {
     return this.http.get(url,{responseType: 'text'})
   }
 
+
   postSimple(url: string, object: Object, param?: string) {
     let payload = JSON.stringify(object);
     return this.llamada.post(url, payload)
   }
+
+  // postSimple(url: string, object: Object, param?: string) {
+  //   let payload = JSON.stringify(object);
+  //   // let req = new HttpRequest('POST', url, payload, { 
+  //   //   reportProgress: true
+  //   // });
+  //   // return this.http.request(req).pipe(
+  //   //   tap(message => console.log(message)),
+  //   //     last()
+  //   // );
+  //   return this.http.post(url, payload).map
+  // }
+
+
+
+
+
   // getObjects2(url: string, param: string) {
   //   if (this.istokenExpired()){
   //     this.setAlerta();

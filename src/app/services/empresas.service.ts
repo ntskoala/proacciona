@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 
 
 import { Empresa } from '../models/empresa';
+import * as moment from 'moment';
 
 @Injectable()
 export class EmpresasService {
@@ -20,6 +21,7 @@ export class EmpresasService {
   login:boolean=false;
   hayLogoEmpresa:number;
   nombreEmpresa:string='';
+  currentStartDate:string=moment().startOf('year').subtract(1,"y").format("YYYY-MM-DD");
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
 

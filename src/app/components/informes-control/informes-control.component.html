@@ -1,3 +1,5 @@
+<modal [modal]="modalW" (onCerrar)="cerrarModal($event)"></modal>
+
 <div class="modal" *ngIf="modal" (click)="cerrarFoto()">
   <div class="foto-window">
     <span class="close material-icons" (click)="cerrarFoto()">close</span>
@@ -7,9 +9,9 @@
   </div>
 </div>
 
-<p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'" [(selection)]="selectedItem"
+<!-- <p-dataTable [value]="tabla" #dt [csvSeparator]="';'" [exportFilename]="'Informe_Controles'" [(selection)]="selectedItem"
   (click)="gotoIncidencia($event)">
-  <p-header>
+  <p-header [style]="{'background':'#fff'}">
     <div class="informe-header">
       <div style="text-align:left;float:left">
         <p-multiSelect displaySelectedLabel="false" [options]="columnOptions" [(ngModel)]="columnas" (onChange)="setChanges()"></p-multiSelect>
@@ -31,13 +33,10 @@
               <span class="material-icons">check</span>
             </button>
             <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"
-              (click)="dt.exportCSV()">
-              <span class="material-icons">cloud_download</span>
-            </button>
-            <!-- <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"
               (click)="excel2()">
               <span class="material-icons">cloud_download</span>
-            </button> -->
+            </button>
+
           </div>
         </div>
       </form>
@@ -52,13 +51,9 @@
     </ng-template>
     <ng-template let-user="rowData" let-col pTemplate="body">
       <span id="user-link" class="material-icons">perm_identity</span> {{user[col.field]}}
-      <!--<div id="usuario"><span>{{user[col.field]}}</span></div> -->
     </ng-template>
   </p-column>
   <p-column field="fecha" header="fecha">
-    <!-- <ng-template pTemplate="body" let-data="rowData" let-col>
-     {{data[col.field] | date:"yyyy-MM-dd HH:mm"}}  
-        </ng-template>   -->
   </p-column>
 
   <p-column field="foto" header="foto">
@@ -80,12 +75,110 @@
     </ng-template>
   </p-column>
 
-</p-dataTable>
-<!--<p-dataTable [value]="tabla">
-    <p-column field="valor" header="nombre"></p-column>
+</p-dataTable> -->
 
-</p-dataTable>-->
+
+
+<p-table #dt [columns]="cols" [value]="tabla" dataKey="id" 
+    [paginator]="true" [rows]="25" [pageLinks]="5" [rowsPerPageOptions]="[25,50,100]">
+    <ng-template pTemplate="caption">
+          <div class="informe-header">
+            <div style="text-align:left;float:left">
+              <p-multiSelect displaySelectedLabel="false" [options]="columnOptions" [(ngModel)]="columnas" (onChange)="setChanges()"></p-multiSelect>
+            </div>
+      
+           
+              <div style="width:550px;float:left">
+                  <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
+                <div class="filtro-dates">
+                  <div class="filtro">
+                    <p-calendar name="inicio" [(ngModel)]="fecha['inicio']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+                  </div>
+                  <div class="filtro">
+                    <p-calendar name="fin" [(ngModel)]="fecha['fin']" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+                  </div>
+      
+                </div>
+                <div style="float:left; margin-left:20px;display: contents">
+                  <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+                    <span class="material-icons">check</span>
+                  </button>
+                  <!-- <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"
+                    (click)="excel2()">
+                    <span class="material-icons">cloud_download</span> 
+                  </button>-->      
+                </div>
+              </form>
+              </div>
+              <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel2()" style="margin-left:10px;float:right"></button>
+            
+          </div>
+        </ng-template>
+
+<!-- ********* INICIO CABECERA-->
+
+
+<ng-template pTemplate="header" let-columns>
+      <span style="display:table-row">
+        <th [style.width]="'90px'"> <span id="user-link" class="material-icons">perm_identity</span></th>
+        <th [style.width]="'140px'">{{'fecha' | translate}}</th>
+        <th [style.width]="'60px'"> <span class="foto-link material-icons">photo_camera</span></th>
+        <th  *ngFor="let col of columnas" [style.width]="'45px'" [style.min-height]="'45px'">
+            <span class="vertical"> {{col.header}}</span>
+        </th>
+        <th [style.width]="'90px'" *ngIf="empresasService.administrador">
+          {{'acciones' | translate}}
+        </th>
+      </span>
+    </ng-template>
+    <!-- ********* FIN CABECERA   ***-->
+
+
+
+          <div class="tableContent">
+                  <ng-template pTemplate="body" let-item let-col="columnas" let-i="rowIndex" let-expanded="expanded">
+                    <!--let-expanded="expanded" -->
+                    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
+                        <td><span id="user-link" class="material-icons">perm_identity</span> {{item["usuario"]}}</td>
+                      <td>{{item["fecha"]}}</td>
+                      <td>
+                        <span class="cell center" *ngIf="item['foto']">
+                          <span class="foto-link material-icons" (click)="ventanaFoto(item['id'])">photo_camera</span>
+                        </span>
+                      </td>
+                      <td *ngFor="let col of columnas" [ngClass]="{'rowRegistro':true}">
+                        <span class="cell right" [class.wrong]="item['error']" title="{{item[col.field + 'mensaje'] | translate}}">
+                           {{item[col.field]}}
+                          </span>
+                      </td>
+                
+                      <!--*****  ACCIONES  *********-->
+            <td *ngIf="empresasService.administrador">
+                <span class="cell tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+                    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)"
+                        type="button">
+                        <span class="material-icons">close</span>
+                    </button>
+                </span>
+            </td>
+
+        </tr>
+    </ng-template>
+          </div>
+ 
+</p-table>
+
+
+
+
+
+
+
+
+
+
 
 <div class="modal" *ngIf="exportando">
 <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
 </div>
+<app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>

@@ -532,7 +532,7 @@ gestion-informes {
 .informe-header{
     width: 100%;
     height: 53px;
-    background-color: #ffd740;
+    background-color: rgba(238, 234, 245, 1) !important;
     padding: 10px;
 }
 /* InformeControlesComponent */
@@ -926,6 +926,8 @@ width: 400px;
   background: grey;
 } */
 
+
+
 .ui-state-default a{
   color: rgba(103, 58, 183,1);
 }
@@ -1078,6 +1080,12 @@ border-bottom: lightgrey solid 0.5px;
 .ui-state-highlight {
   border-color: #fed22f;
   background: #ffe45c !important;
+  color: #363636;
+  z-index: 10 !important;
+}
+.ui-state-highlight.ui-sortable-column {
+  border-color: #fed22f;
+  background: rgba(255,255,255,0.1) !important;
   color: #363636;
   z-index: 10 !important;
 }

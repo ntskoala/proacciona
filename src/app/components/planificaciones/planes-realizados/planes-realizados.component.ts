@@ -52,6 +52,8 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
   modal: Modal = new Modal();
   public stacked:boolean=false;
 entidad:string="&entidad=planificaciones_realizadas";
+filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
+
 //field:string="&field=idfamilia&idItem=";
 es
 
@@ -96,10 +98,10 @@ public informeData:any;
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha_prevista', header: 'limpieza.fecha_prevista', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
-          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
-          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false },
-          { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:110,orden:false,'required':false },
-          { field: 'idsupervisor', header: 'limpieza.supervisor', type: 'dropdown', width:110,orden:false,'required':false },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:120,orden:true,'required':true },
+          { field: 'responsable', header: 'responsable', type: 'std', width:120,orden:true,'required':false },
+          { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:120,orden:false,'required':false },
+          { field: 'idsupervisor', header: 'limpieza.supervisor', type: 'dropdown', width:120,orden:false,'required':false },
           { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:true,'required':true },
         ];
         if (localStorage.getItem("idioma")=="cat") {
@@ -153,7 +155,7 @@ public informeData:any;
   setItems(){
   //  let params = this.maquina.id;
   //  let parametros = '&idmaquina=' + params;
-      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+"&order=fecha DESC"; 
+      let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+"&order=fecha DESC"+this.filterDates;
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             this.items = [];

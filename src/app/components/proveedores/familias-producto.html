@@ -8,60 +8,80 @@
   </div>
 </div>
 <h2 class="center">{{"proveedores.familias" | translate}}</h2>
+<div style="text-align:left;margin-left:10px;max-width:800px">
+    <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
+    <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+    <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAll()" style="margin-left:10px"></button>
+    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-left:10px;float:right"></button>
+
+  </div>
 <div class="table">
-  <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
-    <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
-    <span class="cell">
-      <input type="text" [placeholder]="'proveedores.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
-    </span>
-
-    <select  *ngIf="permisosService.traspasos && destino" class="smallselect" [(ngModel)]="nuevoItem.nivel_destino" name="nivel_destino" required>
-      <option [disabled]="true" [value]="null">selecciona</option>
-       <option  [value]="1">R0-R4</option>
-        <option [value]="2">P1-P4</option>
-         <option [value]="3">R0-P4</option>
-    </select>
-
-    <span class="cell"></span>
-    <span class="cell">
-      <button mat-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
-        <span class="material-icons">add</span>
-      </button>
-    </span>
-  </form>
 
   <div class="header-row">
     <span class="header-cell">{{"proveedores.familia" | translate}}</span>
     <span  *ngIf="permisosService.traspasos && destino" class="header-cell">{{"destino" | translate}}</span>
-    <span class="header-cell"></span>
-    <span class="header-cell"></span>
+    <span class="header-cell">{{"acciones" | translate}}</span>
+    <!-- <span class="header-cell"></span> -->
   </div>
 
-  <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index">
+        <!-- ********* NUEVOREGISTRO   ***-->
+        <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row-group">
+            <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
+              <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">
+              <span class="cell">
+                <input type="text" [placeholder]="'proveedores.nombre' | translate" required [(ngModel)]="nuevoItem.nombre" name="nombre">
+              </span>
+          
+              <span *ngIf="permisosService.traspasos && destino" class="cell">
+                <select  *ngIf="permisosService.traspasos && destino" class="smallselect" [(ngModel)]="nuevoItem.nivel_destino" name="nivel_destino" required>
+                  <option [disabled]="true" [value]="null">selecciona</option>
+                   <option  [value]="1">R0-R4</option>
+                    <option [value]="2">P1-P4</option>
+                     <option [value]="3">R0-P4</option>
+                </select>
+              </span>
+
+
+              <span class="cell">
+                <button mat-mini-fab color="accent" [disabled]="!newItemForm.form.valid" type="submit">
+                  <span class="material-icons">add</span>
+                </button>
+              </span>
+            </form>
+          </span>
+                
+          <!-- ********* FIN NUEVOREGISTRO   ***-->
+
+  <form class="row" #editItemForm="ngForm" (ngSubmit)="saveItem(editItemForm.value)" *ngFor="let item of items; let i = index" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
     <input type="hidden" [(ngModel)]="item.id" name="id">
     <span class="cell">
       <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" type="text" [(ngModel)]="item.nombre" name="nombre" (keyup)="itemEdited(item.id)">
     </span>
-
+    <span *ngIf="permisosService.traspasos && destino" class="cell">
     <select  *ngIf="permisosService.traspasos && destino" class="smallselect" [(ngModel)]="item.nivel_destino" name="nivel_destino" (change)="itemEdited(item.id)">
       <option [disabled]="true" [value]="null">selecciona</option>
        <option  [value]="1">R0-R4</option>
         <option [value]="2">P1-P4</option>
          <option [value]="3">R0-P4</option>
     </select>
+    </span>
 
-
-
-    <span class="cell">
+<span class="cell">
+    <span class="">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" (click)="checkBorrar(item.id)" type="submit">
         <span class="material-icons">close</span>
       </button>
     </span>
-    <span class="cell">
+    <span class="">
       <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" mat-mini-fab color="primary" [disabled]="!guardar[item.id]" type="submit">
         <span class="material-icons">check</span>
       </button>                
     </span>
+  </span>
   </form>
 
+</div>
+
+<div class="modal" *ngIf="exportando">
+  <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
 </div>

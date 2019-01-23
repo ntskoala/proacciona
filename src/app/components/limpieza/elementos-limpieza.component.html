@@ -231,7 +231,7 @@
  </div>
  
  
- <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew>
+ <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" [top]="posY" name="periodicidad"></periodicidadNew>
  <!-- ********* INICIO TABLA REGISTROS-->
  <p-table #DT [columns]="cols" [value]="items" dataKey="id" 
  (onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
@@ -341,7 +341,7 @@
         <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
        <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>  -->
        <div class="orden" >
-           <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="items.length"  (onChange)="editOrden()"></p-spinner> 
+           <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="items.length"  (onChange)="editOrden(item.id)"></p-spinner> 
        </div>  
      </td>   
    <!--************ FIN ORDEN ***************************-->
@@ -353,7 +353,7 @@
              <span *ngIf="col.type == 'periodicidad'">
                <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
                [matTooltipPosition]="'right'">
-               <button [disabled]="!item['fecha']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+               <button [disabled]="!item['fecha']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item,$event)">
                  <span class="material-icons">event</span>
                </button>
              </span>

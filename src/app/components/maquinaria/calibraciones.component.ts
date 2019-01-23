@@ -39,6 +39,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   public procesando: boolean = false;
   public viewPeriodicidad: any=null;
   public minHeight:number = 0;
+  public posY='';
   //***   EXPORT DATA */
   public exportar_informes: boolean =false;
   public exportando:boolean=false;
@@ -287,12 +288,15 @@ export class CalibracionesComponent implements OnInit, OnChanges {
     }
     this.nuevoCalibracion  = new CalibracionesMaquina(0,0,'','');
   }
-  openPeriodicidad(Mantenimiento){
+  openPeriodicidad(Mantenimiento,evento?){
+    this.posY='';
     console.log('view Periodicidad Ok',Mantenimiento);
     this.minHeight=500;
     if (Mantenimiento.id == 0){
       this.viewPeriodicidad='true';
     }else{
+      if(evento.view.scrollY > 180)
+      this.posY=(evento.view.scrollY-150) + 'px';
       this.nuevoCalibracion= Mantenimiento;
       this.viewPeriodicidad=Mantenimiento.periodicidad;
     }

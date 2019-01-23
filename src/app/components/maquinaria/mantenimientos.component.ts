@@ -39,6 +39,7 @@ public idBorrar;
 public es:any;
 public procesando: boolean = false;
 public viewPeriodicidad: any=null;
+public posY='';
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -67,6 +68,8 @@ public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
+          { field: 'pieza', header: 'maquinas.pieza', type: 'dropdown', width:120,orden:false,'required':false },
+          { field: 'cantidadPiezas', header: 'maquinas.cantidadPiezas', type: 'std', width:60,orden:false,'required':false },
           { field: 'periodicidad', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':false },
           { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
         ];
@@ -295,11 +298,14 @@ setPeriodicidad(periodicidad: string, idmantenimiento?: number, i?: number){
   }
   //this.nuevoMantenimiento  = new MantenimientosMaquina(0,0,'','');
 }
-openPeriodicidad(Mantenimiento){
+openPeriodicidad(Mantenimiento,evento?){
+  this.posY='';
   console.log('view Periodicidad Ok',Mantenimiento);
   if (Mantenimiento.id == 0){
     this.viewPeriodicidad='true';
   }else{
+    if(evento.view.scrollY > 180)
+    this.posY=(evento.view.scrollY-150) + 'px';
     this.nuevoMantenimiento= Mantenimiento;
     this.viewPeriodicidad=Mantenimiento.periodicidad;
   }

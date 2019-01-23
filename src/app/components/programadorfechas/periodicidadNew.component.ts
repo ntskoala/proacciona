@@ -23,6 +23,7 @@ export class PeriodicidadNewComponent implements OnInit {
 @Input() miperiodo: string;
 @Input() origen: string;
 @Input() fechaPrevista: Date;
+@Input() top: string;
 public fecha:String;
 public periodoactual: Periodicidad;
 public repeticion:String;
@@ -71,6 +72,7 @@ ngOnChanges(){
         this.iniciaPeriodo();
         this.period=true;
 }
+// if (this.top) this.topper=this.top
 }
 
 iniciaFechas(){

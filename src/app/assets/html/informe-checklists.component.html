@@ -20,6 +20,7 @@
   </form>
 </div>
 
+
 <div class="fechas">
   <form #filtrarFechasForm="ngForm" (ngSubmit)="filtrarFechas(filtrarFechasForm.value)">
    <!--<ng2-datepicker  type="date" name="inicio" [(ngModel)]="fecha['inicio']" (click)="scroll()"></ng2-datepicker>
@@ -35,7 +36,7 @@
     <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel2(filtrarFechasForm.value)">
+    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
       <span class="material-icons">cloud_download</span>
     </button>                   
   </form>
@@ -47,7 +48,7 @@
     <span class="header-cell center">{{'Imagen' | translate}}</span>
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
   </div>
-  <div class="row" *ngFor="let resultado of tabla; let fila = index">
+  <div class="row" *ngFor="let resultado of tabla; let fila = index" [ngClass]="{'rowImpar':fila%2==0,'rowPar':fila%2!=0}">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
     <span class="cell">
       <span id="user-link" class="material-icons">perm_identity</span> {{resultado.usuario}} 
@@ -60,7 +61,7 @@
     <span class="cell center" *ngIf="!resultado.foto">
       <span class="material-icons">do_not_disturb_alt</span>
     </span>
-    <span [ngClass]="{'yellow':selectedItem==resultado[columna.idrc]}" class="cell right" *ngFor="let columna of columnas; let i = index">
+    <span [ngClass]="{'yellow':selectedItem==resultado[columna.idrc] && selectedItem!=undefined}" class="cell right" *ngFor="let columna of columnas; let i = index">
       <span class="foto-link material-icons" *ngIf="resultado[columna.fotocontrol]" (click)="ventanaFoto(resultado[columna.fotocontrol],'checklistcontrol')">photo_camera</span>
       <span class="descrip-link material-icons" *ngIf="resultado[columna.id2]">comments</span>
 

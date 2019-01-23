@@ -8,6 +8,7 @@ import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
 import {MatSelect} from '@angular/material';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'listado-ordenes-produccion',
@@ -76,6 +77,7 @@ quitaSeleccionado(){
   this.itemSeleccionado.emit(null);
 }   
 seleccionarItem(event: any){
+  console.log('LOTE SELECCIONADO',event);
   this.itemSeleccionado.emit(this.items[event.value]);
   this.itemActivo = this.items[event.value].id;
     this.unExpand(this.Choicer);
@@ -182,6 +184,7 @@ unExpand(list: MatSelect){
 // }
 changeEstado(event: any){
   console.log('cambio estado',event)
+  this.Choicer.value=null;
   //this.loadItems(this.empresasService.seleccionada.toString(), estado);
   this.estado = event.value;
   this.setDates(this.fechas_inicio);

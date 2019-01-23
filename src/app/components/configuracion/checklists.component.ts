@@ -44,6 +44,17 @@ export class ChecklistsComponent implements OnInit{
   es;
   public tipo = 'libre';
   procesando:boolean=false;
+  public cols:any[];
+  public cols2:any[];
+  public newRow:boolean=false;
+  public viewPeriodicidad: any=null;
+  //***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
+
   constructor(public servidor: Servidor, public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
 
@@ -57,6 +68,15 @@ export class ChecklistsComponent implements OnInit{
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
       firstDayOfWeek: 1
   }; 
+  this.cols = [
+    { field: 'nombrechecklist', header: 'nombre', type: 'std', width:150,orden:false,'required':true },
+    { field: 'fecha_', header: 'fecha', type: 'fecha', width:120,orden:false,'required':true },
+    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':true }
+  ];
+  this.cols2 = [
+    { field: 'id', header: 'id', type: 'std', width:10,orden:false,'required':true ,visible:false},
+    { field: 'nombre', header: 'nombre', type: 'std', width:150,orden:false,'required':true,visible:true },
+  ];
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
       emp => {
@@ -143,14 +163,16 @@ export class ChecklistsComponent implements OnInit{
 
   onChecklistSelect(evento){
 console.log(evento)
+console.log(this.selectedChecklist);
 this.alertaGuardar['ordenarcheckcontrol'] = false;
 this.alertaGuardar['guardarcheckcontrol'] = false;
-this.checklistActiva = evento.data.id;
+this.checklistActiva = evento.id;
 this.clmigrado = this.checklists[this.checklists.findIndex((cl)=>cl.id==this.checklistActiva)].migrado;
 this.controlchecklists=[];
 this.controlchecklists = this.controlchecklists.slice();
-this.mostrarCCL(evento.data.id)
+this.mostrarCCL(evento.id)
   }
+  
 
 
   onEditCL(evento){
@@ -169,6 +191,16 @@ this.mostrarCCL(evento.data.id)
   //   }
   //   this.modCL = this.checklists.find(checklist => checklist.id == this.checklistActiva);
   // }
+
+  saveAllCL(){
+    for (let x=0;x<this.guardarCL.length;x++){
+      if (this.guardarCL[x]==true) {
+        let indice = this.checklists.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.checklists[indice]);
+        this.actualizarCL(this.checklists[indice].id)
+      }
+    }
+  }
 
   actualizarCL(idCL) {
 
@@ -318,6 +350,7 @@ this.mostrarCCL(evento.data.id)
   }
 
   onEditCCL(evento){
+    console.log(evento)
     this.modificarCCL(evento.data.id);
     } 
   modificarCCL(idControlchecklist: number) {
@@ -341,6 +374,16 @@ this.mostrarCCL(evento.data.id)
     );
   }
   
+  saveAllCCL(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.controlchecklists.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.controlchecklists[indice]);
+        this.actualizarCCL(this.controlchecklists[indice].id)
+      }
+    }
+  }
+
   actualizarCCL(idControlchecklist: number) {
     let modControlchecklist = this.controlchecklists.find(controlchecklist => controlchecklist.id == idControlchecklist);
     let parametros = '?id=' +  idControlchecklist;
@@ -385,20 +428,51 @@ this.mostrarCCL(evento.data.id)
     }
   }
 
-  setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
-    if (!idItem){
+  // setPeriodicidad(periodicidad: string, idItem?: number, i?: number){
+  //   if (!idItem){
+  //   this.cl.periodicidad2 = periodicidad;
+  //   // console.log(this.nuevoItem.periodicidad);
+  
+  //   }else{
+  //     // console.log(idItem,i,periodicidad);
+  //     this.modificarCL(idItem);
+  //     let indice = this.checklists.findIndex((item)=>item.id==idItem);
+  //     this.checklists[indice].periodicidad2 = periodicidad;
+  //     // console.log(this.items[indice]);
+  //   }
+  // }
+
+
+
+  setPeriodicidad(periodicidad: string, idChecklist?: number, i?: number){
+    this.viewPeriodicidad=null;
+    if (!idChecklist){
     this.cl.periodicidad2 = periodicidad;
-    // console.log(this.nuevoItem.periodicidad);
+    console.log(this.cl.periodicidad2);
   
     }else{
-      // console.log(idItem,i,periodicidad);
-      this.modificarCL(idItem);
-      let indice = this.checklists.findIndex((item)=>item.id==idItem);
+      this.modificarCL(idChecklist);
+      let indice = this.checklists.findIndex((item)=>item.id==idChecklist);
       this.checklists[indice].periodicidad2 = periodicidad;
-      // console.log(this.items[indice]);
+      this.cl = new Checklist(0, this.empresasService.seleccionada,'', null, null,0,null,null);
+
     }
   }
-
+  openPeriodicidad(Control){
+    console.log('view Periodicidad Ok',Control);
+    if (Control.id == 0){
+      this.viewPeriodicidad='true';
+    }else{
+      this.cl= Control;
+      this.viewPeriodicidad=Control.periodicidad2;
+    }
+  }
+  closePeriodicidad(activo){
+  if (activo==false){
+    this.cl = new Checklist(0, this.empresasService.seleccionada,'', null, null,0,null,null);
+    this.viewPeriodicidad=false;
+  }
+  }
  
   ordenar(elemento) {
     console.log('ORDENANDO')
@@ -447,6 +521,104 @@ this.mostrarCCL(evento.data.id)
 //   this.lista.nativeElement.size = num;
 // }
 
+
+
+
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
+      //**** EXPORTAR DATA */
+
+  async exportarTable(){
+    this.exportando=true;
+
+    this.informeData = await this.ConvertToCSV(this.cols, this.checklists,'Checklists');
+  }
+  async exportarTableCCL(){
+    this.exportando=true;
+    //let nomChecklist = this.checklists[this.checklists.findIndex((item)=>item.id==this.checklistActiva)].nombrechecklist;
+    let tab; 
+    this.translate.get('Controles').subscribe((desc)=>{tab=desc});
+    this.informeData = await this.ConvertToCSV(this.cols2, this.controlchecklists,tab + ' ' + this.selectedChecklist.nombrechecklist);
+  }
+  informeRecibido(resultado){
+    console.log('informe recibido:',resultado);
+    if (resultado){
+      setTimeout(()=>{this.exportando=false},1500)
+    }else{
+      this.exportando=false;
+    }
+  }
+
+  ConvertToCSV(controles,objArray,tabla){
+    var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    console.log(cabecera,array)
+    let informeCabecera=[];
+    let informeRows=[];
+                var str = '';
+                var row = "";
+                let titulo="";
+                for (var i = 0; i < cabecera.length; i++) {
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
+                }
+                row = row.slice(0, -1);
+                informeCabecera = row.split(";");
+
+                str='';
+                for (var i = 0; i < array.length; i++) {
+                  var line ="";
+                   for (var x = 0; x < cabecera.length; x++) {
+                  
+                    let valor='';
+                    
+                    switch (cabecera[x]['type']){
+                      case 'fecha':
+                      valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                      break;
+                      case 'dropdown':
+                      valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                      break;
+                      case 'periodicidad':
+                      if (array[i][cabecera[x]['field']] && array[i][cabecera[x]['field']].length >1)
+                      valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                      break;
+                      default:
+                      valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                      break;
+                    }
+
+                  line += valor + ';';
+                }
+                line = line.slice(0,-1);
+
+                    informeRows.push(line.split(";"));
+    
+                }
+                let informe='';
+                this.translate.get(tabla).subscribe((desc)=>{informe=desc});
+                return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+    }
+
+    getDropDownValor(tabla,valor){
+      let Value;
+      switch (tabla){
+        case "superuser":
+        break;
+        case "tipouser":
+        break;
+      }
+      console.log(tabla,valor,Value);
+      return Value;
+    }
 
 
 

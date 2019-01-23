@@ -36,7 +36,7 @@ export class TablaIncidenciasComponent implements OnInit,OnChanges {
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
 public incidencias: Incidencia[];
 public selectedItem: Incidencia;
-public usuarios: Usuario[];
+public usuarios: object[];
 public tablaPosition=0;
 public guardar = [];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
@@ -57,6 +57,17 @@ public verdoc: boolean = false;
 public foto:string;
 public top:string;
 public modo:string='';
+//************** */
+//************** */
+public expanded:boolean=false;
+public currentExpandedId: number;
+//***   EXPORT DATA */
+public exportar_informes: boolean =false;
+public exportando:boolean=false;
+public informeData:any;
+//***   EXPORT DATA */
+
+
   constructor(public servidor: Servidor, public empresasService: EmpresasService, public sanitizer: DomSanitizer
     , public translate: TranslateService, private messageService: MessageService, public router: Router,
   public route: ActivatedRoute) { }
@@ -72,29 +83,23 @@ public modo:string='';
       firstDayOfWeek: 1
   }; 
 
-  //   this.cols = [
-  //     { field: 'incidencia', header: 'Incidencia' },
-  //     {field: 'fecha', header: 'Fecha' },
-  //     { field: 'solucion', header: 'Solucion' },
-  //     { field: 'responsable', header: 'Responsable' },
-  //     { field: 'nc', header: 'No conformidad' },
-  //     { field: 'foto', header: 'Foto' }
-  // ];
-
     this.cols = [
-      { field: 'incidencia', header: 'Incidencia' },
-      {field: 'fecha', header: 'Fecha' },
-      { field: 'descripcion', header: 'Descripción' },
-      { field: 'solucion', header: 'Solución' },
-      { field: 'responsable', header: 'Responsable' },
-      { field: 'estado', header: 'Estado' },
-      { field: 'origen', header: 'Origen' },
-      { field: 'responsable_cierre', header: 'Responsable cierre' },
-      { field: 'fecha_cierre', header: 'Fecha cierre' }
+      { field: 'incidencia', header: 'Incidencia', type: 'std', width:160,orden:true,'required':true  },
+      {field: 'fecha', header: 'Fecha', type: 'fecha', width:120,orden:true,'required':true  },
+      // { field: 'descripcion', header: 'Descripción', type: 'std', width:160,orden:true,'required':true  },
+      // { field: 'solucion', header: 'Solución', type: 'std', width:160,orden:true,'required':true  },
+      { field: 'responsable', header: 'Responsable', type: 'dropdown', width:130,orden:true,'required':true  },
+      { field: 'estado', header: 'Estado', type: 'dropdown', width:130,orden:false,'required':false  },
+      { field: 'origen', header: 'Origen', type: 'std', width:130,orden:true,'required':true  },
+      { field: 'responsable_cierre', header: 'Responsable cierre', type: 'dropdown', width:130,orden:false,'required':false  },
+      { field: 'fecha_cierre', header: 'Fecha cierre', type: 'fecha', width:120,orden:true,'required':true  }
   ];
+
+  if (localStorage.getItem("idioma")=="cat") {
+  }
   this.translate.get(['incidencia.estado-1','incidencia.estado0','incidencia.estado1','incidencia.estado2']).subscribe((respuesta)=>{
     console.log(respuesta);
-    this.estados = [{'nombre':respuesta['incidencia.estado-1'],'valor':-1},{'nombre':respuesta['incidencia.estado0'],'valor':0},{'nombre':respuesta['incidencia.estado1'],'valor':1},{'nombre':respuesta['incidencia.estado2'],'valor':2}]
+    this.estados = [{'label':respuesta['incidencia.estado-1'],'value':-1},{'label':respuesta['incidencia.estado0'],'value':0},{'label':respuesta['incidencia.estado1'],'value':1},{'label':respuesta['incidencia.estado2'],'value':2}]
     window.scrollTo(0, 0)
   })
   // this.estados = [{'nombre':'sin definir','valor':-1},{'nombre':'no aplica','valor':0},{'nombre':'abierto','valor':1},{'nombre':'cerrado','valor':2}]
@@ -131,6 +136,22 @@ test(item: Incidencia){
       this.incidencias = this.incidencias.slice();
     }
   }
+
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'estado':
+    return this.estados;
+    break;
+    case 'responsable_cierre':
+    return this.usuarios;
+    break;
+    case 'responsable':
+    return this.usuarios;
+    break;
+    }
+    }
+
   loadSupervisores(){
     let params = this.empresasService.seleccionada;
     let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
@@ -140,9 +161,10 @@ test(item: Incidencia){
             if (response.success && response.data) {
               console.log(response.data)
               for (let element of response.data) {  
-                  this.usuarios.push(new Usuario(
-                    element.id,element.usuario,element.password,element.tipouser,element.email,element.idempresa
-                  ));
+                  // this.usuarios.push(new Usuario(
+                  //   element.id,element.usuario,element.password,element.tipouser,element.email,element.idempresa
+                  // ));
+                  this.usuarios.push({label:element.usuario,value:element.id})
              }
              console.log(this.usuarios)
         this.loadIncidencias(this.empresasService.seleccionada.toString());
@@ -350,11 +372,11 @@ setAlerta(concept:string){
         // (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).format("DD/MM/YYYY hh:mm"):'';
         (moment(incidencia.fecha).isValid())?incidencia.fecha = moment(incidencia.fecha).toJSON():'';
         (moment(incidencia.fecha_cierre).isValid() && incidencia.fecha_cierre !== undefined)?incidencia.fecha_cierre = moment(incidencia.fecha_cierre).toJSON():'';
-        let indice_responsable = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable);
-        if (indice_responsable > -1)  incidencia.responsable = this.usuarios[indice_responsable].usuario;
-        let indice_responsable_cierre = this.usuarios.findIndex((usuario)=>usuario.id==incidencia.responsable_cierre);
-        if (indice_responsable_cierre > -1) incidencia.responsable_cierre = this.usuarios[indice_responsable_cierre].usuario;
-        if (parseInt(incidencia.estado)>=-1)  incidencia.estado=this.estados[this.estados.findIndex((estado)=>parseInt(estado.valor)==incidencia.estado)]["nombre"]
+        let indice_responsable = this.usuarios.findIndex((usuario)=>usuario["value"]==incidencia.responsable);
+        if (indice_responsable > -1)  incidencia.responsable = this.usuarios[indice_responsable]["label"];
+        let indice_responsable_cierre = this.usuarios.findIndex((usuario)=>usuario["value"]==incidencia.responsable_cierre);
+        if (indice_responsable_cierre > -1) incidencia.responsable_cierre = this.usuarios[indice_responsable_cierre]["label"];
+        if (parseInt(incidencia.estado)>=-1)  incidencia.estado=this.estados[this.estados.findIndex((estado)=>parseInt(estado.valor)==incidencia.estado)]["label"]
         });
 
     mitabla.csvSeparator = ";";
@@ -462,5 +484,108 @@ setAlerta(concept:string){
 
     }
   }
+
+
+
+
+
+
+rowExpanded(evento){
+  console.log(evento)
+  this.currentExpandedId = evento.data.id;
+  this.expanded=true;
+}
+rowCollapsed(evento){
+  console.log(evento)
+  this.expanded=false;
+}
+
+      //**** EXPORTAR DATA */
+
+      async exportarTable(){
+        this.exportando=true;
+        this.informeData = await this.ConvertToCSV(this.cols, this.incidencias);
+      }
+    
+      informeRecibido(resultado){
+        console.log('informe recibido:',resultado);
+        if (resultado){
+          setTimeout(()=>{this.exportando=false},1500)
+        }else{
+          this.exportando=false;
+        }
+      }
+    
+      ConvertToCSV(controles,objArray){
+        var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        console.log(cabecera,array)
+        let informeCabecera=[];
+        let informeRows=[];
+                    var str = '';
+                    var row = "";
+                    let titulo="";
+                    for (var i = 0; i < cabecera.length; i++) {
+                      this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                      row += titulo + ';';
+                    }
+                    row = row.slice(0, -1);
+                    informeCabecera = row.split(";");
+    
+                    str='';
+                    for (var i = 0; i < array.length; i++) {
+                      var line ="";
+                       for (var x = 0; x < cabecera.length; x++) {
+                      
+                        let valor='';
+                        
+                        switch (cabecera[x]['type']){
+                          case 'fecha':
+                          if (moment(array[i][cabecera[x]['field']]).isValid())
+                          valor = moment(array[i][cabecera[x]['field']]).format('DD-MM-YYYY');
+                          break;
+                          case 'dropdown':
+                          valor = (array[i][cabecera[x]['field']]==null)?'':this.getDropDownValor(cabecera[x]['field'], array[i][cabecera[x]['field']]);
+                          break;
+                          case 'periodicidad':
+                          valor= JSON.parse(array[i][cabecera[x]['field']])["repeticion"];
+                          break;
+                          default:
+                          valor = (array[i][cabecera[x]['field']]==null)?'':array[i][cabecera[x]['field']];
+                          break;
+                        }
+    
+                      line += valor + ';';
+                    }
+                    line = line.slice(0,-1);
+    
+                        informeRows.push(line.split(";"));
+        
+                    }
+                    let informe='';
+                    this.translate.get('planificaciones.planificaciones_realizadas').subscribe((desc)=>{informe=desc});
+                    return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
+        }
+    
+        getDropDownValor(tabla,valor){
+          console.log(tabla,valor);
+          let Value ='';
+          let index;
+          switch (tabla){
+            case 'estado':
+            index=this.estados.findIndex((sup)=>sup["value"]==valor);
+            if (index>-1)
+            Value = this.estados[index]["label"];
+            break;
+            case 'idsupervisor':
+            index=this.usuarios.findIndex((user)=>user["value"]==valor);
+            if (index>-1)
+            Value = this.usuarios[index]["label"];
+            break;
+            }
+          console.log(tabla,valor,Value);
+          return Value;
+        }
+    
 }
 

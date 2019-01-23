@@ -4,7 +4,7 @@
 </div>
 
 
-<periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoMantenimiento.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoMantenimiento.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew>
+<periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoMantenimiento.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoMantenimiento.fecha" [origen]="tipo" [top]="posY" name="periodicidad"></periodicidadNew>
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table #DT [columns]="cols" [value]="mantenimientos" dataKey="id" (onEditInit)="onEdit($event)"
   [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
@@ -125,7 +125,7 @@
             <span *ngIf="col.type == 'periodicidad'">
               <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
               [matTooltipPosition]="'right'">
-              <button [disabled]="!item['fecha']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+              <button [disabled]="!item['fecha']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item,$event)">
                 <span class="material-icons">event</span>
               </button>
             </span>

@@ -297,9 +297,9 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
                   }
                   let informe='';
                   if(this.parentAlergenos  == 'productos'){
-                    informe = "Alergias productos";
+                    this.translate.get('alergenosProductos').subscribe((inf)=>{informe=inf});
                   }else{
-                    informe = "Alergias productos proveedores";
+                    this.translate.get('alergenosProveedores').subscribe((inf)=>{informe=inf});
                   }
                   
                  this.translate.get('produccion.contieneIngrediente').subscribe((desc)=>{comentarios[0]='Si:'+desc+lineLeyenda});

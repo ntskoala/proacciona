@@ -233,10 +233,11 @@ getParent(nodo: any,id:number, tipo:string,level:number){
        
         this.servidor.getObjects(URLS.TRAZA_ATRAS, parametros).subscribe(
           response => {
-
+            //console.log("Resultados Get Orden: ",response.data);
+            //if (response.data === null) response.data = [];
             if (response.success && response.data) {
                 nodo.children=[];
-                //console.log("Resultados Get Orden: ",response.data.length);
+                console.log("Resultados Get Orden: ",response.data);
               for (let element of response.data) {
                   //this.tree[0].children[nodo].children.push({
                       console.log("idloteinterno"+element.idloteinterno + "idmateriaprima:" + element.idmateriaprima)
@@ -270,7 +271,12 @@ getParent(nodo: any,id:number, tipo:string,level:number){
              }
              if (lastItem){
                  //this.tree[0] = this.tree[0].children[0];
-                 if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) this.nodoZero();
+                 if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+                     this.nodoZero();
+                 }else{
+                    this.nodoZero();
+                    }
+
              }
 //             i++;
             }
@@ -626,7 +632,7 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
        
         this.servidor.getObjects(URLS.TRAZA_ADELANTE, parametros).subscribe(
           response => {
-
+            if (response.data === null) response.data = [];
             if (response.success && response.data) {
                 nodo.children=[];
                 console.log("Resultados Get Orden: ",response.data);
@@ -654,9 +660,14 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
 
              }
              if (lastItem){
-                 //this.tree[0] = this.tree[0].children[0];
-                 if (this.empresasService.seleccionada == 26) this.nodoZero();
-                 if (this.empresasService.seleccionada == 77) this.nodoZero();
+                 if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+                    this.nodoZero();
+                 }else{
+                    this.nodoClientes(nodo,id,tipo);
+                 }
+
+                 //if (this.empresasService.seleccionada == 77) this.nodoZero();
+                //this.nodoZero();
              }
 //             i++;
             }else{//NOT Success or NOT Data
@@ -687,6 +698,29 @@ nodoProveedor(id:number, tipo:string){
               console.log("ORIGEN",response.data)
             this.tree[0].label = response.data[0].proveedor
             this.tree[0].data = {"tipo":"materia prima","idOrden":response.data[0].idorden,"fecha_inicio_orden":response.data[0].fecha_inicio,"idDetalleOrden":response.data[0].id,"numlote_proveedor":response.data[0].numlote_proveedor,"level":0,"almacen":response.data[0].idalmacen,"cantidad":response.data[0].cantidad,"proveedor":response.data[0].proveedor}
+          }else{
+              if(this.tree[0].children.length ==1)
+              this.tree[0] = this.tree[0].children[0];
+          }
+        });
+}
+
+nodoClientes(nodo: TreeNode,id:number, tipo:string){
+    this.getClientes();
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes_distribucion&WHERE=idordenproduccion=&valor="+id;
+    this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+        response => {
+          if (response.success && response.data) {
+            nodo.children=[];
+            for (let element of response.data) {
+                nodo.children.push({
+                "label":this.getCliente(element.idcliente),
+                "expanded":true,
+                "data":{"tipo":"orden","idOrden":element.id,"fecha_inicio_orden":element.fecha,"cantidad":element.cantidad,"fecha_caducidad":element.fecha_caducidad}
+                  });
+                 nodo.parent = parent;
+       }            
+             // console.log("DESTINO",response.data)
           }else{
               if(this.tree[0].children.length ==1)
               this.tree[0] = this.tree[0].children[0];

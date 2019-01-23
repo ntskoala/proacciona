@@ -1,22 +1,24 @@
 <div class="download-window">
     <section class="example-section">
-      <mat-checkbox class="example-margin" [(ngModel)]="pdf">PDF</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="pdf" >PDF</mat-checkbox>
       <mat-checkbox class="example-margin" [(ngModel)]="xls">XLSX</mat-checkbox>
     </section>
     <button mat-mini-fab class="downbutton" color="primary" (click)="downloads()">
       <span class="material-icons">cloud_download</span>
     </button>
-    <button mat-mini-fab class="downbutton" color="primary" (click)="test()">
-      <span class="material-icons">cloud_download</span>
-    </button>
+    <!-- <button mat-mini-fab class="downbutton" color="primary" (click)="test()">
+      <span class="material-icons">check</span>
+    </button> -->
     <div class="space"></div>
     <div *ngIf="innerHtml.length>=1">
-      <mat-spinner></mat-spinner>
+      <!-- <mat-spinner></mat-spinner> -->
+      <mat-progress-bar mode="determinate" [value]="progreso"></mat-progress-bar>
       <!-- <mat-progress-bar mode="buffer"></mat-progress-bar> -->
       <!-- <iframe src="{{html}}"></iframe> -->
       <div class="space"></div>
       procesando, (puede tardar un par de minutos)...
-      <br><span>{{innerHtml}}</span>
+      <!-- <br><span>{{innerHtml}}</span> -->
+      <div [innerHTML]=innerHtml></div>
     </div>
     <span class="close material-icons" (click)="close()">close</span>
   </div>

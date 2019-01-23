@@ -46,11 +46,8 @@ public idBorrar;
 public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
 
   modal: Modal = new Modal();
-// public nuevoMantenimiento: MantenimientoRealizado = new MantenimientoRealizado(0,0,'','','',new Date(),new Date());;
-// public date = new Date();
-// public url:string[]=[];
-// public verdoc: boolean = false;
-// public foto:string;
+  filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
+
 public expanded:boolean=false;
 //******IMAGENES */
 //public url; 
@@ -126,7 +123,7 @@ getOptions(option){
 
 incidenciaSelection(){
   let params = this.route.paramMap["source"]["_value"];
-      if (params["modulo"] == "mantenimientos_realizados" && params["id"]){
+      if ((params["modulo"] == "mantenimientos_realizados" || params["modulo"] == "mantenimientos_relizados") && params["id"]){
           let idOrigen =params["id"];
           let index = this.mantenimientos.findIndex((item)=>item.id==idOrigen);
         if (index > -1){
@@ -150,7 +147,7 @@ onRowSelect(evento, tabla: DataTable){
 
   setMantenimientos(){
     let params = this.maquina.id;
-    let parametros = '&tipomantenimiento=preventivo&idmaquina=' + params;
+    let parametros = '&tipomantenimiento=preventivo&idmaquina=' + params+this.filterDates;
     //  let parametros = '&idempresa=' + this.empresasService.seleccionada; 
         this.servidor.getObjects(URLS.MANTENIMIENTOS_REALIZADOS, parametros).subscribe(
           response => {
@@ -172,7 +169,7 @@ onRowSelect(evento, tabla: DataTable){
                 }
                 //console.log(this.mantenimientos,this.incidencia)
                 this.incidenciaSelection();
-                this.getIncidencias();
+                //this.getIncidencias();
             }
         },
         error=>console.log(error),

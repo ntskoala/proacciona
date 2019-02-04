@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { Checklist } from '../../models/checklist';
 import { ControlChecklist } from '../../models/controlchecklist';
 import { LimpiezaElemento } from '../../models/limpiezaelemento';
@@ -32,14 +32,7 @@ public empresa: number;
   constructor(private empresasService: EmpresasService, private servidor: Servidor) { }
 
   ngOnInit() {
-                     this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+    this.es=cal;
     this.getChecklists();
   }
 

@@ -152,6 +152,17 @@ public informeData:any;
       }
     );
   }
+
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.items.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.items[indice]);
+        this.saveItem(this.items[indice])
+      }
+    }
+}
+
  saveItem(item: LimpiezaProducto) {
     this.guardar[item.id] = false;
     this.alertaGuardar = false;
@@ -159,6 +170,7 @@ public informeData:any;
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
           console.log('item updated');
           this.onProductosReady.emit(this.items);
         }

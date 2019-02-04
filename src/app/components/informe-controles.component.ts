@@ -5,7 +5,7 @@ import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
 import { EmpresasComponent } from './empresas.component';
-import { URLS } from '../models/urls';
+import { URLS,cal } from '../models/urls';
 import { ResultadoControl } from '../models/resultadocontrol';
 import * as moment from 'moment';
 @Component({
@@ -32,14 +32,7 @@ public es;
     this.getControles();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getControles());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
-            this.es = {
-            firstDayOfWeek: 1,
-            dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
-            dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
-            dayNamesMin: [ "D","L","M","X","J","V","S" ],
-            monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
-            monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ]
-        }
+    this.es=cal;
   }
 
   getControles() {

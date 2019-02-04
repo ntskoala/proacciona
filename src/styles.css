@@ -21,15 +21,14 @@ body {
 }
 
 h2 {
-  font-weight: normal;
+  /* font-weight: normal; */
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  color: #673ab7;
+  color: #000;
+  font-weight: bold;
+  /* color: #673ab7; */
 }
 
-hr {
- /* width: 131%;*/
-}
 
 navigation {
   width: 100%;
@@ -164,6 +163,11 @@ nav {
   min-height: 280px !important;
   max-height: 280px !important;
   overflow-y: auto;
+}
+.dashTitle{
+  padding: 15px;
+  font-weight: bold;
+  font-size: 16px;
 }
 .titulo {
   font-size: 1.2rem;
@@ -538,8 +542,9 @@ gestion-informes {
 /* InformeControlesComponent */
 .fechas {
   width: 100%;
-  background-color:#cccccc;
+  background-color:rgba(238, 234, 245,1) !important;
   margin-top:15px;
+  padding: 12px;
 }
   .filtro-dates{
     width:410px;
@@ -724,17 +729,32 @@ gestion-informes {
 .PieRegistros{
 
 }
-
-
+/*
+***********************
+* FICHAS *
+***********************
+*/
+.campo{
+  background-color: #fff9c4;
+  border: 1px solid #fbc02d !important;
+  margin-top: 18px;
+}
+.inputCampo{
+    position: absolute;
+    left: 10px;
+}
 
 /*
 ***********************
 * Material components *
 ***********************
 */
+mat-grid-tile-header{
+  font-weight: bold;
+}
 
 .toolbar-principal{
-    padding-left: 15% !important;
+    padding-left: 6px !important;
     font-size: 25px;
 }
 
@@ -836,9 +856,16 @@ width: 400px;
   font-size: 14px; 
 }
 .vertical{
-  writing-mode: vertical-lr;
+  writing-mode: vertical-rl;
   text-align: center;
+  text-transform: uppercase;
+  transform: rotate(180deg);
+  font-size:12px !important;
+  overflow: hidden;
+  max-width: 25px;
 }
+
+
 /*
 ***********************
 * INCIDENCIAS *
@@ -1104,6 +1131,9 @@ border-bottom: lightgrey solid 0.5px;
   color: #fff;
   z-index: 9999 !important;
 } */
+th{
+border-bottom: solid #fed22f 1px;
+}
 tr:hover{
   /* border: #6739b6 solid 1px; */
   /* background: rgba(103, 57, 182, 0.26) !important; */

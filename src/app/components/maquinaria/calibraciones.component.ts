@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
 import { CalibracionesMaquina } from '../../models/calibracionesmaquina';
@@ -54,14 +54,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
     //  this.setMantenimientos();
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-      firstDayOfWeek: 1
-    };
+    this.es=cal;
     this.cols = [
       { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
       { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
@@ -91,6 +84,8 @@ export class CalibracionesComponent implements OnInit, OnChanges {
         if (response.success && response.data) {
           let orden: number = 0;
           for (let element of response.data) {
+            let periodicidad='true';
+            if (element.periodicidad.length > 0) periodicidad = element.periodicidad;
             if (element.orden == 0) {
               //this.itemEdited(element.id);
               this.guardar[element.id] = true;
@@ -99,7 +94,7 @@ export class CalibracionesComponent implements OnInit, OnChanges {
               orden = parseInt(element.orden);
               this.guardar[element.id] = false;
             }
-            this.calibraciones.push(new CalibracionesMaquina(element.id, element.idmaquina, element.nombre, new Date(element.fecha), element.tipo, element.periodicidad,
+            this.calibraciones.push(new CalibracionesMaquina(element.id, element.idmaquina, element.nombre, new Date(element.fecha), element.tipo, periodicidad,
               element.tipo_periodo, element.doc, element.usuario, element.responsable, 0 + orden));
             this.guardar[element.id] = false;
           }

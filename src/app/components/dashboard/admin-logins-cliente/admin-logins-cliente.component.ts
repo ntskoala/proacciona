@@ -68,6 +68,9 @@ export class AdminLoginsClienteComponent implements OnInit {
               for (let element of response.data) {
                 let fecha:Date;
                 let fechaCierre:Date;
+                let user='';
+                let indexUser = this.usuarios.findIndex((user)=>user.id==element.idusuario);
+                if (indexUser > -1) user = this.usuarios[indexUser].usuario;
                 if (moment(element.fecha).isValid()) fecha = moment(new Date(element.fecha)).utc().toDate();              
                 if (moment(element.fecha_cierre).isValid()) fechaCierre = moment(new Date(element.fecha_cierre)).utc().toDate();
                 console.log(element.idusuario)
@@ -89,7 +92,7 @@ export class AdminLoginsClienteComponent implements OnInit {
                 let log = {
                   "fecha":moment(element.fecha).format('DD-MM-YYYY'),
                     "idusuario":element.idusuario,
-                    "usuario":this.usuarios[this.usuarios.findIndex((user)=>user.id==element.idusuario)].usuario,
+                    "usuario":user,
                     "tabla":element.tabla,
                     "accion":accion,
                     "plataforma":element.plataforma,

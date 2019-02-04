@@ -46,7 +46,7 @@
 
    <mat-sidenav-content class="sidenav-content">
       <movimiento-produccion *ngIf="traspaso"></movimiento-produccion>
-   <h2 class="center" *ngIf="orden && orden.id >0">{{orden.numlote}}</h2>
+   <h2 class="center" *ngIf="orden && orden.id >0">{{'produccion.numlote' | translate}}: {{orden.numlote}}</h2>
 <mat-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></mat-tab>
 <mat-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></mat-tab>

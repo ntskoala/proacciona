@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 
 //import {Moment} from 'moment';
 import * as moment from 'moment/moment';
-
+import { cal } from '../../models/urls';
 
 @Component({
   selector: 'filter-dates',
@@ -18,14 +18,7 @@ public fechas:Object={fecha_inicio:new Date(),fecha_fin:new Date()};
   constructor() {}
 
   ngOnInit() {
-                       this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+    this.es=cal;
     }
 
 ngOnChanges(){

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
@@ -62,14 +62,7 @@ public informeData:any;
   ngOnInit() {
      // this.setItems();
       
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+     this.es=cal;
         this.cols = [
           { field: 'idproducto', header: 'proveedores.producto', type: 'custom', width:160,orden:true,'required':true },
           { field: 'numlote_proveedor', header: 'proveedores.numlotep', type: 'std', width:120,orden:true,'required':true },

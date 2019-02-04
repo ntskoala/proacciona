@@ -32,7 +32,7 @@
        </mat-sidenav>       
 
        <mat-sidenav-content class="sidenav-content">   
- <mat-toolbar color="accent" *ngIf="proveedor && proveedor.id >0"><h2 class="center" >{{proveedor.nombre}}</h2></mat-toolbar>
+ <h2 class="center" *ngIf="proveedor && proveedor.id >0">{{'proveedores.proveedor' | translate}}: {{proveedor.nombre}}</h2>
 <mat-tab-group *ngIf="proveedor && proveedor.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'proveedores.ficha' | translate}}"><span class="space"></span><ficha-proveedor class="tabs"  [proveedor]="proveedor" *ngIf="proveedor"></ficha-proveedor></mat-tab>  
   <mat-tab label="{{'proveedores.productos' | translate}}"><span class="space"></span><productos-proveedor class="tabs"  [proveedor]="proveedor" (nuevoProducto)="cambioEnProductos($event)" *ngIf="proveedor"></productos-proveedor></mat-tab>

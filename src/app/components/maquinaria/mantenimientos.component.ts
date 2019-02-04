@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
 import { MantenimientosMaquina } from '../../models/mantenimientosmaquina';
@@ -36,7 +36,7 @@ public alertaGuardar:object={'guardar':false,'ordenar':false};
 public cantidad:number=1;  
 public cols:any[];
 public idBorrar;
-public es:any;
+public es:any=cal;
 public procesando: boolean = false;
 public viewPeriodicidad: any=null;
 public posY='';
@@ -47,7 +47,7 @@ public informeData:any;
 //***   EXPORT DATA */
 
 
-public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipo:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
   modal: Modal = new Modal();
   constructor(public servidor: Servidor,public empresasService: EmpresasService
     , public translate: TranslateService, private messageService: MessageService) {}
@@ -55,15 +55,8 @@ public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value
   ngOnInit() {
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
   //  this.setMantenimientos();
-           this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
-        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+ 
+        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
         this.cols = [
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
@@ -79,11 +72,13 @@ public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value
 
 ngOnChanges(){
     this.setMantenimientos();
+    let valorTrans='';
+    this.translate.get('maquinas.ninguna').subscribe((valor)=>valorTrans=valor)
     if(this.Piezas){
     this.pieza = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
-    this.pieza.unshift({'label':"ninguna",'value':0});
+    this.pieza.unshift({'label':valorTrans,'value':0});
     }else{
-      this.pieza =[{'label':"ninguna",'value':0}];
+      this.pieza =[{'label':valorTrans,'value':0}];
     }
 
 }
@@ -108,7 +103,10 @@ return this.pieza;
             this.momento = Date();
             if (response.success && response.data) {
               let orden:number = 0;
+
               for (let element of response.data) {
+                let periodicidad='true';
+                if (element.periodicidad.length > 0) periodicidad = element.periodicidad;
                 if (element.orden == 0){
                   //this.itemEdited(element.id);
                   this.guardar[element.id] = true;
@@ -117,7 +115,7 @@ return this.pieza;
                     orden=parseInt(element.orden);
                     this.guardar[element.id] = false;
                   }
-                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, element.periodicidad,
+                this.mantenimientos.push(new MantenimientosMaquina(element.id, element.idmaquina, element.nombre,new Date(element.fecha), element.tipo, periodicidad,
                   element.tipoperiodo, element.doc,element.usuario,element.responsable,0+orden,element.pieza,element.cantidadPiezas));
                 
 //                this.date.push({"day":"","month":"","year":"","formatted":element.fecha,"momentObj":this.moment}) 
@@ -308,6 +306,7 @@ openPeriodicidad(Mantenimiento,evento?){
     this.posY=(evento.view.scrollY-150) + 'px';
     this.nuevoMantenimiento= Mantenimiento;
     this.viewPeriodicidad=Mantenimiento.periodicidad;
+
   }
 }
 closePeriodicidad(activo){

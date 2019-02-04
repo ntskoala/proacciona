@@ -8,7 +8,7 @@ import {Calendar} from 'primeng/primeng';
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
 import { PermisosService } from '../../../services/permisos.service';
-import { URLS } from '../../../models/urls';
+import { URLS,cal } from '../../../models/urls';
 import { server } from '../../../../environments/environment';
 import { Empresa } from '../../../models/empresa';
 import { Usuario } from '../../../models/usuario';
@@ -42,14 +42,7 @@ public colorBoton:string='accent';
 
   ngOnInit() {
     this.loadUsuarios();
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-      firstDayOfWeek: 1
-  }; 
+    this.es=cal;
   //this.setOrigen();
   }
 

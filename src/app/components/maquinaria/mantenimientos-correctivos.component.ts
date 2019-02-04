@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
@@ -44,7 +44,7 @@ public newRow:boolean=false;
 public date = new Date();
 //public url:string[]=[];
 public expanded:boolean=false;
-public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipo:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
 filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
 
 //******IMAGENES */
@@ -72,14 +72,7 @@ public informeData:any;
     //  this.setMantenimientos();
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
     
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+    this.es=cal; 
         this.cols = [
           { field: 'mantenimiento', header: 'Mantenimiento', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
@@ -89,7 +82,7 @@ public informeData:any;
           { field: 'descripcion', header: 'descripcion', type: 'std', width:130,orden:true,'required':false },
           { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false }
         ];
-        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
   }
   // photoURL(i) {
   //   this.verdoc=!this.verdoc;
@@ -97,13 +90,14 @@ public informeData:any;
   // }
   ngOnChanges(){
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
-    
+    let valorTrans='';
+    this.translate.get('maquinas.ninguna').subscribe((valor)=>valorTrans=valor)
     this.setMantenimientos();
     if(this.Piezas){
       this.pieza = this.Piezas.map((pieza)=>{return {'label':pieza["nombre"],'value':pieza["id"]}});
-      this.pieza.unshift({'label':"ninguna",'value':0});
+      this.pieza.unshift({'label':valorTrans,'value':0});
       }else{
-        this.pieza =[{'label':"ninguna",'value':0}];
+        this.pieza =[{'label':valorTrans,'value':0}];
       }
 }
 getOptions(option){
@@ -183,7 +177,16 @@ getOptions(option){
     );
   }
 
-  
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.mantenimientos.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.mantenimientos[indice]);
+        this.saveItem(this.mantenimientos[indice])
+      }
+    }
+  }
+
  saveItem(mantenimiento: MantenimientoRealizado) {
   this.alertaGuardar = false;
   // console.log ("evento",event);

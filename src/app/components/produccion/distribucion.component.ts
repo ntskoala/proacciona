@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { ProduccionOrden } from '../../models/produccionorden';
@@ -67,14 +67,7 @@ public informeData:any;
       this.getClientes();
       this.getProductos();
       this.setItems();
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+      this.es=cal;
         this.cols = [
           { field: 'idcliente', header: 'produccion.cliente', type: 'dropdown', width:160,orden:true,'required':true, 'disabled':true },
           { field: 'numlote', header: 'produccion.numlote', type: 'std', width:120,orden:true,'required':true, 'disabled':true },

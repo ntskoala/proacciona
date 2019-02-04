@@ -41,9 +41,9 @@
 
 
         <calendarios *ngIf="calendario" [maquinas]="maquinas" (newMantenimientoRealizadoEmit)="nuevoMantenimientoRealizado($event)"></calendarios>
-        <app-permisos *ngIf="permiso" [tipoControl]="'maquinaria'" [items]="mantenimientosMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+        <app-permisos *ngIf="permiso" [tipoControl]="'maquinas.mantenimientos'" [items]="mantenimientosMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
         <div class="space"></div>
-        <app-permisos *ngIf="permiso" [tipoControl]="'calibracion'" [items]="calibracionesMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+        <app-permisos *ngIf="permiso" [tipoControl]="'maquinas.calibracion'" [items]="calibracionesMaquina"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
 
         <lubricantes *ngIf="lubricante"></lubricantes>
         <piezas  [maquina]="maquinas[0]" [maquinas]="maquinas" *ngIf="inventarioPiezas"></piezas>
@@ -65,7 +65,7 @@
   </mat-sidenav> 
   <!--<listado-planificaciones (planSeleccionada)="seleccionPlan($event)" (listaPlanes)="loadPlanes($event)"></listado-planificaciones>-->
 <!-- <mat-sidenav-content class="sidenav-content"> -->
-    <h2 class="center tituloMaquina" *ngIf="maquina && maquina.id > 0">{{maquina.nombre}}</h2><BR>
+    <h2 class="center tituloMaquina" *ngIf="maquina && maquina.id > 0">{{'maquinas.Maquina' | translate}}: {{maquina.nombre}}</h2><BR>
       <div  style="margin-top:0px">
 <mat-tab-group [selectedIndex]="selectedTab" *ngIf="maquina && maquina.id > 0">
   <mat-tab label="{{'maquinas.ficha' | translate}}"><span class="space"></span><ficha-maquina [maquina]="maquina" *ngIf="maquina"></ficha-maquina></mat-tab>

@@ -27,11 +27,7 @@
       overflow-y: auto;
   }
   
-  .campo{
-    background-color: #fff9c4;
-    border: 1px solid #fbc02d;
-    margin-top: 28px;
-  }
+
   .fullsize{
       width: calc(100% - 0px);
       height: calc(100% - 50px);

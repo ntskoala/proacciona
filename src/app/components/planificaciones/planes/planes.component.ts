@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
-import { URLS } from '../../../models/urls';
+import { URLS,cal } from '../../../models/urls';
 import { Empresa } from '../../../models/empresa';
 import { Planificacion } from '../../../models/planificacion';
 import { Modal } from '../../../models/modal';
@@ -75,14 +75,7 @@ ngOnInit(){
  // this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.loadChecklistList(x));
  if (this.empresasService.seleccionada) this.loadplanes(this.empresasService.seleccionada.toString());
 //  this.loadFamilias();
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+this.es=cal;
         this.cols = [
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'descripcion', header: 'planificaciones.descripcion', type: 'std', width:160,orden:true,'required':true },
@@ -108,8 +101,10 @@ ngOnInit(){
             if (response.success == 'true' && response.data) {
               let fecha;
               for (let element of response.data) {
+                let periodicidad='true';
+                if (element.periodicidad.length > 0) periodicidad = element.periodicidad;
                 (moment(element.fecha).isValid())? fecha = new Date(element.fecha) : fecha = null;
-                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,fecha, element.periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
+                this.planes.push(new Planificacion(element.id,element.idempresa,element.nombre,element.descripcion,element.familia,fecha, periodicidad,element.responsable,element.supervisor,parseInt(element.orden)));
               this.incidencia[element.id]={'origen':'planificaciones','idOrigen':element.id}
               }
             }

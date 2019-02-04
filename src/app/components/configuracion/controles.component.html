@@ -231,7 +231,7 @@
             <span *ngIf="col.type == 'periodicidad'">
               <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
               [matTooltipPosition]="'right'">
-              <button [disabled]="!item['fecha_']" color="accent" type="button" [ngClass]="{'alert': alert }" mat-mini-fab (click)="openPeriodicidad(item)">
+              <button [disabled]="!item['fecha_']" color="accent" type="button"  [ngClass]="{'red':item['periodicidad2']=='true'}" mat-mini-fab (click)="openPeriodicidad(item)">
                 <span class="material-icons">event</span>
               </button>
             </span>

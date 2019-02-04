@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { LimpiezaElemento } from '../../models/limpiezaelemento';
 import { LimpiezaZona } from '../../models/limpiezazona';
@@ -69,7 +69,7 @@ public fotoProd:string;
 public fotoProt:string;
 public fotourl:string;
 public currentExpandedId: number;
-public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipos:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
 public viewPeriodicidad: any=null;
 public expanded:boolean=false;
 public posY='';
@@ -85,15 +85,8 @@ public informeData:any;
     
      // this.setItems();
      // this.setProductos();
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
-        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+     this.es=cal;
+        if (localStorage.getItem("idioma")=="cat") this.tipos=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
         this.cols = [
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
@@ -150,6 +143,7 @@ public informeData:any;
   }
 
   openTabProducto(evento,rowIndex){
+    console.log(evento,rowIndex);
     let indice = evento.index;
     let index = this.misproductos.findIndex((producto)=> producto.nombre == this.productos[rowIndex][indice].nombre);
 
@@ -207,14 +201,15 @@ public informeData:any;
               let orden:number = 0;
               let index=0;
               for (let element of response.data) {
-
+                let periodicidad='true';
+                if (element.periodicidad.length > 0) periodicidad = element.periodicidad;
                 let app = element.app== "1"? true:false;
                   if (element.orden == 0){
                   this.itemEdited(element.id);
                   orden++;
                   }else{orden=parseInt(element.orden);}
                   
-                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,element.periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor,0+orden));
+                  this.items.push(new LimpiezaElemento(element.id,element.idlimpiezazona,element.nombre,new Date(element.fecha),element.tipo,periodicidad,element.productos,element.protocol,element.protocolo,element.usuario,element.responsable,app,element.supervisor,0+orden));
                   try{
                     this.protocolo[element.id]=JSON.parse(element.protocolo)
                   }catch(e){
@@ -268,7 +263,7 @@ getProdsElemtento(idElemento:number,index:number){
   let parametros = "&entidad=limpieza_productos_elemento"+"&field=idelemento&idItem="+idElemento;
     this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
       response => {
-        this.productos[index] = [];
+        this.productos[idElemento] = [];
         if (response.success && response.data) {
           for (let element of response.data) {
 
@@ -276,7 +271,7 @@ getProdsElemtento(idElemento:number,index:number){
             console.log('indice',indice);
             if (indice >= 0){
             let nombre = this.misproductos[indice].nombre;
-            this.productos[index].push(new prods(indice,nombre));
+            this.productos[idElemento].push(new prods(indice,nombre));
             }
           }
           console.log(this.productos)
@@ -380,6 +375,7 @@ this.itemEdited(evento.data.id);
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
           console.log('item updated');
         }
     });
@@ -666,7 +662,7 @@ openNewRow(){
   ConvertToCSV(controles,objArray){
     var cabecera =  typeof controles != 'object' ? JSON.parse(controles) : controles;
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    console.log(cabecera,array)
+    //console.log(cabecera,array)
     let informeCabecera=[];
     let informeRows=[];
                 var str = '';
@@ -676,6 +672,7 @@ openNewRow(){
                   this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
                   row += titulo + ';';
                 }
+                row+='protocolos;productos;'
                 row = row.slice(0, -1);
                 informeCabecera = row.split(";");
 
@@ -703,11 +700,34 @@ openNewRow(){
 
                   line += valor + ';';
                 }
+                //*******AÑADE PROTOCOLOS */
+                
+                let protocolos=''; 
+                let prols=null;
+                try{
+                prols=JSON.parse(array[i]["protocolo"]);
+                }catch{
+
+                }
+                console.log(prols,typeof(prols));
+                if(prols){
+                  
+                  prols.forEach(element => {
+                  protocolos+=this.protocolos[parseInt(element)].nombre+",";
+                });
+                protocolos.slice(0,-1);
+                }
+                line += protocolos + ';';
+                //*******AÑADE PRODUCTOS */
+                let prods = this.productos[array[i]['id']].map(prod=>{return prod.nombre});
+                console.log(this.productos,array[i]['id'],prods);
+                line += prods.toString() + ';';
                 line = line.slice(0,-1);
 
                     informeRows.push(line.split(";"));
     
                 }
+                console.log(informeRows);
                 let informe='';
                 this.translate.get('limpieza.limpiezas').subscribe((desc)=>{informe=desc});
                 return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};

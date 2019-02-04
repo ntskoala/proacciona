@@ -8,7 +8,7 @@
 
  <!-- (onMoveAllToSource)="setNoActiva('todos')" (onMoveAllToTarget)="setActiva('todos')" -->
 
-<p-pickList [source]="empresas" [target]="empresasNoActivas" sourceHeader="Activas {{empresas.length}}" targetHeader="No Activas {{empresasNoActivas.length}}" [responsive]="true"
+<p-pickList [source]="empresas" [target]="empresasNoActivas" sourceHeader="{{'Activas' | translate}} {{empresas.length}}" targetHeader="{{'No activas' | translate}} {{empresasNoActivas.length}}" [responsive]="true"
         dragdrop="true" dragdropScope="empresas" sourceFilterPlaceholder="Busca" targetFilterPlaceholder="Busca" 
         [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" filterBy="nombre"
         [showSourceControls]="false" [showTargetControls]="false"

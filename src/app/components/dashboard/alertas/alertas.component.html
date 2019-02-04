@@ -1,7 +1,7 @@
 
 <mat-card class="Dashcard">
   <mat-card-header >
-    <mat-card-title>{{'Dashboard.controlesHoyST' | translate}}</mat-card-title>
+    <mat-card-title  class="dashTitle"> {{'Dashboard.controlesHoyST' | translate}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
 
@@ -85,13 +85,13 @@
 </mat-expansion-panel> -->
 
 <mat-list>
-    <mat-list-item (click)="open(controles)">{{controles.length}} {{'Controles'|translate}} {{'para realizar'|translate}}</mat-list-item>
+    <mat-list-item (click)="open(controles)">{{controles.length}} {{'Controles'|translate}} {{'pendientes'|translate}}</mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(checklists)">{{checklists.length}} {{'Checklists'|translate}} {{'para realizar'|translate}}</mat-list-item>
+    <mat-list-item  (click)="open(checklists)">{{checklists.length}} {{'Checklists'|translate}} {{'pendientes'|translate}}</mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(limpiezas)">{{limpiezas.length}} {{'Limpiezas'|translate}} {{'para realizar'|translate}}</mat-list-item>
+    <mat-list-item  (click)="open(limpiezas)">{{limpiezas.length}} {{'Limpiezas'|translate}} {{'pendientes'|translate}}</mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(mantenimientos)">{{mantenimientos.length}} {{'Mantenimientos'|translate}} {{'para realizar'|translate}}</mat-list-item>
+    <mat-list-item  (click)="open(mantenimientos)">{{mantenimientos.length}} {{'Mantenimientos'|translate}} {{'pendientes'|translate}}</mat-list-item>
     <!-- <mat-divider></mat-divider> -->
   </mat-list>
 

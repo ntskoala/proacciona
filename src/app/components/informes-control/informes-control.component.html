@@ -80,7 +80,8 @@
 
 
 <p-table #dt [columns]="cols" [value]="tabla" dataKey="id" 
-    [paginator]="true" [rows]="25" [pageLinks]="5" [rowsPerPageOptions]="[25,50,100]">
+    [paginator]="true" [rows]="25" [pageLinks]="5" [rowsPerPageOptions]="[25,50,100]"
+    selectionMode="single" [(selection)]="selectedItem" dataKey="id">
     <ng-template pTemplate="caption">
           <div class="informe-header">
             <div style="text-align:left;float:left">
@@ -100,7 +101,7 @@
       
                 </div>
                 <div style="float:left; margin-left:20px;display: contents">
-                  <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
+                  <button style="margin-left: 15px;" mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
                     <span class="material-icons">check</span>
                   </button>
                   <!-- <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar"

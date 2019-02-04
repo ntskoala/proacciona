@@ -10,8 +10,9 @@ import {Calendar} from 'primeng/primeng';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
-import { URLS } from '../../../models/urls';
+import { URLS,cal } from '../../../models/urls';
 import { Usuario } from '../../../models/usuario';
+import { server } from '../../../../environments/environment';
 
 import { Empresa } from '../../../models/empresa';
 import { Incidencia } from '../../../models/incidencia';
@@ -35,6 +36,8 @@ export class TablaIncidenciasComponent implements OnInit,OnChanges {
   public procesando:boolean=false;
   //public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0,'');
 public incidencias: Incidencia[];
+public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
+
 public selectedItem: Incidencia;
 public usuarios: object[];
 public tablaPosition=0;
@@ -50,6 +53,7 @@ public es:any;
 public entidad:string="&entidad=incidencias";
 
 //FOPTO
+public uploadFoto: any;
 public fotoSrc: string;
 public modal2: boolean = false;;
 public verdoc: boolean = false;
@@ -61,6 +65,7 @@ public modo:string='';
 //************** */
 public expanded:boolean=false;
 public currentExpandedId: number;
+public newRow:boolean=false;
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -74,25 +79,18 @@ public informeData:any;
 
   ngOnInit() {
     if (this.empresasService.seleccionada) this.loadSupervisores();
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-      firstDayOfWeek: 1
-  }; 
+    this.es=cal;
 
     this.cols = [
-      { field: 'incidencia', header: 'Incidencia', type: 'std', width:160,orden:true,'required':true  },
+      { field: 'incidencia', header: 'incidencia.incidencia', type: 'std', width:160,orden:true,'required':true  },
       {field: 'fecha', header: 'Fecha', type: 'fecha', width:120,orden:true,'required':true  },
       // { field: 'descripcion', header: 'Descripción', type: 'std', width:160,orden:true,'required':true  },
       // { field: 'solucion', header: 'Solución', type: 'std', width:160,orden:true,'required':true  },
-      { field: 'responsable', header: 'Responsable', type: 'dropdown', width:130,orden:true,'required':true  },
+      { field: 'responsable', header: 'Responsable', type: 'dropdown', width:130,orden:true,'required':true ,'disabled':true },
       { field: 'estado', header: 'Estado', type: 'dropdown', width:130,orden:false,'required':false  },
-      { field: 'origen', header: 'Origen', type: 'std', width:130,orden:true,'required':true  },
-      { field: 'responsable_cierre', header: 'Responsable cierre', type: 'dropdown', width:130,orden:false,'required':false  },
-      { field: 'fecha_cierre', header: 'Fecha cierre', type: 'fecha', width:120,orden:true,'required':true  }
+      { field: 'origen', header: 'Origen', type: 'trad', width:130,orden:true,'required':true  },
+      { field: 'responsable_cierre', header: 'Responsable cierre', type: 'dropdown', width:130,orden:false,'required':false,'disabled':false   },
+      { field: 'fecha_cierre', header: 'incidencia.fecha_cierre', type: 'fecha', width:120,orden:true,'required':true  }
   ];
 
   if (localStorage.getItem("idioma")=="cat") {
@@ -263,36 +261,55 @@ setAlerta(concept:string){
     }
   );
 }
-  //  newItem() {
-  //   this.newIncidencia.fecha = new Date(Date.UTC(this.newIncidencia.fecha.getFullYear(), this.newIncidencia.fecha.getMonth(), this.newIncidencia.fecha.getDate()))
-  //   this.newIncidencia.idempresa = this.empresasService.seleccionada;
 
-  //     this.addItem(this.newIncidencia).then(
-  //       (valor)=>{      
-  //           this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
-  //           this.incidencias = this.incidencias.slice();
-  //         }
-  //     );
-  // }
-  //  addItem(incidencia: Incidencia){
-  //   return new Promise((resolve,reject)=>{
-  //   let param = this.entidad;
-  //   this.servidor.postObject(URLS.STD_ITEM, incidencia,param).subscribe(
-  //     response => {
-  //       if (response.success) {
-  //         this.incidencias.push(new Incidencia(response.id,incidencia.idempresa,incidencia.incidencia,
-  //           incidencia.fecha,incidencia.solucion,incidencia.responsable,incidencia.nc));
-  //         resolve(true);
-  //       }
-  //   },
-  //   error =>{
-  //     console.log(error);
-  //     resolve(true);
-  //   },
-  //   () =>  {}
-  //   );
-  // });
-  // }
+
+
+newItem() {
+  this.newIncidencia.fecha = new Date(Date.UTC(this.newIncidencia.fecha.getFullYear(), this.newIncidencia.fecha.getMonth(), this.newIncidencia.fecha.getDate(), this.newIncidencia.fecha.getHours(), this.newIncidencia.fecha.getMinutes()))
+  this.newIncidencia.fecha_cierre = null;//new Date(Date.UTC(this.newIncidencia.fecha_cierre.getFullYear(), this.newIncidencia.fecha_cierre.getMonth(), this.newIncidencia.fecha_cierre.getDate(), this.newIncidencia.fecha_cierre.getHours(), this.newIncidencia.fecha_cierre.getMinutes()))
+  this.newIncidencia.idempresa = this.empresasService.seleccionada;
+  this.newIncidencia.responsable = this.empresasService.userId;
+  this.newIncidencia.estado=-1;
+    this.addItem(this.newIncidencia).then(
+      (valor)=>{      
+        console.log(valor);
+        this.sendMaiolAviso(this.newIncidencia);
+        //this.nuevaIncidenciaCreada.emit(this.newIncidencia);
+        let id= this.newIncidencia.id;
+        this.incidencias.push(this.newIncidencia);
+        this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
+          // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
+       this.incidencias = this.incidencias.slice();
+
+        }
+    );
+}
+
+ addItem(incidencia: Incidencia){
+  return new Promise((resolve,reject)=>{
+    console.log(incidencia)
+  let param = this.entidad;
+  this.servidor.postObject(URLS.STD_ITEM, incidencia,param).subscribe(
+    response => {
+      if (response.success) {
+        this.newIncidencia.id = response.id;
+        if (this.newIncidencia.foto && this.uploadFoto) this.uploadImgNewIncidencia(this.uploadFoto,response.id,'foto');
+        resolve(true);
+      }
+  },
+  error =>{
+    console.log(error);
+    resolve(true);
+  },
+  () =>  {}
+  );
+});
+}
+
+
+
+
+
   nuevaIncidenciaCreada(incidencia: Incidencia){
     console.log('incidencia creada',incidencia);
   this.incidencias.push(new Incidencia(incidencia.id,incidencia.idempresa,incidencia.incidencia,
@@ -350,12 +367,51 @@ setAlerta(concept:string){
       }
     }
   
+
+
+
+
+
+    sendMaiolAviso(nuevaIncidencia: Incidencia){
+      console.log(this.usuarios,nuevaIncidencia)
+      let responsable;
+    if (nuevaIncidencia.responsable == 109 || this.empresasService.administrador){
+    responsable = "admin";
+    }else{
+      this.usuarios[this.usuarios.findIndex((responsable)=>responsable["value"] == nuevaIncidencia.responsable)]["label"];
+    }
+      let body = "Nueva incidencia creada desde " + nuevaIncidencia.origen + "<BR>Por: " +  responsable;
+      body +=   "<BR>Con fecha y hora: " + moment(nuevaIncidencia.fecha).format('DD-MM-YYYY hh-mm') +  "<BR>"
+      body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>"
+      body +=   "Descripción: " + (nuevaIncidencia.descripcion)? nuevaIncidencia.descripcion:"";
+      body +=    "<BR>Solución inmediata propuesta: " + (nuevaIncidencia.solucion)? nuevaIncidencia.solucion:"";
+      // body +=    "<BR>Ir a la incidencia: https://tfc.proacciona.es.com/empresas/"+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
+      body +=    "<BR>Ir a la incidencia: "+server+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
+    
+      if (nuevaIncidencia.origen != 'incidencias')
+      // body +=    "<BR>Ir al elemento https://tfc.proacciona.es/empresas/"+ this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
+      body +=    "<BR>Ir al elemento "+ server + this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
+    
+      let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada;
+          this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
+            response => {
+              if (response.success && response.data) {
+                console.log(response.data)
+              }
+          });
+    }
+    
   // eliminaIncidencia(){
   //       this.modal.titulo = 'borrarControlT';
   //     this.modal.subtitulo = 'borrarControlST';
   //     this.modal.eliminar = true;
   //     this.modal.visible = true;
   // }
+
+
+
+
+
 
 
   exportData(tabla: Table){
@@ -445,6 +501,28 @@ setAlerta(concept:string){
     )
   }
 
+  setImg(event){
+    this.uploadFoto = event;
+    var target = event.target || event.srcElement; //if target isn't there then take srcElement
+    let files = target.files;
+    this.newIncidencia.foto = files[0].name;
+    console.log(this.newIncidencia.foto);
+  }
+  uploadImgNewIncidencia(event, idItem,tipo) {
+    console.log(event, idItem,tipo)
+    var target = event.target || event.srcElement; //if target isn't there then take srcElement
+    let files = target.files;
+    let idEmpresa = this.empresasService.seleccionada.toString();
+    this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'incidencias',idItem, this.empresasService.seleccionada.toString(),tipo).subscribe(
+      response => {
+        this.newIncidencia.foto = files[0].name;
+      }
+    )
+  }
+
+
+  
+
   expandedRow(evento){
     let incidencia = evento.data;
     console.log(evento);
@@ -499,6 +577,20 @@ rowCollapsed(evento){
   console.log(evento)
   this.expanded=false;
 }
+
+
+
+
+
+openNewRow(){
+  //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+  console.log('newRow',this.newRow);
+  this.newRow = !this.newRow;
+  }
+  closeNewRow(){
+    //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+    this.newRow = false;
+    }
 
       //**** EXPORTAR DATA */
 

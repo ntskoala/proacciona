@@ -57,8 +57,8 @@ public subMenu:string=null;
 
   ngOnInit() {
     this.ayuda=true;
-   this.myTop =document.getElementById("botonIncidencia").offsetTop;
-   this.myLeft=document.getElementById("botonIncidencia").offsetLeft+document.getElementById("botonIncidencia").offsetWidth;
+//   this.myTop =document.getElementById("botonIncidencia").offsetTop;
+//   this.myLeft=document.getElementById("botonIncidencia").offsetLeft+document.getElementById("botonIncidencia").offsetWidth;
   }
   // setStyles(){
   //   let styles = {

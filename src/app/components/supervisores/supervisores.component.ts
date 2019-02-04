@@ -51,11 +51,11 @@ public ancho:string;
     this.ancho = num + 'px';
     
         switch(this.tipoControl){
-      case "planes":
+      case "Planificaciones":
       this.entidad="&entidad=planificaciones";
       this.field = "&field=idempresa&idItem="+this.empresasService.seleccionada;
       break;
-      case "limpiezas":
+      case "Limpiezas":
       if (this.items.length>=1){
       this.entidad="&entidad=limpieza_elemento";
       this.field = "&field=idlimpiezazona&idItem="+this.items[0].idlimpiezazona;
@@ -150,9 +150,9 @@ getSupervisiones(){
             this.supervisores = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                console.log(element);
+                //console.log(element);
                   this.supervisores.push(new Supervisor(element.id,element.supervisor));
-                  console.log("permisos",this.supervisores);
+                //  console.log("permisos",this.supervisores);
              }
              resolve('permisos');   
             }

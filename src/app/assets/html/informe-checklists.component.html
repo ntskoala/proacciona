@@ -8,9 +8,9 @@
   </div>
 </div>
 
-<h2>Informe de checklists</h2>
+
 <div class="checklist">
-  <h2>Checklist</h2>
+  
   <form>
     <select #listaChecklist (change)="cambioChecklist($event.target.value)">
       <option *ngFor="let checklist of checklists" [value]="checklist.id">
@@ -36,10 +36,14 @@
     <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" type="submit">
       <span class="material-icons">check</span>
     </button>
-    <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
+    <!-- <button mat-mini-fab color="primary" [disabled]="!filtrarFechasForm.form.valid" *ngIf="permisos.exportar" (click)="excel(filtrarFechasForm.value)">
       <span class="material-icons">cloud_download</span>
-    </button>                   
+    </button>    
+                  -->
+  <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel(filtrarFechasForm.value)"  style="margin-left:10px;float:right"></button>
+
   </form>
+
 </div>
 
 <div class="table">
@@ -48,7 +52,7 @@
     <span class="header-cell center">{{'Imagen' | translate}}</span>
     <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
   </div>
-  <div class="row" *ngFor="let resultado of tabla; let fila = index" [ngClass]="{'rowImpar':fila%2==0,'rowPar':fila%2!=0}">
+  <div class="row" [ngClass]="{'yellow':selectedId==resultado['id'] && selectedItem!=undefined}" *ngFor="let resultado of tabla; let fila = index" [ngClass]="{'rowImpar':fila%2==0,'rowPar':fila%2!=0}">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->
     <span class="cell">
       <span id="user-link" class="material-icons">perm_identity</span> {{resultado.usuario}} 

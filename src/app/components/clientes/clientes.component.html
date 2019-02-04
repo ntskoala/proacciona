@@ -17,7 +17,7 @@
  <div class="contenido">
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <!--<familias-producto *ngIf="familias"></familias-producto>-->
- <mat-toolbar color="accent" *ngIf="cliente && cliente.id >0"><h2 class="center" >{{cliente.nombre}}</h2></mat-toolbar>
+ <h2 class="center" *ngIf="cliente && cliente.id >0">{{'clientes.cliente' | translate}}: {{cliente.nombre}}</h2>
 <mat-tab-group *ngIf="cliente && cliente.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'clientes.ficha' | translate}}"><span class="space"></span><ficha-cliente class="tabs"  [cliente]="cliente" *ngIf="cliente"></ficha-cliente></mat-tab>  
 <mat-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente"></entrega-productos></mat-tab>  

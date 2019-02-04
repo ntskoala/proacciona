@@ -5,6 +5,10 @@
   "Usuario sin permisos": "Usuario sin permisos",
   "Usuario incorrecto": "Usuario incorrecto",
   "Nombre": "Nombre",
+  "pla":"Unidad",
+  "min":"Min",
+  "max":"Max",
+  "crit":"Crit",
   "descripcion":"Descripción",
   "fecha":"Fecha",
   "tipo":"Tipo",
@@ -31,6 +35,9 @@
   "anterior": "Anterior",
   "borrarEmpresaT": "¿Estás seguro de querer eliminar la empresa?",
   "borrarEmpresaST": "Se borrarán todos sus usuarios, controles, checklists asociados y los resultados de los mismos.",
+  "Activas":"Activas",
+  "No activas":"No activas",
+  "codigo": "Código App",
   "Tablas": "Configuración",
   "Usuarios": "Usuarios",
   "Controles": "Controles",
@@ -38,6 +45,7 @@
   "Limpiezas":"Limpiezas",
   "Mantenimientos":"Mantenimientos",
   "Mantenimiento":"Mantenimiento",
+  "Incidencias":"Incidencias",
   "Opciones": "Opciones premium",
   "Opciones2":"Opciones",
   "Modulos":"Módulos activos",
@@ -102,7 +110,7 @@
   "maquinaria": "Lleva el control sobre el mantenimiento y reparaciones de tu maquinária.",
   "personal": "Lleva el control con facilidad de las fichas de personal, formaciones, etc.",
   "bienvenido": "Bienvenido a TFC PROACCIONA",
-  "introducirtexto":"Introducir texto",
+  "introducirtexto":"",
   "expandir":"Expandir",
   "Retrasado":"Retrasado",
   "menu":{
@@ -141,6 +149,7 @@
     "Modulo Incidencias":"Módulo incidencias"
   },
   "maquinas": {
+    "Maquina":"Máquina",
     "CalendarioGeneralMantenimiento":"Calendario general mantenimiento",
     "nueva": "Nueva máquina",
     "nuevaCalibracion":"Nueva calibración",
@@ -160,9 +169,10 @@
     "ficha":"Ficha",
     "mantenimiento":"Mantenimiento",
     "calibraciones":"Calibraciones",
-    "calibracion":"Calibracion",
+    "calibracion":"Calibración",
     "piezas": "Inventario piezas",
     "cantidadPiezas":"Nº Piezas",
+    "ninguna":"ninguna",
     "pieza":"Pieza",
     "cantidad":"Cantidad",
     "imagen":"Imagen",
@@ -221,6 +231,7 @@
     "borrarMantenimientoR":"Borrar mantenimiento"
   },
   "limpieza": {
+    "Zona":"Zona",
     "CalendarioGeneralLimpieza":"Calendario general limpieza",
     "nueva": "Nueva area limpieza",
     "nuevoElemento": "Nuevo elemento de limpieza",
@@ -356,6 +367,7 @@
     "alert6":""
   },
   "clientes":{
+    "cliente":"Client",
     "crear":"Crear",
     "modificar":"Modificar",
     "areaclientes":"Área de clientes",
@@ -533,6 +545,7 @@
       "logginsT":"ACCESOS",
       "logginsST":"Accesos y acciones de usuario",
       "desde": "desde",
+      "pendientes":"pendientes",
       "tablas":{
         "limpieza_realizada":"limpiezas",
         "incidencias":"incidencias",
@@ -593,6 +606,7 @@
   "dias":"dias",
   "dia":"dia",
   "por uso": "Por uso",
+  "diaria":"diaria",
   "leyenda":"Leyenda",
   "verFoto":"Ver Foto",
   "verArchivo":"Ver Archivo",

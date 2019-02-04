@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { Control } from '../../models/control';
 import { Modal } from '../../models/modal';
 
@@ -45,16 +45,9 @@ public informeData:any;
 
   ngOnInit() {
     this.nuevoControl = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-      firstDayOfWeek: 1
-  }; 
+    this.es=cal;
   this.cols = [
-    { field: 'nombre', header: 'nombre', type: 'std', width:160,orden:true,'required':true },
+    { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
     { field: 'pla', header: 'pla', type: 'std', width:160,orden:true,'required':true },
     { field: 'valorminimo', header: 'min', type: 'std', width:120,orden:true,'required':false },
     { field: 'valormaximo', header: 'max', type: 'std', width:90,orden:false,'required':false },
@@ -82,6 +75,8 @@ public informeData:any;
             if (response.success && response.data) {
               let orden=0;
               for (let element of response.data) {
+                let periodicidad2='true';
+                if (element.periodicidad2.length > 0) periodicidad2 = element.periodicidad2;
                 if (element.orden == 0){
                   //this.modificarControl(element.id);
                   this.guardar[element.id] = true;
@@ -96,7 +91,7 @@ public informeData:any;
                 }
                 this.controles.push(new Control(element.id, element.nombre, element.pla, element.valorminimo,
                   element.valormaximo, element.objetivo, element.tolerancia, element.critico, element.periodicidad,
-                  element.tipoperiodo, element.idempresa,element.periodicidad2,fecha,orden
+                  element.tipoperiodo, element.idempresa,periodicidad2,fecha,orden
                 ));
                 this.guardar[element.id] = false;
               }

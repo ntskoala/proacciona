@@ -7,7 +7,7 @@ import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Servidor } from '../../../services/servidor.service';
-import { URLS } from '../../../models/urls';
+import { URLS,cal } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
 
 import { LimpiezaRealizada } from '../../../models/limpiezarealizada';
@@ -46,7 +46,7 @@ public selectedItem: PlanRealizado;
  public alertaGuardar:boolean=false;
 public idBorrar;
 public motivo:boolean[]=[];
-public tipos:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipos:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
 
 public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"label":"correcto"},{"value":2,"label":"incorrecto"}];
   modal: Modal = new Modal();
@@ -85,14 +85,7 @@ public informeData:any;
  ngOnInit() {
       //this.loadSupervisores();
       this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/planificaciones_realizadas/';
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+      this.es=cal;
         window.scrollTo(0, 0);
         this.cols = [
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
@@ -105,7 +98,7 @@ public informeData:any;
           { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:true,'required':true },
         ];
         if (localStorage.getItem("idioma")=="cat") {
-          this.tipos=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+          this.tipos=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
           this.supervisar=[{"value":0,"label":"Per Supervisar"},{"value":1,"label":"Correcte"},{"value":2,"label":"Incorrecte"}];
         }
   }

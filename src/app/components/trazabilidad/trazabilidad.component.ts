@@ -585,7 +585,7 @@ initTreeAdelante(){
       //this.setItems(this.tree[0],this.orden.id,0);
 
       this.getChildren(this.tree[0].children[0],this.orden.id,'idloteinterno',1,this.tree[0].children[0]);
-     this.nodoProveedor(this.orden.id,'idorden');
+    // this.nodoProveedor(this.orden.id,'idorden');
   }
 
 nodeSelectAlante(event) {
@@ -638,15 +638,6 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
                 console.log("Resultados Get Orden: ",response.data);
               for (let element of response.data) {
                       console.log("idloteinterno"+element.idloteinterno + "idmateriaprima:" + element.idmateriaprima)
-                    //   if (element.idmateriaprima>0){
-                    //   nodo.children.push({
-                    //   "label":element.proveedor + " " + element.numlote_proveedor,
-                    //   "parent":parent,
-                    //   "data":{"tipo":"materia prima","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cliente":element.idcliente,"proveedor":element.proveedor,"fecha_caducidad":element.fecha_caducidad}
-                    //     });
-                        
-                    //     i++
-                    //   }else{
                           lastItem = false;
                       nodo.children.push({
                       "label":element.numlote,
@@ -655,7 +646,7 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
                         });
                        nodo.parent = parent;
                         this.getChildren(nodo.children[i],element.idorden,'idloteinterno',level,nodo);
-                    i++;
+                        i++;
                       //}
 
              }
@@ -668,7 +659,12 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
 
                  //if (this.empresasService.seleccionada == 77) this.nodoZero();
                 //this.nodoZero();
+             }else{
+                if (this.empresasService.seleccionada != 26 && this.empresasService.seleccionada != 77) {
+                    this.nodoClientes(nodo,id,tipo);
+                 }
              }
+             
 //             i++;
             }else{//NOT Success or NOT Data
                 console.log('FIN RAMA',nodo);
@@ -706,16 +702,17 @@ nodoProveedor(id:number, tipo:string){
 }
 
 nodoClientes(nodo: TreeNode,id:number, tipo:string){
-    this.getClientes();
+    //this.getClientes();
     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=clientes_distribucion&WHERE=idordenproduccion=&valor="+id;
     this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
         response => {
           if (response.success && response.data) {
+              if (nodo.children==undefined)
             nodo.children=[];
             for (let element of response.data) {
                 nodo.children.push({
                 "label":this.getCliente(element.idcliente),
-                "expanded":true,
+                "expanded":false,
                 "data":{"tipo":"orden","idOrden":element.id,"fecha_inicio_orden":element.fecha,"cantidad":element.cantidad,"fecha_caducidad":element.fecha_caducidad}
                   });
                  nodo.parent = parent;

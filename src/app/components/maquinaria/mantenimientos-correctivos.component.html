@@ -13,7 +13,8 @@
     <div style="text-align:left;margin-left:10px">
       <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
       <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
-      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'download' | translate}}" (click)="exportarTable()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAll()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-right:10px;float:right"></button>
 
     </div>
   </ng-template>
@@ -186,11 +187,7 @@
       </td>
     </tr>
   </ng-template>
-  <ng-template pTemplate="summary" let-item>
-    <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
-    </div>
-  </ng-template>
+
 
 
   <!-- ********* EXPANSION-->

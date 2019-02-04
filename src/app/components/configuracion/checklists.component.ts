@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { Checklist } from '../../models/checklist';
 import { ControlChecklist } from '../../models/controlchecklist';
 import { Modal } from '../../models/modal';
@@ -60,22 +60,15 @@ public informeData:any;
 
   ngOnInit() {
     this.cl = new Checklist(0, this.empresasService.seleccionada,'', null, null,0,null,null);
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-      firstDayOfWeek: 1
-  }; 
+    this.es=cal;
   this.cols = [
-    { field: 'nombrechecklist', header: 'nombre', type: 'std', width:150,orden:false,'required':true },
+    { field: 'nombrechecklist', header: 'Nombre', type: 'std', width:150,orden:false,'required':true },
     { field: 'fecha_', header: 'fecha', type: 'fecha', width:120,orden:false,'required':true },
     { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':true }
   ];
   this.cols2 = [
     { field: 'id', header: 'id', type: 'std', width:10,orden:false,'required':true ,visible:false},
-    { field: 'nombre', header: 'nombre', type: 'std', width:150,orden:false,'required':true,visible:true },
+    { field: 'nombre', header: 'Nombre', type: 'std', width:150,orden:false,'required':true,visible:true },
   ];
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
@@ -104,6 +97,8 @@ public informeData:any;
             if (response.success == 'true' && response.data) {
               let orden=0;
               for (let element of response.data) {
+                let periodicidad2='true';
+                if (element.periodicidad2.length > 0) periodicidad2 = element.periodicidad2;
                 if (element.orden == 0){
                   //this.modificarCL(element.id);
                   this.guardarCL[element.id] = true;
@@ -116,7 +111,7 @@ public informeData:any;
                   fecha = null;
                 }
                 this.checklists.push(new Checklist(element.id, element.idempresa, element.nombrechecklist,
-                  element.periodicidad, element.tipoperiodo,element.migrado,element.periodicidad2,fecha,orden));
+                  element.periodicidad, element.tipoperiodo,element.migrado,periodicidad2,fecha,orden));
                   this.guardarCL[element.id] = false;
               }
             }

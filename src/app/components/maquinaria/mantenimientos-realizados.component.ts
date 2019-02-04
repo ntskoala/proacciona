@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
@@ -43,7 +43,7 @@ public es:any;
  public guardar = [];
  public alertaGuardar:boolean=false;
 public idBorrar;
-public tipo:object[]=[{label:'interno', value:'interno'},{label:'externo', value:'externo'}];
+public tipo:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
 
   modal: Modal = new Modal();
   filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.currentStartDate+"&fecha_fin="+moment().format("YYYY-MM-DD")+"&fecha_field=fecha";
@@ -79,15 +79,8 @@ public informeData:any;
     //  this.setMantenimientos();
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/mantenimientos_realizados/';
     
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
-        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'intern', value:'interno'},{label:'extern', value:'externo'}];
+    this.es=cal;
+        if (localStorage.getItem("idioma")=="cat") this.tipo=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
         this.cols = [
           { field: 'mantenimiento', header: 'Mantenimiento', type: 'std', width:160,orden:true,'required':true },
           { field: 'fecha_prevista', header: 'maquinas.fecha_prevista', type: 'fecha', width:120,orden:true,'required':true },

@@ -8,7 +8,7 @@ import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
 import { ProductoPropio } from '../../models/productopropio';
 
@@ -38,14 +38,7 @@ public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
   ngOnInit() {
     this.getProductos();
     this.getAlmacenes();
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+    this.es=cal;
   }
   ngOnChanges(){
 

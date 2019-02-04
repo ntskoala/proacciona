@@ -9,7 +9,7 @@ import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
 import { EmpresasComponent } from './empresas.component';
 
-import { URLS } from '../models/urls';
+import { URLS,cal } from '../models/urls';
 import { Checklist } from '../models/checklist';
 import { ControlChecklist } from '../models/controlchecklist';
 import { ResultadoChecklist } from '../models/resultadochecklist';
@@ -29,6 +29,7 @@ export class InformeChecklistsComponent implements OnInit{
   controlchecklists: ControlChecklist[];
   resultadoschecklist: ResultadoChecklist[];
   public selectedItem: any;
+  public selectedId: any;
   columnas: Columna[];
   resultado: Object = {};
   tabla: Object[];
@@ -62,15 +63,7 @@ public es;
     this.getChecklists();
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(x => this.getChecklists());
     this.subscription = this.empresasService.opcionesFuente.subscribe(x => this.exportar_informes = x);
-    this.es = {
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-          'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          monthNamesShort: [ "Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic" ],              
-      dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-      dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-      firstDayOfWeek: 1
-  }; 
+    this.es=cal;
   }
 
   getChecklists() {
@@ -186,6 +179,7 @@ public es;
           let contador = 0;
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
+              if (this.selectedItem && this.selectedItem== resultado.idrc) this.selectedId = resultado.idr;
               this.resultado['id'] = resultado.idr;
               this.resultado['idrc' + resultado.idcontrolchecklist] = resultado.idrc;
               this.resultado['usuario'] = resultado.usuario;
@@ -208,7 +202,7 @@ public es;
           }
           this.tabla.push(this.resultado);
           this.resultado = {};
-          console.log("tabla",this.tabla);
+          console.log("tabla",this.tabla,this.selectedId,this.selectedItem);
         }
     });
   }

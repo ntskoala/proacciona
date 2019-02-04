@@ -4,7 +4,7 @@
         <mat-grid-tile [colspan]="3">
             <mat-grid-tile-header>{{"clientes.nombre" | translate}}
             </mat-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.Nombre' | translate" type="text"
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 required [(ngModel)]="cliente.nombre" name="nombre">
         </mat-grid-tile>
 
@@ -13,21 +13,21 @@
         <mat-grid-tile>
             <mat-grid-tile-header>{{"clientes.contacto" | translate}}
             </mat-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.contacto' | translate" type="text"
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="cliente.contacto" name="contacto">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"clientes.telf" | translate}}
             </mat-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.telf' | translate" type="text"
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="cliente.telf" name="telf">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"clientes.email" | translate}}
             </mat-grid-tile-header>
-            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'proveedores.email' | translate" type="text"
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="cliente.email" name="email">
         </mat-grid-tile>
 

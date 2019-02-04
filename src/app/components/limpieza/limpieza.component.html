@@ -53,9 +53,9 @@
   <div  *ngIf="protocolos" style="height:35px" ></div>
 
   <calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>
-  <app-permisos *ngIf="permiso" [tipoControl]="'limpiezas'" [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
+  <app-permisos *ngIf="permiso" [tipoControl]="'Limpiezas'" [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-permisos>
   <div  *ngIf="permiso" style="height:35px" ></div>
-   <app-supervisores *ngIf="permiso" [tipoControl]="'limpiezas'"  [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-supervisores> 
+   <app-supervisores *ngIf="permiso" [tipoControl]="'Limpiezas'"  [items]="elementosLimpieza"  (onPermisos)="actulizaPermisos($event)"></app-supervisores> 
   <div  *ngIf="permiso" style="height:35px" ></div>
   <!-- <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas> -->
   <productos-limpieza *ngIf="productos" (onProductosReady)="setProductos($event)"></productos-limpieza>
@@ -98,7 +98,7 @@
     -->
 
   <!-- <mat-sidenav-content class="sidenav-content"> -->
-   <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{limpieza.nombre}}</h2><BR>
+   <h2 class="center tituloLimpieza" *ngIf="limpieza && limpieza.id >0">{{'limpieza.Zona' | translate}}: {{limpieza.nombre}}</h2><BR>
 <mat-tab-group class="listados" [selectedIndex]="selectedTab" *ngIf="limpieza && limpieza.id > 0" [dynamicHeight]="true">
   <mat-tab  label="{{'limpieza.limpiezas' | translate}}"><span class="space"></span><elementos-limpieza id="testid" class="tabs"  [limpieza]="limpieza" (onElementosLimpieza)="setElementosLimpieza($event)" *ngIf="limpieza"></elementos-limpieza></mat-tab>
 <mat-tab  label="{{'limpieza.limpiezas_realizadas' | translate}}"><span class="space"></span><limpiezas-realizadas class="tabs" [nueva]="nuevaLimpiezaR" [limpieza]="limpieza" *ngIf="limpieza"></limpiezas-realizadas></mat-tab>  

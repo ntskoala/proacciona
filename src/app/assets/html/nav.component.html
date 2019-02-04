@@ -20,7 +20,7 @@
 
     <img [src]="logoEmpresa" alt="Logo empresa" (error)="logoEmpresa='./assets/images/pixel.png'" *ngIf="logoEmpresa">
     <span class="cabeceraNavEmpresa" *ngIf="empresasService.administrador && empresasService.seleccionada">{{empresasService.nombreEmpresa}} </span>
-    <span class="cabeceraNavEmpresa" *ngIf="empresasService.seleccionada">codigo: 24{{empresasService.seleccionada}}53</span>
+    <span class="cabeceraNavEmpresa" *ngIf="empresasService.seleccionada">{{"codigo" | translate}}: 24{{empresasService.seleccionada}}53</span>
   </div>
 
 </nav>

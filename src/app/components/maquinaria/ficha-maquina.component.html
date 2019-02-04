@@ -4,63 +4,63 @@
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.nombre" | translate}}
             </mat-grid-tile-header>
-            <input (keypress)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.Nombre' | translate" type="text"
+            <input (keypress)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 required [(ngModel)]="maquina.nombre" name="nombre">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.ubicacion" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.ubicacion' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.ubicacion" name="ubicacion">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.fecha" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.fecha' | translate" type="date"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="date"
                 [(ngModel)]="maquina.fecha_adquisicion" name="fecha_adquisicion">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.numserie" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento' " md-input class="campo inputCampo" [placeholder]="'maquinas.numserie' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento' " md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.numserie" name="numserie">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.fabricante" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.fabricante' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.fabricante" name="fabricante">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.modelo" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.modelo' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.modelo" name="modelo">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.codigo_interno" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.codigo_interno' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.codigo_interno" name="codigo_interno">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.potencia" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.potencia' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.potencia" name="potencia">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.medidas" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.medidas' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.medidas" name="medidas">
         </mat-grid-tile>
 
@@ -68,7 +68,7 @@
         <mat-grid-tile [colspan]="3" [rowspan]="2">
             <mat-grid-tile-header>{{"maquinas.funciones" | translate}}
             </mat-grid-tile-header>
-            <textarea (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="campo fullsize" [placeholder]="'maquinas.funciones' | translate" type="text"
+            <textarea (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" class="campo fullsize" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.funciones" name="funciones"></textarea>
 
         </mat-grid-tile>
@@ -76,42 +76,42 @@
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.regimen_trabajo" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.regimen_trabajo' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.regimen_trabajo" name="regimen_trabajo">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.ciclo_productivo" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.ciclo_productivo' | translate"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate"
                 type="text" [(ngModel)]="maquina.ciclo_productivo" name="ciclo_productivo">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.material" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.material' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.material" name="material">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.liquido_refrigerante" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.liquido_refrigerante' | translate"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate"
                 type="text" [(ngModel)]="maquina.liquido_refrigerante" name="liquido_refrigerante">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.modo_trabajo" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.modo_trabajo' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.modo_trabajo" name="modo_trabajo">
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"maquinas.lubricacion" | translate}}
             </mat-grid-tile-header>
-            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'maquinas.lubricacion' | translate" type="text"
+            <input (keyup)="itemEdited()" [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'  && empresasService.userTipo !== 'Mantenimiento'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="maquina.lubricacion" name="lubricacion">
         </mat-grid-tile>
     </mat-grid-list>

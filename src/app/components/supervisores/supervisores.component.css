@@ -2,3 +2,25 @@
     height: 95px;
     font-size: 12px;
 }
+
+.cabTitle:hover{
+    overflow: visible;
+    max-width: fit-content;
+}
+.cabTitleTH:hover{
+    overflow: visible;
+    width:52px !important;
+}
+.border-right{
+    border-right:lightgray solid 1px;
+}
+.padleft{
+    padding-left: 0px !important;
+}
+.widthUsuario{
+    width:100px;
+}
+.widthNoUsuario{
+    width:37px;
+    padding-left: 3px !important;
+}

@@ -68,16 +68,16 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
       this.ancho = num + 'px';
       
     switch (this.tipoControl) {
-      case "planes":
+      case "Planificaciones":
         this.entidad = "&entidad=permissionplanificaciones";
         break;
-      case "limpiezas":
+      case "Limpiezas":
         this.entidad = "&entidad=permissionlimpieza";
         break;
-        case "maquinaria":
+        case "maquinas.mantenimientos":
         this.entidad = "&entidad=permissionMaquinaria";
         break;
-        case "calibracion":
+        case "maquinas.calibracion":
         this.entidad = "&entidad=permissionCalibracion";
         break;
       case "conroles":
@@ -164,19 +164,19 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
           this.permisos = [];
           if (response.success && response.data) {
             for (let element of response.data) {
-              console.log(element);
+             // console.log(element);
               let idItem;
               switch (this.tipoControl) {
-                case "planes":
+                case "Planificaciones":
                   idItem = element.idplan;
                   break;
-                case "limpiezas":
+                case "Limpiezas":
                   idItem = element.idelementolimpieza;
                   break;
-                case "maquinaria":
+                case "maquinas.mantenimientos":
                   idItem = element.idmantenimiento;
                   break;
-                case "calibracion":
+                case "maquinas.calibracion":
                   idItem = element.idcalibracion;
                   break;
                 case "conroles":
@@ -233,6 +233,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     this.cols.push({ field: 'user', header: 'Usuario' });
     this.items.forEach(control => {
       this.cols.push({ field: control.nombre, header: control.nombre })
+
     });
 
     this.usuarios.forEach(user => {
@@ -256,16 +257,20 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     this.procesando = false;
   }
   setPermiso(user, event, col?) {
+
     this.procesando = true;
     if (col) {
       let index = this.items.findIndex((control) => control.nombre == col)
       if (index >= 0) {
         let idControl = this.items[index].id;
+        console.log(this.items[index]);
         console.log(user, col, idControl, event)
         if (event) {
           this.addPermiso(user, idControl).then(
             (valor) => {
               console.log(valor)
+              this.tabla = this.tabla.slice();
+              this.permisos = this.permisos.slice();
               this.switchGeneral(user)
               this.procesando = false;
             }
@@ -273,6 +278,9 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
         } else {
           this.deletePermiso(user, idControl).then(
             (response) => {
+              console.log(response);
+              this.tabla = this.tabla.slice();
+              this.permisos = this.permisos.slice();
               this.switchGeneral(user)
               this.procesando = false;
             }
@@ -299,6 +307,8 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
           }
         }
       });
+      this.tabla = this.tabla.slice();
+      this.permisos = this.permisos.slice();
       setTimeout(() => {
         this.procesando = false;
       }, 900);
@@ -309,16 +319,16 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     return new Promise((resolve, reject) => {
       let permiso;
       switch (this.tipoControl) {
-      case "planes":
+      case "Planificaciones":
         permiso = new PermissionUserPlan(null, idControl, user, this.empresasService.seleccionada);
         break;
-      case "limpiezas":
+      case "Limpiezas":
         permiso = new PermissionUserLimpieza(null,user, idControl, this.empresasService.seleccionada);
         break;
-      case "maquinaria":
+      case "maquinas.mantenimientos":
         permiso = new PermissionMaquinaria(null,user, idControl, this.empresasService.seleccionada);
         break;
-        case "calibracion":
+        case "maquinas.calibracion":
         permiso = new PermissionCalibracion(null,user, idControl, this.empresasService.seleccionada);
         break;
       case "conroles":
@@ -354,9 +364,13 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     );
   }
 
+
+
   deletePermiso(user, idControl) {
     return new Promise((resolve, reject) => {
+      console.log(this.permisos);
       let valor = this.permisos.findIndex((permiso) => permiso.idusuario == user && permiso.idItem == idControl);
+      if (valor>-1){
       let idPermiso = this.permisos[valor].id;
       let parametros = '?id=' + idPermiso + this.entidad;
       this.servidor.deleteObject(URLS.STD_ITEM, parametros).subscribe(
@@ -366,24 +380,29 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
             this.permisos.splice(indice, 1);
             let index = this.tabla.findIndex((usuario) => usuario['iduser'] == user);
             let nombre = this.items[this.items.findIndex((control) => control.id == idControl)].nombre;
+            console.log(index,nombre);
             this.tabla[index][nombre] = false;
             resolve('permisos ok');
-
           } else {
             console.log('no se cancelo elpermiso', response)
             resolve('error');
           }
         });
+      }
+      resolve('no encontré');
     });
-  }
+}
 
-  switch(user, idControl, estado) {
+
+
+switch(user, idControl, estado) {
     console.log(user, idControl, estado)
     let nombreControl = this.items[this.items.findIndex((control) => control.id == idControl)].nombre;
     let index = this.tabla.findIndex((usuario) => usuario['iduser'] == user);
     console.log(nombreControl, index)
     this.tabla[index][nombreControl] = estado;
   }
+
   switchGeneral(user) {
     let index = this.tabla.findIndex((usuario) => usuario['iduser'] == user);
     let generalSwitch = true;

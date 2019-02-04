@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angu
 import { DomSanitizer } from '@angular/platform-browser'
 
 import { Servidor } from '../../../services/servidor.service';
-import { URLS } from '../../../models/urls';
+import { URLS,cal } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
 import { PlanRealizado } from '../../../models/planrealizado';
   import { Usuario } from '../../../models/usuario';
@@ -43,14 +43,7 @@ es
     this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/planificaciones_realizadas/';
     this.url = this.baseurl +'_'+this.planRealizado.doc;
     this.image= this.baseurl +this.planRealizado.id +"_"+this.planRealizado.imagen;
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        };   
+    this.es=cal;  
   }
 ngOnChanges(){
       this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/planificaciones_realizadas/';

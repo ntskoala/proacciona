@@ -56,13 +56,17 @@ public informeData:any;
     //solo se carga el control si hay una maquina seleccionada, por eso no necesito controlar
  //   this.setMantenimientos();
  this.cols = [
-  { field: 'nombre', header: 'Nombre', type: 'std', width:180,'required':true },
-  { field: 'maquina', header: 'Maquina', type: 'maquina', width:180,'required':true },
-  { field: 'cantidad', header: 'Cantidad', type: 'std', width:95,'required':true },
-  { field: 'material', header: 'Material', type: 'std', width:180,'required':false },
+  { field: 'nombre', header: 'maquinas.nombre', type: 'std', width:180,'required':true },
+  { field: 'maquina', header: 'maquinas.Maquina', type: 'maquina', width:180,'required':true },
+  { field: 'cantidad', header: 'maquinas.cantidad', type: 'std', width:95,'required':true },
+  { field: 'material', header: 'maquinas.material', type: 'std', width:180,'required':false },
   { field: 'doc', header: 'Foto', type: 'foto', width:100,'required':false }
 ];
-this.maquinas.forEach((maquina)=>{this.maquinasSelect.push({label:maquina.nombre, value:maquina.id})})
+let cualquiera="cualquiera";
+if (localStorage.getItem('idioma')=='cat') cualquiera="qualsevol";
+this.maquinasSelect=[];
+this.maquinasSelect.push({label:cualquiera, value:0});
+this.maquinas.forEach((maquina)=>{if (maquina.nombre!='Seleccionar máquina')this.maquinasSelect.push({label:maquina.nombre, value:maquina.id})})
 
 console.log('Init',this.maquina,this.maquinas);
   
@@ -133,6 +137,16 @@ ngOnChanges(){
       }
     );
   }
+  saveAll(){
+    for (let x=0;x<this.guardar.length;x++){
+      if (this.guardar[x]==true) {
+        let indice = this.piezas.findIndex((myitem)=>myitem.id==x);
+        console.log ("id",x,this.piezas[indice]);
+        this.saveItem(this.piezas[indice])
+      }
+    }
+     
+    }
 
  saveItem(pieza: PiezasMaquina) {
     this.guardar[pieza.id] = false;
@@ -324,8 +338,10 @@ openNewRow(){
       let informeRows=[];
                   var str = '';
                   var row = "";
+                  let titulo="";
                   for (var i = 0; i < cabecera.length; i++) {
-                    row += cabecera[i]["header"] + ';';
+                  this.translate.get(cabecera[i]["header"]).subscribe((desc)=>{titulo=desc});
+                  row += titulo + ';';
                   }
                   row = row.slice(0, -1);
                   informeCabecera = row.split(";");

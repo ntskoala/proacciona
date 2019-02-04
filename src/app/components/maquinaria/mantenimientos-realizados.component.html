@@ -13,7 +13,7 @@ selectionMode="single" [(selection)]="selectedItem"
     <div style="text-align:left;margin-left:10px">
       <!-- <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
       <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button> -->
-      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'download' | translate}}" (click)="exportarTable()" style="margin-left:10px"></button>
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-right:10px;float:right"></button>
 
     </div>
   </ng-template>
@@ -151,24 +151,9 @@ selectionMode="single" [(selection)]="selectedItem"
       </td>
     </tr>
   </ng-template>
-  <ng-template pTemplate="summary" let-item>
-    <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
-    </div>
-  </ng-template>
 
 
   <!-- ********* EXPANSION-->
-  <!-- <ng-template pTemplate="rowexpansion" let-item let-columns="columns">
-    <tr>
-      <td [attr.colspan]="columns.length + 2">
-        <div style="text-align:center">
-          <img [attr.alt]="item.foto" src="assets/showcase/images/noimage.png">
-        </div>
-      </td>
-    </tr>
-  </ng-template>
- -->
 
 <ng-template let-item  pTemplate="rowexpansion" let-item let-columns="columns" let-rowIndex="rowIndex">
     <tr [ngClass]="{'expandSelected':expanded}">

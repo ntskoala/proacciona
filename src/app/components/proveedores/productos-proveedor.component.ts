@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment/moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,cal } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorProducto } from '../../models/proveedorproductos';
 import { Proveedor } from '../../models/proveedor';
@@ -61,14 +61,7 @@ public informeData:any;
   ngOnInit() {
      // this.setItems();
       this.getFamilias();
-                 this.es = {
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-            firstDayOfWeek: 1
-        }; 
+      this.es=cal;
         this.cols = [
           { field: 'nombre', header: 'proveedores.nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:true,'required':true },

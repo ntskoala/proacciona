@@ -14,6 +14,16 @@
     cursor: pointer;
     background-image: url('/assets/images/upload.png');
 }
+.inputlabelRoundNewIncidencia {
+    /* margin-top: 20px; */
+    margin-top: 6px;
+    margin-left: 5px;
+    display: block;
+    width: 40px;
+    height:40px;
+    cursor: pointer;
+    background-image: url('/assets/images/upload.png');
+}
 
 .plan_descripcion{
     float:left;

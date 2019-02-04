@@ -5,6 +5,10 @@
   "Usuario sin permisos":"Usuari sense permisos",
   "Usuario incorrecto":"Usuari incorrecte",
   "Nombre":"Nom",
+  "pla":"Unitat",
+  "min":"Min",
+  "max":"Màx",
+  "crit":"Crit",
   "descripcion":"Descripció",
   "fecha":"Data",
   "tipo":"Tipus",
@@ -31,6 +35,9 @@
   "anterior": "Anterior",
   "borrarEmpresaT":"Estàs segur de voler eliminar l'empresa?",
   "borrarEmpresaST":"S'esborraran tots els usuaris, controls, checklists associats i els resultats dels mateixos.",
+  "Activas":"Actives",
+  "No activas":"No actives",
+  "codigo": "Codi App",
   "Tablas":"Configuració",
   "Usuarios":"Usuaris",
   "Controles":"Controls",
@@ -38,6 +45,7 @@
   "Limpiezas":"Neteges",
   "Mantenimientos":"Manteniments",
   "Mantenimiento":"Manteniment",
+  "Incidencias":"Incidències",
   "Opciones":"Opcions premium",
   "Opciones2":"Opcions",
   "Modulos":"Mòduls actius",
@@ -102,7 +110,7 @@
   "maquinaria":"Porta el control sobre el manteniment i reparacions de la teva maquinària.",
   "personal":"Planifica les formacions segons les necessitats de l'empresa",
   "bienvenido":"Benvingut a TFC PROACCIONA",
-  "introducirtexto":"Introduïr text",
+  "introducirtexto":"",
   "expandir":"Expandir",
   "Retrasado":"Endarrerit",
   "menu":{
@@ -141,6 +149,7 @@
     "Modulo Incidencias":"Mòdul incidències"
   },
   "maquinas": {
+    "Maquina":"Màquina",
     "CalendarioGeneralMantenimiento":"Calendari general manteniment",
     "nueva":"Nova màquina",
     "nuevaCalibracion":"Nova calibració",
@@ -163,6 +172,7 @@
     "calibracion":"Calibració",
     "piezas":"Inventari peces",
     "cantidadPiezas":"Nº Peces",
+    "ninguna":"cap",
     "pieza":"Peça",
     "cantidad":"Quantitat",
     "imagen":"Imatge",
@@ -221,6 +231,7 @@
     "borrarMantenimientoR":"Eliminar manteniment"
   },	
     "limpieza": {
+    "Zona":"Zona",
     "CalendarioGeneralLimpieza":"Calendari general neteja",
     "nueva":"Nova àrea neteja",
     "anadir":"Afegir",
@@ -368,6 +379,7 @@
     "trazaAdelante":"Traçabilitat endavant"
   },
   "clientes":{
+    "cliente":"Cliente",
     "crear":"Crear",
     "modificar":"Modificar",
     "areaclientes":"Àrea de clients",
@@ -525,14 +537,15 @@
     },
     "Dashboard":{
       "incidenciasT":"INCIDÈNCIES",
-      "incidenciasST":"Darreres incidèncias",
+      "incidenciasST":"Darreres incidències",
       "controlesHoyT":"REGISTRES",
       "controlesHoyST":"Registres pendents a dia d'avui",
       "controlesRealizadosT":"REGISTRES REALITZATS",
       "controlesRealizadosST":"Registres realizats els darrers díes",
       "logginsT":"ACCESSOS",
-      "logginsST":"Accessos y accions d'usuari",
+      "logginsST":"Accessos i accions d'usuari",
       "desde": "des de",
+      "pendientes":"pendents",
       "tablas":{
         "limpieza_realizada":"neteges",
         "incidencias":"incidències",
@@ -593,6 +606,7 @@
   "dias":"dies",
   "dia":"dia",
   "por uso": "Per ús",
+  "diaria":"diària",
   "leyenda":"Llegenda",
   "verFoto":"Veure Foto",
   "verArchivo":"Veure Arxiu",

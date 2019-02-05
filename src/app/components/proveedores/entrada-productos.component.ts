@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import * as moment from 'moment/moment';
 import { TranslateService } from '@ngx-translate/core';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
@@ -27,12 +28,14 @@ export class alerg{
 export class EntradaProductosComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Input() cambioProductos: boolean;
-public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
+public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',null,'',null,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
+public alertaGuardar:object={'guardar':false,'ordenar':false};
 public cols:any[];
 public newRow:boolean=false;
-public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+// public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').toDate(),fecha_fin:moment(new Date()).toDate()}//ultimos 30 dias
 public filtro_inicio:String;
 public filtro_fin:String;
 public filter:boolean=false;
@@ -57,7 +60,7 @@ public exportando:boolean=false;
 public informeData:any;
 //***   EXPORT DATA */
   constructor(public servidor: Servidor,public empresasService: EmpresasService
-    , public translate: TranslateService) {}
+    , public translate: TranslateService,private messageService: MessageService) {}
 
   ngOnInit() {
      // this.setItems();
@@ -70,7 +73,7 @@ public informeData:any;
           { field: 'fecha_caducidad', header: 'proveedores.fecha_caducidad', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'cantidad_inicial', header: 'proveedores.cantidad', type: 'std', width:90,orden:true,'required':true },
           { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':false },
-          { field: 'cantidad_remanente', header: 'proveedores.remanente', type: 'std', width:90,orden:false,'required':false },
+          { field: 'cantidad_remanente', header: 'proveedores.remanente', type: 'std', width:90,orden:false,'required':false, 'disabled':true },
         ];
   }
 
@@ -148,14 +151,16 @@ getProductos(){
         error=>console.log(error),
         ()=>{
           //this.setItems()
-          this.setDates(this.fechas_inicio);
+          this.setDates();
           }
         ); 
 }
 
 
+cambioInput(){
+  this.nuevoItem.cantidad_remanente = this.nuevoItem.cantidad_inicial;
+}
   newItem() {
-    
     let param = this.entidad+this.field+this.proveedor.id;
     this.nuevoItem.idproveedor = this.proveedor.id;
     this.nuevoItem.idempresa = this.empresasService.seleccionada;
@@ -171,10 +176,10 @@ getProductos(){
         }
     },
     error =>console.log(error),
-    () =>this.setDates(this.fechas_inicio)   
+    () =>this.setDates()   
     );
 
-   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),new Date(),null,'',0,'',null,0,0,0);
+   this.nuevoItem =  new ProveedorLoteProducto('',new Date(),new Date(),null,'',null,'',null,0,0,0);
   }
 
 
@@ -185,6 +190,10 @@ getProductos(){
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
     //console.log (fecha.toString());
+    if (!this.alertaGuardar['guardar']){
+      this.alertaGuardar['guardar'] = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
 
   saveAll(){
@@ -205,9 +214,22 @@ getProductos(){
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
         }
     });
 
+  }
+
+
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.clear();this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
   }
 
 
@@ -252,14 +274,10 @@ checkBorrar(idBorrar: number) {
     )
   }
 
-setDates(dates:any){
-this.filter = false;
-if (dates!= 'void'){
-  this.fechas_inicio = dates;
- this.filtro_inicio = moment(new Date (dates['fecha_inicio'])).format('DD-MM-YYYY').toString();
- this.filtro_fin = moment(new Date (dates['fecha_fin'])).format('DD-MM-YYYY').toString();
-  this.setItems("&filterdates=true&fecha_field=fecha_entrada&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
-}
+setDates(){
+ this.filtro_inicio = moment(new Date (this.fechas_inicio['fecha_inicio'])).format('YYYY-MM-DD').toString();
+ this.filtro_fin = moment(new Date (this.fechas_inicio['fecha_fin'])).format('YYYY-MM-DD').toString();
+  this.setItems("&filterdates=true&fecha_field=fecha_entrada&fecha_inicio="+ this.filtro_inicio +  "&fecha_fin="+this.filtro_fin);
 }
 // excel(){
 //   console.log("send to excel");

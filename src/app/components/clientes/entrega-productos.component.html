@@ -9,8 +9,9 @@
 </div>
 
 <div class="filter">
-  {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}}
-      <span class="">
+  <!-- {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}} -->
+
+      <!-- <span class="">
                   <button mat-mini-fab color="primary" (click)="filter=!filter" type="button">
         <span class="material-icons">filter_list</span>
       </button>
@@ -19,7 +20,20 @@
             <button mat-mini-fab color="primary" (click)="excel()" type="button">
         <span class="material-icons">cloud_download</span>
       </button>
-      </span>
+      </span> -->
+          {{'filter-dates.Mostrando del' | translate}}: 
+          <!-- {{filtro_inicio}}  -->
+          <p-calendar [defaultDate]=""  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="fechas_inicio['fecha_inicio']"
+          [locale]="es" dateFormat="dd/mm/yy" name="fecha_inicio"></p-calendar>
+          {{'filter-dates.al' | translate}} 
+          <!-- {{filtro_fin}} -->
+          <p-calendar [defaultDate]=""  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="fechas_inicio['fecha_fin']"
+          [locale]="es" dateFormat="dd/mm/yy" name="fecha_inicio"></p-calendar>
+          <span class="">
+              <button mat-mini-fab color="primary" (click)="setDates()" type="button">
+        <span class="material-icons">check</span>
+        </button>
+        </span>
 </div>
 <!-- 
 <div class="table">

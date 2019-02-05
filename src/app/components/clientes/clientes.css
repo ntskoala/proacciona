@@ -24,3 +24,8 @@ md-grid-tile{
     margin-left: 50px;
     width: 700px;
 }
+.but{
+    float: left;
+    margin-top: 30px;
+
+}

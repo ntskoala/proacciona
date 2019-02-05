@@ -1,4 +1,4 @@
-
+<div class="table fichaProveedor">
 <form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
     <mat-grid-list cols="3" rowHeight="65px">
         <mat-grid-tile [colspan]="3">
@@ -10,7 +10,7 @@
 
 
 
-        <mat-grid-tile>
+        <!-- <mat-grid-tile>
             <mat-grid-tile-header>{{"proveedores.contacto" | translate}}
             </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
@@ -29,7 +29,30 @@
             </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 [(ngModel)]="proveedor.email" name="email">
-        </mat-grid-tile>
+        </mat-grid-tile> -->
+
+        <mat-grid-tile>
+                <mat-grid-tile-header>{{"Direccion" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="proveedor.direccion" name="direccion">
+            </mat-grid-tile>
+    
+            <mat-grid-tile>
+                <mat-grid-tile-header>{{"Poblacion" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="proveedor.poblacion" name="poblacion">
+            </mat-grid-tile>
+    
+            <mat-grid-tile>
+                <mat-grid-tile-header>{{"nrs" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="proveedor.nrs" name="nrs">
+            </mat-grid-tile>
+
+
 
         <mat-grid-tile [colspan]="3">
            {{'alertas alimentarias' | translate}}
@@ -68,3 +91,4 @@
     </span>
     </div>
 </form>
+</div>

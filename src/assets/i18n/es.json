@@ -304,21 +304,22 @@
     "borrarProductoST": "Se eliminará el producto seleccionado",
     "producto":"Materia prima",
     "productos":"M.P. homologadas",
-    "entradaproductos":"Entrada m.p.",
+    "entradaproductos":"Entrada M.P.",
     "numlotep":"Lote proveedor",
     "cantidad":"Cantidad",
     "fecha_entrada":"Fecha",
     "fecha_caducidad":"Fecha caducidad",
     "tipo medida":"Tipo medida",
     "remanente":"Remanente",
-    "familias":"Familias",
+    "familias":"Familias de M.P.",
     "familia":"Familia",
     "contacto":"Nombre contacto",
     "telf":"Teléfono",
     "email":"Email",
     "alert_contacto":"Nombre contacto alertas",
     "alert_telf":"Teléfono alertas",
-    "alert_email":"Email alertas"    
+    "alert_email":"Email alertas",
+    "alergenos":"Alérgenos de M.P."
   },
   "produccion":{
     "crear":"Crear",
@@ -338,6 +339,8 @@
     "traspasos":"Traspasos",
     "productos":"Productos",
     "almacenes":"Almacenes",
+    "listaAlmacenes":"Listado de almacenes",
+    "listaProductos":"Listado de productos finales",
     "nombre":"Nombre",
     "capacidad":"Capacidad",
     "estado":"Estado",
@@ -356,7 +359,7 @@
     "cliente":"Cliente",
     "fecha":"Fecha entrega",
     "tipo medida":"Tipo medida",
-    "alergenos":"Alérgenos",
+    "alergenos":"Alérgenos de producto final",
     "contieneIngrediente":"Contiene el ingrediente",
     "contieneTrazas":"Contiene trazas de el ingrediente",
     "alert_tanque_origen":"No se ha seleccionado un tanque o lote de origen",
@@ -618,5 +621,8 @@
   "Producto":"Producto",
   "Protocolo":"Protocolo",
   "App":"Visible en app",
-  "numero":"Num elementos a crear"
+  "numero":"Num elementos a crear",
+  "Direccion":"Dirección",
+  "Poblacion":"Población",
+  "nrs":"Número Registro Sanitario"
 }

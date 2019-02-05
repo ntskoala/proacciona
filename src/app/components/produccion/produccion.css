@@ -124,12 +124,16 @@ md-grid-list{
     max-height: 220px;
     max-width: 280px;
 }
+.fichaProduccion{
+    margin-left: 30px;
+}
 
 .botones{
     width:900px;
     background-color: #fff;
     height: 55px;
     float:left;
+    margin-top: 30px;
 }
 .but{
     float: left;

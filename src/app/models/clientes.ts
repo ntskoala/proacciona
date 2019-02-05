@@ -5,6 +5,9 @@ export class Cliente {
     public contacto?: string,
     public telf?: string,
     public email?: string,
-    public id?: number
+    public id?: number,
+    public direccion?,
+    public poblacion?,
+    public nrs?
   ) {}
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from '@ngx-translate/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -26,7 +28,11 @@ public  nuevoNombre:string;
 
 //*** ESPECIFIC VAR */
 
-  constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
+  constructor(
+    public empresasService: EmpresasService, 
+    public servidor: Servidor,
+    public translate: TranslateService, 
+    private messageService: MessageService) {}
 
   ngOnInit() {
 
@@ -42,6 +48,7 @@ let parametros = '?id=' + proveedor.id+param;
       response => {
         if (response.success) {
           console.log("updated");
+          this.setAlerta('alertas.saveOk');
           //let index = this.items.findIndex((elem) =>elem.id == this.itemActivo);
           //this.items[index].nombre = this.nuevoNombre;
           //this.listaZonas.emit(this.limpiezas);
@@ -49,5 +56,18 @@ let parametros = '?id=' + proveedor.id+param;
         }
     });
 }
+
+
+setAlerta(concept:string){
+  let concepto;
+  this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+  this.messageService.clear();this.messageService.add(
+    {severity:'warn', 
+    summary:'Info', 
+    detail: concepto
+    }
+  );
+}
+
 
 }

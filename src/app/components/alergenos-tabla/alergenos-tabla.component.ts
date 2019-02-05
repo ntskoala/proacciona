@@ -30,6 +30,7 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
   //public alergenos:string[]=['Ing Cereales con gluten','Trz Cereales con gluten','Ing Huevos','Trz Huevos','Ing Leche','Trz Leche','Ing Cacahuetes','Trz Cacahuetes','Ing Soja','Trz Soja','Ing Fruits secs de closca','Trz Fruits secs de closca','Ing Apio','Trz Apio','Ing Mostaza','Trz Mostaza','Ing Sésamo','Trz Sésamo','Ing Pescado','Trz Pescado','Ing Crustaceos','Trz Crustaceos','Ing Moluscos','Trz Moluscos','Ing Altramuces','Trz Altramuces','Ing Dioxido de azufre y sulfitos','Trz Dioxido de azufre y sulfitos'];
   public alergenos:string[]=['Gluten','Huevos','Leche','Cacahuetes','Soja','Fruits secs','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Sulfitos'];
   //public alergenos:string[]=['frutos secos','lacteos','gluten','huevos','otros'];
+  public titulo:string='';
   public selectedAlergenos:string[]=[];
   public tabla: object[];
   public cols: object[];
@@ -64,10 +65,12 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
       let parametros='';
       if(this.parentAlergenos  == 'productos'){
         this.entidad = "&entidad=productos";
+        this.titulo="produccion.alergenos";
         url= URLS.STD_ITEM;
         parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=productos"; 
       }else{
         this.entidad = "&entidad=proveedores_productos";
+        this.titulo="proveedores.alergenos";
         url= URLS.STD_SUBITEM;
         parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+this.parentAlergenos; 
       }
@@ -296,11 +299,9 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
       
                   }
                   let informe='';
-                  if(this.parentAlergenos  == 'productos'){
-                    this.translate.get('alergenosProductos').subscribe((inf)=>{informe=inf});
-                  }else{
-                    this.translate.get('alergenosProveedores').subscribe((inf)=>{informe=inf});
-                  }
+
+                    this.translate.get(this.titulo).subscribe((inf)=>{informe=inf});
+ 
                   
                  this.translate.get('produccion.contieneIngrediente').subscribe((desc)=>{comentarios[0]='Si:'+desc+lineLeyenda});
                  this.translate.get('produccion.contieneTrazas').subscribe((desc)=>{comentarios[1]='Trz:'+desc+lineLeyenda});

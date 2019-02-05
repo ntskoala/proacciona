@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 //import {SelectItem} from 'primeng/primeng';
 import { TranslateService } from '@ngx-translate/core';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 import * as moment from 'moment/moment';
 
@@ -33,6 +34,7 @@ public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null
 public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null);;
 public items: ProveedorProducto[];
 public cols:any[];
+public alertaGuardar:object={'guardar':false,'ordenar':false};
 public newRow:boolean=false;
 public familias: object[];
 public guardar = [];
@@ -56,7 +58,8 @@ public informeData:any;
   constructor(
     public servidor: Servidor,
     public empresasService: EmpresasService,
-    public translate: TranslateService) {}
+    public translate: TranslateService,
+    private messageService: MessageService) {}
 
   ngOnInit() {
      // this.setItems();
@@ -160,7 +163,10 @@ getFamilias(){
   }
     itemEdited(idItem: number, fecha?: any) {
     this.guardar[idItem] = true;
-    //console.log (fecha.toString());
+    if (!this.alertaGuardar['guardar']){
+      this.alertaGuardar['guardar'] = true;
+      this.setAlerta('alertas.guardar');
+      }
   }
 
   saveAll(){
@@ -181,11 +187,21 @@ getFamilias(){
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
           this.nuevoProducto.emit(true);
         }
     });
   }
-
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.clear();this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
 
 checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar

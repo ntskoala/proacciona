@@ -38,7 +38,7 @@ public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,null,'',new Dat
 public items: Distribucion[];
 public cols:any[];
 public newRow:boolean=false;
-public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
+public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').toDate(),fecha_fin:moment(new Date()).toDate()}//ultimos 30 dias
 public filtro_inicio:String;
 public filtro_fin:String;
 public productos: ProductoPropio[]=[];
@@ -85,7 +85,7 @@ public informeData:any;
         this.cols = [
           { field: 'idproductopropio', header: 'clientes.producto', type: 'custom', width:160,orden:true,'required':true },
           { field: 'idordenproduccion', header: 'clientes.numlote', type: 'custom', width:120,orden:true,'required':true },
-          { field: 'fecha', header: 'clientes.fecha" | translate', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'fecha', header: 'clientes.fecha', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'fecha_caducidad', header: 'proveedores.fecha_caducidad', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'cantidad', header: 'proveedores.cantidad', type: 'std', width:90,orden:true,'required':true },
           { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':true }
@@ -170,7 +170,7 @@ getProductos(){
         error=>console.log(error),
         ()=>{
           //this.setItems()
-          this.setDates(this.fechas_inicio);
+          this.setDates();
           }
         ); 
 }
@@ -197,7 +197,7 @@ getProductos(){
         }
     },
     error =>console.log(error),
-    () =>this.setDates(this.fechas_inicio) 
+    () =>this.setDates() 
     );
 
    
@@ -383,15 +383,11 @@ setAlerta(concept:string){
   );
 }
 
-setDates(dates:any){
-this.filter = false;
-if (dates!= 'void'){
-  this.fechas_inicio = dates;
- this.filtro_inicio = moment(new Date (dates['fecha_inicio'])).format('DD-MM-YYYY').toString();
- this.filtro_fin = moment(new Date (dates['fecha_fin'])).format('DD-MM-YYYY').toString();
-  this.setItems("&filterdates=true&fecha_field=fecha&fecha_inicio="+ dates['fecha_inicio'] +  "&fecha_fin="+dates['fecha_fin']);
-}
-}
+setDates(){
+  this.filtro_inicio = moment(new Date (this.fechas_inicio['fecha_inicio'])).format('YYYY-MM-DD').toString();
+  this.filtro_fin = moment(new Date (this.fechas_inicio['fecha_fin'])).format('YYYY-MM-DD').toString();
+   this.setItems("&filterdates=true&fecha_field=fecha&fecha_inicio="+ this.filtro_inicio +  "&fecha_fin="+this.filtro_fin);
+ }
 // excel(){
 //   console.log("send to excel");
 

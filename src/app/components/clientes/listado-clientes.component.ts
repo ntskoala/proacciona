@@ -45,7 +45,7 @@ loadItems(emp: Empresa | string) {
             this.items.push(this.item1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.items.push(new Cliente(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.id));
+                this.items.push(new Cliente(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.id,element.direccion,element.poblacion,element.nrs));
               }
              // this.listaZonas.emit(this.limpiezas);
             }

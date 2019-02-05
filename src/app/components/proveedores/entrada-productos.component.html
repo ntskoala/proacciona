@@ -11,8 +11,20 @@
     <filter-dates (onDates)="setDates($event)"></filter-dates>
     </div>
 <div class="filter">
-  {{'filter-dates.Mostrando del' | translate}}: {{filtro_inicio}} {{'filter-dates.al' | translate}} {{filtro_fin}}
-      <span class="">
+  {{'filter-dates.Mostrando del' | translate}}: 
+  <!-- {{filtro_inicio}}  -->
+  <p-calendar [defaultDate]=""  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="fechas_inicio['fecha_inicio']"
+  [locale]="es" dateFormat="dd/mm/yy" name="fecha_inicio"></p-calendar>
+  {{'filter-dates.al' | translate}} 
+  <!-- {{filtro_fin}} -->
+  <p-calendar [defaultDate]=""  appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="fechas_inicio['fecha_fin']"
+  [locale]="es" dateFormat="dd/mm/yy" name="fecha_inicio"></p-calendar>
+  <span class="">
+      <button mat-mini-fab color="primary" (click)="setDates()" type="button">
+<span class="material-icons">check</span>
+</button>
+</span>
+      <!-- <span class="">
                   <button mat-mini-fab color="primary" (click)="filter=!filter" type="button">
         <span class="material-icons">filter_list</span>
       </button>
@@ -21,8 +33,8 @@
             <button mat-mini-fab color="primary" (click)="excel()" type="button">
         <span class="material-icons">cloud_download</span>
       </button>
-      </span>
-</div>
+      </span>-->
+</div> 
 
 <!-- 
 
@@ -133,7 +145,7 @@
 
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table #DT [columns]="cols" [value]="items" dataKey="id" 
-(onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
+(onEditInit)="onEdit($event)" 
   [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
   [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
   [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" [ngStyle]="{'min-height.px': minHeight}">
@@ -176,8 +188,8 @@
               <!-- <td  style="width:50px"></td> -->
               <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [style.width]="col.width+'px'">
                 <span *ngIf="col.type == 'std'">
-                  <input pInputText type="text" [required]="col.required" [(ngModel)]="nuevoItem[col.field]" style="margin-left:4px"
-                    [style.width]="(col.width -7)+'px'" [name]="col.field">
+                  <input pInputText [disabled]="col.disabled" type="text" [required]="col.required" [(ngModel)]="nuevoItem[col.field]" style="margin-left:4px"
+                    [style.width]="(col.width -7)+'px'" [name]="col.field" (change)="cambioInput()">
                 </span>
                 <span *ngIf="col.type == 'fecha'">
                   <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="nuevoItem[col.field]"
@@ -217,7 +229,7 @@
 
 
   <div class="tableContent">
-  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="expanded">
+  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="null">
     <!--let-expanded="expanded" -->
     <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
       <td><span *ngIf="expanded!=null">

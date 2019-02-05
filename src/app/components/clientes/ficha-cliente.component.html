@@ -8,7 +8,34 @@
                 required [(ngModel)]="cliente.nombre" name="nombre">
         </mat-grid-tile>
 
+        <mat-grid-tile>
+                <mat-grid-tile-header>{{"Direccion" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="cliente.direccion" name="direccion">
+            </mat-grid-tile>
+    
+            <mat-grid-tile>
+                <mat-grid-tile-header>{{"Poblacion" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="cliente.poblacion" name="poblacion">
+            </mat-grid-tile>
+    
+            <mat-grid-tile>
+                <mat-grid-tile-header>{{"nrs" | translate}}
+                </mat-grid-tile-header>
+                <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
+                    [(ngModel)]="cliente.nrs" name="nrs">
+            </mat-grid-tile>
 
+
+
+            <mat-grid-tile [colspan]="3">
+                    {{'alertas alimentarias' | translate}}
+                 </mat-grid-tile>
+
+                 
 
         <mat-grid-tile>
             <mat-grid-tile-header>{{"clientes.contacto" | translate}}

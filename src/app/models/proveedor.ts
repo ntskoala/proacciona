@@ -8,6 +8,9 @@ export class Proveedor {
     public alert_contacto?: string,
     public alert_telf?: string,
     public alert_email?: string,
-    public id?: number
+    public id?: number,
+    public direccion?,
+    public poblacion?,
+    public nrs?
   ) {}
 }

@@ -92,9 +92,15 @@ es;
 initTree(idOrden){
     console.log("onChange");
     this.nodozero = false;
+    let label;
+    label= this.orden.numlote;
      this.tree = [];
-     this.tree.push({"label": "inicio","data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
-
+     this.tree.push({"label": label,"data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+     if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+       //
+    }else{
+      this.tree[0]["data"]={"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"remanente":this.orden.remanente}
+       }
     //  this.tree.push({"label": this.orden.numlote,
     //   "data":{"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"level":0,"almacen":this.orden.idalmacen,"cliente":this.orden.idcliente,"fecha_caducidad":this.orden.fecha_caducidad},
     //  "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
@@ -221,6 +227,7 @@ getOrdenes(nodo: any,id:number, tipo:string,level:number){
 
 
 getParent(nodo: any,id:number, tipo:string,level:number){
+    console.log(nodo,this.tree[0])
     let i=0;
     level++;
     let lastItem = true;
@@ -240,12 +247,14 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                 console.log("Resultados Get Orden: ",response.data);
               for (let element of response.data) {
                   //this.tree[0].children[nodo].children.push({
+                      
                       console.log("idloteinterno"+element.idloteinterno + "idmateriaprima:" + element.idmateriaprima)
                 //   if (element.numlote_proveedor){
                       if (element.idmateriaprima>0){
                       //  this.setItems(nodo.children[i],element.idmateriaprima)
                       nodo.children.push({
-                      "label":element.proveedor + " " + element.numlote_proveedor,
+                      "label":element.proveedor + ": " + element.numlote_proveedor,
+                      
                       "parent":nodo,
                       //"expanded":true,
                       "data":{"tipo":"materia prima","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cliente":element.idcliente,"proveedor":element.proveedor,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen}
@@ -253,9 +262,17 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                         
                         i++
                       }else{
+                          let label
+                        if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+                            label= element.numlote
+                        }else{
+                            label =element.numlote_proveedor
+                           }
                           lastItem = false;
                       nodo.children.push({
-                      "label":element.numlote,
+                          
+                      //"label":element.numlote,
+                      "label":label,
                       "parent":nodo,
                       "expanded":true,
                       "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen}
@@ -274,7 +291,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                  if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
                      this.nodoZero();
                  }else{
-                    this.nodoZero();
+                  //  this.nodoZero();
                     }
 
              }
@@ -298,13 +315,21 @@ getParent(nodo: any,id:number, tipo:string,level:number){
 ///SOLO VAQUERIA. VER this.empresasService.seleccionada == 26
 nodoZero(){
     if (!this.nodozero){
+        
         this.nodozero = true;
-    let tanque;
-    this.translate.get('trazabilidad.tanque').subscribe((valor)=>tanque = valor);
-    this.tree[0].label=this.tree[0].children[0].label,
-    this.tree[0].data={"tipo":"orden","idOrden":this.tree[0].children[0].data.idorden,"level":0,"almacen":this.tree[0].children[0].data.idalmacen,"cantidad":0,"cantidad_real_origen":0}
-    if (this.tree[0].children.length>1){
+        if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+            let tanque;
+            this.translate.get('trazabilidad.tanque').subscribe((valor)=>tanque = valor);
+        
+            this.tree[0].label=this.tree[0].children[0].label,
+            this.tree[0].data={"tipo":"orden","idOrden":this.tree[0].children[0].data.idorden,"level":0,"almacen":this.tree[0].children[0].data.idalmacen,"cantidad":0,"cantidad_real_origen":0}
+        }else{
+           
+           }
 
+
+    if (this.tree[0].children.length>1){
+        console.log('##: ',this.tree[0].children.length);
         //this.tree[0].label = tanque + ' ' + this.findAlmacen(this.tree[0].children[0].data.almacen);
         this.tree[0].children.forEach(element => {
        this.tree[0].data.cantidad = 0 + parseInt(this.tree[0].data.cantidad) + parseInt(element.data.cantidad);
@@ -314,14 +339,18 @@ nodoZero(){
     //     this.tree[0].data.fecha_caducidad = element.data.fecha_caducidad;
         });
     }else{
+        console.log('##: ',this.tree[0].children.length);
+        this.nodozero = true;
         //this.tree2 = [];
         this.tree = this.tree[0].children;
         console.log('$$$$: ',this.tree[0].data.cliente);
+        console.log('@1: ',this.tree[0].label);
     if(this.tree[0].data.cliente > 0){
     this.tree[0].label += ' ' + this.findCliente(this.tree[0].data.cliente);
     }else{
     this.tree[0].label += ' ' + this.findAlmacen(this.tree[0].data.almacen);
     }
+    console.log('@2: ',this.tree[0].label);
 }
     }
 }
@@ -377,8 +406,10 @@ return nivel;
         let cantidadRemanenteProcedencia = 0;
 
         // console.log(event.node);
+        
             if(event.node.children){
                 let almacenOrigen = this.findAlmacen(event.node.children[0].data.almacen);
+                if(almacenOrigen){
                 procedencia += almacenOrigen + " : " + event.node.data.cantidad_real_origen + "l." 
         //     event.node.children.forEach( childNode => {
         //         let almacen = this.getTanque(childNode.data.almacen)
@@ -390,6 +421,7 @@ return nivel;
         //         }           
         //         cantidadRemanenteProcedencia += childNode.data.cantidad_remanente_origen;
         //     } );
+                }
         }else{
             procedencia = event.node.label;
         }

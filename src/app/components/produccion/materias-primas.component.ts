@@ -111,7 +111,7 @@ public informeData:any;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote_proveedor,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida));
+                  this.items.push(new ProduccionDetalle(element.id,element.idorden,element.proveedor,element.producto,element.numlote_proveedor,element.idmateriaprima,element.idloteinterno,element.cantidad,element.tipo_medida,parseInt(element.cantidad_remanente_origen)));
              }
              console.log(this.items)
             }
@@ -215,6 +215,12 @@ getProveedores(){
      this.nuevoItem.idloteinterno = this.nuevoItem.idmateriaprima;
     this.nuevoItem.idmateriaprima = 0;
     }
+
+    let cantidad = this.entrada_productos[index_entrada_productos].cantidad;
+    this.nuevoItem.cantidad_remanente_origen = cantidad - this.nuevoItem.cantidad;    
+    this.nuevoItem.cantidad_real_origen = cantidad;  
+
+
     this.passItem = this.nuevoItem
     //this.nuevoItem.idempresa = this.empresasService.seleccionada;
     //this.addnewItem = this.nuevoItem;
@@ -278,7 +284,14 @@ onEdit(event){
  //saveItem(item: ProveedorLoteProducto,i: number) {
   saveItem(item: ProduccionDetalle,i: number) {
     this.guardar[item.id] = false;
-    let parametros = '?id=' + item.id+this.entidad;    
+    let parametros = '?id=' + item.id+this.entidad;
+    if (this.remanentesEditados[item.id] != item.cantidad){
+      let index = this.items.findIndex((ordenDetalle)=>ordenDetalle.id==item.id);
+      let diferencia=  parseInt(this.remanentesEditados[item.id]) - item.cantidad
+      console.log('****^^',typeof(this.remanentesEditados[item.id]),typeof(diferencia),typeof(this.items[index].cantidad_remanente_origen))
+      item.cantidad_remanente_origen =  this.items[index].cantidad_remanente_origen + diferencia;
+    }
+
     this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
       response => {
         if (response.success) {

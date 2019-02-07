@@ -1,6 +1,6 @@
 <!--[locale]="es" -->
 <mat-card>
-<h2 class="center">{{'planificaciones.CalendarioGeneralPlanificaciones' | translate}}</h2>
+<h2 class="left">{{'planificaciones.CalendarioGeneralPlanificaciones' | translate}}</h2>
 <p-schedule [height]="410"  [contentHeight]="410" [aspectRatio]="4"  [style]="{'z-index': '9998 !important'}" [events]="events" [header]="headerCalendar" [locale]="locale"  [eventLimit]="2" [editable]="false"
  dateFormat="dd-mm-yy"  (onEventClick)="handleEventClick($event)" #calendar></p-schedule>
 <!--(onDayClick)="handleDayClick($event)" [contentHeight]="600" [aspectRatio]="3"-->

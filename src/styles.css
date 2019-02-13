@@ -164,6 +164,14 @@ nav {
   max-height: 280px !important;
   overflow-y: auto;
 }
+.cardAdmin{
+  display: block;
+  float: left;
+  width: 320px;
+  height: 280px;
+  padding: 55px 30px 20px 30px;
+  margin: 1px 10px 30px 10px;
+}
 .dashTitle{
   padding: 15px;
   font-weight: bold;
@@ -682,7 +690,7 @@ gestion-informes {
 .header-cell {
   display: table-cell;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: bold;
   padding: 8px 0 8px 11px;
   /* border-left: #fff; */
     /* border-left-style: solid; */

@@ -27,6 +27,13 @@ export class DashincidenciasComponent implements OnInit {
     this.dias=1;
     let fechaInicio = moment().subtract(1,'d').toDate();
     this.loadIncidencias(fechaInicio);
+    this.empresasService.empresaSeleccionada.subscribe(
+      (emp)=>{
+        console.log(emp);
+        if(emp){
+          this.loadIncidencias(fechaInicio);
+        }
+      })
   }
 
   loadIncidencias(dateInicio: Date) {

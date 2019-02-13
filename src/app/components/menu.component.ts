@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit, Output,EventEmitter } from '@angular/core';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
-
 import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
 import { Menu } from '../models/menu';
@@ -23,7 +22,9 @@ public modulos:Menu[]= [];
     public router: Router, public permisos: PermisosService) {
 
   }
+
   ngAfterViewInit(){
+    console.log('############################################################################################')
     this.permisos.modulosFuente.subscribe(
       (valor)=>{
         console.log('Valor',valor);
@@ -31,6 +32,7 @@ public modulos:Menu[]= [];
       }
     )
   }
+
   ngOnInit() {
 
   }
@@ -97,6 +99,7 @@ selectedUrlMenu(){
       default:
       this.subMenu = param["params"]["modulo"];
     }
+    console.log(this.subMenu);
   });
 }
 }

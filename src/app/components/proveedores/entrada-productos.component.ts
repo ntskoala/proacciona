@@ -5,7 +5,7 @@ import {MessageService} from 'primeng/components/common/messageservice';
 
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
-import { URLS,cal } from '../../models/urls';
+import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
@@ -40,7 +40,7 @@ public filtro_inicio:String;
 public filtro_fin:String;
 public filter:boolean=false;
 public productos: any[]=[];
-public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+public medidas: object[]=dropDownMedidas;
 public guardar = [];
 public idBorrar;
 public url=[];

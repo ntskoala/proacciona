@@ -6,7 +6,7 @@ import { Dropdown } from 'primeng/components/dropdown/dropdown'
 import * as moment from 'moment/moment';
 //import {SelectItem} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
-import { URLS,cal } from '../../models/urls';
+import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { ProduccionOrden } from '../../models/produccionorden';
@@ -46,7 +46,7 @@ public ordenes: ProduccionOrden[] =[];
 public dropDownProductos: object[]=[];
 public dropDownOrdenes: object[] =[];
 // public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
-public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+public medidas: object[]=dropDownMedidas;
 
 public guardar = [];
 public remanentesEditados = []

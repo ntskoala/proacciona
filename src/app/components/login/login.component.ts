@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
  ngOnInit(){
        this.translate.setDefaultLang('cat');
        this.translate.use('cat');
-     if (localStorage.getItem("idioma")){
+     if (localStorage.getItem("idioma") && localStorage.getItem("idioma")!='undefined'){
        this.idioma = localStorage.getItem("idioma");
         this.empresasService.idioma = this.idioma;
        this.translate.use(this.idioma);
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
 }
 
    login(usuario) {
-     if (!localStorage.getItem("idioma")){
+     if (!localStorage.getItem("idioma") || localStorage.getItem("idioma")=='undefined'){
      localStorage.setItem("idioma",usuario.idioma);
      this.empresasService.idioma = usuario.idioma;
       this.translate.use(usuario.idioma);
@@ -164,7 +164,10 @@ export class LoginComponent implements OnInit {
        }
      );
    }
+
+
  procesLogedIn(user:any){
+  console.log("USER TIPO:",user);
   sessionStorage.setItem('userId', user.userId);
   sessionStorage.setItem('userName', user.userName);
   sessionStorage.setItem('userTipo', user.userTipo);
@@ -178,37 +181,46 @@ if (user.userTipo == 'Administrador'){
 
    //sessionStorage.setItem('token', response.token);
    console.log("procesLogedIn mode:",this.modeLogin);
+   let idEmpresa = user.idEmpresa;
    switch (user.userTipo) {
      case 'Administrador':
-     console.log("gerente o mantenimiento");
+     console.log("Administrador");
      sessionStorage.setItem('administrador', 'true');
      this.empresasService.administrador = true;
-
-//       if (this.empresasService.login){
-//        window.open('../empresas','_parent')
-//       }else{
          if (this.modeLogin == 'empresas'){
-          
            this.loggedIn.emit(true);
          }else{
           this.router.navigate(['empresas']);
          }
-//       }
-
        break;
+       case 'Admin':
+       console.log("Admin Holding");
+
+       sessionStorage.setItem('idEmpresa', idEmpresa);
+       this.empresasService.empresaActiva = idEmpresa;
+       sessionStorage.setItem('administrador', 'true');
+       sessionStorage.setItem('holding', '1');
+       sessionStorage.setItem('idHolding', idEmpresa);
+       this.empresasService.administrador = true;
+       this.empresasService.holding=1;
+           if (this.modeLogin == 'empresas'){
+             this.loggedIn.emit(true);
+           }else{
+            this.router.navigate(['empresas']);
+           }
+         break;       
      case "Mantenimiento":
      
      case 'Gerente':
 
        console.log("gerente o mantenimiento");
-       let idEmpresa = user.idEmpresa;
+
        sessionStorage.setItem('idEmpresa', idEmpresa);
        this.empresasService.empresaActiva = idEmpresa;
        sessionStorage.setItem('administrador', 'false');
        this.empresasService.administrador = false;
       //  this.setPermisos(idEmpresa);
        console.log(idEmpresa);
-
 //      if (this.empresasService.login){
 //        window.open('../empresas','_parent')
 //      }else{

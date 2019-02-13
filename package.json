@@ -32,7 +32,7 @@
     "angular2-moment": "^1.9.0",
     "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
-    "fullcalendar": "4.0.0-beta.2",
+    "fullcalendar": "^4.0.0-alpha",
     "moment": "^2.18.1",
     "ng2-datepicker": "^3.1.1",
     "ng2-pdf-viewer": "^5.2.3",

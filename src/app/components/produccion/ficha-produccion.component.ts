@@ -8,7 +8,7 @@ import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
-import { URLS,cal } from '../../models/urls';
+import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
 import { ProductoPropio } from '../../models/productopropio';
 
@@ -32,7 +32,8 @@ public trazabilidad: boolean;
 public trazabilidadAd:boolean;
 public almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
-public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
+//public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
+public medidas:object[]=dropDownMedidas;
   constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {

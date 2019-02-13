@@ -52,6 +52,7 @@ export const URLS = {
   DOCS: server + 'docs/'
 }
 let calendar;
+let medidas;
 if (localStorage.getItem("idioma")=='es'){
  calendar={
   monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -62,6 +63,7 @@ dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
 firstDayOfWeek: 1
 }
+medidas = [{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
 }
 if (localStorage.getItem("idioma")=='cat'){
   calendar={
@@ -73,5 +75,7 @@ if (localStorage.getItem("idioma")=='cat'){
  dayNamesMin: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
  firstDayOfWeek: 1
  }
+medidas = [{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unitats','value':'unidades'}];
 }
 export const cal = calendar;
+export const dropDownMedidas=medidas;

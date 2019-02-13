@@ -4,7 +4,7 @@ import * as moment from 'moment/moment';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
@@ -35,7 +35,7 @@ public items: ProduccionDetalle[];
 public productos: any[]=[];
 public proveedores: any[]=[];
 public entrada_productos: any[]=[];
-public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+public medidas: object[]=dropDownMedidas;
 
 public guardar = [];
 public remanentesEditados = [];

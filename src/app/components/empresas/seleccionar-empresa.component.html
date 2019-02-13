@@ -10,7 +10,7 @@
   </mat-card-title>
   <mat-card-content>
     <!-- <div style="width: 44%;float: left;margin-right: 10px;" >Activas -->
-      <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>
+      <listado-empresas (empresaseleccionada)="selecciona($event)" (onLoadEmpresas)="gotEmpresas($event)"></listado-empresas>
     <!-- </div> -->
     <!-- <div style="width: 44%;float: left;margin-right: 10px;">No activas 
       <listado-empresas (empresaseleccionada)="selecciona($event)"></listado-empresas>

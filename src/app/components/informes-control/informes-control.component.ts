@@ -8,7 +8,9 @@ import {MessageService} from 'primeng/components/common/messageservice';
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
 import { PermisosService } from '../../services/permisos.service';
-import { EmpresasComponent } from '../empresas.component';
+// import { EmpresasComponent } from '../empresas/empresas.component';
+import { RouterCanvasComponent } from '../routerCanvas.component';
+
 import { URLS,cal } from '../../models/urls';
 import { ResultadoControl } from '../../models/resultadocontrol';
 import { Modal } from '../../models/modal';
@@ -34,7 +36,7 @@ export class InformesControlComponent implements OnInit {
   public tabla: Object[] = [];
   public tabla2: Object[] = [];
   //fecha: Object ={};// = {"inicio":"2016-12-09","fin":"2016-12-12"};
-  fecha: Object = {"inicio":"2018-06-01","fin":"2018-09-12"};
+  public fecha: Object = {inicio:new Date(moment().subtract(7,'d').format('YYYY-MM-DD')),fin:new Date()};
   public modal: boolean = false;
   public fotoSrc: string;
   public exportar_informes: boolean =false;
@@ -49,7 +51,7 @@ export class InformesControlComponent implements OnInit {
   constructor(
     public servidor: Servidor, 
     public empresasService: EmpresasService, 
-    public empresasComponent: EmpresasComponent, 
+    public routerCanvasComponent: RouterCanvasComponent, 
     public permisos: PermisosService,
     private route: ActivatedRoute,
     public translateService: TranslateService,
@@ -243,7 +245,7 @@ getDateInicio(){
 
 scroll(){
   console.log("dateclicked");
-  this.empresasComponent.scrolldown();
+  this.routerCanvasComponent.scrolldown();
 }
 
 excelOld(fecha){

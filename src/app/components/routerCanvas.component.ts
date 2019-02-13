@@ -13,10 +13,12 @@ import { Servidor } from '../services/servidor.service';
 import { PermisosService } from '../services/permisos.service';
 import { URLS } from '../models/urls';
 @Component({
-  selector: 'empresas',
-  templateUrl: '../assets/html/empresas.component.html'
+  // selector: 'empresas',
+  selector: 'routerCanvas',
+  templateUrl: './routerCanvas.component.html'
+//   styleUrls: ['./empresas.css']
 })
-export class EmpresasComponent implements OnInit, OnChanges {
+export class RouterCanvasComponent implements OnInit, OnChanges {
 @ViewChild('scrollMe') public myScrollContainer: ElementRef;
 public selectedMenu:string='home';
 public inicio:string;
@@ -36,12 +38,12 @@ public params;
      let x = 0;
      this.router.events.subscribe((val) => {
        x++;
-       console.log(val);
+     //  console.log(val);
       // see also 
       let modulo 
-      console.log(val["url"]);
+     // console.log(val["url"]);
       if (val["url"]) modulo = val["url"].split("/")[1]
-      console.log('modulo',modulo);
+   //   console.log('modulo',modulo);
       //if (val["url"]) console.log("***",val instanceof NavigationStart,val["url"].split("/")[1]) 
       if (val instanceof NavigationStart && modulo != 'login'){
         let page
@@ -95,9 +97,12 @@ setUser(){
   this.empresasService.empresaActiva = parseInt(sessionStorage.getItem('idEmpresa'));
   this.empresasService.nombreEmpresa = sessionStorage.getItem('nombreEmpresa');
   this.empresasService.administrador = (sessionStorage.getItem('administrador') === 'true');
-  this.empresa = new Empresa(this.empresasService.nombreEmpresa, '', this.empresasService.empresaActiva);
+  this.empresasService.holding = parseInt(sessionStorage.getItem('holding'));
+  this.empresasService.idHolding = parseInt(sessionStorage.getItem('idHolding'));
+  this.empresa = new Empresa(this.empresasService.nombreEmpresa, '', this.empresasService.empresaActiva, this.empresasService.holding, this.empresasService.idHolding);
+  console.log(this.empresasService.nombreEmpresa, '', this.empresasService.empresaActiva, this.empresasService.holding, this.empresasService.idHolding);
   this.empresasService.seleccionarEmpresa(this.empresa);
-  console.log()
+  console.log('set User, empresa.id:',this.empresa.id);
   resolve(this.empresa.id);
   })
 }
@@ -110,7 +115,7 @@ if (evento){
   let paramsurl = this.route.url["value"]
   console.log('***LOGGEDIN',this.route.url["value"],evento);
    if (paramsurl[1]["path"]>0) idempresa = paramsurl[1]["path"];
-  this.empresasService.seleccionarEmpresa(new Empresa('','',idempresa));
+  this.empresasService.seleccionarEmpresa(new Empresa('','',idempresa,null));
   //this.setInitial();
   if (paramsurl[2]["path"]) this.irAlMenu(paramsurl[2]["path"]);
 }
@@ -133,17 +138,26 @@ if (evento){
         console.log('user Administrador');
         this.irAlMenu('empresas');
         break;
+        case 'Admin':
+          console.log('user Admin Holding');
+          if (this.empresasService.empresaActiva == 0) {
+            console.log('user ADMIN');
+            sessionStorage.removeItem('token');
+            this.router.navigate(['login']);
+          }else{
+            console.log('EMPRESA ACTIVA',this.empresasService.empresaActiva);
+           // this.setPermisos(this.empresasService.empresaActiva,'setUser Admin 149');
+          }
+          this.irAlMenu('empresas');
+          break;
       case "Mantenimiento":
         if (this.empresasService.empresaActiva == 0) {
           console.log('user mantenimientor');
           sessionStorage.removeItem('token');
           this.router.navigate(['login']);
         }else{
-          this.setPermisos(this.empresasService.empresaActiva);
+         // this.setPermisos(this.empresasService.empresaActiva,'setUser Mantenimiento 159');
         }
-        // this.empresa = new Empresa('', '', this.empresasService.empresaActiva);
-        // this.empresasService.seleccionarEmpresa(this.empresa);
-        // this.permiso = true;
         this.irAlMenu('maquinaria');
         break;
       case 'Gerente':
@@ -152,11 +166,8 @@ if (evento){
           sessionStorage.removeItem('token');
           this.router.navigate(['login']);
         }else{
-          this.setPermisos(this.empresasService.empresaActiva);
+         // this.setPermisos(this.empresasService.empresaActiva,'setUser Gerente 172');
         }
-        // this.empresa = new Empresa('', '',this.empresasService.empresaActiva);
-        // this.empresasService.seleccionarEmpresa(this.empresa);
-        // this.permiso = true;
         this.irAlMenu('Controles')
         break;
       default:
@@ -181,7 +192,7 @@ irAlMenu(menuDefecto?:string){
   console.log('GOTO',menuDefecto)
   this.setUser().then(
     (empresa)=>{
-  this.setPermisos(empresa);
+  this.setPermisos(empresa,'irAlMenu 201');
   this.permiso=true;
       switch(menuDefecto){
         case "dashboard":
@@ -220,7 +231,8 @@ irAlMenu(menuDefecto?:string){
 
 }
 
-setPermisos(idempresa){
+setPermisos(idempresa, fuente){
+  console.log('SET PERMISOS',idempresa,fuente)
   let parametros = '&idempresa=' + idempresa; 
   this.servidor.getObjects(URLS.OPCIONES_EMPRESA, parametros).subscribe(
     response => {
@@ -228,10 +240,10 @@ setPermisos(idempresa){
       if (response.success && response.data) {
         for (let element of response.data) {
           //this.permisos.setOpciones(true,element.opcion);
-          this.permisos.setOpciones(true,element.idopcion,'login');
+          this.permisos.setOpciones(true,element.idopcion,'routerCanvas');
         }
         console.log('setting permisos');
-        this.permisos.modulosFuente.next('login');
+        this.permisos.modulosFuente.next('routerCanvas');
       }
   },
   error => {console.log(error)});

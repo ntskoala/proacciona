@@ -41,6 +41,13 @@ export class DashrealizadosComponent implements OnInit {
 
   ngOnInit() {
     this.loadControles();
+    this.empresasService.empresaSeleccionada.subscribe(
+      (emp)=>{
+        console.log(emp);
+        if(emp){
+          this.loadControles();
+        }
+      })
   }
 
   loadControles() {

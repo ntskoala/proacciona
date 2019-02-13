@@ -7,7 +7,8 @@ import { TranslateService} from '@ngx-translate/core';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
-import { EmpresasComponent } from './empresas.component';
+// import { EmpresasComponent } from './empresas/empresas.component';
+import { RouterCanvasComponent } from './routerCanvas.component';
 
 import { URLS,cal } from '../models/urls';
 import { Checklist } from '../models/checklist';
@@ -44,7 +45,7 @@ public es;
   constructor(
     public servidor: Servidor, 
     public empresasService: EmpresasService, 
-    public empresasComponent: EmpresasComponent, 
+    public routerCanvasComponent: RouterCanvasComponent, 
     public permisos: PermisosService,
     private route: ActivatedRoute,
     public translateService: TranslateService  
@@ -218,7 +219,7 @@ public es;
 scroll(){
   console.log("dateclicked");
 
-  this.empresasComponent.scrolldown();
+  this.routerCanvasComponent.scrolldown();
 
 }
 

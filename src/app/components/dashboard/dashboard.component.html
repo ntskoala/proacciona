@@ -6,10 +6,10 @@
 
         <app-dashrealizados></app-dashrealizados> -->
         <div *ngIf="empresasService.seleccionada" class="companyDash">
-        <app-dashincidencias class="module"></app-dashincidencias>
-        <app-alertasControles class="module"></app-alertasControles>
-        <app-dashrealizados class="module"></app-dashrealizados>
-        <app-uso class="module"></app-uso>
+        <app-dashincidencias #db1 class="module"></app-dashincidencias>
+        <app-alertasControles #db2 class="module"></app-alertasControles>
+        <app-dashrealizados #db3 class="module"></app-dashrealizados>
+        <app-uso #db4 class="module"></app-uso>
         </div>
         
         <div *ngIf="empresasService.administrador" class="adminDash">

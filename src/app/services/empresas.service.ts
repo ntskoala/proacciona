@@ -21,6 +21,8 @@ export class EmpresasService {
   login:boolean=false;
   hayLogoEmpresa:number;
   nombreEmpresa:string='';
+  holding:number=null;
+  idHolding:number=null;
   currentStartDate:string=moment().startOf('year').subtract(1,"y").format("YYYY-MM-DD");
   //fichas_maquinaria: boolean;
 //  empresa: Empresa;
@@ -39,14 +41,16 @@ export class EmpresasService {
       console.log("####EMPRESA SELECCIONADA:",empresa);
       this.seleccionada = empresa.id;
       this.nombreEmpresa = empresa.nombre;
+      this.holding= empresa.holding;
+      this.idHolding= empresa.idHolding;
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
       this.empresaActiva = empresa.id;
       this.hayLogoEmpresa = parseInt(empresa.logo);
   }
 
-  empresaCreada(empresa: Empresa) {
-      this.nuevaEmpresaFuente.next(empresa);
+  empresaCreada(empresaNova: Empresa) {
+      this.nuevaEmpresaFuente.next(empresaNova);
   }
 
 setOpciones(valor: boolean){

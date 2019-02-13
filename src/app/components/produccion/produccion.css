@@ -130,7 +130,7 @@ md-grid-list{
 
 .botones{
     width:900px;
-    background-color: #fff;
+    /* background-color: #fff; */
     height: 55px;
     float:left;
     margin-top: 30px;
@@ -140,7 +140,7 @@ md-grid-list{
 }
 
 .but2{
-    width:170px;
+    margin-left: 30px;
 }
 
 .divrow{
@@ -242,4 +242,8 @@ md-grid-list{
     width:900px;
     height:300px;
     min-height: 300px;
+}
+
+.ui-dropdown-label{
+ background: #fff9c4;
 }

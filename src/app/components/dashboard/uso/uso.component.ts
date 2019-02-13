@@ -32,6 +32,13 @@ public dias:number;
 
   ngOnInit() {
       this.loadUsers();
+      this.empresasService.empresaSeleccionada.subscribe(
+        (emp)=>{
+          console.log(emp);
+          if(emp){
+            this.loadUsers();
+          }
+        })
   }
 
 // fillData(){

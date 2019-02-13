@@ -49,14 +49,14 @@ import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 import { AppComponent } from './components/app.component';
 import { NavComponent } from './components/nav.component';
 import { MenuComponent} from './components/menu.component';
-
+import { RouterCanvasComponent} from './components/routerCanvas.component';
 import { StartComponent } from './components/start.component';
-import { EmpresasComponent } from './components/empresas.component';
+import { EmpresasComponent } from './components/empresas/empresas.component';
 import { OpcionesPremium } from './components/configuracion/empresasopcionespremium.component';
 import { Opciones } from './components/configuracion/opciones';
-import { SeleccionarEmpresaComponent } from './components/seleccionar-empresa.component';
-import { ListadoEmpresasComponent } from './components/listado-empresas.component';
-import { NuevaEmpresaComponent } from './components/nueva-empresa.component';
+import { SeleccionarEmpresaComponent } from './components/empresas/seleccionar-empresa.component';
+import { ListadoEmpresasComponent } from './components/empresas/listado-empresas.component';
+import { NuevaEmpresaComponent } from './components/empresas/nueva-empresa.component';
 import { GestionTablasComponent } from './components/configuracion/gestion-tablas.component';
 import { GestionInformesComponent } from './components/gestion-informes.component';
 import { UsuariosComponent } from './components/configuracion/usuarios.component';
@@ -312,6 +312,7 @@ export function createTranslateLoader(http: HttpClient) {
     //CalendarComponent,
     NavComponent,
     MenuComponent,
+    RouterCanvasComponent,
     StartComponent,
     LoginComponent,
     EmpresasComponent,

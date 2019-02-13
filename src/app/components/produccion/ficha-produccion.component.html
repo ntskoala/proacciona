@@ -1,6 +1,7 @@
 <div class="table fichaProduccion">
 <form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
-    <span class="table">
+
+<!--    <span class="table">
         <span class="header-row">
              <span class="header-cell">{{"produccion.numlote" | translate}}</span>
              <span class="header-cell">{{"produccion.producto" | translate}}</span>
@@ -26,6 +27,7 @@
                 </select>
              </span>
         </span>
+
         <span class="header-row">
              <span class="header-cell">{{"produccion.fecha_inicio" | translate}}</span>
              <span class="header-cell">{{"produccion.fecha_fin" | translate}}</span>
@@ -43,6 +45,7 @@
                 <p-calendar appendTo="body" placeholder="fecha_caducidad" [(ngModel)]="orden.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad"></p-calendar>
              </span>
         </span>
+
         <span class="header-row">
              <span class="header-cell">{{"produccion.cantidad" | translate}}</span>
              <span class="header-cell">{{"produccion.tipo_medida" | translate}}</span>
@@ -54,19 +57,88 @@
                  [(ngModel)]="orden.cantidad" name="cantidad">
              </span>
          <span class="cell">
-       <select class="smallselect" [(ngModel)]="orden.tipo_medida" name="tipo_medida">
+       !-- <select class="smallselect" [(ngModel)]="orden.tipo_medida" name="tipo_medida">
       <option *ngFor="let medida of medidas; let i = index" [value]="medida">
         {{medida}}
       </option>
-    </select>
+    </select> --
+    <p-dropdown [placeholder]="'produccion.tipo_medida' | translate" [options]="medidas" [(ngModel)]="orden.tipo_medida" appendTo="body" [style]="{'width':'110px'}" name="tipo_medida"></p-dropdown>
  </span>
   <span class="cell">
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo" [placeholder]="'produccion.remanente' | translate" type="text"
-                 [(ngModel)]="orden.remanente" name="remanente">
+            [(ngModel)]="orden.remanente" name="remanente">
     </span>
         </span>
-    </span>
-    
+    </span>-->
+    <mat-grid-list cols="3" rowHeight="65px">
+    <!--****   ROW   -->
+    <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.numlote" | translate}}
+            </mat-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'produccion.numlote' | translate" type="text"
+            required [(ngModel)]="orden.numlote" name="numlote">
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.producto" | translate}}
+            </mat-grid-tile-header>
+            <select class="medium campo inputCampo" [(ngModel)]="orden.idproductopropio" name="idproductopropio" (change)="setIdProductoPropio($event)">
+                    <option *ngFor="let prod of productos; let i = index" [value]="prod.id">
+                    {{prod.nombre}}
+                    </option>
+                </select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.estado" | translate}}
+            </mat-grid-tile-header>
+            <select class="medium campo inputCampo" [(ngModel)]="orden.estado" name="estado">
+                    <option value="abierto">{{'abierto' | translate}}</option>
+                    <option value="cerrado">{{'cerrado' | translate}}</option>
+                    <option value="Entregado">{{'entregado' | translate}}</option>
+                </select>
+        </mat-grid-tile>
+    <!--****   ROW   -->
+    <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.fecha_inicio" | translate}}
+            </mat-grid-tile-header>
+            <p-calendar appendTo="body" placeholder="fecha_inicio" [(ngModel)]="orden.fecha_inicio" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_inicio" class="campo inputCampo"></p-calendar>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.fecha_fin" | translate}}
+            </mat-grid-tile-header>
+            <p-calendar appendTo="body" placeholder="fecha_fin" [(ngModel)]="orden.fecha_fin" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_fin" class="campo inputCampo"></p-calendar>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.fecha_caducidad" | translate}}
+            </mat-grid-tile-header>
+            <p-calendar appendTo="body" placeholder="fecha_caducidad" [(ngModel)]="orden.fecha_caducidad" [locale]="es" dateFormat="dd/mm/yy"  name="fecha_caducidad" class="campo inputCampo"></p-calendar>
+        </mat-grid-tile>
+    <!--****   ROW   -->
+    <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.cantidad" | translate}}
+            </mat-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'produccion.cantidad' | translate" type="text"
+                 [(ngModel)]="orden.cantidad" name="cantidad">
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.tipo_medida" | translate}}
+            </mat-grid-tile-header>
+            <p-dropdown [placeholder]="'produccion.tipo_medida' | translate" [options]="medidas" [(ngModel)]="orden.tipo_medida" appendTo="body" [style]="{'width':'110px'}" name="tipo_medida" class="campo inputCampo dropDown"></p-dropdown>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-grid-tile-header>{{"produccion.remanente" | translate}}
+            </mat-grid-tile-header>
+            <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'produccion.remanente' | translate" type="text"
+                 [(ngModel)]="orden.remanente" name="remanente">
+        </mat-grid-tile>
+    </mat-grid-list>
+
 
 
     <div  class="botones">
@@ -77,20 +149,37 @@
     </button>
       </div>
     </span>
-    <div class="tooltip" matTooltip="{{'trazabilidad.trazaAtras' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
-        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="accent" (click)="trazabilidadAtras()" type="button">
-          <span class="material-icons">rotate_left</span>
+    <div class="tooltip but2" matTooltip="{{'trazabilidad.trazaAtras' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
+        <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-raised-button color="accent" (click)="trazabilidadAtras()" type="button">
+                <mat-icon>rotate_left</mat-icon>{{'trazabilidad.trazaAtras' | translate}}
+            <!-- <span class="material-icons">rotate_left</span> -->
     </button>
     </div>
-    <div class="tooltip" matTooltip="{{'trazabilidad.trazaAdelante' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
-    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="accent" (click)="trazabilidadAdelante()" type="button">
-        <span class="material-icons">rotate_right</span>
+    <div class="tooltip but2" matTooltip="{{'trazabilidad.trazaAdelante' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
+    <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-raised-button color="accent" (click)="trazabilidadAdelante()" type="button">
+            <mat-icon>rotate_right</mat-icon>{{'trazabilidad.trazaAdelante' | translate}}
+        <!-- <span class="material-icons">rotate_right</span> -->
   </button>
     </div>
     </div>
 
 
 </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div class="traza" *ngIf="trazabilidad">
 <trazabilidad [orden]="orden" [modo]="modo" *ngIf="trazabilidad"></trazabilidad>

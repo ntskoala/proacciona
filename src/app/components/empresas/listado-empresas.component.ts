@@ -1,21 +1,22 @@
 import { Component, OnInit, Output,EventEmitter,ViewChild,ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Servidor } from '../services/servidor.service';
-import { EmpresasService } from '../services/empresas.service';
-import { PermisosService } from '../services/permisos.service';
-import { URLS } from '../models/urls';
-import { Empresa } from '../models/empresa';
+import { Servidor } from '../../services/servidor.service';
+import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
+import { URLS } from '../../models/urls';
+import { Empresa } from '../../models/empresa';
 import {MatSelect} from '@angular/material';
  
 @Component({
   selector: 'listado-empresas',
-  templateUrl: '../assets/html/listado-empresas.component.html'
+  templateUrl: './listado-empresas.component.html'
 })
 
 export class ListadoEmpresasComponent implements OnInit {
   @ViewChild('choicer') Choicer: ElementRef;
   @Output() empresaseleccionada: EventEmitter<Empresa>=new EventEmitter<Empresa>();
+  @Output() onLoadEmpresas: EventEmitter<Empresa[]>=new EventEmitter<Empresa[]>();
   subscription: Subscription;
   empresas: Empresa[] = [];
   empresasNoActivas:Empresa[] = [];
@@ -27,10 +28,28 @@ export class ListadoEmpresasComponent implements OnInit {
   ngOnInit() {
     // Subscripción a la creación de nuevas empresa
     this.subscription = this.empresasService.nuevaEmpresa.subscribe(
-      //empresa => this.empresas.push(empresa)
+      (empresaCreada) => {
+        this.empresas.push(empresaCreada);
+
+        this.empresas = this.empresas.slice();
+        console.log('empresa creada',this.empresas);
+      }
     );
     // Conseguir la lista de empresas
-    this.servidor.getObjects(URLS.EMPRESAS, '').subscribe(
+    let param=''
+    console.log('INIT EMPRESAS',this.empresasService.userTipo,this.empresasService.empresaActiva,this.empresasService.holding);
+    if (this.empresasService.userTipo=='Admin'){
+
+      if(this.empresasService.holding==1){
+        param="&id="+this.empresasService.empresaActiva+"&holding="+this.empresasService.empresaActiva;
+      }
+      if(this.empresasService.holding==2){
+        param="&id="+this.empresasService.idHolding+"&holding="+this.empresasService.idHolding
+      }
+
+    }
+    console.log(param);
+    this.servidor.getObjects(URLS.EMPRESAS, param).subscribe(
       response => {
         console.log(response)
         if (response.success) {
@@ -40,13 +59,17 @@ export class ListadoEmpresasComponent implements OnInit {
             this.empresas.push(new Empresa(
               element.nombre,
               element.logo,
-              element.id
+              element.id,
+              element.holding,
+              element.idHolding
             ))
           }else{
             this.empresasNoActivas.push(new Empresa(
               element.nombre,
               element.logo,
-              element.id
+              element.id,
+              element.holding,
+              element.idHolding
             ))
           }
           }
@@ -54,10 +77,18 @@ export class ListadoEmpresasComponent implements OnInit {
     },
     (error)=>console.log(error),
     ()=>{
+      this.checkSelectedHolding();
+      this.onLoadEmpresas.emit(this.empresas);
       this.expand();
     }
     
     );
+  }
+  checkSelectedHolding(){
+    if (this.empresasService.holding===null && this.empresasService.seleccionada>0){
+      let event= {'items':[{'id':this.empresasService.seleccionada}]};
+      this.selecciona(event);
+    }
   }
 
   selecciona(evento: object){

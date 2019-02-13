@@ -4,6 +4,8 @@ export class Empresa {
     public logo: string,
 //    public exportar_informes: string,
 //    public fichas_maquinaria: string,
-    public id?: number
+    public id?: number,
+    public holding?:number,
+    public idHolding?:number
   ) {}
 }

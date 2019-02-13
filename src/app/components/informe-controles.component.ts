@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { PermisosService } from '../services/permisos.service';
-import { EmpresasComponent } from './empresas.component';
+// import { EmpresasComponent } from './empresas/empresas.component';
 import { URLS,cal } from '../models/urls';
 import { ResultadoControl } from '../models/resultadocontrol';
 import * as moment from 'moment';
@@ -25,7 +25,9 @@ export class InformeControlesComponent implements OnInit {
   fotoSrc: string;
   exportar_informes: boolean =false;
 public es;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService, public empresasComponent: EmpresasComponent, public permisos: PermisosService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService, 
+    // public empresasComponent: EmpresasComponent, 
+    public permisos: PermisosService) {}
 
   ngOnInit() {
     // Conseguir controles
@@ -115,7 +117,7 @@ public es;
 
 scroll(){
   console.log("dateclicked");
-  this.empresasComponent.scrolldown();
+  // this.empresasComponent.scrolldown();
 }
 excel(fecha){
   console.log("send to excel");

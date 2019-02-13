@@ -42,7 +42,7 @@ export class PermisosService {
 
 
     setOpciones(valor: boolean, opcion: any, fuente?: string) {
-        console.log(opcion + ' ' + fuente);
+        console.log(opcion + ' ' + valor + ' ' + fuente);
         switch (opcion) {//OPCION = ID opcion
             case "1"://"exportar informes":
                 // this.exportarFuente.next(valor);

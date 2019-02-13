@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS,cal } from '../../models/urls';
+import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { ProduccionOrden } from '../../models/produccionorden';
@@ -37,7 +37,7 @@ public items: Distribucion[];
 public cols:any[];
 public productos: ProductoPropio[]=[];
 public clientes: object[]=[];
-public medidas: object[]=[{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
+public medidas: object[]=dropDownMedidas;
 
 public guardar = [];
 public remanentesEditados = [];

@@ -1,26 +1,27 @@
-import { Component } from '@angular/core';
+import { Component,Output,EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Servidor } from '../services/servidor.service';
-import { EmpresasService } from '../services/empresas.service';
-import { URLS } from '../models/urls';
-import { Empresa } from '../models/empresa';
-import { Modal } from '../models/modal';
+import { Servidor } from '../../services/servidor.service';
+import { EmpresasService } from '../../services/empresas.service';
+import { URLS } from '../../models/urls';
+import { Empresa } from '../../models/empresa';
+import { Modal } from '../../models/modal';
 
 @Component({
   selector: 'seleccionar-empresa',
-  templateUrl: '../assets/html/seleccionar-empresa.component.html'
+  templateUrl: './seleccionar-empresa.component.html'
 })
 
 export class SeleccionarEmpresaComponent {
   
+  @Output() onGotEmpresas: EventEmitter<Empresa[]>=new EventEmitter<Empresa[]>();
   // subscription: Subscription;
   // //empresas: Empresa[] = [];
   // empresa: Empresa = new Empresa('Seleccionar empresa', '0', 0);
    modal: Modal = new Modal();
   // formdata: FormData = new FormData();
   public Premium: boolean;
-
+  
   constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
 
 
@@ -29,7 +30,11 @@ export class SeleccionarEmpresaComponent {
     this.empresasService.seleccionarEmpresa(empresa);
     sessionStorage.setItem('idEmpresa', empresa.id.toString());
     sessionStorage.setItem('nombreEmpresa', empresa.nombre);
+    sessionStorage.setItem('holding', empresa.holding.toString());
     //console.log("informes",this.empresasService.empresa.exportar_informes);
+  }
+  gotEmpresas(empresas:Empresa[]){
+    this.onGotEmpresas.emit(empresas);
   }
 
   checkBorrar() {

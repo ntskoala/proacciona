@@ -113,6 +113,10 @@
   "introducirtexto":"",
   "expandir":"Expandir",
   "Retrasado":"Retrasado",
+  "Holding":"Holding",
+  "MasterHolding":"Master holding",
+  "PartofHolding":"Part of holding",
+  "StandAlone":"Stand alone",
   "menu":{
     "login":"Cerrar sesión",
     "empresas":"Selecctor de empresa",
@@ -176,6 +180,7 @@
     "pieza":"Pieza",
     "cantidad":"Cantidad",
     "imagen":"Imagen",
+    "doc":"Doc",
     "proximafecha":"Próxima fecha",
     "periodicidad":"Periodicidad",
     "mantenimientos correctivos":"Correctivos",
@@ -549,6 +554,7 @@
       "logginsST":"Accesos y acciones de usuario",
       "desde": "desde",
       "pendientes":"pendientes",
+      "lecturas":"lecturas",
       "tablas":{
         "limpieza_realizada":"limpiezas",
         "incidencias":"incidencias",

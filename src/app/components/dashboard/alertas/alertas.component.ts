@@ -26,6 +26,13 @@ public altura:string='';
 
   ngOnInit() {
     this.loadAlertas();
+    this.empresasService.empresaSeleccionada.subscribe(
+      (emp)=>{
+        console.log(emp);
+        if(emp){
+          this.loadAlertas();
+        }
+      })
   }
 
   loadAlertas(periodo?:string){
@@ -35,6 +42,7 @@ public altura:string='';
                 this.alertas = [];
                 this.controles = [];
                 this.checklists = [];
+                this.limpiezas = [];
                 this.mantenimientos = [];
                 if (response.success && response.data) {
                   for (let element of response.data) {

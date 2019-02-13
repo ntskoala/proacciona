@@ -25,7 +25,7 @@ export class UsuariosComponent implements OnInit {
   idBorrar: number;
   modal: Modal = new Modal();
   procesando:boolean=false;
-  public tipos:object[]=[{label:'Operario', value:'Operario'},{label:'Gerente', value:'Gerente'},{label:'Mantenimiento', value:'Mantenimiento'}];
+  public tipos:object[]=[{label:'Operario', value:'Operario'},{label:'Gerente', value:'Gerente'},{label:'Mantenimiento', value:'Mantenimiento'},{label:'Admin Holding', value:'Admin'}];
   public superusers:object[]=[{label:'Activado', value:1},{label:'Desactivado', value:0}];
   public cols:any[];
   public newRow:boolean=false;
@@ -55,12 +55,13 @@ public informeData:any;
       { field: 'password', header: 'Contraseña', type: 'std', width:160,orden:true,'required':true },
       { field: 'tipouser', header: 'Tipo', type: 'dropdown', width:120,orden:true,'required':true },
       { field: 'superuser', header: 'Mantenimiento', type: 'dropdown', width:90,orden:false,'required':false },
+      // { field: 'userHolding', header: 'userHolding', type: 'dropdown', width:90,orden:false,'required':false },
       { field: 'email', header: 'email', type: 'std', width:130,orden:true,'required':false }
     ];
   }
   traduceOpciones(){
     if (localStorage.idioma=='cat'){
-    this.tipos=[{label:'Operari', value:'Operario'},{label:'Gerent', value:'Gerente'},{label:'Manteniment', value:'Mantenimiento'}];
+    this.tipos=[{label:'Operari', value:'Operario'},{label:'Gerent', value:'Gerente'},{label:'Manteniment', value:'Mantenimiento'},{label:'Admin Holding', value:'Admin'}];
     this.superusers=[{label:'Activat', value:1},{label:'Desactivat', value:0}];
     } 
   }

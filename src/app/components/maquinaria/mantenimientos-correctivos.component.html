@@ -85,7 +85,7 @@
             </span>
             <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
               [matTooltipPosition]="'above'">
-              <button mat-mini-fab color="primary" (click)="openNewRow()" >
+              <button type="button" mat-mini-fab color="primary" (click)="openNewRow()" >
                 <span class="material-icons">close</span>
               </button>
             </span>
@@ -215,13 +215,13 @@
 
     <span class="plan_descripcion">
        <div [style]="{'width':'100%','height':'250px','margin':'0 1%', 'float':'left'}">
-          <h4>{{'planificaciones.causa' | translate}}</h4>
+          <h4>{{'maquinas.causa' | translate}}</h4>
 <textarea [rows]="7" [cols]="33" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.causas" name="causas" (keyup)="itemEdited(item.id)"></textarea>
 </div>
 </span>
 <!--//************ FOTO     -->
  <div style="width:11%;height:250px;margin:0 1%;float:left">
-    <h4>{{'planificaciones.imagen' | translate}}</h4>
+    <h4>{{'maquinas.imagen' | translate}}</h4>
 <img  [src]="images[item.id]" height="80px" (error)="images[item.id]='assets/images/noimage.png'" (click)="verFoto('plan',item.id,rowIndex)" /> 
 
 <hr>
@@ -235,7 +235,7 @@
 
 <!--//************ PDF     -->
    <div style="width:11%;height:250px;margin:0 1%;float:left" >
-<h4>{{'planificaciones.doc' | translate}}</h4>
+<h4>{{'maquinas.doc' | translate}}</h4>
 <img  [ngClass]="{'disabled':!item.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('doc',item.id)" /> 
     <hr>
 <span  class="but but2 altPanel">

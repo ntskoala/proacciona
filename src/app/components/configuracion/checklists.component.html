@@ -203,7 +203,7 @@
           </span>
           <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
             [matTooltipPosition]="'above'">
-            <button mat-mini-fab color="primary" (click)="openNewRow()" >
+            <button mat-mini-fab color="primary" type="button" (click)="openNewRow()" >
               <span class="material-icons">close</span>
             </button>
           </span>
@@ -217,7 +217,7 @@
 
 
   <div class="tableContent">
-  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="false">
+  <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="null">
     <!--let-expanded="expanded" -->
     <tr  [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
       <td><span *ngIf="expanded!=null">
@@ -422,8 +422,8 @@
   [style]="{'width':'460px','padding':'0px 25px 0px 25px','text-align':'left'}" *ngIf="selectedChecklist">
   <ng-template pTemplate="caption">
     <div style="text-align:left;margin-left:10px">
-      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
-      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow2()" label="{{'add' | translate}}"></button>
+      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow2()" label="{{'cerrar' | translate}}"></button>
       <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAllCCL()" style="margin-left:10px"></button>
       <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTableCCL()" style="margin-left:10px;float:right"></button>
 
@@ -447,7 +447,7 @@
       </th>
     </span>
     <!-- ********* NUEVOREGISTRO   ***-->
-    <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow,'NewRowClose':!newRow}" style="display:table-row">
+    <span [ngClass]="{'NuevoRegistro':true,'NewRow':true,'NewRowOpen':newRow2,'NewRowClose':!newRow2}" style="display:table-row">
       <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
         class="formNewRegister" #creaForm2="ngForm" (ngSubmit)="crearCCL(creaForm2.value)">
         <td style="width: 3em"></td>
@@ -486,7 +486,7 @@
           </span>
           <span class="tooltip" matTooltip="{{'cancela' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
             [matTooltipPosition]="'above'">
-            <button mat-mini-fab color="primary" (click)="openNewRow()" >
+            <button mat-mini-fab color="primary" type="button" (click)="openNewRow2()" >
               <span class="material-icons">close</span>
             </button>
           </span>

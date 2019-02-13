@@ -47,6 +47,7 @@ export class ChecklistsComponent implements OnInit{
   public cols:any[];
   public cols2:any[];
   public newRow:boolean=false;
+  public newRow2:boolean=false;
   public viewPeriodicidad: any=null;
   //***   EXPORT DATA */
 public exportar_informes: boolean =false;
@@ -67,7 +68,7 @@ public informeData:any;
     { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':true }
   ];
   this.cols2 = [
-    { field: 'id', header: 'id', type: 'std', width:10,orden:false,'required':true ,visible:false},
+    { field: 'id', header: 'id', type: 'std2', width:10,orden:false,'required':true ,visible:false},
     { field: 'nombre', header: 'Nombre', type: 'std', width:150,orden:false,'required':true,visible:true },
   ];
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
@@ -529,6 +530,15 @@ openNewRow(){
     //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
     this.newRow = false;
     }
+    openNewRow2(){
+      //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+      console.log('newRow',this.newRow);
+      this.newRow2 = !this.newRow2;
+      }
+      closeNewRow2(){
+        //this.nuevoMantenimiento =  new MantenimientosMaquina(0,0,'','');
+        this.newRow2 = false;
+        }
       //**** EXPORTAR DATA */
 
   async exportarTable(){

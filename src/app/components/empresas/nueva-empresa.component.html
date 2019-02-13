@@ -1,12 +1,22 @@
-<mat-card>
+
+<mat-card  style="width:340px">
   <mat-card-title>
     <mat-toolbar color="accent">{{'Nueva' | translate}} empresa</mat-toolbar>
   </mat-card-title>
   <form #nuevaEmpresaForm="ngForm" (ngSubmit)="nuevaEmpresa(nuevaEmpresaForm.value)">
     <mat-card-content>
+      <div>
       <mat-form-field  >
       <input matInput class="cabeceraSelect full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresa.nombre" name="nombre">
       </mat-form-field>
+      <p-dropdown [disabled]="userTipo=='Admin'" [options]="typesCompany" [(ngModel)]="empresa.holding" class="holdingdropDown" [style]="{'width':'110px','margin-left':'10px'}" name="holding"></p-dropdown>
+    
+    </div>
+    <div>
+      <p-dropdown [disabled]="userTipo=='Admin'" *ngIf="empresa['holding'] ==2"  [options]="holdings"  class="holdingdropDown"   [(ngModel)]="empresa.idHolding"  [style]="{'width':'300px'}" name="idHolding"></p-dropdown>
+    </div>
+
+
     </mat-card-content>
     <mat-card-footer>
       <button mat-raised-button color="accent" [disabled]="!nuevaEmpresaForm.form.valid" type="submit">Crear</button>
@@ -14,7 +24,7 @@
   </form>
 </mat-card>
 <div class="space"></div>
-<mat-card *ngIf="empresaActiva">
+<mat-card *ngIf="empresaActiva" style="width:340px">
   <mat-card-title >
     <mat-toolbar color="accent">{{'Modificar' | translate}} empresa</mat-toolbar>
   </mat-card-title>
@@ -23,9 +33,15 @@
       <mat-form-field  >
       <input matInput class="cabeceraSelect full-width" [placeholder]="'Nombre' | translate" type="text" required [(ngModel)]="empresaActiva.nombre" name="nombre">
       </mat-form-field>
+      <p-dropdown [disabled]="userTipo=='Admin'" *ngIf="empresasService.administrador" [options]="typesCompany" [(ngModel)]="empresaActiva['holding']" class="holdingdropDown" [style]="{'width':'110px','margin-left':'10px'}" name="holding"></p-dropdown>
+
+    <div>
+      <p-dropdown [disabled]="userTipo=='Admin'" *ngIf="empresaActiva['holding'] ==2"  [options]="holdings"  class="holdingdropDown"  [(ngModel)]="empresaActiva['idHolding']" [style]="{'width':'300px'}" name="idHolding"></p-dropdown>
+    </div>
     </mat-card-content>
     <mat-card-footer>
       <button mat-raised-button color="accent" [disabled]="!cambiaEmpresaForm.form.valid" type="submit">{{'guardar' | translate}}</button>
     </mat-card-footer>
   </form>
 </mat-card>
+

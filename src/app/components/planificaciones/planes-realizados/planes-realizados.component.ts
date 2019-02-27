@@ -58,6 +58,7 @@ filterDates:string="&filterdates=true&fecha_inicio="+this.empresasService.curren
 es
 
 autoresize:boolean=true;
+public procesando:boolean=false;
 //******IMAGENES */
 //public url; 
 public baseurl;
@@ -173,6 +174,8 @@ public informeData:any;
              }
              this.incidenciaSelection();
              this.getIncidencias();
+            }else{
+              this.procesando=false;
             }
 
         });
@@ -181,6 +184,7 @@ public informeData:any;
 
 
 loadSupervisores(){
+  this.procesando=true;
     let params = this.empresasService.seleccionada;
     let parametros2 = "&entidad=usuarios"+'&idempresa=' + params;
         this.servidor.getObjects(URLS.STD_ITEM, parametros2).subscribe(
@@ -197,6 +201,8 @@ loadSupervisores(){
             // console.log('usuarios',this.usuarios)
              this.setItems();
             // this.localSupervisor = this.findSupervisor(this.empresasService.userId);
+            }else{
+              this.procesando =false;
             }
         });
 }
@@ -413,7 +419,9 @@ getIncidencias(){
               this.incidencia[element.idOrigen]["idIncidencia"]=element.id; 
               this.incidencia[element.idOrigen]["estado"]=element.estado;                              
            }
-           
+           this.procesando=false;
+          }else{
+            this.procesando=false;
           }
       });
 }

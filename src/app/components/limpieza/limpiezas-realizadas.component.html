@@ -147,19 +147,19 @@
     -->
 
     <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-    <div class="modal" *ngIf="procesando">
+    <!-- <div class="modal" *ngIf="procesando">
       <mat-spinner></mat-spinner>
-    </div>
+    </div> -->
     
     
-    <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew>
+    <!-- <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew> -->
     <!-- ********* INICIO TABLA REGISTROS-->
     <p-table #DT [columns]="cols" [value]="items" dataKey="id" 
     (onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
     selectionMode="single" [(selection)]="selectedItem"
       [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
       [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
-      [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" [ngStyle]="{'min-height.px': minHeight}">
+      [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}">
       <ng-template pTemplate="caption">
         <div style="text-align:left;margin-left:10px">
           <!-- <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>

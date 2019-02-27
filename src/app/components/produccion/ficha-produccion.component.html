@@ -161,6 +161,27 @@
         <!-- <span class="material-icons">rotate_right</span> -->
   </button>
     </div>
+
+<!-- <span  class="but but2 altPanel">
+<span class="cell tooltip" matTooltip="{{'subirArchivo' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">                
+   <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " class="inputlabelRound" for="doc"></label>
+</span>
+   <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' " id="doc" class="inputfile" type="file" (change)="uploadFunciones($event,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+   <img  [ngClass]="{'disabled':!orden.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="80px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('')" /> 
+ 
+ </span> -->
+    <div class="tooltip but2" style="width: 130px;" matTooltip="{{'upload' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
+            <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" class="inputlabel" for="doc">{{'subirArchivo' | translate}}</label>
+            <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
+    </div>
+    <div style="width:50px;display: inline-block;margin-left: 30px;margin-top: -40px;">
+   <img  [ngClass]="{'disabled':!orden.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="40px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('')" /> 
+    </div>
+    <!-- <div class="tooltip but2" matTooltip="{{'ver' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
+            <button type="button" mat-stroked-button *ngIf="orden.doc" color="primary" [disabled]="false" (click)="verFoto('ficha')">
+            {{'maquinas.ver documento' | translate}}
+            </button>    
+        </div> -->
     </div>
 
 
@@ -199,3 +220,6 @@
     </div> -->
 
 </div>
+
+
+<app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>

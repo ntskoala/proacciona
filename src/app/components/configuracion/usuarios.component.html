@@ -122,7 +122,6 @@ sortField="orden" [sortOrder]="1"  [tableStyle]="{'width':'900px'}">
 
 
 
-<periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, plan.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="plan.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew>
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table #DT [columns]="cols" [value]="usuarios" dataKey="id" (onEditInit)="onEdit($event)"
   [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"

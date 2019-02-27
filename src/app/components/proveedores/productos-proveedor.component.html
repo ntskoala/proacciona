@@ -111,10 +111,10 @@
 
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table #DT [columns]="cols" [value]="items" dataKey="id" 
-(onEditInit)="onEdit($event)" (onRowExpand)="rowExpanded($event)" (onRowCollapse)="rowCollapsed($event)" 
+(onEditInit)="onEdit($event)"
   [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
   [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
-  [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" [ngStyle]="{'min-height.px': minHeight}">
+  [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}" >
   <ng-template pTemplate="caption">
     <div style="text-align:left;margin-left:10px">
       <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>

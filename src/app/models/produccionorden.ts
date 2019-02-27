@@ -15,6 +15,7 @@ export class ProduccionOrden {
     public familia?: string,
     public estado?: string,
     public idalmacen?: number,
-    public idcliente?: number
+    public idcliente?: number,
+    public doc?: string
 ){}
 }

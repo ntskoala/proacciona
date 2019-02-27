@@ -64,7 +64,7 @@
 
 
 
-  <h2 class="popupTitle" *ngIf="!maquina.id>0">{{'maquinas.piezas' | translate}} general</h2>
+  <h2 class="popupTitle" *ngIf="!(maquina.id>0)">{{'maquinas.piezas' | translate}} general</h2>
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table [columns]="cols" [value]="piezas" dataKey="id" [paginator]="true" [rows]="15"
     (onEditInit)="onEdit($event)"
@@ -204,16 +204,6 @@
 
 
 
-    <!-- ********* EXPANSION-->
-    <ng-template *ngIf="expanded!=null" pTemplate="rowexpansion" let-item let-columns="columns">
-        <tr>
-            <td [attr.colspan]="columns.length + 2">
-                <div style="text-align:center">
-                    <img [attr.alt]="item.foto" src="assets/showcase/images/noimage.png">
-                </div>
-            </td>
-        </tr>
-    </ng-template>
 </p-table>
 
 <!-- ********* FIN TABLA REGISTROS-->

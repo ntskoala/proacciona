@@ -247,3 +247,7 @@ md-grid-list{
 .ui-dropdown-label{
  background: #fff9c4;
 }
+
+.disabled{
+    opacity: 0.2;
+}

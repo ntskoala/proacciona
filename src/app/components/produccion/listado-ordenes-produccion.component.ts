@@ -76,7 +76,7 @@ loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
             this.items.push(this.item1);
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
-                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen,element.idcliente));
+                this.items.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,new Date(element.fecha_inicio),new Date(element.fecha_fin),new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen,element.idcliente,element.doc));
               }
              console.log(this.items);
             }

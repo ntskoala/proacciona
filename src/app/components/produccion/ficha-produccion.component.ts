@@ -34,18 +34,25 @@ public almacenesDestino: Almacen[];
 public productos: ProductoPropio[]=[];
 //public medidas: string[]=['Kg.','g.','l.','ml.','unidades'];
 public medidas:object[]=dropDownMedidas;
+public url; 
+public baseurl;
+public foto;
+
   constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
     this.getProductos();
     this.getAlmacenes();
     this.es=cal;
+    this.baseurl = URLS.DOCS + this.empresasService.seleccionada + '/produccion_orden/';
+    this.url = this.baseurl + this.orden.id +'_'+this.orden.doc;
   }
   ngOnChanges(){
 
     if (!moment(this.orden.fecha_inicio).isValid()) this.orden.fecha_inicio = null;
     if (!moment(this.orden.fecha_fin).isValid()) this.orden.fecha_fin = null;
     if (!moment(this.orden.fecha_caducidad).isValid()) this.orden.fecha_caducidad = null;
+    this.url = this.baseurl + this.orden.id +'_'+this.orden.doc;
   }
   
 cambiarTab(){}
@@ -122,4 +129,33 @@ trazabilidadAdelante(){
   this.trazabilidad= !this.trazabilidad;
 // this.trazabilidadAd= !this.trazabilidadAd;
 }
+
+
+verFoto(foto:string){
+  //this.verdoc =  true;
+  if (this.orden.doc){
+  this.foto=this.url;
+  }
+}
+
+
+uploadFunciones(event:any,field?:string) {
+  var target = event.target || event.srcElement; //if target isn't there then take srcElement
+  let files = target.files;
+  console.log(target);
+  field='doc';
+  //let files = event.srcElement.files;
+  let idEmpresa = this.empresasService.seleccionada.toString();
+  this.servidor.postDoc(URLS.UPLOAD_DOCS, files,'produccion_orden', this.orden.id.toString(), this.empresasService.seleccionada.toString(),field).subscribe(
+    response => {
+      console.log('doc subido correctamente');
+        this.orden.doc = files[0].name;
+        this.url = this.baseurl + this.orden.id +'_'+this.orden.doc;          
+      // let activa = this.empresas.find(emp => emp.id == this.empresasService.seleccionada);
+      // activa.logo = '1';
+    }
+  )
+}
+
+
 }

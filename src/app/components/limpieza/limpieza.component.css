@@ -253,6 +253,7 @@ cursor: pointer;
     width:37%;
     float:left;
     height: 80px;
+    max-width: 330px !important;
 }
 
 .textareacontainer{

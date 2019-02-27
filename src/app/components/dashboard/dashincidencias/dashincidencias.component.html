@@ -5,8 +5,8 @@
   </mat-card-header>
   <mat-card-content>
     <mat-list class="">
-      <mat-list-item *ngFor="let incidencia of incidencias" (click)="gotoOrigen(incidencia)" class="elem"  [ngClass]="{'sinDefinir':incidencia.estado==-1,'noAplica':incidencia.estado==0,'abierto':incidencia.estado==1,'cerrado':incidencia.estado==2}">
-        
+      <mat-list-item *ngFor="let incidencia of incidencias" (click)="gotoOrigen(incidencia)" class="elem" >
+        <div [ngClass]="{'boliche':true,'sinDefinir':incidencia.estado==-1,'noAplica':incidencia.estado==0,'abierto':incidencia.estado==1,'cerrado':incidencia.estado==2}"></div>
           <span > 
             {{incidencia.incidencia}} 
           </span>

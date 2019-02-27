@@ -1,13 +1,17 @@
 .sinDefinir{
+    background-color: #673ab7 !important;
     color:  #673ab7;
 }
 .noAplica{
+    background-color: #cccccc !important;
     color:  #cccccc;
 }
 .abierto{
+    background-color: red !important;
     color: 2 red;
 }
 .cerrado{
+    background-color: #33cc33 !important;
     color:  #33cc33;
 }
 .elem{

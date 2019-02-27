@@ -15,6 +15,7 @@ import { Incidencia } from '../../../models/incidencia';
   styleUrls: ['./dashincidencias.component.css']
 })
 export class DashincidenciasComponent implements OnInit {
+
   public incidencias = [];
   public entidad:string="&entidad=incidencias";
   constructor(public servidor: Servidor,public empresasService: EmpresasService,
@@ -27,13 +28,17 @@ export class DashincidenciasComponent implements OnInit {
     this.dias=1;
     let fechaInicio = moment().subtract(1,'d').toDate();
     this.loadIncidencias(fechaInicio);
+    if(this.empresasService.menu=='empresas'){
     this.empresasService.empresaSeleccionada.subscribe(
       (emp)=>{
         console.log(emp);
-        if(emp){
+        if(emp && this.empresasService.menu=='empresas'){
+          
           this.loadIncidencias(fechaInicio);
+          
         }
       })
+    }
   }
 
   loadIncidencias(dateInicio: Date) {
@@ -79,7 +84,9 @@ export class DashincidenciasComponent implements OnInit {
   gotoOrigen(item){
     console.log('goto Origen',item);
     let origenAsociado = item.origenasociado || 'incidencias'
-    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ origenAsociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
+    let id=0;
+    origenAsociado=='incidencias'?id=item.id:id=item.idOrigen
+    let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ origenAsociado +'/'+item.idOrigenasociado+'/'+id
     //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     this.router.navigate([url]);

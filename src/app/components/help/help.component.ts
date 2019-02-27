@@ -67,14 +67,14 @@ private code='1000.0f66ccdef4558f4c6b8f7e21a01e00ce.948fd202bcb8271d23d14b926a69
     let cabecera = "Nuevo ticket de soporte con fecha y hora: <b>" + moment().format('DD-MM-YYYY hh:mm')+"</b><BR>";
     let User = "Solicitado por: <b>" +  user["label"]  + "</b> con prioridad: <b>" + this.ticket.priority +  "</b><BR>";
     let ticket =   "Asunto: <b>" + this.ticket.subject +  "</b><BR>Descripción: " + this.ticket.description+"<BR>";
-    let url =  URLS.SERVER+this.route.snapshot["_routerState"].url ;
-    let link = "ir a la página:" + url;
+    let url =   encodeURI(URLS.SERVER)+"%23"+ encodeURI(this.route.snapshot["_routerState"].url) ;
+    let link = "ir a la página:" + encodeURI(url);
     //<a href='" + URLS.SERVER+'#'+this.route.snapshot["_routerState"].url + "'></a>
     //let body = JSON.stringify(user) + '<BR>' + JSON.stringify(this.ticket) +'<BR>'+JSON.stringify(this.route.params["_value"]);
-    let body = cabecera + User + ticket + link + "<BR>";
+    let body = cabecera + User + ticket + "<BR>";
     // console.log (body);
    
-    let parametros2 = "&body="+body;
+    let parametros2 = "&remite=help&userId="+user["value"]+"&body="+body+"&uri="+url;
     let idEmpresa = this.empresasService.seleccionada.toString();
         // this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
           this.servidor.postLogo(URLS.ALERTES,this.FILES,idEmpresa,parametros2).subscribe(
@@ -100,11 +100,15 @@ private code='1000.0f66ccdef4558f4c6b8f7e21a01e00ce.948fd202bcb8271d23d14b926a69
           response => {
             responsables = [];
             if (response.success && response.data) {
-            //  console.log(response.data)
+              console.log(response.data)
               for (let element of response.data) {  
                 responsables.push({'label':element.usuario,'value':element.id});
              }
              resolve ({"data":responsables})
+            }
+            else{
+              responsables.push({'label':'user','value':0});
+              resolve({"data":responsables})
             }
         });
       });

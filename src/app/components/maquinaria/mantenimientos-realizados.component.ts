@@ -247,7 +247,9 @@ if (foto=="doc"){
   if (this.mantenimientos[index].doc){
 if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
   //window.open(this.docs[idItem],"_blank")
-  this.pdfSrc = this.docs[idItem];
+  // this.pdfSrc = this.docs[idItem];
+  this.verdoc =  true;
+  this.foto = this.docs[idItem];
 }else{
   this.verdoc =  true;
   this.foto = this.docs[idItem];

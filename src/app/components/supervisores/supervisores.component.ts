@@ -47,8 +47,8 @@ public ancho:string;
   ngOnChanges(){
    
       this.procesando=true;
-    let num = (this.items.length * 45)
-    this.ancho = num + 'px';
+      let num = 100+(this.items.length * 37)
+      this.ancho = num + 'px';
     
         switch(this.tipoControl){
       case "Planificaciones":

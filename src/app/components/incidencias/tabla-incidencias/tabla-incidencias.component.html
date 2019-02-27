@@ -140,7 +140,12 @@
                                       </span>
                             <span *ngIf="col.type == 'dropdown'">
                                 <p-dropdown [disabled]="col.disabled" [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
-                                  (onChange)="itemEdited(item.id)"></p-dropdown>
+                                  (onChange)="itemEdited(item.id)" styleClass="open">
+                                  <ng-template let-item pTemplate="selectedItem" *ngIf="col.field == 'estado'">
+                              <div [ngClass]="{'boliche':true,'sinDefinir':item.value==-1,'noAplica':item.value==0,'abierta':item.value==1,'cerrada':item.value==2}"></div>                          
+                                      <span style="vertical-align:middle; margin-left: .5em; font-size: small">{{item.label}}</span>
+                                  </ng-template>                               
+                                </p-dropdown>
                               </span>
                               <span *ngIf="col.type == 'periodicidad'">
                                 <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
@@ -164,7 +169,7 @@
                                     <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
                                       attr.for="{{'doc'+i}}"></label>
                                     <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
-                                      class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                                      class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
                                   </span>
                                 </span>
                                 <!--****** FIN ********************-->
@@ -227,7 +232,7 @@
           <!-- <p-panel [style]="{'width':'400px','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'incidencia.descripcion' | translate}}"> -->
                 <div [style]="{'width':'100%','height':'225px','margin':'0 1%', 'float':'left'}">
                         <h4>{{'incidencia.descripcion' | translate}}</h4>
-          <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
+          <textarea [rows]="6" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.descripcion" name="descripcion" (keyup)="itemEdited(item.id)"></textarea>
                 </div>
           <!-- </p-panel> -->
       </span>
@@ -236,7 +241,7 @@
         <!-- <p-panel [style]="{'width':'400px','height':'250px','margin':'0 1%', 'float':'left'}" header="{{'incidencia.solucion' | translate}}"> -->
                 <div [style]="{'width':'100%','height':'225px','margin':'0 1%', 'float':'left'}" >
                         <h4>{{'incidencia.solucion' | translate}}</h4>
-        <textarea [rows]="8" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.solucion" name="solucion" (keyup)="itemEdited(item.id)"></textarea>
+        <textarea [rows]="6" [cols]="44" pInputTextarea  placeholder="{{'introducirtexto' | translate}}" [(ngModel)]="item.solucion" name="solucion" (keyup)="itemEdited(item.id)"></textarea>
                 </div>
         <!-- </p-panel> -->
     </span>
@@ -262,3 +267,8 @@
           
       </ng-template>
   </p-table>
+
+
+  <div class="modal" *ngIf="exportando">
+      <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
+  </div>

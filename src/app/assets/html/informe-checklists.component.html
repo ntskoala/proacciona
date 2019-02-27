@@ -50,7 +50,7 @@
   <div class="header-row">
     <span class="header-cell">{{'Fecha' | translate}}</span>
     <span class="header-cell center">{{'Imagen' | translate}}</span>
-    <span class="header-cell right" *ngFor="let columna of columnas">{{columna.nombre}}</span>
+    <span class="header-cell right" *ngFor="let columna of columnas"><span class="vertical" style="max-width:27px !important">{{columna.nombre}}</span></span>
   </div>
   <div class="row" [ngClass]="{'yellow':selectedId==resultado['id'] && selectedItem!=undefined}" *ngFor="let resultado of tabla; let fila = index" [ngClass]="{'rowImpar':fila%2==0,'rowPar':fila%2!=0}">
     <!--<span class="cell">{{resultado.fecha | date: "dd/MM/yyyy - HH:mm"}}</span>-->

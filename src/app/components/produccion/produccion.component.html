@@ -27,32 +27,48 @@
  </div>
  </mat-card-subtitle>
 
+ <div class="modalPanel" *ngIf="subMenu">
+    <div class="modalPopup">
+        <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+            <button color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>cancel</mat-icon></button>
+            </div>
+        <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+            <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
+            </div>
 
+
+            <productos-propios *ngIf="productos"></productos-propios>
+            <almacenes *ngIf="almacenes"></almacenes>
+            <app-alergenos-tabla   [parentAlergenos]="'productos'"  *ngIf="alergenos"></app-alergenos-tabla>
+
+
+  </div>
+</div>
 
  <div class="contenido">
-    <mat-sidenav-container class="contenedorSidenav">
+    <!-- <mat-sidenav-container class="contenedorSidenav"> -->
         <mat-sidenav   #sidenavCalendar  (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
-                <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+                <!-- <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
-        </div>
+        </div> -->
 
 
 
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
-   <productos-propios *ngIf="productos"></productos-propios>
+   <!-- <productos-propios *ngIf="productos"></productos-propios>
    <almacenes *ngIf="almacenes"></almacenes>
-   <app-alergenos-tabla   [parentAlergenos]="'productos'"  *ngIf="alergenos"></app-alergenos-tabla>
+   <app-alergenos-tabla   [parentAlergenos]="'productos'"  *ngIf="alergenos"></app-alergenos-tabla> -->
   </mat-sidenav> 
-
-   <mat-sidenav-content class="sidenav-content">
+<!-- 
+   <mat-sidenav-content class="sidenav-content"> -->
       <movimiento-produccion *ngIf="traspaso"></movimiento-produccion>
-   <h2 class="center" *ngIf="orden && orden.id >0">{{'produccion.numlote' | translate}}: {{orden.numlote}}</h2>
+   <h2 class="moduloTitle" *ngIf="orden && orden.id >0">{{'produccion.numlote' | translate}}: {{orden.numlote}}</h2>
 <mat-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
   <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></mat-tab>
 <mat-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></mat-tab>
 <mat-tab label="{{'produccion.distribucion' | translate}}"><span class="space"></span><distribucion class="tabs" [orden]="orden" *ngIf="orden"></distribucion></mat-tab>
 </mat-tab-group>
-</mat-sidenav-content>
-</mat-sidenav-container>
+<!-- </mat-sidenav-content>
+</mat-sidenav-container> -->
  </div>
   </mat-card>

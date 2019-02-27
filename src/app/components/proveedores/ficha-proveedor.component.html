@@ -1,12 +1,12 @@
 <div class="table fichaProveedor">
 <form (ngSubmit)="updateItem(myItem.value)" #myItem="ngForm">
     <mat-grid-list cols="3" rowHeight="65px">
-        <mat-grid-tile [colspan]="3">
+        <!-- <mat-grid-tile [colspan]="3">
             <mat-grid-tile-header>{{"proveedores.nombre" | translate}}
             </mat-grid-tile-header>
             <input [readonly]="!empresasService.administrador && empresasService.userTipo !== 'Gerente'" md-input class="campo inputCampo" [placeholder]="'' | translate" type="text"
                 required [(ngModel)]="proveedor.nombre" name="nombre">
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
 
 
@@ -54,9 +54,9 @@
 
 
 
-        <mat-grid-tile [colspan]="3">
+        <!-- <mat-grid-tile [colspan]="3">
            {{'alertas alimentarias' | translate}}
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
 
 

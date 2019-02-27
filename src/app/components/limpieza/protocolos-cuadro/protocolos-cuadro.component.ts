@@ -25,6 +25,7 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
   public tabla: object[];
   public cols: object[];
   public procesando: boolean = false;
+  public ancho:string;
 
 
   constructor(public servidor: Servidor, public empresasService: EmpresasService) { }
@@ -34,7 +35,8 @@ export class ProtocolosCuadroComponent implements OnInit, OnChanges {
   ngOnChanges() {
     console.log('CAMBIO PROTOCOLO');
     if (this.items ){
-    
+      let num = 100+(this.items.length * 37)
+      this.ancho = num + 'px';    
     let x = 0;
     let i=0;
     //console.log(x,i,this.protocolos,this.items)

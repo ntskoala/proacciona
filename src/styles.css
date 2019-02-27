@@ -153,6 +153,17 @@ nav {
   height: 40px;
 }
 
+.balloon{
+  background-color: rgba(238, 234, 245, 1) !important;
+  border: #673ab7 solid 1px;
+  border-radius: 50%;
+  width: 28px;
+  height: 25px;
+  text-align: center;
+  padding-top: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
 .Dashcard{
   display: block;
   float: left;
@@ -234,6 +245,12 @@ background-color: #fff;
 }
 
 .center {
+  text-align: center;
+}
+.popupTitle {
+  text-align: left;
+}
+.moduloTitle {
   text-align: center;
 }
 .middle{
@@ -322,12 +339,21 @@ background-color: #fff;
   border-bottom-style: solid !important;
 }
 .botonCerrar{
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  position: fixed;
+  top: 3px;
+  left: 3px;
   z-index: 9;
 }
-
+.botonCerrarmodalWindow{
+  position: relative;
+  float: right;
+  margin-top: -30px !important;
+  margin-right: -30px !important;
+}
+.botonCerrarDocWindow{
+  position: relative;
+  float: right;
+}
 /*
 **************
 * Components *
@@ -570,6 +596,12 @@ gestion-informes {
   cursor: pointer;
   color: #673ab7;
 }
+.fotoCenter{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 
 .foto-link:hover {
   color: #673ab7;
@@ -743,7 +775,8 @@ gestion-informes {
 ***********************
 */
 .campo{
-  background-color: #fff9c4;
+  /* background-color: #fff9c4; */
+  background-color: #fff;
   border: 1px solid #fbc02d !important;
   margin-top: 18px;
 }
@@ -1008,6 +1041,24 @@ width: 400px;
 .fa{
   color: rgba(103, 58, 183,1);
 }
+.abierta {
+background-color: red;
+}
+.cerrada{
+  background: green;
+}
+.noAplica{
+  background: grey;
+}
+.sinDefinir{
+  background: rgba(103, 58, 183,1);;
+}
+.boliche{
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+}
 /*
 ***********************
 * CUSTOM CONTROLS MATEIRAL *
@@ -1022,8 +1073,17 @@ width: 400px;
 }
 .mat-list-item{
   border-bottom: lightgrey solid 1px;
+  height: 35px !important;
+}
+.mat-list-item-content{
+font-size: small;
+line-height: normal;
 }
 
+.mat-card-header-text {
+  margin: 0 8px;
+  height: 20px;
+}
 
 
 /*

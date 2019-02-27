@@ -32,7 +32,7 @@ export class Servidor {
   }
 
   getObjects(url: string, param: string) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('get'+url+':'+param)){
       this.setAlerta();
     }else{
     let parametros = '?token=' + sessionStorage.getItem('token') + param; 
@@ -77,7 +77,7 @@ export class Servidor {
   //   }
   // }
   postObject(url: string, object: Object, param?: string) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('post')){
       this.setAlerta();
     }else{
     let payload = JSON.stringify(object);
@@ -93,7 +93,7 @@ export class Servidor {
   }
 
   putObject(url: string, param: string, object: Object) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('put')){
       this.setAlerta();
     }else{
     let payload = JSON.stringify(object);        
@@ -104,7 +104,7 @@ export class Servidor {
   }
   
   deleteObject(url: string, param: string) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('delete')){
       this.setAlerta();
     }else{
     let parametros = param + '&token=' + sessionStorage.getItem('token')+"&userId="+this.empresasService.userId+"&idempresa="+this.empresasService.seleccionada+ "&origen=backoffice";
@@ -114,7 +114,7 @@ export class Servidor {
   }
 
   postLogo(url: string, files: File[], idEmpresa: string, params?:string) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('postlogo')){
       this.setAlerta();
     }else{
     let formData: FormData = new FormData();
@@ -127,7 +127,7 @@ export class Servidor {
   }
 
   postDoc(url: string, files: File[], entidad:string, idEntidad: string, idEmpresa: string, field?: string) {
-    if (this.istokenExpired()){
+    if (this.istokenExpired('postDoc')){
       this.setAlerta();
     }else{
     let formData: FormData = new FormData();
@@ -138,8 +138,8 @@ export class Servidor {
     }
   }
 
-  istokenExpired(){
-    console.log ('istokenEspired');
+  istokenExpired(fuente?){
+    //console.log ('istokenEspired');
    let token = sessionStorage.getItem('token');
       if (token){
                 var base64Url = token.split('.')[1];

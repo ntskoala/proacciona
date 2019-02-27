@@ -22,7 +22,8 @@
                            </mat-list>
                   </mat-expansion-panel> -->
                   <mat-list>
-                      <mat-list-item (click)="open(usuario.id)" *ngFor="let usuario of usuarios; let i = index">{{usuario.usuario}} {{usuario.superuser}}  {{'acciones'|translate}}
+                      <mat-list-item  *ngFor="let usuario of usuarios; let i = index">{{'acciones'|translate}} {{usuario.usuario}}  
+                          <div class="balloon" (click)="open(usuario.id)"> {{usuario.superuser}} </div>
                       </mat-list-item>
                     </mat-list>
           </mat-card-content>
@@ -36,6 +37,9 @@
         
         <div class="modalPanel" *ngIf="items.length">
             <div class="modalWindowDashboard">
+                <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+                    <button color="accent" mat-mini-fab (click)="close()"><mat-icon>cancel</mat-icon></button>
+                    </div>
                 <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
                     <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>
                     </div>

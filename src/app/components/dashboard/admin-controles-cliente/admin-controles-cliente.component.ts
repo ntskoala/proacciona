@@ -36,7 +36,18 @@ public empresasNoActivas:Empresa[] = [];
 
 loadEmpresas(){
   let x=0;
-  this.servidor.getObjects(URLS.EMPRESAS, '').subscribe(
+  let param='';
+  if (this.empresasService.userTipo=='Admin'){
+
+    if(this.empresasService.holding==1){
+      param="&id="+this.empresasService.empresaActiva+"&holding="+this.empresasService.empresaActiva;
+    }
+    if(this.empresasService.holding==2){
+      param="&id="+this.empresasService.idHolding+"&holding="+this.empresasService.idHolding
+    }
+  }
+
+  this.servidor.getObjects(URLS.EMPRESAS, param).subscribe(
     response => {
       console.log(response)
       if (response.success) {

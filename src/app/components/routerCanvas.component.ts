@@ -59,6 +59,9 @@ public params;
   }
 
 ruteado(page?:string){
+  this.empresasService.menu=page;
+
+  // sessionStorage.setItem('menu',page);
   if (this.translate.currentLang === undefined) this.setIdioma();
   console.log("########RUTEADO",page);
   if (!page){
@@ -70,6 +73,7 @@ ruteado(page?:string){
       this.nuevoLogin = true;
     }else{
       console.log('Hay token');
+
       this.irAlMenu(page);
 }
 }
@@ -87,6 +91,7 @@ console.log(this.translate.currentLang);
 }
 ngOnChanges(){
   console.log("### ONCHANGES PARAM",this.route.paramMap["source"]["_value"]["modulo"]);
+ 
 }
 setUser(){
   return new Promise((resolve,reject)=>{

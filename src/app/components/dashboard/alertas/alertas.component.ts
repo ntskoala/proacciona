@@ -26,13 +26,17 @@ public altura:string='';
 
   ngOnInit() {
     this.loadAlertas();
+    if(this.empresasService.menu=='empresas'){
     this.empresasService.empresaSeleccionada.subscribe(
       (emp)=>{
         console.log(emp);
-        if(emp){
+        if(emp && this.empresasService.menu=='empresas'){
+          
           this.loadAlertas();
+          
         }
       })
+    }
   }
 
   loadAlertas(periodo?:string){
@@ -92,6 +96,7 @@ public altura:string='';
 
     open(data){
       this.items=data;
+      window.scrollTo(0, 0);
     }
     close(){
       this.items=[]

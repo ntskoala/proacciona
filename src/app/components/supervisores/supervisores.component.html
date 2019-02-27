@@ -3,7 +3,7 @@
 </div>
 <!-- <mat-toolbar color="accent">{{'PermisosSupervisores' | translate}}
 </mat-toolbar> -->
-<h2>{{'PermisosSupervisores' | translate}}</h2>
+<h2 class="popupTitle">{{'PermisosSupervisores' | translate}}</h2>
 
 <!-- <p-dataTable [value]="tabla" >
 
@@ -24,13 +24,14 @@
 </p-dataTable> -->
 
 <!-- ********* INICIO TABLA REGISTROS-->
+<div [style.width]="ancho" >
 <p-table #DT [value]="tabla" [columns]="cols" 
-  [responsive]="true" 
+  [responsive]="true"
   [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}"> 
   <ng-template pTemplate="header" let-columns>
        <tr>
       <th *ngFor="let col of columns"  [ngClass]="{'widthUsuario':col.header=='Usuario','widthNoUsuario':col.header!='Usuario','cabTitleTH':col.header.length > 20, 'border-right':true}">
-        <div class="vertical cabecera cabTitle">{{col.header | translate}}</div>
+        <div class="vertical cabecera cabTitle" [ngClass]="{'vertical':col.header!='Usuario','usuario':col.header=='Usuario'}">{{col.header | translate}}</div>
       </th>
       </tr>
   </ng-template>
@@ -51,3 +52,4 @@
     </tr>
   </ng-template>
 </p-table>
+</div>

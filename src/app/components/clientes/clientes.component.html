@@ -11,13 +11,15 @@
    <div class="w20">
      <!--<button mat-raised-button (click)="familias = !familias">{{'proveedores.familias' | translate}}</button>-->
    </div>
-
+   <div class="botonera">
+     
+ </div>
  </mat-card-subtitle>
 
  <div class="contenido">
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <!--<familias-producto *ngIf="familias"></familias-producto>-->
- <h2 class="center" *ngIf="cliente && cliente.id >0">{{'clientes.cliente' | translate}}: {{cliente.nombre}}</h2>
+ <h2 class="moduloTitle" *ngIf="cliente && cliente.id >0">{{'clientes.cliente' | translate}}: {{cliente.nombre}}</h2>
 <mat-tab-group *ngIf="cliente && cliente.id > 0" [dynamicHeight]="false">
 <mat-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente"></entrega-productos></mat-tab>  
 

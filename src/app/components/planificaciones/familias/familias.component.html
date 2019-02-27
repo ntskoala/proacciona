@@ -1,4 +1,4 @@
-<h2 class="center">{{"proveedores.familias" | translate}}</h2>
+<h2 class="popupTitle">{{"proveedores.familias" | translate}}</h2>
 <div class="table">
   <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'" class="row" #newItemForm="ngForm" (ngSubmit)="newItem()">
     <input type="hidden" [(ngModel)]="nuevoItem.id" name="id">

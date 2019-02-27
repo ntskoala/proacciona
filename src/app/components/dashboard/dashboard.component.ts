@@ -11,12 +11,10 @@ import { observable } from 'rxjs';
   // encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
-
   constructor(public empresasService: EmpresasService) { }
 
   ngOnInit() {
     this.empresasService.administrador;
-
   }
 
      

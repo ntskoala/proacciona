@@ -55,6 +55,7 @@ export class ProductosCuadroComponent implements OnInit, OnChanges {
   public cargaData: boolean[] = [false, false];
   public entidad: string = "&entidad=limpieza_elemento";
   public field: string = "&field=idlimpiezazona&idItem=";
+  public ancho:string;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) { }
 
   ngOnInit() {
@@ -63,7 +64,8 @@ export class ProductosCuadroComponent implements OnInit, OnChanges {
 
   ngOnChanges(){
     if (this.items){
-    
+      let num = 100+(this.items.length * 37)
+      this.ancho = num + 'px';
     let x = 0;
     let i=0;
     if (this.productos && this.items){

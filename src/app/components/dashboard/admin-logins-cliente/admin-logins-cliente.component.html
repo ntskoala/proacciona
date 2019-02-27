@@ -11,7 +11,9 @@
         <mat-expansion-panel (closed)="closePanel(0)" (opened)="openPanel(0)" *ngFor="let empresa of empresas">
             <mat-expansion-panel-header> 
                   <mat-panel-title >         
-                    {{empresa["nombre"]}} <mat-chip-list class="chip"> <mat-chip  color="primary" selected>{{empresa['logs'].length}}</mat-chip></mat-chip-list>
+                    {{empresa["nombre"]}} 
+                    <div class="balloon" >{{empresa['logs'].length}}</div>
+                    <!-- <mat-chip-list class="chip"> <mat-chip  color="primary" selected>{{empresa['logs'].length}}</mat-chip></mat-chip-list> -->
                   </mat-panel-title> 
                 
                    <!-- <mat-panel-description>
@@ -23,7 +25,7 @@
         
         <mat-list-item *ngFor="let log of empresa['logs']"  class="elem" >
             <!-- <span>  -->
-              {{log.usuario}} {{log.total}} {{"Dashboard.tablas."+log.tabla | translate}} {{"Dashboard.acciones."+log.accion  | translate}} desde {{log['plataforma'] }} 
+              {{log.usuario}} {{log.total}} {{"Dashboard.tablas."+log.tabla | translate}} {{"Dashboard.acciones."+log.accion  | translate}} {{'Dashboard.desde' | translate}} {{log['plataforma'] }} 
               <!-- //{{log.accion}} {{log.tabla}}  -->
           <!-- {{incidencia.origen}} -->
             <!-- </span> -->

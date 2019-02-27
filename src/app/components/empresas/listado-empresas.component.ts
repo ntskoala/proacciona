@@ -7,10 +7,12 @@ import { PermisosService } from '../../services/permisos.service';
 import { URLS } from '../../models/urls';
 import { Empresa } from '../../models/empresa';
 import {MatSelect} from '@angular/material';
+import { p } from '@angular/core/src/render3';
  
 @Component({
   selector: 'listado-empresas',
-  templateUrl: './listado-empresas.component.html'
+  templateUrl: './listado-empresas.component.html',
+  styleUrls: ['./empresas.css']
 })
 
 export class ListadoEmpresasComponent implements OnInit {
@@ -89,13 +91,29 @@ export class ListadoEmpresasComponent implements OnInit {
       let event= {'items':[{'id':this.empresasService.seleccionada}]};
       this.selecciona(event);
     }
+    
+    if (parseInt(sessionStorage.getItem('idEmpresa'))>0){
+      let indice = this.empresas.findIndex((empresa)=>empresa.id==parseInt(sessionStorage.getItem('idEmpresa')));
+      if (indice>-1){
+        if(this.empresas[indice].nombre!=sessionStorage.getItem('nombreEmpresa')){
+          this.empresasService.seleccionarEmpresa(this.empresas[indice]);
+        }
+      }
+    }   
   }
 
   selecciona(evento: object){
     let empresa = evento["items"][0].id;
+    let nombreHolding=null;
   //  this.empresasService.seleccionarEmpresa(this.empresas.find(emp => emp.id == idEmpresa));
   let emp = this.empresas.find(emp => emp.id == empresa);
   if (!emp) emp = this.empresasNoActivas.find(emp => emp.id == empresa);
+  if (emp.holding==1) nombreHolding=emp.nombre;
+  if (emp.holding==2)  {
+    let indexHolding = this.empresas.findIndex(hold => hold.id == emp.idHolding);
+    nombreHolding= this.empresas[indexHolding].nombre;
+  }
+  this.empresasService.nombreHolding=nombreHolding;
   this.empresaseleccionada.emit(emp);
   this.setPermisos(empresa);
   this.unExpand();

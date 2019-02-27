@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { URLS } from '../models/urls';
+import { Empresa } from '../models/empresa'
 
 @Component({
   selector: 'navigation',
@@ -13,6 +14,7 @@ export class NavComponent implements OnInit{
   logoEmpresa: string;
   subscription: Subscription;
   public alertOptions:boolean=false;
+  public empresas:boolean=false;
 
   constructor(public router: Router,public servidor: Servidor, public empresasService: EmpresasService) {}
 
@@ -60,5 +62,13 @@ alertOptionsChanged(){
   }
 }
 
+// selecciona(empresa: Empresa){
+//   this.empresas=false;
+//   this.empresasService.seleccionarEmpresa(empresa);
+//   sessionStorage.setItem('idEmpresa', empresa.id.toString());
+//   sessionStorage.setItem('nombreEmpresa', empresa.nombre);
+//   sessionStorage.setItem('holding', empresa.holding.toString());
+//   //console.log("informes",this.empresasService.empresa.exportar_informes);
+// }
 
 }

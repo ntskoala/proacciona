@@ -1,3 +1,13 @@
 .holdingdropDown{
     width: 130px;
 }
+.holding{
+    background-color: #fed22f;
+    width: 100%;
+    text-align: end;
+}
+.partOfHolding{
+    background-color: rgba(238, 234, 245,1) !important;
+    width: 100%;
+    text-align: end;
+}

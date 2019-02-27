@@ -40,7 +40,6 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
   @Input() tipoControl;
   @Output() onPermisos: EventEmitter<number> = new EventEmitter<number>();
   //public observer: Observable<string>;
-
   public viewPermisos: boolean = false;
   public usuarios: Usuario[] = [];
   //public controles: Control[];
@@ -64,7 +63,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     ngOnChanges(){
   //    if (this.items.length>=1){
       this.procesando=true;
-      let num = (this.items.length * 45)
+      let num = 100+(this.items.length * 37)
       this.ancho = num + 'px';
       
     switch (this.tipoControl) {

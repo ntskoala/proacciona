@@ -113,10 +113,10 @@
   "introducirtexto":"",
   "expandir":"Expandir",
   "Retrasado":"Endarrerit",
-  "Holding":"Holding",
-  "MasterHolding":"Master holding",
-  "PartofHolding":"Part of holding",
-  "StandAlone":"Stand alone",
+  "Holding":"Multilocal",
+  "MasterHolding":"Multilocal",
+  "PartofHolding":"Pertany a...",
+  "StandAlone":"Independent",
   "menu":{
     "login":"Tanca sessió",
     "empresas":"Selecctor d'empresa",
@@ -251,6 +251,7 @@
     "productos":"Productes",
     "nuevoProd":"Afegir nou producte",
     "imagen":"Imatge",
+    "doc":"Doc pdf",
     "proximafecha":"Propera data",
     "periodicidad":"Periodicitat",
     "fecha":"Data",
@@ -293,6 +294,7 @@
     "quitarElemento": "Quita procedimient del protocol"
 },
  "proveedores":{
+  "crear":"Nou Proveïdor",
     "proveedores":"Proveïdors",
     "proveedor":"Proveïdor",
     "lote":"Lot proveïdor",
@@ -324,10 +326,10 @@
     "alert_contacto":"Nom contacte alertes",
     "alert_telf":"Telèfon alertes",
     "alert_email":"Email alertes",
-    "alergenos":"Al·lergògens de M.P."
+    "alergenos":"Taula d'al·lergògens de M.P."
   },
   "produccion":{
-    "crear":"Crear",
+    "crear":"Nou lot de producció",
     "modificar":"Modificar",
     "produccion":"Producció",
     "areaproduccion": "Àrea de producció",
@@ -384,11 +386,13 @@
     "proveedor":"Proveïdor",
     "remanente_origen": "Quantitat romanent al origen",
     "trazaAtras":"Traçabilitat endarrere",
-    "trazaAdelante":"Traçabilitat endavant"
+    "trazaAdelante":"Traçabilitat endavant",
+    "atras":"endarrera",
+    "adelante":"endavant"
   },
   "clientes":{
-    "cliente":"Cliente",
-    "crear":"Crear",
+    "cliente":"Client",
+    "crear":"CrNou clientear",
     "modificar":"Modificar",
     "areaclientes":"Àrea de clients",
     "ficha":"Fitxa",
@@ -500,7 +504,8 @@
       "saveNotOk":"S'ha produit un error al desar",
       "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició",
       "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió",
-      "entregaNotOk":"La quantitat o la data de caducitat son erroneas"    
+      "entregaNotOk":"La quantitat o la data de caducitat son erroneas",
+      "alertCambioEmpresa":"Aquesta acció ha cambiat l'empresa seleccionada"  
     },
     "incidencia":
     {
@@ -528,8 +533,8 @@
       "Goto":"Anar a l'element origen de la incidència",
       "estado-1":"Sense definir",
       "estado0":"No aplica",
-      "estado1":"Obert",
-      "estado2":"Tancat",
+      "estado1":"Oberta",
+      "estado2":"Tancada",
       "origen":"Origen",
       "accion":"Acció",
       "acciones":"Accions",
@@ -553,19 +558,30 @@
       "logginsT":"ACCESSOS",
       "logginsST":"Accessos i accions d'usuari",
       "desde": "des de",
+      "hace":"fa",
       "pendientes":"pendents",
       "lecturas":"lectures",
+      "Resumen":"Resum",
+      "local":"local",
+      "todosLosLocales":"tots els locals",
       "tablas":{
         "limpieza_realizada":"neteges",
         "incidencias":"incidències",
         "ResultadosControl":"controls",
         "resultadoschecklist":"checklists",
         "mantenimientos_realizados":"mantenimients",
-        "login": "conexions",
+        "login": "connexions",
         "clientes_distribucion":"entregas client",
         "proveedores_productos":"productes de proveïdor",
         "produccion_orden":"ordres de producció",
-        "productos":"productes"
+        "productos":"productes",
+        "usuarios":"usuaris",
+        "empresas":"empreses",
+        "permissionlimpieza":"permissos neteja",
+        "permissionMaquinaria":"permissos maquinaria",
+        "limpieza_elemento":"elements neteja",
+        "limpieza_protocolos":"protocols",
+        "limpieza_productos_elemento":"productes de neteja"
       },
       "acciones":{
         "PUT":"actualitzats",
@@ -575,7 +591,7 @@
       }
     },
     "ticket":{
-      "help":"Ticket de suport",
+      "help":"Ticket de consulta",
       "subject":"Assumpte",
       "prioridad":"Prioritat",
       "baja":"baixa",
@@ -630,5 +646,6 @@
   "numero":"Num elements per crear",
   "Direccion":"Adreça",
   "Poblacion":"Població",
-  "nrs":"Número Registre Sanitari"
+  "nrs":"Número Registre Sanitari",
+  "procesando":"Processant..."
 }	

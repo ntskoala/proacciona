@@ -3,7 +3,7 @@ import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS, optionsFullCalendar } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
@@ -45,6 +45,7 @@ public calibraciones: CalibracionesMaquina[]=[];
 public tipoevento:string[]=[];
 public event:any;
 public estado;
+public opcionesFullCalendar:any=optionsFullCalendar;
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}
 
 

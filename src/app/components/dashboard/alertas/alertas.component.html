@@ -85,13 +85,21 @@
 </mat-expansion-panel> -->
 
 <mat-list>
-    <mat-list-item (click)="open(controles)">{{controles.length}} {{'Controles'|translate}} {{'Dashboard.pendientes'|translate}}</mat-list-item>
+            <mat-list-item > {{'Controles'|translate}} {{'Dashboard.pendientes'|translate}} 
+                <div class="balloon" (click)="open(controles)"> {{controles.length}}</div>
+            </mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(checklists)">{{checklists.length}} {{'Checklists'|translate}} {{'Dashboard.pendientes'|translate}}</mat-list-item>
+    <mat-list-item> {{'Checklists'|translate}} {{'Dashboard.pendientes'|translate}}
+        <div class="balloon" (click)="open(checklists)">{{checklists.length}}</div>
+    </mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(limpiezas)">{{limpiezas.length}} {{'Limpiezas'|translate}} {{'Dashboard.pendientes'|translate}}</mat-list-item>
+    <mat-list-item  (click)="open(limpiezas)">{{'Limpiezas'|translate}} {{'Dashboard.pendientes'|translate}}
+        <div class="balloon" (click)="open(limpiezas)">{{limpiezas.length}}</div>
+    </mat-list-item>
     <!-- <mat-divider></mat-divider> -->
-    <mat-list-item  (click)="open(mantenimientos)">{{mantenimientos.length}} {{'Mantenimientos'|translate}} {{'Dashboard.pendientes'|translate}}</mat-list-item>
+    <mat-list-item  (click)="open(mantenimientos)">{{'Mantenimientos'|translate}} {{'Dashboard.pendientes'|translate}}
+        <div class="balloon" (click)="open(mantenimientos)">{{mantenimientos.length}}</div>
+    </mat-list-item>
     <!-- <mat-divider></mat-divider> -->
   </mat-list>
 
@@ -104,6 +112,10 @@
       <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
           <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>
           </div>
+      <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+          <button color="accent" mat-mini-fab (click)="close()"><mat-icon>cancel</mat-icon></button>
+          </div>
+
           <mat-list *ngFor="let item of items">
               <mat-list-item>
                   <span class="elem" [ngClass]="{'onDate':!item.isbeforedate,'beforeOnDate':item.isbeforedate}">               

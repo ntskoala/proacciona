@@ -19,7 +19,7 @@
 </md-menu>-->
 
     <img [src]="logoEmpresa" alt="Logo empresa" (error)="logoEmpresa='./assets/images/pixel.png'" *ngIf="logoEmpresa">
-    <span class="cabeceraNavEmpresa" *ngIf="empresasService.administrador && empresasService.seleccionada">{{empresasService.nombreEmpresa}} </span>
+    <span class="cabeceraNavEmpresa" *ngIf="empresasService.administrador && empresasService.seleccionada" ><span *ngIf="empresasService.holding>0">Local: </span>{{empresasService.nombreEmpresa}}</span>
     <span class="cabeceraNavEmpresa" *ngIf="empresasService.seleccionada">{{"codigo" | translate}}: 24{{empresasService.seleccionada}}53</span>
   </div>
 
@@ -28,3 +28,9 @@
 <div *ngIf="alertOptions"  style="position:fixed;top:0px;right:770px;height:60px;background-color:#ffd740;width: 120px;padding-top: 7px;padding-left: 7px;Z-Index:99999">
     <mat-checkbox [(ngModel)]="empresasService.showAlerts" (change)="alertOptionsChanged()">{{'alertas.showAlerts' | translate}}</mat-checkbox>
 </div>
+
+<!-- <div class="modalPanel" *ngIf="empresas">
+  <div class="modalWindowDashboard">
+    <listado-empresas (empresaseleccionada)="selecciona($event)" (onLoadEmpresas)="gotEmpresas($event)"></listado-empresas>
+  </div>
+</div> -->

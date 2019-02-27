@@ -12,7 +12,8 @@
             <mat-expansion-panel-header> 
                   <mat-panel-title >         
                     {{empresa["nombre"]}}
-            <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["controles"].length + empresa["checklists"].length + empresa["limpiezas"].length + empresa["mantenimientos"].length}} </mat-chip></mat-chip-list>
+                    <div class="balloon" > {{empresa["controles"].length + empresa["checklists"].length + empresa["limpiezas"].length + empresa["mantenimientos"].length}}</div>
+            <!-- <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["controles"].length + empresa["checklists"].length + empresa["limpiezas"].length + empresa["mantenimientos"].length}} </mat-chip></mat-chip-list> -->
 
                   </mat-panel-title> 
                 
@@ -27,6 +28,7 @@
         <!--********************        CONTROLES        -->
         <mat-list-item class="itemCabecera">
             {{'Controles'|translate}}
+            <!-- <div class="balloon" > {{empresa["controles"].length}}</div> -->
             <mat-chip-list class="chip"> <mat-chip  color="primary" selected> {{empresa["controles"].length}}</mat-chip></mat-chip-list>
           </mat-list-item>
 
@@ -45,7 +47,8 @@
            <!-- <mat-list> -->
             <mat-list-item  *ngFor="let control of empresa['controles']">
                 <span class="elem" [ngClass]="{'onDate':!control.isbeforedate,'beforeOnDate':control.isbeforedate}">             
-              {{control.nombre}} {{control.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+              {{control.nombre}}  {{'Dashboard.hace' | translate}}  {{control.dias}} {{'dias' | translate}} 
+              <!-- {{'Retrasado' | translate}} -->
 
                 </span>
             </mat-list-item>
@@ -75,7 +78,8 @@
            <mat-list *ngFor="let checklist of empresa['checklists']"> -->
             <mat-list-item  *ngFor="let checklist of empresa['checklists']">
                 <span class="elem" [ngClass]="{'onDate':!checklist.isbeforedate,'beforeOnDate':checklist.isbeforedate}">             
-              {{checklist.nombre}} {{checklist.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+              {{checklist.nombre}}  {{'Dashboard.hace' | translate}}  {{checklist.dias}} {{'dias' | translate}} 
+              <!-- {{'Retrasado' | translate}} -->
                 </span>
             </mat-list-item>
            <!-- </mat-list>
@@ -104,7 +108,8 @@
            <mat-list> -->
             <mat-list-item  *ngFor="let limpieza of empresa['limpiezas']">
                 <span class="elem" [ngClass]="{'onDate':!limpieza.isbeforedate,'beforeOnDate':limpieza.isbeforedate}">             
-              {{limpieza.nombre}} {{limpieza.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+              {{limpieza.nombre}}  {{'Dashboard.hace' | translate}}  {{limpieza.dias}} {{'dias' | translate}} 
+              <!-- {{'Retrasado' | translate}} -->
                 </span>
             </mat-list-item>
            <!--  </mat-list>
@@ -132,7 +137,8 @@
            <mat-list *ngFor="let mantenimiento of empresa['mantenimientos']"> -->
             <mat-list-item  *ngFor="let mantenimiento of empresa['mantenimientos']">
                 <span class="elem" [ngClass]="{'onDate':!mantenimiento.isbeforedate,'beforeOnDate':mantenimiento.isbeforedate}">             
-              {{mantenimiento.nombre}} {{mantenimiento.dias}} {{'dias' | translate}} {{'Retrasado' | translate}}
+              {{mantenimiento.nombre}} {{'Dashboard.hace' | translate}} {{mantenimiento.dias}} {{'dias' | translate}} 
+              <!-- {{'Retrasado' | translate}} -->
                 </span>
             </mat-list-item>
            <!-- </mat-list>

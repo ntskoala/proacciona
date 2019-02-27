@@ -59,6 +59,9 @@ export class AdminLoginsClienteComponent implements OnInit {
     let parametros = '&entidad=logins&fecha='+fechaInicio;
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
+        if (this.empresasService.userTipo=='Admin'){
+          parametros=parametros+"&idholding="+this.empresasService.idHolding;
+        }
         this.servidor.getObjects(URLS.GETDASHBOARDADMIN, parametros).subscribe(
           response => {
             let logs = [];

@@ -36,6 +36,9 @@
 
  <div class="modalPanel" *ngIf="subMenu">
     <div class="modalPopup">
+        <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+            <button color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>cancel</mat-icon></button>
+            </div>
         <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
         <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
         </div>

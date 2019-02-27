@@ -24,8 +24,9 @@
     <mat-spinner *ngIf="calculando"></mat-spinner>  
     <!-- <p-chart type="line" [data]="data"  *ngIf="!calculando" (onDataSelect)="selectData($event)"></p-chart> -->
     <mat-list>
-        <mat-list-item (click)="open()">
-          {{resultadoscontrol.length}} {{'Dashboard.lecturas' | translate}} de {{columnas.length}} {{'Controles' | translate}}
+        <mat-list-item >
+            <div class="balloon" (click)="open()" style="margin-right:10px;margin-left:0px !important">  {{resultadoscontrol.length}}</div> {{'Dashboard.lecturas' | translate}} de {{columnas.length}} {{'Controles' | translate}}
+          
       </mat-list-item>
       <mat-divider></mat-divider>
      </mat-list> 
@@ -39,6 +40,9 @@
 
 <div class="modal" *ngIf="verGrafico">
     <div class="modalWindowDashboard">
+        <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+            <button color="accent" mat-mini-fab (click)="close()"><mat-icon>cancel</mat-icon></button>
+            </div>
         <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
             <button  top-left color="accent" mat-mini-fab (click)="close()"><mat-icon>skip_previous</mat-icon></button>
             </div>

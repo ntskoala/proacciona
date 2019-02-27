@@ -1,12 +1,14 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-  
+ <!-- <bocadillo [element]="element" (estado)="nextBocadillo()"></bocadillo>  -->
 <div class="cabeceraItems">
   <!--{{'clientes.clientes' | translate}}<br>-->
 
   <!--<mat-slide-toggle (change)="changeEstado()">{{'produccion.lotes_cerrados' | translate}}</mat-slide-toggle>-->
-    <button mat-mini-fab color="primary" (click)="filter=!filter" type="button">
+  <div class="tooltip" matTooltip="{{'filter-dates.filtrar fechas' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" visibility="'visible'">
+    <button id="f1" mat-mini-fab color="primary" (click)="filter=!filter" type="button">
         <span class="material-icons">filter_list</span>
       </button>
+      </div>
   <form>
     <mat-select class="cabeceraSelect" placeholder="selecciona" floatPlaceholder="false" #choiceEstat (selectionChange)="changeEstado($event)">
       <mat-option  value="abierto" selected>{{'produccion.lotes_abiertos' | translate}}</mat-option>
@@ -23,15 +25,21 @@
   </form>
 <!--<button *ngIf="empresasService.administrador && itemActivo > 0" mat-button color="warn" (click)="eliminarItem()" type="submit">Eliminar</button>
 <button *ngIf="empresasService.administrador && itemActivo > 0" mat-button color="primary" (click)="modificarItem()" type="button">Modificar</button>-->
-        <button mat-mini-fab color="primary" (click)="addItem()" type="button">
+<div #ff="matTooltip" class="tooltip" matTooltip="{{'produccion.crear' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" visibility="'visible'"> 
+        <button id="f2" mat-mini-fab color="primary" (click)="addItem()" type="button">
           <span class="material-icons">add</span>
         </button>
+  </div>
+  <div class="tooltip" matTooltip="{{'produccion.modificar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" visibility="'visible'"> 
         <button mat-mini-fab color="primary" (click)="modificarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">edit</span>
         </button>
+        </div>
+<div class="tooltip" matTooltip="{{'eliminar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'" visibility="'visible'"> 
         <button mat-mini-fab color="warn" (click)="eliminarItem()" type="button" [disabled]="!(itemActivo > 0)">
           <span class="material-icons">delete_forever</span>
         </button>
+        </div>
 </div>
 <!--<div class="nueva">
 

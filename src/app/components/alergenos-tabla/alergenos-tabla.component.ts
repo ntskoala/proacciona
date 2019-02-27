@@ -52,6 +52,9 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
       private messageService: MessageService) {}
   
     ngOnInit() {
+      if (this.translate.currentLang=='cat'){
+        this.alergenos=['Gluten','Ous','Llet','Cacauets','Soja','Fruits secs','Api','Mostassa','Sèsam','Peix','Crustacis','Mol·luscs','Tramussos','Sulfits'];
+      }
         this.getProductos();
   
   }

@@ -3,6 +3,9 @@ import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import * as moment from 'moment/moment';
 
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from '@ngx-translate/core';
+
 import { Servidor } from '../../../services/servidor.service';
 import { URLS } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
@@ -22,10 +25,14 @@ export class AdminIncidenciasClienteComponent implements OnInit {
   public calculando: boolean=false;
   public altura:string;
   public dias: number;
-
-  constructor(public servidor: Servidor,public empresasService: EmpresasService,
+  public alertCambioEmpresa:string=null;
+  constructor(
+    public servidor: Servidor,
+    public empresasService: EmpresasService,
   public router: Router,
-  public route: ActivatedRoute) { }
+  public route: ActivatedRoute, 
+  public translate: TranslateService, 
+  private messageService: MessageService) { }
 
 
 
@@ -40,6 +47,9 @@ export class AdminIncidenciasClienteComponent implements OnInit {
     let parametros = '&entidad=incidencias&fecha='+fechaInicio;
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
+    if (this.empresasService.userTipo=='Admin'){
+      parametros=parametros+"&idholding="+this.empresasService.idHolding;
+    }
         this.servidor.getObjects(URLS.GETDASHBOARDADMIN, parametros).subscribe(
           response => {
             this.incidencias = [];
@@ -59,7 +69,7 @@ export class AdminIncidenciasClienteComponent implements OnInit {
                 if (x<0 || element.nombreEmpresa != this.empresas[x]["nombre"]){
                 x++;
                 console.log('XXX',x,element);
-                this.empresas.push({'nombre':element.nombreEmpresa,'id':element.idempresa,'incidencias':[incidencia]});
+                this.empresas.push({'nombre':element.nombreEmpresa,'id':element.idempresa,'holding':element.holdingEmpresa,'idholding':element.idHoldingEmpresa,'incidencias':[incidencia]});
                 }else{
                   console.log('XXX',x,element);
                 this.empresas[x]["incidencias"].push(incidencia);
@@ -98,19 +108,54 @@ export class AdminIncidenciasClienteComponent implements OnInit {
     this.altura = "calc(100% + 30px)"
   }
 
-  gotoOrigen(item,nombreEmpresa){
+  async gotoOrigen(item,nombreEmpresa){
+    console.log('goto Origen',item);
     
-    this.empresasService.seleccionarEmpresa(item.idempresa);
+    let go;
+    let indexEmpresa=this.empresas.findIndex((emp)=>emp["id"]==item.idempresa);
+    let empresa=new Empresa(this.empresas[indexEmpresa]["nombre"],'',this.empresas[indexEmpresa]["id"],this.empresas[indexEmpresa]["holding"],this.empresas[indexEmpresa]["idholding"]);
+    // if (this.empresasService.userTipo=='Admin'){
+    // }
+    if (empresa.id != this.empresasService.seleccionada) 
+    {
+    await this.setAlerta('open').then(
+      (respuesta)=>{go=respuesta});
+    }
+    console.log(empresa)
+    if(go || (empresa.id == this.empresasService.seleccionada)){
+    this.empresasService.seleccionarEmpresa(empresa);
     sessionStorage.setItem('idEmpresa', item.idempresa.toString());
     sessionStorage.setItem('nombreEmpresa', nombreEmpresa);
-    console.log('goto Origen',item);
     let origenAsociado;
     item.origenasociado !==null? origenAsociado = item.origenasociado:origenAsociado ='incidencias';
     let url = 'empresas/'+ item.idempresa + '/'+ origenAsociado +'/'+item.idOrigenasociado+'/'+item.idOrigen
     //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     this.router.navigate([url]);
+    }
 
   }
 
+
+  async setAlerta(accion){
+    if (accion=='open'){
+    this.translate.get("alertCambioEmpresa").subscribe(
+      (textoAlerta)=>{
+        this.alertCambioEmpresa=textoAlerta
+      }
+    )
+    }
+    if (accion=='close'){
+      this.close();
+      return false;
+    }
+    if(accion=='go'){
+      this.close();
+    return true;
+    }
+    
+  }
+close(){
+  this.alertCambioEmpresa=null;
+}
 }

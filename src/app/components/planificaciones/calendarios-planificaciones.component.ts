@@ -3,7 +3,7 @@ import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS, optionsFullCalendar } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Planificacion } from '../../models/planificacion';
@@ -48,6 +48,7 @@ public estado;
 public emptyDate: Date;
 //public localSupervisor: string;
 public supervisor: string;
+public opcionesFullCalendar:any=optionsFullCalendar;
 entidad:string="&entidad=planificaciones_realizadas";
 public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"label":"correcto"},{"value":2,"label":"incorrecto"}];
   constructor(public servidor: Servidor,public empresasService: EmpresasService) {}

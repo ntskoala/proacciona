@@ -75,6 +75,8 @@ import { PageNotFoundComponent } from './components/404.component';
 /********    GENERAL COMPONENTS */
 import { FilterDatesComponent } from './components/filterdates/filter-dates.component';
 import { AlertasComponent} from './components/alertas/alertas.component';
+import { BocadilloComponent} from './bocadillo/bocadillo.component';
+
 
 /********    MAQUINARIA COMPONENTS */
 import { MaquinariaComponent } from './components/maquinaria/maquinaria.component';
@@ -142,7 +144,7 @@ import { PlanesPermisosComponent } from './components/planificaciones/planes-per
 import { PermisosGeneralComponent } from './components/permisos/permisos.component';
 import { PlanRealizadoComponent } from './components/planificaciones/plan-realizado/plan-realizado.component';
 import { SupervisoresComponent } from './components/supervisores/supervisores.component';
-import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
+//import { BocadilloComponent } from './components/bocadillo/bocadillo.component';
 import { ProductosCuadroComponent } from './components/limpieza/productos-cuadro/productos-cuadro.component';
 import { ProtocolosComponent } from './components/limpieza/protocolos/protocolos.component';
 import { ProtocolosCuadroComponent } from './components/limpieza/protocolos-cuadro/protocolos-cuadro.component';
@@ -336,6 +338,7 @@ export function createTranslateLoader(http: HttpClient) {
     AlergenosTablaComponent,
     FilterDatesComponent,
     AlertasComponent,
+    BocadilloComponent,
     HelpComponent,
     ZohoComponent,
     DownloadInformeComponent,
@@ -401,7 +404,6 @@ export function createTranslateLoader(http: HttpClient) {
     PermisosGeneralComponent,
     PlanRealizadoComponent,
     SupervisoresComponent,
-    BocadilloComponent,
     ProductosCuadroComponent,
     ProtocolosComponent,
     ProtocolosCuadroComponent,

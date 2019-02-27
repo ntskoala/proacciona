@@ -69,7 +69,7 @@
                 <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
                   attr.for="{{'doc'}}"></label>
                 <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'}}"
-                  class="inputfile" type="file" (change)="uploadImg($event, nuevoPieza.id,0,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                  class="inputfile" type="file" (change)="uploadImg($event, nuevoPieza.id,0,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
               </span>
             </span>
             <!--****** FIN ********************-->
@@ -102,7 +102,7 @@
     <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
       <td><span *ngIf="expanded!=null">
           <a disabled href="#" [pRowToggler]="item">
-            <i [ngClass]="expanded ? 'pi pi-chevron-circle-down' : 'pi pi-chevron-circle-right'"></i>
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
           </a></span>
       </td>
       <!--************ ORDEN ***************************-->
@@ -141,7 +141,7 @@
                   <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
                     attr.for="{{'doc'+i}}"></label>
                   <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
-                    class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                    class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
                 </span>
               </span>
               <!--****** FIN ********************-->

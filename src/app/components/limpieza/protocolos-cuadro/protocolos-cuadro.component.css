@@ -1,4 +1,25 @@
+
 .cabecera{
     height: 95px;
     font-size: 12px;
+}
+.cabTitle:hover{
+    overflow: visible;
+    max-width: fit-content;
+}
+.cabTitleTH:hover{
+    overflow: visible;
+    width:52px !important;
+}
+.usuario{
+    height: 15px;
+    padding-top: 40px;
+    text-align: center;
+}
+.widthUsuario{
+    width:100px;
+}
+.widthNoUsuario{
+    width:37px;
+    padding-left: 3px !important;
 }

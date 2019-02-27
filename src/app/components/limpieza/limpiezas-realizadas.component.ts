@@ -337,24 +337,26 @@ verFoto(foto:string,idItem){
     this.top = calc + 'px';
     let index = this.items.findIndex((item)=>item.id==idItem);
 
-
 if (foto=="doc"){
   if (this.items[index].doc){
 if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
   //window.open(this.docs[idItem],"_blank")
-  this.pdfSrc = this.docs[idItem];
+  // this.pdfSrc = this.docs[idItem];
+  this.verdoc =  true;
+  this.foto = this.docs[idItem];
 }else{
   this.verdoc =  true;
   this.foto = this.docs[idItem];
 }
   }
 }else{
-  
+  console.log(this.items[index].imagen)
   if (this.items[index].imagen){
   this.verdoc =  true;
   this.foto = this.images[idItem];
 }
 }
+console.log(this.foto,this.images)
 }
 cerrarPdf(){
   this.pdfSrc = null;

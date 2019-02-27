@@ -24,9 +24,9 @@ public modulos:Menu[]= [];
   }
 
   ngAfterViewInit(){
-    console.log('############################################################################################')
     this.permisos.modulosFuente.subscribe(
       (valor)=>{
+    console.log('############################################################################################')
         console.log('Valor',valor);
         this.setMenu();
       }
@@ -81,7 +81,8 @@ setOrden(){
 setSeleccion(opcionmenu){
   let url = 'empresas/'+ this.empresasService.seleccionada+ '/'+opcionmenu+'/0/0';
   this.router.navigateByUrl(url);
-
+  this.empresasService.menu=opcionmenu;
+  // sessionStorage.setItem('menu',opcionmenu)
 this.selectedMenu.emit(opcionmenu);
 this.subMenu = opcionmenu
 }

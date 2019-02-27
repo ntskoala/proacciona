@@ -113,10 +113,10 @@
   "introducirtexto":"",
   "expandir":"Expandir",
   "Retrasado":"Retrasado",
-  "Holding":"Holding",
-  "MasterHolding":"Master holding",
-  "PartofHolding":"Part of holding",
-  "StandAlone":"Stand alone",
+  "Holding":"Multilocal",
+  "MasterHolding":"Multilocal",
+  "PartofHolding":"Pertenece a...",
+  "StandAlone":"Independiente",
   "menu":{
     "login":"Cerrar sesión",
     "empresas":"Selecctor de empresa",
@@ -251,6 +251,7 @@
     "productos":"Productos",
     "nuevoProd":"Añadir nuevo producto",
     "imagen":"Imagen",
+    "doc":"Doc pdf",
     "proximafecha":"Próxima fecha",
     "periodicidad":"Periodicidad",
     "fecha":"Fecha",
@@ -293,6 +294,7 @@
       "quitarElemento": "Quitar procedimiento del protocolo"
   },
   "proveedores":{
+    "crear":"Nuevo proveedor",
     "proveedores":"Proveedores",
     "proveedor":"Proveedor",
     "lote":"Lote proveedor",
@@ -324,10 +326,10 @@
     "alert_contacto":"Nombre contacto alertas",
     "alert_telf":"Teléfono alertas",
     "alert_email":"Email alertas",
-    "alergenos":"Alérgenos de M.P."
+    "alergenos":"Tabla de alérgenos de M.P."
   },
   "produccion":{
-    "crear":"Crear",
+    "crear":"Nuevo lote de producción",
     "modificar":"Modificar",
     "produccion":"Producción",
     "areaproduccion": "Area de producción",
@@ -376,7 +378,7 @@
   },
   "clientes":{
     "cliente":"Client",
-    "crear":"Crear",
+    "crear":"Nuevo cliente",
     "modificar":"Modificar",
     "areaclientes":"Área de clientes",
     "ficha":"Ficha",
@@ -399,7 +401,9 @@
     "proveedor":"Proveedor",
     "remanente_origen": "Cantidad remanente en origen",
     "trazaAtras":"Trazabilidad hacia atrás",
-    "trazaAdelante":"Trazabilidad hacia adelante"
+    "trazaAdelante":"Trazabilidad hacia adelante",
+    "atras":"atras",
+    "adelante":"adelante"
   },
   "almacenes":{
     "nombre":"Nombre",
@@ -500,7 +504,8 @@
       "saveNotOk":"Se ha producido un error al guardar",
       "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición",
       "tokenExpired":"La sesión ha caducado, por favor vuelve a iniciar sesión",
-      "entregaNotOk":"La cantidad o la fecha de caducidad son erroneos"
+      "entregaNotOk":"La cantidad o la fecha de caducidad son erroneos",
+      "alertCambioEmpresa":"Esta acción ha cambiado la empresa seleccionada"
     },
     "incidencia":
     {
@@ -528,8 +533,8 @@
       "Goto":"Ir al elemento origen de la incidencia",
       "estado-1":"Sin definir",
       "estado0":"No aplica",
-      "estado1":"Abierto",
-      "estado2":"Cerrado",
+      "estado1":"Abierta",
+      "estado2":"Cerrada",
       "origen":"Origen",
       "accion":"Acción",
       "acciones":"Acciones",
@@ -553,8 +558,12 @@
       "logginsT":"ACCESOS",
       "logginsST":"Accesos y acciones de usuario",
       "desde": "desde",
+      "hace":"hace",
       "pendientes":"pendientes",
       "lecturas":"lecturas",
+      "Resumen":"Resumen",
+      "local":"local",
+      "todosLosLocales":"todos los locales",
       "tablas":{
         "limpieza_realizada":"limpiezas",
         "incidencias":"incidencias",
@@ -565,7 +574,14 @@
         "clientes_distribucion":"entregas cliente",
         "proveedores_productos":"productos de proveedor",
         "produccion_orden":"ordenes de produccion",
-        "productos":"productos"
+        "productos":"productos",
+        "usuarios":"usuarios",
+        "empresas":"empresas",
+        "permissionlimpieza":"permisos limpieza",
+        "permissionMaquinaria":"permisos maquinaria",
+        "limpieza_elemento":"elemento limpieza",
+        "limpieza_protocolos":"protocolos",
+        "limpieza_productos_elemento":"productos de limpieza"
       },
       "acciones":{
         "PUT":"actualizados",
@@ -575,7 +591,7 @@
       }
     },
     "ticket":{
-      "help":"Ticket de soporte",
+      "help":"Ticket de consulta",
       "subject":"Asunto",
       "prioridad":"Prioridad",
       "baja":"baja",
@@ -630,5 +646,6 @@
   "numero":"Num elementos a crear",
   "Direccion":"Dirección",
   "Poblacion":"Población",
-  "nrs":"Número Registro Sanitario"
+  "nrs":"Número Registro Sanitario",
+  "procesando":"Procesando..."
 }

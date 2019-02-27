@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit,OnChanges, ViewEncapsulation } from '@angular/core';
 import { Router ,ActivatedRoute, ParamMap  } from '@angular/router';
 
 
@@ -17,7 +17,7 @@ import { ResultadoControl } from '../../../models/resultadocontrol';
   styleUrls: ['./dashrealizados.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class DashrealizadosComponent implements OnInit {
+export class DashrealizadosComponent implements OnInit, OnChanges {
   public resultados:any[];
   public controles: Control[];
   public resultadoscontrol: ResultadoControl[] = [];
@@ -40,17 +40,23 @@ export class DashrealizadosComponent implements OnInit {
     public route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.loadControles();
+    this.loadControles('1');
+    if(this.empresasService.menu=='empresas'){
     this.empresasService.empresaSeleccionada.subscribe(
       (emp)=>{
-        console.log(emp);
-        if(emp){
-          this.loadControles();
+        console.log(emp,this.empresasService.menu);
+        if(emp && this.empresasService.menu=='empresas'){
+          this.loadControles('2');
         }
       })
+    }
   }
 
-  loadControles() {
+ngOnChanges(){
+}
+
+  loadControles(origen) {
+    console.log(origen,this.empresasService.menu);
     let parametros = '&idempresa=' + this.empresasService.seleccionada; 
     this.servidor.getObjects(URLS.CONTROLES, parametros).subscribe(
       response => {
@@ -104,7 +110,7 @@ export class DashrealizadosComponent implements OnInit {
 } 
 
 setOptionData(data){
-  console.log(data);
+  
   let resultado;
   resultado= [];
   this.labels.forEach((fecha)=>{
@@ -120,6 +126,7 @@ setOptionData(data){
   return resultado;
 }
 loadResultados(days:number){
+  console.log(days,this.empresasService.menu);
   this.days=days;
   this.calculando = true;
   this.fecha['inicio']= new Date(moment().subtract(days,'d').format('YYYY-MM-DD')); //moment().subtract(7,'d').date();
@@ -158,21 +165,7 @@ filtrarFechas(fecha) {
              if (element.foto == 'true') {
                resultado['foto'] = true;
              }
-            //  if (resultado[control.nombre] !== '') {
-            //    if (control.minimo !== null && resultado[control.nombre] < control.minimo) {
-            //      resultado[control.nombre + 'mensaje'] = '<min';
-            //    }
-            //    if (control.maximo !== null && resultado[control.nombre] > control.maximo) {
-            //      resultado[control.nombre + 'mensaje'] = '>max';
-            //    }
-            //    if (control.tolerancia !== null && resultado[control.nombre] > control.tolerancia) {
-            //      resultado[control.nombre + 'mensaje'] = '>tol';
-            //    }
-            //    if (control.critico !== null && resultado[control.nombre] > control.critico) {
-            //      resultado[control.nombre + 'mensaje'] = '>cri';
-            //    }
-            //    if (resultado[control.nombre + 'mensaje']) resultado['error'] = true;
-            //  }
+
              this.tabla.push(resultado);
            }
          }

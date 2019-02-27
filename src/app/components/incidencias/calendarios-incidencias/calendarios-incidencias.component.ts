@@ -4,7 +4,7 @@ import * as moment from 'moment/moment';
 import {Schedule} from 'primeng/primeng';
 
 import { Servidor } from '../../../services/servidor.service';
-import { URLS } from '../../../models/urls';
+import { URLS,optionsFullCalendar } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
 import { Empresa } from '../../../models/empresa';
  import { Incidencia } from '../../../models/incidencia';
@@ -52,6 +52,7 @@ export class CalendariosIncidenciasComponent implements OnInit {
   public tipoevento:string[]=[];
   public event:any;
   public estado;
+  public opcionesFullCalendar:any=optionsFullCalendar;
   //public localSupervisor: string;
   public supervisor: string;
   public entidad:string="&entidad=incidencias";

@@ -312,7 +312,9 @@ setSupervision($event){
     if (foto=="doc"){
       if (this.items[index].doc){
     if(this.docs[idItem].substr(this.docs[idItem].length-3,3)=='pdf'){  
-      window.open(this.docs[idItem],"_blank")
+      // window.open(this.docs[idItem],"_blank")
+      this.verdoc =  true;
+      this.foto = this.docs[idItem];
     }else{
       this.verdoc =  true;
       this.foto = this.docs[idItem];

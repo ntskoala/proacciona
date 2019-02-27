@@ -1,5 +1,5 @@
 <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-<h2 class="center">{{'maquinas.lubricantes' | translate}}</h2>
+<h2 class="popupTitle">{{'maquinas.lubricantes' | translate}}</h2>
 <!-- <div class="modal" *ngIf="modal2">
   <div class="foto-window">
       <span class="close material-icons" (click)="cerrarFoto()">close</span>
@@ -243,7 +243,7 @@
                   </button>
             
                     <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" attr.for="{{col.field+i}}"></label>                
-                    <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{col.field+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,col.field)" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx"/>
+                    <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{col.field+i}}" class="inputfile" type="file" (change)="uploadImg($event, item.id,i,col.field)" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
                 </span>
             <!--****** FIN ********************-->
               </span>

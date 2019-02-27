@@ -4,7 +4,9 @@
     <mat-toolbar color="accent">
       Empresa
       <span class="id-empresa" *ngIf="empresasService.seleccionada != 0">
-        24{{empresasService.seleccionada}}53
+        <!-- 24{{empresasService.seleccionada}}53 -->
+        <span *ngIf="empresasService.nombreHolding">{{empresasService.nombreHolding}}</span>
+        <span *ngIf="!empresasService.nombreHolding">{{empresasService.nombreEmpresa}}</span>
       </span>
     </mat-toolbar>
   </mat-card-title>

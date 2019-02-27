@@ -23,7 +23,7 @@
           <empresas *ngIf="empresasService.administrador && selectedMenu=='empresas'"></empresas>
           <!-- <app-dashboard *ngIf="selectedMenu=='dashboard'"></app-dashboard> -->
           <gestion-tablas *ngIf="selectedMenu=='settings'"></gestion-tablas>
-          <gestion-informes *ngIf="selectedMenu=='informes'"></gestion-informes>
+          <gestion-informes *ngIf="selectedMenu=='informes'" [selectedMenu]="selectedMenu"></gestion-informes>
            <app-planificaciones class="full-width" *ngIf="selectedMenu=='planificaciones'"></app-planificaciones> 
           <maquinaria class="full-width" *ngIf="selectedMenu=='maquinaria'"></maquinaria>
           <limpieza class="full-width" *ngIf="selectedMenu=='limpieza'"></limpieza>

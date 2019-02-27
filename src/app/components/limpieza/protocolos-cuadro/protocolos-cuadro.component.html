@@ -1,9 +1,10 @@
 <div class="modal" *ngIf="procesando">
     <mat-spinner></mat-spinner>
     </div>
-    <mat-toolbar color="accent">{{'protocolo.cuadroProtocolo' | translate}}
-    </mat-toolbar>
-    <p-dataTable [value]="tabla" [responsive]="true">
+    <h2 class="popupTitle" style="display: inline-block; width: 100% !important;">{{'protocolo.cuadroProtocolo' | translate}}
+    </h2>
+
+    <!-- <p-dataTable [value]="tabla" [responsive]="true">
         <p-column *ngFor="let col of cols; let x = index" [field]="col.field" [header]="col.header | translate"  [frozen]="col.field == 'protocolo'">
                 <ng-template pTemplate="header">
                        
@@ -22,4 +23,36 @@
           </mat-slide-toggle>
             </ng-template> 
         </p-column>
-    </p-dataTable>
+    </p-dataTable> -->
+
+
+
+    <div [style.width]="ancho" >
+        <p-table #DT [value]="tabla" [columns]="cols" 
+          [responsive]="true" 
+          [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}"> 
+          <ng-template pTemplate="header" let-columns>
+               <tr>
+              <th *ngFor="let col of columns" [ngClass]="{'widthUsuario':col.header=='Protocolo','widthNoUsuario':col.header!='Protocolo','cabTitleTH':col.header.length > 20, 'border-right':true}">
+                <div class="vertical cabecera cabTitle" [ngClass]="{'vertical':col.header!='Protocolo','usuario':col.header=='Protocolo'}">{{col.header | translate}}</div>
+              </th>
+              </tr>
+          </ng-template>
+         
+          <ng-template pTemplate="body" let-protocolo let-i="rowIndex" let-columns="columns">
+            <tr [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+              <td *ngFor="let col of columns; let x = index"  [ngClass]="{'rowRegistro':true}"  class="border-right padleft">
+                <div style="text-align: center">
+                    <span *ngIf="col.field == 'protocolo'">{{protocolo[col.field]}} </span>
+                    <mat-slide-toggle class="options" (change)="setPermiso(protocolo['idprotocolo'],$event.checked,x,i)" *ngIf="col.field == 'protocolo'"
+                    [checked]="protocolo['generalSwitch']" style="float:right">
+              </mat-slide-toggle>
+              <mat-slide-toggle class="option" (change)="setPermiso(protocolo['idprotocolo'],$event.checked,x,i,col['header'])" *ngIf="col.field != 'protocolo'"
+              [checked]="protocolo[col.field]">
+              </mat-slide-toggle>
+                     </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        </div>

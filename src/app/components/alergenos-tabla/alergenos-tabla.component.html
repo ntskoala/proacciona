@@ -1,18 +1,15 @@
 <!-- <mat-toolbar style="width: 900px !important;" color="accent">{{'produccion.alergenos' | translate}}
   </mat-toolbar> -->
-  <h2 class="center">{{titulo | translate}}</h2>
+  <h2 class="popupTitle">{{titulo | translate}}</h2>
 
+<div class="space"></div>
 
-
-<p-table #dt [value]="tabla"  [style]="{'width':'900px'}"  [loading]="procesando">
+<p-table #dt [value]="tabla"  [style]="{'width':'920px'}"  [loading]="procesando">
     <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
-                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel2()" style="float:left"></button>
+                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel2()" style="float:right"></button>
             </div>
     </ng-template>
-
-
-
 
 <ng-template pTemplate="header">
     <span style="display:table-row">
@@ -21,13 +18,6 @@
         <th style="width:50px; height: 95px;"><span class="vertical">{{col.header | translate}}</span></th>
       </span>
     </span>
-  <!-- <tr>
-    <td  style="width:200px; background-color: #eee"></td>
-      <span *ngFor="let col of cols;let i = index">
-          <td style="width:50px;"  [ngClass]="{'INGPar':i%2==0,'INGImpar':i%2!=0}" >ING</td>
-          <td style="width:50px;"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >TRZ</td>
-      </span>
-  </tr> -->
 </ng-template>
 <ng-template pTemplate="body" let-producto let-i="rowIndex">
     <tr [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
@@ -36,16 +26,8 @@
               </td>
         <span *ngFor="let col of cols;let i = index">
             <td style="width:50px" >
-            <!-- <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Ing',col.header,$event.checked)"
-            [checked]="producto['cols'][i]['Ing']">
-        </mat-slide-toggle> -->
         <div class="myCheck" [ngClass]="{'checkIng':producto['cols'][i]['Ing']=='Ing','checkTrz':producto['cols'][i]['Ing']=='Trz'}" (click)="cambiaEstado(producto['idproducto'],producto['cols'][i]['Ing'],col.header,i)"></div>
             </td>
-            <!-- <td style="width:50px"  [ngClass]="{'TRZPar':i%2==0,'TRZImpar':i%2!=0}" >
-                <mat-slide-toggle class="options" (change)="setPermiso(producto['idproducto'],'Trz',col.header,$event.checked)"
-                [checked]="producto['cols'][i]['Trz']">
-            </mat-slide-toggle>
-                </td> -->
         </span>
     </tr>
 </ng-template>

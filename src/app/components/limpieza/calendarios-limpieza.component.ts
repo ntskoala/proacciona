@@ -3,7 +3,7 @@ import {Moment} from 'moment';
 import * as moment from 'moment/moment';
 
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,optionsFullCalendar } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { Empresa } from '../../models/empresa';
  import { Maquina } from '../../models/maquina';
@@ -47,6 +47,7 @@ public usuarios:Usuario[];
 public tipoevento:string[]=[];
 public event:any;
 public estado;
+public opcionesFullCalendar:any=optionsFullCalendar;
 //public localSupervisor: string;
 public supervisor: string;
 entidad:string="&entidad=limpieza_realizada";
@@ -76,8 +77,8 @@ public supervisar:object[]=[{"value":0,"label":"porSupervisar"},{"value":1,"labe
                 let repeticion = this.checkPeriodo(element.periodicidad);
 
                 if (repeticion =='por uso'){
-                  console.log('############POR USO')
-                  fecha = new Date();
+                  console.log('############POR USO',element.periodicidad)
+                  fecha = moment().format('YYYY-MM-DD');
                   color = "#3333ff";
                 }else{
                   fecha = element.fecha;
@@ -118,7 +119,7 @@ loadRealizados(){
                 (element.supervision == 0)? estado = 'realizado': estado = 'supervisado';
                 let supervisor = ''; 
                 (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
-                  console.log('@'+supervisor);
+                  //console.log('@'+supervisor);
                   this.events.push({"idlimpiezaelemento":element.id,"idlimpiezazona":element.limpiezazona,"title":element.nombre,
                   "descripcion":element.descripcion,"start":element.fecha,"prevista":element.fecha_prevista,"tipo":element.tipo,
                   "elemento":element.elemento,"usuario":element.idusuario,"responsable":element.responsable,"color":"#33cc33","estado":estado,
@@ -166,7 +167,13 @@ return user;
 
 checkPeriodo(periodicidad: string): string{
 let valor:string;
-let periodo = JSON.parse(periodicidad);
+let periodo={repeticion:''};
+try{
+periodo = JSON.parse(periodicidad);
+}
+catch(e){
+//console.log("ERROR PARSING PERIODICIDAD:",periodicidad,'*');
+}
 return periodo.repeticion;
 }
 

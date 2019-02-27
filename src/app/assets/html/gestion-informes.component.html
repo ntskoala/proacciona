@@ -17,14 +17,16 @@
     </mat-card-subtitle>
     <mat-card-content>
       <!--<informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>-->
-      <app-informes-control class="tab" [class.active]="tabActivo == 0"></app-informes-control>
-      <informe-checklists class="tab" [class.active]="tabActivo == 1"></informe-checklists>
+      <app-informes-control class="tab marcoTab" [class.active]="tabActivo == 0"  *ngIf="tabActivo == 0"></app-informes-control>
+      <informe-checklists class="tab marcoTab" [class.active]="tabActivo == 1"  *ngIf="tabActivo == 1"></informe-checklists>
       
-      <div  class="tab" [class.active]="tabActivo == 2" *ngIf="tabActivo == 2">
+      <div  class="tab marcoTab" [class.active]="tabActivo == 2" *ngIf="tabActivo == 2">
+          <div class="dash">
               <app-dashincidencias class="module"></app-dashincidencias>
               <app-alertasControles class="module"></app-alertasControles>
               <app-dashrealizados class="module"></app-dashrealizados>
               <app-uso class="module"></app-uso>
+              </div>
       </div>
 
       <!-- <informe-periodicidad class="tab" [class.active]="tabActivo == 2"></informe-periodicidad> -->

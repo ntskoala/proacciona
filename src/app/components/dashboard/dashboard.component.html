@@ -6,6 +6,7 @@
 
         <app-dashrealizados></app-dashrealizados> -->
         <div *ngIf="empresasService.seleccionada" class="companyDash">
+              <h2 class="moduloTitle">{{'Dashboard.Resumen' | translate }} {{'Dashboard.local' | translate}} {{empresasService.nombreEmpresa}}</h2>
         <app-dashincidencias #db1 class="module"></app-dashincidencias>
         <app-alertasControles #db2 class="module"></app-alertasControles>
         <app-dashrealizados #db3 class="module"></app-dashrealizados>
@@ -13,7 +14,7 @@
         </div>
         
         <div *ngIf="empresasService.administrador" class="adminDash">
-                <h2 class="center">Admin Dashboard</h2>
+                <h2 class="moduloTitle">{{'Dashboard.Resumen' | translate }} {{'Dashboard.todosLosLocales' | translate}}</h2>
                 <app-admin-controles-cliente></app-admin-controles-cliente>
                 <app-admin-incidencias-cliente></app-admin-incidencias-cliente>
                 <app-admin-logins-cliente></app-admin-logins-cliente>

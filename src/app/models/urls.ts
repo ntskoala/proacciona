@@ -53,6 +53,7 @@ export const URLS = {
 }
 let calendar;
 let medidas;
+let opcionesFullCal;
 if (localStorage.getItem("idioma")=='es'){
  calendar={
   monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -63,6 +64,32 @@ dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
 firstDayOfWeek: 1
 }
+opcionesFullCal ={
+  theme: true,
+  header: {
+   left: 'prev,next today',
+   center: 'title',
+   right: 'month,basicWeek,listDay,listMonth,listYear'
+  },
+  timeFormat: 'HH(:mm)',
+  views: {
+    basic: {
+      eventLimit: 19 // adjust to 6 only for agendaWeek/agendaDay
+    }
+  },
+  monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ], 
+  monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+  dayNames: [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+  buttonText: {
+   today: 'Hoy',
+   month: 'Mes',
+   basicWeek: 'Semana',
+   listDay: 'Día',
+   listMonth: 'Lista mes',
+   listYear: 'Lista anual'
+  }
+ };
 medidas = [{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unidades','value':'unidades'}];
 }
 if (localStorage.getItem("idioma")=='cat'){
@@ -75,7 +102,45 @@ if (localStorage.getItem("idioma")=='cat'){
  dayNamesMin: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
  firstDayOfWeek: 1
  }
+ opcionesFullCal={
+  theme: true,
+  header: {
+   left: 'prev,next today',
+   center: 'title',
+   right: 'month,basicWeek,listDay,listMonth,listYear'
+  },
+  timeFormat: 'HH(:mm)',
+  // {
+  // 'HH(:mm)'
+  //   // '': '(hh:mm)',
+  //   // 'basic': '(hh:mm)',
+  //   // 'list': '(hh:mm)',
+  //   // 'agenda': '(hh:mm)'
+  // },
+  views: {
+    basic: {
+      eventLimit: 19 // adjust to 6 only for agendaWeek/agendaDay
+    }
+  },
+  monthNames: ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol',
+  'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'],
+  monthNamesShort: [ "Gen","Feb","Mar","Abr","Mai","Jun","Jul","Ago","Set","Oct","Nov","Dec" ],              
+dayNames: ['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Disabte'],
+dayNamesShort: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
+dayNamesMin: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
+  buttonText: {
+   today: 'Avui',
+   month: 'Mes',
+   basicWeek: 'Setmana',
+   listDay: 'Día',
+   listMonth: 'Llista mes',
+   listYear: 'Llista any'
+  }
+ };
 medidas = [{'label':'Kg.','value':'Kg.'},{'label':'g.','value':'g.'},{'label':'l.','value':'l.'},{'label':'ml.','value':'ml.'},{'label':'unitats','value':'unidades'}];
 }
+export const optionsFullCalendar = opcionesFullCal;
+
+
 export const cal = calendar;
 export const dropDownMedidas=medidas;

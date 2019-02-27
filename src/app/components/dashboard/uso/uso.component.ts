@@ -32,13 +32,17 @@ public dias:number;
 
   ngOnInit() {
       this.loadUsers();
+      if(this.empresasService.menu=='empresas'){
       this.empresasService.empresaSeleccionada.subscribe(
         (emp)=>{
           console.log(emp);
-          if(emp){
+          if(emp && this.empresasService.menu=='empresas'){
+           
             this.loadUsers();
+            
           }
         })
+      }
   }
 
 // fillData(){
@@ -97,6 +101,8 @@ loadUsers(){
           }
           this.loadLogs();
           this.altura = 120 + this.usuarios.length*48 + 'px';
+        }else{
+          this.calculando=false;
         }
     });
 }
@@ -170,6 +176,7 @@ loadLogs(periodo?:number){
     
     open(data){
       this.items=this.logs.filter((log)=>log.idusuario==data);
+      window.scrollTo(0, 0)
     }
     close(){
       this.items=[]

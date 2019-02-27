@@ -20,7 +20,7 @@
 <div #toPDF class="arbol" [ngStyle]="{'width': widthArbol, 'overflow-y':'scroll'}">
     <mat-card>
                 <mat-card-title>
-            {{'trazabilidad.Arbol' | translate}} {{modo}}
+            {{'trazabilidad.Arbol' | translate}} {{modo | translate}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </mat-card-title>
 <p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"  [contextMenu]="cm"></p-tree>

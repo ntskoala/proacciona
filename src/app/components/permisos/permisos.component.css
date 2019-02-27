@@ -16,6 +16,11 @@
     overflow: visible;
     width:52px !important;
 }
+.usuario{
+    height: 15px;
+    padding-top: 40px;
+    text-align: center;
+}
 .border-right{
     border-right:lightgray solid 1px;
 }

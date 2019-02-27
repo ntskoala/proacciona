@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ViewChild, OnChanges } from '@angular/core';
 import * as moment from 'moment/moment';
 
 import { EmpresasService } from '../../services/empresas.service';
@@ -7,7 +7,7 @@ import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
 import { Modal } from '../../models/modal';
 import { URLS } from '../../models/urls';
-import {MatSelect} from '@angular/material';
+import {MatSelect, MatTooltip} from '@angular/material';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
@@ -16,10 +16,11 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls:['./produccion.css']
 })
 
-export class ListadoOrdenesProduccionComponent implements OnInit {
+export class ListadoOrdenesProduccionComponent implements OnInit,OnChanges {
 //*** STANDARD VAR
  @ViewChild('choiceEstat') ChoiceEstat: MatSelect;
   @ViewChild('choicer') Choicer: MatSelect;
+  @ViewChild('ff') f2: MatTooltip;
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 public itemActivo: number;
 public items: ProduccionOrden[]=[];//Array de Items para el desplegable;
@@ -29,20 +30,34 @@ public  modal: Modal = new Modal();
 public  modificaItem: boolean;
 public  nuevoNombre:string;
 public estado:string='abierto';
+public element;
 //*** ESPECIFIC VAR */
 public fechas_inicio:Object={fecha_inicio:moment(new Date()).subtract(30,'days').format('YYYY-MM-DD').toString(),fecha_fin:moment(new Date()).format('YYYY-MM-DD').toString()}//ultimos 30 dias
 public filtro_inicio:String;
 public filtro_fin:String;
 public filter:boolean=false;
+public botones;
+public botonActual=-1;
   constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
-    //this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
-    //this.setDates(this.fechas_inicio);
+
+    // this.botones = window.document.getElementsByTagName('button');
+    // this.nextBocadillo('ok');
+
     this.expand(this.ChoiceEstat)
   }
+  ngOnChanges(){
+    this.f2.show();
+  }
 cambiarTab(){}
-
+nextBocadillo($event){
+  this.botonActual++;
+  console.log(this.botonActual,this.botones,this.botones[this.botonActual].parentElement);
+  if(this.botones[this.botonActual].parentElement=='div.tooltip') console.log('OK')
+  console.log(this.botones[this.botonActual].parentElement.attributes["ng-reflect-message"].nodeValue);
+  this.element=this.botones[this.botonActual].getBoundingClientRect();
+}
 loadItems(emp: Empresa | string, estat:string,filterDates?:string) {
     let params = typeof(emp) == "string" ? emp : emp.id;
      let parametros ="";
@@ -172,6 +187,7 @@ addItem(){
 expand(list: MatSelect){
 setTimeout(()=>{list.open();},200)
 }
+
 unExpand(list: MatSelect){
   list.close();
 }
@@ -183,6 +199,7 @@ unExpand(list: MatSelect){
 //   this.loadItems(this.empresasService.seleccionada.toString(), this.estado);
 // }
 changeEstado(event: any){
+  this.f2.show();
   console.log('cambio estado',event)
   this.Choicer.value=null;
   //this.loadItems(this.empresasService.seleccionada.toString(), estado);

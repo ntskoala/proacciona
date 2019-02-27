@@ -86,10 +86,10 @@ public informeData:any;
       {field: 'fecha', header: 'Fecha', type: 'fecha', width:120,orden:true,'required':true  },
       // { field: 'descripcion', header: 'Descripción', type: 'std', width:160,orden:true,'required':true  },
       // { field: 'solucion', header: 'Solución', type: 'std', width:160,orden:true,'required':true  },
-      { field: 'responsable', header: 'Responsable', type: 'dropdown', width:130,orden:true,'required':true ,'disabled':true },
+      { field: 'responsable', header: 'Responsable', type: 'dropdown', width:130,orden:false,'required':true ,'disabled':true },
       { field: 'estado', header: 'Estado', type: 'dropdown', width:130,orden:false,'required':false  },
-      { field: 'origen', header: 'Origen', type: 'trad', width:130,orden:true,'required':true  },
-      { field: 'responsable_cierre', header: 'Responsable cierre', type: 'dropdown', width:130,orden:false,'required':false,'disabled':false   },
+      { field: 'origen', header: 'Origen', type: 'trad', width:130,orden:false,'required':true  },
+      { field: 'responsable_cierre', header: 'incidencia.r_cierre', type: 'dropdown', width:130,orden:false,'required':false,'disabled':false   },
       { field: 'fecha_cierre', header: 'incidencia.fecha_cierre', type: 'fecha', width:120,orden:true,'required':true  }
   ];
 
@@ -385,14 +385,15 @@ newItem() {
       body +=   "<BR>Nombre: " + nuevaIncidencia.incidencia +  "<BR>"
       body +=   "Descripción: " + (nuevaIncidencia.descripcion)? nuevaIncidencia.descripcion:"";
       body +=    "<BR>Solución inmediata propuesta: " + (nuevaIncidencia.solucion)? nuevaIncidencia.solucion:"";
+      body +=   "<BR>Se requiere seguimiento y cierre de la incidencia."
       // body +=    "<BR>Ir a la incidencia: https://tfc.proacciona.es.com/empresas/"+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
-      body +=    "<BR>Ir a la incidencia: "+server+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
+      //body +=    "<BR>Ir a la incidencia: "+server+ this.empresasService.seleccionada +"/incidencias/0/" + nuevaIncidencia.id + ""
     
-      if (nuevaIncidencia.origen != 'incidencias')
+      if (nuevaIncidencia.origen != 'incidencias'){}
       // body +=    "<BR>Ir al elemento https://tfc.proacciona.es/empresas/"+ this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
-      body +=    "<BR>Ir al elemento "+ server + this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
-    
-      let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada;
+      //body +=    "<BR>Ir al elemento "+ server + this.empresasService.seleccionada +"/"+ nuevaIncidencia.origenasociado +"/"+ nuevaIncidencia.idOrigenasociado +"/" + nuevaIncidencia.idOrigen + ""
+      let link = encodeURI(server)+"%23%2Fempresas%2F"+ this.empresasService.seleccionada +"%2Fincidencias%2F0%2F" + nuevaIncidencia.id + ""
+      let parametros2 = "&body="+body+'&idempresa=' + this.empresasService.seleccionada + "&uri="+encodeURI(link);
           this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
             response => {
               if (response.success && response.data) {
@@ -655,7 +656,7 @@ openNewRow(){
         
                     }
                     let informe='';
-                    this.translate.get('planificaciones.planificaciones_realizadas').subscribe((desc)=>{informe=desc});
+                    this.translate.get('Incidencias').subscribe((desc)=>{informe=desc});
                     return {'cabecera':[informeCabecera],'rows':informeRows,'comentarios':[],'informes':informe};
         }
     

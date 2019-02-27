@@ -64,7 +64,7 @@
 
 
 
-  <h2>{{'maquinas.piezas' | translate}}<span *ngIf="!maquina.id>0"> general</span></h2>
+  <h2 class="popupTitle" *ngIf="!maquina.id>0">{{'maquinas.piezas' | translate}} general</h2>
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table [columns]="cols" [value]="piezas" dataKey="id" [paginator]="true" [rows]="15"
     (onEditInit)="onEdit($event)"
@@ -112,7 +112,7 @@
                             <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound" 
                                 attr.for="{{'doc'}}"></label>
                             <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'}}"
-                                class="inputfile" type="file" (change)="uploadImg($event, nuevoPieza.id,0,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                                class="inputfile" type="file" (change)="uploadImg($event, nuevoPieza.id,0,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
                             </span>
                         </span>
                         <!--****** FIN ********************-->
@@ -160,7 +160,7 @@
                             <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
                                 attr.for="{{'doc'+i}}"></label>
                             <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
-                                class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                                class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
                             </span>
                         </span>
                         <!--****** FIN ********************-->

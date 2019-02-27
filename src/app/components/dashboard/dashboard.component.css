@@ -21,9 +21,18 @@
 .companyDash{
     width: 100%;
     display: inline-block;
+    min-width: 1100px !important;
+    background-color: rgba(238, 234, 245, 0.9) !important;
+    border: #6739b6 solid 1px;
+    /* padding-top: 25px; */
+    border-radius: 5px;
 }
 .adminDash{
-    background: lightgoldenrodyellow;
     width: 100%;
+    min-width: 1170px !important;
     display: inline-block;
+    background-color: #fff9c4;
+    /* border: 1px solid orange; */
+    border: 1px solid #fed22f;
+    border-radius: 5px;
 }

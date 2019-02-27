@@ -1,0 +1,5 @@
+.toolBar{
+float:left;
+display:inline-block;
+border-right: 1px #fff solid;
+}

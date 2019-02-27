@@ -31,7 +31,8 @@ export class EmpresasService {
   public empresaSeleccionadaFuente = new Subject<Empresa>();
   private nuevaEmpresaFuente = new Subject<Empresa>();
   public opcionesFuente = new Subject<boolean>();
-  
+  public menu:string=null;
+  public nombreHolding = null;
   // streaming del observable
   empresaSeleccionada = this.empresaSeleccionadaFuente.asObservable();
   nuevaEmpresa = this.nuevaEmpresaFuente.asObservable();
@@ -43,6 +44,8 @@ export class EmpresasService {
       this.nombreEmpresa = empresa.nombre;
       this.holding= empresa.holding;
       this.idHolding= empresa.idHolding;
+      sessionStorage.setItem('idEmpresa',empresa.id.toString());
+      sessionStorage.setItem('nombreEmpresa',empresa.nombre);
 //      this.empresa = empresa;
       this.empresaSeleccionadaFuente.next(empresa);
       this.empresaActiva = empresa.id;

@@ -202,7 +202,12 @@
       <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
           <span *ngIf="col.type == 'dropdown'">
               <p-dropdown  [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
-                (onChange)="itemEdited(item.id)"></p-dropdown>
+                (onChange)="itemEdited(item.id)">
+                <ng-template let-item pTemplate="selectedItem" *ngIf="col.field == 'supervision'">
+                    <div [ngClass]="{'boliche':true,'sinDefinir':item.value==0,'abierta':item.value==2,'cerrada':item.value==1}"></div>                          
+                            <span style="vertical-align:middle; margin-left: .5em; font-size: small;">{{item.label}}</span>
+                        </ng-template>   
+              </p-dropdown>
             </span>
             <span *ngIf="col.type == 'periodicidad'">
               <span class="tooltip" matTooltip="{{'maquinas.periodicidad' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
@@ -226,7 +231,7 @@
                   <label *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" class="inputlabelRound"
                     attr.for="{{'doc'+i}}"></label>
                   <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" id="{{'doc'+i}}"
-                    class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" />
+                    class="inputfile" type="file" (change)="uploadImg($event, item.id,i,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf" />
                 </span>
               </span>
               <!--****** FIN ********************-->

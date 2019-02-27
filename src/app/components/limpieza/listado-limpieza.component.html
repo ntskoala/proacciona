@@ -36,7 +36,7 @@
         </button>
       </span>
 <!--**************** IMPOORTAR CHECKLISTS -->
-        <button *ngIf="(empresasService.administrador)" mat-mini-fab color="primary" (click)="importChecklists('abrir')" type="button">
+        <button *ngIf="(empresasService.administrador && empresasService.userTipo == 'Administrador')" mat-mini-fab color="primary" (click)="importChecklists('abrir')" type="button">
             <span class="material-icons">get_app</span>
           </button> 
 <!--**************** FIN IMPOORTAR CHECKLISTS -->

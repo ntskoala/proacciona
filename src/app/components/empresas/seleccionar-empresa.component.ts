@@ -31,6 +31,7 @@ export class SeleccionarEmpresaComponent {
     sessionStorage.setItem('idEmpresa', empresa.id.toString());
     sessionStorage.setItem('nombreEmpresa', empresa.nombre);
     sessionStorage.setItem('holding', empresa.holding.toString());
+    sessionStorage.setItem('idHolding', this.empresasService.idHolding.toString());
     //console.log("informes",this.empresasService.empresa.exportar_informes);
   }
   gotEmpresas(empresas:Empresa[]){

@@ -43,7 +43,9 @@ export class EmpresasService {
       this.seleccionada = empresa.id;
       this.nombreEmpresa = empresa.nombre;
       this.holding= empresa.holding;
-      this.idHolding= empresa.idHolding;
+      this.idHolding= null;
+      if (empresa.holding==1)this.idHolding= empresa.id;
+      if (empresa.holding==2)this.idHolding= empresa.idHolding;
       sessionStorage.setItem('idEmpresa',empresa.id.toString());
       sessionStorage.setItem('nombreEmpresa',empresa.nombre);
 //      this.empresa = empresa;

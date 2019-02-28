@@ -376,7 +376,22 @@
     "alert_tanque_destino":"No ha seleccionat un Tanc de destí",
     "alert6":""
   },
-    "trazabilidad":{
+  "clientes":{
+    "cliente":"Client",
+    "crear":"Nou client",
+    "modificar":"Modificar",
+    "areaclientes":"Àrea de clients",
+    "ficha":"Fitxa",
+    "entregaproductos":"Entrega productes",
+    "nombre":"Nom",
+    "contacto":"Nom contacte",
+    "telf":"Telèfon",
+    "email":"Email",
+    "producto":"Producte",
+    "numlote":"Num lot",
+    "fecha":"Data"
+  },
+  "trazabilidad":{
     "Trazabilidad":"Traçabilitat",
     "lote":"Lot",
     "Arbol":"Arbre",
@@ -389,21 +404,6 @@
     "trazaAdelante":"Traçabilitat endavant",
     "atras":"endarrera",
     "adelante":"endavant"
-  },
-  "clientes":{
-    "cliente":"Client",
-    "crear":"CrNou clientear",
-    "modificar":"Modificar",
-    "areaclientes":"Àrea de clients",
-    "ficha":"Fitxa",
-    "entregaproductos":"Entrega productes",
-    "nombre":"Nom",
-    "contacto":"Nom contacte",
-    "telf":"Telèfon",
-    "email":"Email",
-    "producto":"Producte",
-    "numlote":"Num lot",
-    "fecha":"Data"
   },
   "almacenes":{
     "nombre":"Nom",

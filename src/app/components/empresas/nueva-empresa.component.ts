@@ -89,6 +89,7 @@ ngOnChanges(){
 
   updateActiva(empresa: Empresa){
     let parametros = '?idempresa=' + this.empresaActiva.id +"&entidad=empresas&id="+this.empresaActiva.id;
+    empresa.idHolding=this.empresaActiva.idHolding;
     this.servidor.putObject(URLS.STD_ITEM,parametros,empresa, ).subscribe(
       response => {
         console.log(response);

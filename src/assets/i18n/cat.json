@@ -647,5 +647,8 @@
   "Direccion":"Adreça",
   "Poblacion":"Població",
   "nrs":"Número Registre Sanitari",
-  "procesando":"Processant..."
+  "procesando":"Processant...",
+  "abierto":"obert",
+  "cerrado":"tancat",
+  "entregado":"entregat"
 }	

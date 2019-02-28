@@ -647,5 +647,8 @@
   "Direccion":"Dirección",
   "Poblacion":"Población",
   "nrs":"Número Registro Sanitario",
-  "procesando":"Procesando..."
+  "procesando":"Procesando...",
+  "abierto":"abierto",
+  "cerrado":"cerrado",
+  "entregado":"entregado"
 }

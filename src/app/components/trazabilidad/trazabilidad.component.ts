@@ -253,7 +253,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                       if (element.idmateriaprima>0){
                       //  this.setItems(nodo.children[i],element.idmateriaprima)
                       nodo.children.push({
-                      "label":element.proveedor + ": " + element.numlote_proveedor,
+                      "label":element.proveedor + ": " + element.producto + ': ' + element.numlote_proveedor,
                       
                       "parent":nodo,
                       //"expanded":true,

@@ -45,6 +45,7 @@ async downloads(){
         this.innerHtml += respuesta.json()["contenido"];
         let descargaUrl = respuesta.json()["url"]; 
         let descargaPdf = respuesta.json()["urlPdf"]; 
+        let id = respuesta.json()["id"]; 
         let time=0;
       if (this.pdf){
         this.innerHtml += 'Descarga Pdf...<br>';
@@ -65,6 +66,12 @@ async downloads(){
                   this.informeRecibido.emit(true);
                 },time)
               }
+              let deleteFile={'accion':'delete','id':id}
+              console.log(deleteFile);
+              this.servidor.postSimple(url,deleteFile).subscribe(
+                (resultado)=>{
+                  console.log(resultado);
+                });
         },
         (error)=>{console.log('ERROR SCRIPTING ',error);},
         ()=>{

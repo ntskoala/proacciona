@@ -110,6 +110,7 @@ export class AdminLoginsClienteComponent implements OnInit {
                 }
               }
               console.log(this.empresas);
+              this.empresas.sort((a,b)=>b["logs"].length-a["logs"].length);
               this.empresas.length > 4? this.altura = 95 + this.empresas.length*48 + 'px' : '';
             }
           },

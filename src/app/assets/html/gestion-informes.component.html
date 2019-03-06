@@ -10,13 +10,10 @@
         (click)="cambiarTab(0)">{{'Controles' | translate}}</button>
       <button [ngClass]="{'selected2':tabs[1]}" mat-button color="primary" [attr.mat-raised-button]="tabs[1]"
         (click)="cambiarTab(1)">Checklists</button>
-      <!-- <button [ngClass]="{'selected2':tabs[2]}" mat-button color="primary" [attr.mat-raised-button]="tabs[2]"
-        (click)="cambiarTab(2)">{{'Periodicidad' | translate}}</button>
-      <button [ngClass]="{'selected3':tabs[3]}" mat-button color="primary" [attr.mat-raised-button]="tabs[3]"
-        (click)="cambiarTab(3)">{{'Informes x mail' | translate}}</button> -->
+        <!-- <button [ngClass]="{'selected2':tabs[3]}" mat-button color="primary" [attr.mat-raised-button]="tabs[3]"
+        (click)="cambiarTab(3)">Informe completo</button> -->
     </mat-card-subtitle>
     <mat-card-content>
-      <!--<informe-controles class="tab" [class.active]="tabActivo == 0"></informe-controles>-->
       <app-informes-control class="tab marcoTab" [class.active]="tabActivo == 0"  *ngIf="tabActivo == 0"></app-informes-control>
       <informe-checklists class="tab marcoTab" [class.active]="tabActivo == 1"  *ngIf="tabActivo == 1"></informe-checklists>
       
@@ -28,7 +25,20 @@
               <app-uso class="module"></app-uso>
               </div>
       </div>
+      <!-- <div class="tab marcoTab" [class.active]="tabActivo == 3" *ngIf="tabActivo == 3">
+          <div class="dash">
+            Se envia un informe completo (Controles, Checklists, Mantenimientos,Limpiezas) por email:<BR>
+            <span class="tooltip" matTooltip="{{'enviar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+            [matTooltipPosition]="'above'">
+            <button mat-mini-fab color="accent"  type="button" (click)="enviar()">
+              <span class="material-icons">mail</span>
+            </button>
+          </span>
+            * Reciben los usuarios de tipo gerente con email válido en el módulo configuración<BR>
+            * Requiere tener activados los módulos que corresponden.<BR>
+          </div>
 
+      </div>> -->
       <!-- <informe-periodicidad class="tab" [class.active]="tabActivo == 2"></informe-periodicidad> -->
     </mat-card-content>
   </mat-card>

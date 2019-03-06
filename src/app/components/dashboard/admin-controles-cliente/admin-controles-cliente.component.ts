@@ -69,6 +69,11 @@ loadEmpresas(){
           ))
         }
         }
+        // setTimeout(()=>{
+        //   this.emps.sort((a,b)=>(parseInt(b["total"]))-(parseInt(a["total"])));
+        //   console.log('orden',this.emps);
+        // },5000)
+
       }
   },
   (error)=>console.log(error),
@@ -112,9 +117,9 @@ loadEmpresas(){
                   }
                 }
              }
-             this.emps.push({'nombre':nombreEmpresa,'id':idEmpresa,'controles':controles,'checklists':checklists,'limpiezas':limpiezas,'mantenimientos':mantenimientos});
-
-             console.log('Controles');
+             let total=controles.length+checklists.length+limpiezas.length+mantenimientos.length;
+             this.emps.push({'nombre':nombreEmpresa,'id':idEmpresa,'controles':controles,'checklists':checklists,'limpiezas':limpiezas,'mantenimientos':mantenimientos,total:total});
+             this.emps.sort((a,b)=>(parseInt(b["total"]))-(parseInt(a["total"])));
             }
         });
 }

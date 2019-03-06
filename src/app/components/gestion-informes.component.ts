@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
+import { Servidor } from '../services/servidor.service';
 
 import { EmpresasService } from '../services/empresas.service';
 
@@ -13,7 +14,10 @@ export class GestionInformesComponent implements OnInit, OnChanges{
   tabs = [true, null, null, null]
   tabActivo: number = null;
 
-  constructor(public empresasService: EmpresasService,private route: ActivatedRoute) {}
+  constructor(
+    public empresasService: EmpresasService,
+    public servidor: Servidor, 
+    private route: ActivatedRoute) {}
 
   ngOnInit() {
     console.log(this.route.params["_value"]["modulo"],this.route.params["_value"]["id"])
@@ -47,4 +51,14 @@ console.log('*******GESTION INFORMES***********',this.selectedMenu,this.tabActiv
     this.tabs[tab] = true;
   }
 
+  // enviar(){
+  //   let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzumyP_ybsAfEC_I0xww2Pz5XPOJim-51zCoEnFBhjl/dev?idempresa='+this.empresasService.seleccionada;
+  //   this.servidor.getSimple(url,'').subscribe(
+  //     (respuesta)=>{console.log(respuesta)},
+  //     (error)=>{console.log(error)},
+  //     ()=>{
+  //       console.log('Fin');
+  //     }
+  //   );
+  // }
 }

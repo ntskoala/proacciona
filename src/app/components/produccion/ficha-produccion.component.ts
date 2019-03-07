@@ -37,7 +37,7 @@ public medidas:object[]=dropDownMedidas;
 public url; 
 public baseurl;
 public foto;
-
+public image='./assets/images/viewpdf.jpeg';
   constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {

@@ -175,7 +175,7 @@
             <input *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo =='Mantenimiento'" id="doc" class="inputfile" type="file" (change)="uploadFunciones($event,'doc')" accept=".gif,.jpg,.jpeg,.png,.pdf"/>
     </div>
     <div style="width:50px;display: inline-block;margin-left: 30px;margin-top: -40px;">
-   <img  [ngClass]="{'disabled':!orden.doc}" [src]="'./assets/images/viewpdf.jpeg'" height="40px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('')" /> 
+   <img  [ngClass]="{'disabled':!orden.doc}" [src]="image" height="40px" (error)="image='./assets/images/pixel.png'" (click)="verFoto('')" /> 
     </div>
     <!-- <div class="tooltip but2" matTooltip="{{'ver' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'below'">    
             <button type="button" mat-stroked-button *ngIf="orden.doc" color="primary" [disabled]="false" (click)="verFoto('ficha')">

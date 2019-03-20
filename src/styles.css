@@ -424,7 +424,18 @@ top: 0px;
   float:right;
   margin:11px 18px !important;
 }
-
+.profileDiv{
+  position: fixed;
+  right: -18px;
+  top: 39px;
+  display: block;
+  z-index: 99;
+  margin: 11px 18px !important;
+  background: #ccc;
+  width: 140px;
+  height: 140px;
+  padding: 20px;
+}
 /* EmpresasComponent */
 .empresas {
   display: flex;

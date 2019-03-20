@@ -374,7 +374,9 @@
     "alert_cantidad_menor_disponible_origen":"Cantidad tiene que ser menor o igual al disponible en origen",
     "alert_cantidad_menor_disponible_destino":"Cantidad tiene que ser menor o igual a la  capacidad disponible en destino",
     "alert_tanque_destino":"No ha seleccionado Tanque destino",
-    "alert6":""
+    "alert6":"",
+    "borrarOrdenT":"Eliminar orden de producción",
+    "borrarOrdenST":"Se eliminará la orden de producción, * no se devuelve el stock de las materias primas añadidas, se recomienda hacer una revisión y reajuste manual tanto de las materias primas añadidas como de los productos entregados a clientes"
   },
   "clientes":{
     "cliente":"Client",

@@ -111,6 +111,7 @@ export class ListadoEmpresasComponent implements OnInit {
   if (emp.holding==1) nombreHolding=emp.nombre;
   if (emp.holding==2)  {
     let indexHolding = this.empresas.findIndex(hold => hold.id == emp.idHolding);
+    if(indexHolding>-1)
     nombreHolding= this.empresas[indexHolding].nombre;
   }
   this.empresasService.nombreHolding=nombreHolding;

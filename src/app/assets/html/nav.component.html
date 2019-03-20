@@ -6,7 +6,9 @@
   <div class="logo-empresa">
   <div class="userlogged" *ngIf="empresasService.userId"> 
   <div class="tooltip" matTooltip="{{'menu.login' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">    
-    <button class="profile" mat-mini-fab color="accent" (click)="closeSession()">
+    <!-- <button class="profile" mat-mini-fab color="accent" (click)="closeSession()"> -->
+    <button class="profile" mat-mini-fab color="accent" (click)="configProfile()" >
+
         <span class="material-icons">account_circle</span>
   </button>
   </div>
@@ -34,3 +36,21 @@
     <listado-empresas (empresaseleccionada)="selecciona($event)" (onLoadEmpresas)="gotEmpresas($event)"></listado-empresas>
   </div>
 </div> -->
+<div class="profileDiv"  *ngIf="profile">
+    <div class="tooltip" matTooltip="{{'menu.login' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">    
+        <button style="margin-left: -5px;margin-right: 10px;"  mat-mini-fab color="accent" (click)="closeSession()">
+            <span class="material-icons">vpn_key</span>
+      </button>
+      {{'menu.login' | translate}}
+      </div>
+
+      <hr  style="margin-top: 20px;" >
+
+      <div  class="tooltip" matTooltip="{{'Idioma' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">    
+        <mat-radio-group     style="margin-top: 20px;" [(ngModel)]="idioma" (change)="seleccionaIdioma($event)">
+          <mat-radio-button value="cat">Català</mat-radio-button>
+          <mat-radio-button value="es">Castellano</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+  </div>>

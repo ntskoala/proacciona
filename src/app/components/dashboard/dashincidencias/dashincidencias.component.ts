@@ -35,22 +35,29 @@ export class DashincidenciasComponent implements OnInit {
         if(emp && this.empresasService.menu=='empresas'){
           
           this.loadIncidencias(fechaInicio);
+
           
         }
       })
     }
   }
 
-  loadIncidencias(dateInicio: Date) {
+  loadIncidencias(dateInicio?: Date) {
     let empresa = this.empresasService.seleccionada;
     let fechaInicio= moment(dateInicio).format('YYYY-MM-DD');
     let fechaFin= moment().add(1,'d').format('YYYY-MM-DD');
-    let filterDates = "&filterdates=true&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&fecha_field=fecha"
-    let parametros = '&idempresa=' + empresa+this.entidad+'&order=id DESC'+filterDates;
+    let filterDates = "&filterdates=true&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&fecha_field=fecha";
+    let parametros
+    if (dateInicio){
+     parametros = '&idempresa=' + empresa+this.entidad+'&order=id DESC'+filterDates;
+    }else{
+      parametros = '&idempresa=' + empresa+this.entidad+'&order=id DESC&WHERE=estado=&valor=1'
+    }
         //let parametros = '&idempresa=' + seleccionada.id;
         // Llamada al servidor para conseguir las checklists
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
+            if (dateInicio)
             this.incidencias = [];
             if (response.success == 'true' && response.data) {
               for (let element of response.data) {
@@ -70,7 +77,8 @@ export class DashincidenciasComponent implements OnInit {
           },
               (error) => {console.log(error)},
               ()=>{
-
+                if (dateInicio)
+                this.loadIncidencias();
               }
         );
    }
@@ -80,6 +88,7 @@ export class DashincidenciasComponent implements OnInit {
     this.altura = '';
     let fechaInicio = moment().subtract(dias,'d').toDate();
     this.loadIncidencias(fechaInicio);
+
   }
   gotoOrigen(item){
     console.log('goto Origen',item);

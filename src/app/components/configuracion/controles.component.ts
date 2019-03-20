@@ -110,7 +110,7 @@ public informeData:any;
           nuevoControl.id = response.id;
           this.controles.push(nuevoControl);
           this.controles=this.controles.slice();
-    this.nuevoControl = new Control(null,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null)
+    this.nuevoControl = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null)
     this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
     
   }else{
@@ -243,9 +243,9 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
 
   setPeriodicidad(periodicidad: string, idcontrol?: number, i?: number){
     this.viewPeriodicidad=null;
-    if (!idcontrol){
+    if (!idcontrol || idcontrol==0){
     this.nuevoControl.periodicidad2 = periodicidad;
-    console.log(this.nuevoControl.periodicidad2);
+    console.log(this.nuevoControl.periodicidad2,this.nuevoControl);
   
     }else{
       this.modificarControl(idcontrol);
@@ -264,6 +264,7 @@ this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
       this.viewPeriodicidad=Control.periodicidad2;
     }
   }
+
   closePeriodicidad(activo){
   if (activo==false){
     this.nuevoControl  = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null,null)

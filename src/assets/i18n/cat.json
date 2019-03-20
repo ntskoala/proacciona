@@ -374,7 +374,9 @@
     "alert_cantidad_menor_disponible_origen":"Quantitat ha de ser menor o igual al disponible en origen",
     "alert_cantidad_menor_disponible_destino":"Quantitat ha de ser menor o igual a la  capacitat disponible en destí",
     "alert_tanque_destino":"No ha seleccionat un Tanc de destí",
-    "alert6":""
+    "alert6":"",
+    "borrarOrdenT":"Eliminar l'ordre de producció",
+    "borrarOrdenST":"S'eliminarà l'ordre de producció, * no es retorna l'estoc de les matèries primeres afegides, es recomana fer una revisió i reajustament manual tant de les matèries primeres afegides com dels productes lliurats a clients"
   },
   "clientes":{
     "cliente":"Client",

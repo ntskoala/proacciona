@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
+import { TranslateService } from '@ngx-translate/core';
 import { URLS } from '../models/urls';
 import { Empresa } from '../models/empresa'
 
@@ -15,8 +16,13 @@ export class NavComponent implements OnInit{
   subscription: Subscription;
   public alertOptions:boolean=false;
   public empresas:boolean=false;
-
-  constructor(public router: Router,public servidor: Servidor, public empresasService: EmpresasService) {}
+  public idioma:string=localStorage.getItem("idioma");
+  public profile:boolean=false;
+  constructor(
+    public router: Router,
+    public servidor: Servidor,
+    public empresasService: EmpresasService,
+    public translate: TranslateService) {}
 
   ngOnInit() {
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
@@ -42,6 +48,7 @@ export class NavComponent implements OnInit{
 closeSession(){
          sessionStorage.removeItem('token');
        this.router.navigate(['login']);
+       this.profile=false;
 }
 
 showAlertOptions(){
@@ -70,5 +77,15 @@ alertOptionsChanged(){
 //   sessionStorage.setItem('holding', empresa.holding.toString());
 //   //console.log("informes",this.empresasService.empresa.exportar_informes);
 // }
-
+configProfile(){
+  console.log('Config profile');
+  this.profile=!this.profile;
+}
+seleccionaIdioma(event){
+  console.log('Config profile',event.value),this.idioma;
+  localStorage.setItem("idioma",event.value);
+    this.empresasService.idioma = this.idioma;
+    this.translate.use(this.idioma);
+    this.profile=false;
+}
 }

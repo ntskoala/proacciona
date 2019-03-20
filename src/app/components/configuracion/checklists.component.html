@@ -422,8 +422,8 @@
   [style]="{'width':'460px','padding':'0px 25px 0px 25px','text-align':'left'}" *ngIf="selectedChecklist">
   <ng-template pTemplate="caption">
     <div style="text-align:left;margin-left:10px">
-      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow2()" label="{{'add' | translate}}"></button>
-      <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow2()" label="{{'cerrar' | translate}}"></button>
+      <button *ngIf="!newRow2" type="button" pButton icon="fa fa-plus" (click)="openNewRow2()" label="{{'add' | translate}}"></button>
+      <button *ngIf="newRow2" type="button" pButton icon="fa fa-minus" (click)="openNewRow2()" label="{{'cerrar' | translate}}"></button>
       <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAllCCL()" style="margin-left:10px"></button>
       <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTableCCL()" style="margin-left:10px;float:right"></button>
 

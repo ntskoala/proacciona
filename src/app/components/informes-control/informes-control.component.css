@@ -20,3 +20,8 @@
 .example-section{
     background-color: #fff;
 }
+
+.borderRight{
+    border-right: solid 1px lightgrey;
+    border-left: solid 1px lightgrey;
+}

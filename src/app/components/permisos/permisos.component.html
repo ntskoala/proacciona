@@ -47,7 +47,10 @@
             <mat-slide-toggle class="options" (change)="setPermiso(user['iduser'],$event.checked)" *ngIf="col.field == 'user'"
           [checked]="user['generalSwitch']" style="float:right">
       </mat-slide-toggle>
-            <mat-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user'"
+      <mat-slide-toggle class="option" (change)="setPermisoCorrectivos(user['iduser'],$event.checked)" *ngIf="col.field == 'Correctivos'"
+      [checked]="user[col.field]=='1'">
+  </mat-slide-toggle>
+            <mat-slide-toggle class="option" (change)="setPermiso(user['iduser'],$event.checked,col['header'])" *ngIf="col.field != 'user' && col.field != 'Correctivos'"
           [checked]="user[col.field]">
       </mat-slide-toggle>
              </div>

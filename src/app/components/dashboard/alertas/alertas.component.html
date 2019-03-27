@@ -119,7 +119,7 @@
           <mat-list *ngFor="let item of items">
               <mat-list-item>
                   <span class="elem" [ngClass]="{'onDate':!item.isbeforedate,'beforeOnDate':item.isbeforedate}">               
-                {{item.nombre}}
+                {{item.nombre}} {{'desde' | translate}} {{item.fecha}} {{'periodicidad' | translate}} {{item.periodicidad}}
                   </span>
             </mat-list-item>
            </mat-list>  

@@ -124,7 +124,7 @@
         <th [style.width]="'90px'"> <span id="user-link" class="material-icons">perm_identity</span></th>
         <th [style.width]="'140px'">{{'fecha' | translate}}</th>
         <th [style.width]="'60px'"> <span class="foto-link material-icons">photo_camera</span></th>
-        <th  *ngFor="let col of columnas" [style.width]="'45px'" [style.min-height]="'45px'">
+        <th class="borderRight" *ngFor="let col of columnas" [style.width]="'45px'" [style.min-height]="'45px'">
             <span class="vertical"> {{col.header}}</span>
         </th>
         <th [style.width]="'90px'" *ngIf="empresasService.administrador">
@@ -147,7 +147,7 @@
                           <span class="foto-link material-icons" (click)="ventanaFoto(item['id'])">photo_camera</span>
                         </span>
                       </td>
-                      <td *ngFor="let col of columnas" [ngClass]="{'rowRegistro':true}">
+                      <td  class="borderRight" *ngFor="let col of columnas" [ngClass]="{'rowRegistro':true}">
                         <span class="cell right" [class.wrong]="item['error']" title="{{item[col.field + 'mensaje'] | translate}}">
                            {{item[col.field]}}
                           </span>

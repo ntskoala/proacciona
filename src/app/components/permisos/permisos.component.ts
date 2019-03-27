@@ -55,13 +55,14 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
   public entidad: string = "&entidad=permissionlimpieza";
   public field: string = "&field=idelementolimpieza&idItem=";
   public ancho:string;
+  public correctivos:boolean;
   constructor(public servidor: Servidor, public empresasService: EmpresasService) { }
 
   ngOnInit() {
 
   }
     ngOnChanges(){
-  //    if (this.items.length>=1){
+      if (this.items.length>=1){
       this.procesando=true;
       let num = 100+(this.items.length * 37)
       this.ancho = num + 'px';
@@ -104,7 +105,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
         }
       }
     )
-//  }
+  }
   }
 
   carga() {
@@ -143,7 +144,7 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
           if (response.success && response.data) {
             for (let element of response.data) {
               this.usuarios.push(new Usuario(element.id, element.usuario, element.password,
-                element.tipouser, element.email, element.idempresa));
+                element.tipouser, element.email, element.idempresa,element.orden,parseInt(element.superuser)));
               this.haypermiso.push(this.permisos.findIndex((permiso) => permiso.idusuario == element.id));
             }
             resolve('usuarios')
@@ -230,14 +231,19 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     this.tabla = [];
     this.cols = [];
     this.cols.push({ field: 'user', header: 'Usuario' });
+    if (this.tipoControl=='maquinas.mantenimientos'){
+      this.cols.push({ field: 'Correctivos', header: 'Correctivos' });
+    }
     this.items.forEach(control => {
       this.cols.push({ field: control.nombre, header: control.nombre })
-
     });
 
     this.usuarios.forEach(user => {
       let generalSwitch = true;
       let row = '{"user":"' + user.usuario + '","iduser":"' + user.id + '"'
+      if (this.tipoControl=='maquinas.mantenimientos'){
+        row += ',"Correctivos":"' + user.superuser + '"'
+      }
       this.items.forEach(control => {
         let valor = this.permisos.findIndex((permiso) => permiso.idusuario == user.id && permiso.idItem == control.id);
         let check: boolean;
@@ -392,7 +398,17 @@ export class PermisosGeneralComponent implements OnInit, OnChanges {
     });
 }
 
-
+setPermisoCorrectivos(iduser,event){
+console.log(iduser,event)
+let indexUser=this.usuarios.findIndex((usuario)=>usuario.id==iduser);
+this.usuarios[indexUser].superuser=event;
+console.log(this.usuarios[indexUser]);
+let parametros = '?idempresa=' + this.empresasService.seleccionada+'&id='+this.usuarios[indexUser].id;
+this.servidor.putObject(URLS.USUARIOS,parametros,this.usuarios[indexUser]).subscribe(
+  response => {
+    console.log(response);
+  });
+}
 
 switch(user, idControl, estado) {
     console.log(user, idControl, estado)

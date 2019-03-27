@@ -45,7 +45,7 @@ public ancho:string;
   ngOnInit() {
   }
   ngOnChanges(){
-   
+    if (this.items.length>=1){
       this.procesando=true;
       let num = 100+(this.items.length * 37)
       this.ancho = num + 'px';
@@ -85,7 +85,7 @@ public ancho:string;
                 }
          }
        )
-      
+        }   
   }
 
   carga(){

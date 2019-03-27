@@ -79,9 +79,7 @@
             "scripts": [
               "node_modules/moment/min/moment.min.js",
               "node_modules/fullcalendar/dist/fullcalendar.min.js",
-              "node_modules/chart.js/dist/Chart.js",
-              "src/assets/i18n/es.js",
-              "src/assets/i18n/ca.js"
+              "node_modules/chart.js/dist/Chart.js"
             ],
             "styles": [
               "src/styles.css",

@@ -57,19 +57,19 @@ public altura:string='';
                       "tipo":element.tipo});
                       switch(element.tipo){
                         case "control":
-                        this.controles.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo});
+                        this.controles.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad2)});
                         break;
                         case "checklist":
-                        this.checklists.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo});
+                        this.checklists.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad2)});
                         break;
                         case "limpieza":
-                        this.limpiezas.push({"nombre":element.nombre + ' ' + element.zona,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo});
+                        this.limpiezas.push({"nombre":element.nombre + ' ' + element.zona,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break;                        
                         case "mantenimiento":
-                        this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo});
+                        this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break; 
                         case "calibracion":
-                        this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo});
+                        this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break;                                                
                       }
                  }
@@ -95,10 +95,25 @@ public altura:string='';
     }
 
     open(data){
+      console.log(data)
       this.items=data;
       window.scrollTo(0, 0);
     }
     close(){
       this.items=[]
     }
+
+getPeriodicidad(periodicidad){
+  let repeticion='';
+if (periodicidad){
+  try{
+    repeticion= JSON.parse(periodicidad).repeticion
+  }
+  catch(e){
+    console.log('error',e)
+  }
+}
+return repeticion;
+}
+
 }

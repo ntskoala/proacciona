@@ -65,7 +65,8 @@
     <span class="cell center" *ngIf="!resultado.foto">
       <span class="material-icons">do_not_disturb_alt</span>
     </span>
-    <span [ngClass]="{'yellow':selectedItem==resultado[columna.idrc] && selectedItem!=undefined}" class="cell right" *ngFor="let columna of columnas; let i = index">
+    <span [ngClass]="{'yellow':selectedItem==resultado[columna.idrc] && selectedItem!=undefined}" class="cell right" *ngFor="let columna of columnas; let i = index" style="border-right: solid 1px lightgrey;
+    border-left: solid 1px lightgrey;">
       <span class="foto-link material-icons" *ngIf="resultado[columna.fotocontrol]" (click)="ventanaFoto(resultado[columna.fotocontrol],'checklistcontrol')">photo_camera</span>
       <span class="descrip-link material-icons" *ngIf="resultado[columna.id2]">comments</span>
 

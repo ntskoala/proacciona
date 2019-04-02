@@ -1,5 +1,7 @@
 import { Component, Input, OnInit,OnChanges, Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import {MessageService} from 'primeng/components/common/messageservice';
+import { TranslateService } from '@ngx-translate/core';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -33,7 +35,8 @@ export class ListadoLimpiezasComponent implements OnInit, OnChanges {
   public open:boolean;
   public import: boolean=false;
   public valorLimpieza:number;
-  constructor(public servidor: Servidor, public empresasService: EmpresasService) {}
+  constructor(public servidor: Servidor, public empresasService: EmpresasService,
+  public translate: TranslateService, private messageService: MessageService) {}
 
 ngOnInit(){
   console.log('select limpiezaZona init',this.idSelected)
@@ -143,6 +146,7 @@ let parametros = '?id=' + this.limpiezaActiva+param;
       response => {
         if (response.success) {
           console.log("updated");
+          this.setAlerta('alertas.saveOk');
           let index = this.limpiezas.findIndex((elem) =>elem.id == this.limpiezaActiva);
           this.limpiezas[index].nombre = this.nuevoNombre;
           this.listaZonas.emit(this.limpiezas);
@@ -213,5 +217,16 @@ setTimeout(()=>{this.Choicer.open();},200)
 }
 unExpand(){
   this.Choicer.close();
+}
+
+setAlerta(concept:string){
+  let concepto;
+  this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+  this.messageService.clear();this.messageService.add(
+    {severity:'warn', 
+    summary:'Info', 
+    detail: concepto
+    }
+  );
 }
 }

@@ -81,7 +81,7 @@
 
 <p-table #dt [columns]="cols" [value]="tabla" dataKey="id" 
     [paginator]="true" [rows]="25" [pageLinks]="5" [rowsPerPageOptions]="[25,50,100]"
-    selectionMode="single" [(selection)]="selectedItem" dataKey="id">
+    selectionMode="single" [(selection)]="selectedItem" dataKey="id" [style]="{'width':'min-content','min-width':'900px'}">
     <ng-template pTemplate="caption">
           <div class="informe-header">
             <div style="text-align:left;float:left">
@@ -130,6 +130,7 @@
         <th [style.width]="'90px'" *ngIf="empresasService.administrador">
           {{'acciones' | translate}}
         </th>
+        <th></th>
       </span>
     </ng-template>
     <!-- ********* FIN CABECERA   ***-->

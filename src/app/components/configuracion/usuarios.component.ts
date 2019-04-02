@@ -57,7 +57,7 @@ public informeData:any;
       { field: 'usuario', header: 'Usuario', type: 'std', width:160,orden:true,'required':true },
       { field: 'password', header: 'Contraseña', type: 'std', width:160,orden:true,'required':true },
       { field: 'tipouser', header: 'Tipo', type: 'dropdown', width:120,orden:true,'required':true },
-      { field: 'superuser', header: 'Mantenimiento', type: 'dropdown', width:130,orden:false,'required':false },
+     // { field: 'superuser', header: 'Mantenimiento', type: 'dropdown', width:130,orden:false,'required':false },
       // { field: 'userHolding', header: 'userHolding', type: 'dropdown', width:90,orden:false,'required':false },
       { field: 'email', header: 'email', type: 'std', width:130,orden:true,'required':false }
     ];

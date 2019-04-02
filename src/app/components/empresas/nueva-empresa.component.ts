@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 import { Servidor } from '../../services/servidor.service';
 import { EmpresasService } from '../../services/empresas.service';
@@ -24,7 +25,8 @@ public typesCompany:object[]=[{label:'StandAlone',value:0},{label:'MasterHolding
   constructor(
     public servidor: Servidor, 
     public empresasService: EmpresasService,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+   private messageService: MessageService) {
     if (this.empresasService.seleccionada>0){
     this.empresaActiva = new Empresa(this.empresasService.nombreEmpresa,this.empresasService.hayLogoEmpresa.toString(),this.empresasService.seleccionada,this.empresasService.holding,this.empresasService.idHolding);
     }else{
@@ -72,6 +74,7 @@ ngOnChanges(){
       response => {
         // si tiene éxito
         if (response.success) {
+          this.setAlerta('alertas.saveOk');
           empresa.id = response.id;
           empresa.logo = '0';
           console.log(empresa);
@@ -93,9 +96,21 @@ ngOnChanges(){
     this.servidor.putObject(URLS.STD_ITEM,parametros,empresa, ).subscribe(
       response => {
         console.log(response);
+        this.setAlerta('alertas.saveOk');
     },
     error => {console.log(error)});
   }
 
+
+  setAlerta(concept:string){
+    let concepto;
+    this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+    this.messageService.clear();this.messageService.add(
+      {severity:'warn', 
+      summary:'Info', 
+      detail: concepto
+      }
+    );
+  }
 
 }

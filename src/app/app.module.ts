@@ -209,6 +209,7 @@ import { AdminLoginsClienteComponent } from './components/dashboard/admin-logins
 import { DownloadInformeComponent } from './components/informes/download-informe/download-informe.component';
 import { AlergenosTablaComponent } from './components/alergenos-tabla/alergenos-tabla.component';
 import { VerDocsComponent } from './components/ver-docs/ver-docs.component';
+import { TemplatesComponent } from './components/templates/templates.component';
 
 
 @NgModule({
@@ -343,6 +344,7 @@ export function createTranslateLoader(http: HttpClient) {
     ZohoComponent,
     DownloadInformeComponent,
     VerDocsComponent,
+    TemplatesComponent,
 //******MAQUINARIA */
     MaquinariaComponent,
     FichaMaquinaComponent,

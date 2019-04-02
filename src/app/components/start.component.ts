@@ -34,7 +34,7 @@ ngOnInit(){
        this.empresasService.idioma = this.idioma;
       this.translate.use(this.idioma);
     }
-   this.gallery = "https://source.unsplash.com/1200x200/?food";
+  // this.gallery = "https://source.unsplash.com/1200x200/?food";
     //this.login(this.usuario);
     //console.log('*******',this.route.queryParams["value"]);
 }

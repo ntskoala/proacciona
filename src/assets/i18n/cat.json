@@ -118,6 +118,7 @@
   "PartofHolding":"Pertany a...",
   "StandAlone":"Independent",
   "menu":{
+    "perfil":"Sessió i idioma",
     "login":"Tanca sessió",
     "empresas":"Selecctor d'empresa",
     "config":"Configuració",

@@ -403,7 +403,7 @@ background-color: #fff;
     z-index: 10;
     height: 100%; */
     max-width: 300px;
-    margin-top: 100px;
+    margin-top: 60px;
     position: fixed;
     left: calc(50% - 150px);
     z-index: 10;
@@ -479,14 +479,21 @@ top: 0px;
   width: 55%;
 }
 .qr{
-  margin-left: 50px;
-  width: 45%;
+  margin-top: 400px;
+  display: -webkit-inline-box;
+  position: absolute;
+  margin-left: calc(50% - 150px);
 }
 
 .qr img{
-  width: 200px;
+  /* width: 200px; */
 }
-
+.qrDiv{
+  width: 140px;
+  background: #fff;
+  display: -webkit-inline-box;
+  text-align: center;
+}
 /* SeleccionarEmpresaComponent */
 seleccionar-empresa {
   width: 58%;

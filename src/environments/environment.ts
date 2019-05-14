@@ -7,7 +7,7 @@ export const environment = {
   production: false
 };
 //export const server = 'http://tfc.ntskoala.com/';
-
+export const templateCompany="99";
 export const zoho_refresh_token="1000.2044e3a03f9e139cff485e1ca3e24afb.fa393af12db0517238f6452aec6d3218";//entornophp
 //export const zoho_refresh_token="1000.09fca0afa468d0e5d4838d1821137a74.4dc3d561a0fa204e2f7ceb49aabd4b65";//entorno tfcbackoffice
  export const zoho_orgID='20064420683';

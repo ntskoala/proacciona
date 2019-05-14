@@ -128,7 +128,7 @@
 
 
 
-
+<app-templates *ngIf="template" [template]="'checklist'" (onCerrar)="template=false" (onTemplateSelected)="newTemplateSelected($event)"></app-templates>
 
 <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, cl.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="cl.fecha_" [origen]="tipo" name="periodicidad"></periodicidadNew>
 <!-- ********* INICIO TABLA REGISTROS-->
@@ -141,6 +141,8 @@
     <div style="text-align:left;margin-left:10px">
       <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
       <button *ngIf="newRow" type="button" pButton icon="fa fa-minus" (click)="openNewRow()" label="{{'cerrar' | translate}}"></button>
+      <button *ngIf="newRow" type="button" pButton icon="fa fa-paste" (click)="template=true" label="{{'template' | translate}}"></button>
+
       <button type="button" pButton icon="fa fa-save" iconPos="left" label="{{'guardarTodo' | translate}}" (click)="saveAllCL()" style="margin-left:10px"></button>
       <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="exportarTable()" style="margin-left:10px;float:right"></button>
 

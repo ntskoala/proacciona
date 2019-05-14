@@ -1,3 +1,38 @@
-<p>
-  templates works!
-</p>
+<div class="modalPanel" *ngIf="template">
+  <div class="modalPopup">
+
+      <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+          <button color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>cancel</mat-icon></button>
+          </div>
+
+    <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
+        <button  top-left color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>skip_previous</mat-icon></button>
+        </div>
+
+        <mat-list *ngIf="resultados">
+          <mat-list-item *ngFor="let item of resultados">{{item.nombre}}</mat-list-item>
+         </mat-list>
+
+         <mat-accordion >
+          <mat-expansion-panel *ngFor="let item of resultados" (opened)="expanded(item.id)" (closed)="collapsed($event)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{item.nombre}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{item.id}} {{item.descripcion}}<br>
+                {{item.periodicidad}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-progress-bar  *ngIf="!subItems" mode="indeterminate"></mat-progress-bar>
+            <mat-list *ngIf="subItems">
+              <mat-list-item *ngFor="let subItem of subItems">{{subItem.nombre}}</mat-list-item>
+             </mat-list>
+            <mat-action-row>
+              <button color="accent" mat-button color="primary" (click)="addSelected(item.id)">seleccionar</button>
+            </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+</div>
+</div>

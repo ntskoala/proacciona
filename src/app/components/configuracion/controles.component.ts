@@ -49,11 +49,12 @@ public informeData:any;
   this.cols = [
     { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
     { field: 'pla', header: 'pla', type: 'std', width:160,orden:true,'required':true },
-    { field: 'valorminimo', header: 'min', type: 'std', width:120,orden:true,'required':false },
+    { field: 'objetivo', header: 'obj', type: 'std', width:120,orden:false,'required':false },
+    { field: 'valorminimo', header: 'min', type: 'std', width:120,orden:false,'required':false },
     { field: 'valormaximo', header: 'max', type: 'std', width:90,orden:false,'required':false },
-    { field: 'critico', header: 'crit', type: 'std', width:130,orden:true,'required':false },
+    { field: 'critico', header: 'crit', type: 'std', width:130,orden:false,'required':false },
     { field: 'fecha_', header: 'fecha', type: 'fecha', width:130,orden:true,'required':true },
-    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:130,orden:true,'required':true }
+    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:130,orden:false,'required':true }
   ];
     if (this.empresasService.seleccionada > 0) this.setEmpresa(this.empresasService.seleccionada.toString());
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(

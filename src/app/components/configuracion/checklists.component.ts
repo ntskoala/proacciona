@@ -49,6 +49,7 @@ export class ChecklistsComponent implements OnInit{
   public newRow:boolean=false;
   public newRow2:boolean=false;
   public viewPeriodicidad: any=null;
+  public template:boolean=false;
   //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -125,7 +126,7 @@ public informeData:any;
    }
 
   nuevaChecklist(cl: Checklist) {
-
+    return new Promise((resolve)=>{
     let fecha;
     (cl.fecha_)? fecha= new Date(Date.UTC(cl.fecha_.getFullYear(), cl.fecha_.getMonth(), cl.fecha_.getDate())): fecha=null;
     let nuevaChecklist = new Checklist(0, this.empresasService.seleccionada,
@@ -138,14 +139,20 @@ public informeData:any;
           this.checklists.push(nuevaChecklist);
           this.checklists = this.checklists.slice();
           this.cl = new Checklist(0, this.empresasService.seleccionada,'', null, null,0,null,null);
+          this.checklistActiva=nuevaChecklist.id;
+          this.selectedChecklist=this.checklists[this.checklists.length-1];
           this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
+          resolve ({"data":response.id});
         }else{
           this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+          resolve ({"data":0});
         }
       },
       (error)=>{
         this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+        resolve ({"data":0});
       });
+    });
   }
   newOrdenCL():number{
     let orden;
@@ -407,6 +414,7 @@ this.mostrarCCL(evento.id)
       this.modalImportCL.importchecklist = true;
     }
   }
+
   cerrarModalImportCL(event: string | boolean) {
    this.modalImportCL.visible = false;
     if (event) {
@@ -626,5 +634,22 @@ openNewRow(){
     }
 
 
+newTemplateSelected(template){
+     template.fecha_=new Date();
+     this.template=null;
+     this.cl.periodicidad2=template.periodicidad2;
+      console.log(template.nombrechecklist,template.periodicidad2,template.fecha_);
+      let templateCL = new Checklist(0,0,template.nombrechecklist,template.periodicidad,template.tipoperiodo,template.migrado,template.periodicidad2,template.fecha_,template.orden);
+    this.nuevaChecklist(templateCL).then(
+      (resultado)=>{
+        console.log(resultado);
+        if (resultado["data"] > 0){
+        this.checklistActiva = resultado["data"];
+        console.log(this.checklists.length,this.checklists,this.checklistActiva);
+        this.cerrarModalImportCL(template.id);
+        }
+      }
+    );
+    }
 
 }

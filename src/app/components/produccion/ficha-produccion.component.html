@@ -87,6 +87,12 @@
                     {{prod.nombre}}
                     </option>
                 </select>
+                <span class="tooltip" matTooltip="{{'usar receta' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                [matTooltipPosition]="'above'">
+                <button type="button" mat-mini-fab color="primary" (click)="aplicarReceta()" style="margin-top: 30px;margin-left: 70px;">
+                  <span class="material-icons">local_dining</span>
+                </button>
+              </span>
         </mat-grid-tile>
 
         <mat-grid-tile>
@@ -223,3 +229,4 @@
 
 
 <app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+<app-prepara-receta  *ngIf="receta" [receta]="receta" [orden]="orden" (onBotonCerrar)="receta=null" (onProcesed)="ingredientesAnadidos($event)"></app-prepara-receta>

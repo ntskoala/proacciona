@@ -602,6 +602,22 @@
       "urgente":"urgente",
       "descripcion":"Descripción"
     },
+    "recetas":{
+      "recetas":"Ingredientes Recetas",
+      "proveedores":"Proveedores",
+      "MateriasPrimas":"Ingrediente",
+      "Cantidad":"Cantidad",
+      "tipo_medida":"T. medida",
+      "numIngrediente":"Num. Ing.",
+      "preferencia":"Preferencia",
+      "coge":"coge",
+      "cogeTodo":"coge todo",
+      "noCojas":"no cojas nada",
+      "de":"de los",
+      "restantes":"restantes",
+      "seleccionIngredientes":"Seleccionar ingredientes",
+      "anadir":"Añadir al lote"
+    },
   "alergenos":"alérgenos",
   "alergenosProductos":"Alérgenos productos",
   "alergenosProveedores":"Alérgenos prods. proveedores",

@@ -251,3 +251,11 @@ md-grid-list{
 .disabled{
     opacity: 0.2;
 }
+
+.recetas{
+    background: #fff9c4;
+    border: #fbc02d 2px solid;
+}
+tr.recetas:hover{
+    background-color:#fff9c4 !important;
+}

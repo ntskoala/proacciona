@@ -602,6 +602,22 @@
       "urgente":"urgent",
       "descripcion":"Descripció"
     },
+    "recetas":{
+      "recetas":"Ingredients Receptes",
+      "proveedores":"Proveïdors",
+      "MateriasPrimas":"Ingredient",
+      "Cantidad":"Quantitat",
+      "tipo_medida":"T. mesura",
+      "numIngrediente":"Num. Ing.",
+      "preferencia":"Preferència",
+      "coge":"agafa",
+      "cogeTodo":"agafa tot",
+      "noCojas":"no agafis res",
+      "de":"dels",
+      "restantes":"restants",
+      "seleccionIngredientes":"Seleccionar ingredients",
+      "anadir":"Afegir al lot"
+    },
   "alergenos":"Al·lergògens",
   "alergenosProductos":"Al·lergògens productes",
   "alergenosProveedores":"Al·lergògens prods. proveïdors",

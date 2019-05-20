@@ -1,0 +1,25 @@
+.marcoIngredientes{
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+    min-height: 300px;
+    background: rgba(103, 57, 182, 0.02) !important;
+    border: lightgrey solid 1 px;
+  }
+.loteSelected{
+    color: #000;
+    font-size: larger;
+    border-bottom: green solid 2px;
+}
+
+.loteNotSelected{
+    color: #000;
+    font-size: larger;
+    border-bottom: red solid 2px;
+}
+
+.toolBar{
+    float:left;
+    display:inline-block;
+    border-right: 1px #fff solid;
+    }

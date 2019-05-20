@@ -257,9 +257,9 @@
 
   <!-- ********* EXPANSION-->
   <ng-template pTemplate="rowexpansion" let-item let-columns="columns" let-rowIndex="rowIndex">
-      <tr [ngClass]="{'expandSelected':expanded}">
-          <td [attr.colspan]="columns.length + 2">
-    RECETAS
+      <tr [ngClass]="{'recetas':true}">
+          <td [attr.colspan]="columns.length + 3">
+              <app-recetas [producto]="item"></app-recetas>
   </td>
 </tr>
   </ng-template> 

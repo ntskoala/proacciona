@@ -11,6 +11,7 @@ import { Modal } from '../../models/modal';
 import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { Almacen } from '../../models/almacenes';
 import { ProductoPropio } from '../../models/productopropio';
+// import { ProduccionDetalle } from '../../models/producciondetalle';
 
 @Component({
   selector: 'ficha-produccion',
@@ -21,7 +22,7 @@ export class FichaProduccionComponent implements OnInit, OnChanges {
 //*** STANDARD VAR
 @Input() orden: ProduccionOrden;
 @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
-
+// @Output() onMateriasPrimas:EventEmitter<ProduccionDetalle[]>= new EventEmitter;
 
 
 
@@ -38,6 +39,7 @@ public url;
 public baseurl;
 public foto;
 public image='./assets/images/viewpdf.jpeg';
+public receta:ProductoPropio=null;
   constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
 
   ngOnInit() {
@@ -157,5 +159,15 @@ uploadFunciones(event:any,field?:string) {
   )
 }
 
-
+aplicarReceta(){
+  console.log('**APLICAR RECETA**');
+  let index=this.productos.findIndex((prod)=>prod.id==this.orden.idproductopropio)
+  if (index > -1){
+    this.receta=this.productos[index];
+  }
+  
+}
+ingredientesAnadidos(materiasPrimas){
+console.log(materiasPrimas);
+}
 }

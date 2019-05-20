@@ -5,7 +5,9 @@ import { Servidor } from '../services/servidor.service';
 import { EmpresasService } from '../services/empresas.service';
 import { TranslateService } from '@ngx-translate/core';
 import { URLS } from '../models/urls';
-import { Empresa } from '../models/empresa'
+import { Empresa } from '../models/empresa';
+import {MessageService} from 'primeng/components/common/messageservice';
+
 
 @Component({
   selector: 'navigation',
@@ -18,11 +20,15 @@ export class NavComponent implements OnInit{
   public empresas:boolean=false;
   public idioma:string=localStorage.getItem("idioma");
   public profile:boolean=false;
+  public life=1000;
+  public msgs;
   constructor(
     public router: Router,
     public servidor: Servidor,
     public empresasService: EmpresasService,
-    public translate: TranslateService) {}
+    public translate: TranslateService,
+    private messageService: MessageService,
+    ) {}
 
   ngOnInit() {
     this.subscription = this.empresasService.empresaSeleccionada.subscribe(
@@ -43,6 +49,19 @@ export class NavComponent implements OnInit{
     }else{
       this.empresasService.showAlerts=true;
     }
+
+    let msgx = this.messageService.messageObserver;
+    msgx.subscribe(
+      (msg)=>{
+        console.log('????',msg,msg['severity']);
+        if (msg['severity']=="error"){
+          this.life=7000;
+          console.log(this.life);
+        }else{
+          this.life=1000;
+        }
+    })
+
   }
 
 closeSession(){

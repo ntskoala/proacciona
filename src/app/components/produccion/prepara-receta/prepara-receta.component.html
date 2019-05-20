@@ -1,0 +1,78 @@
+<div class="modal" *ngIf="receta">
+    <div class="pdfWindow">
+        <div  class="tooltip botonCerrarDocWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+            <button color="accent" mat-mini-fab (click)="cerrar()"><mat-icon>cancel</mat-icon></button>
+            </div>
+      <div class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+        [matTooltipPosition]="'before'">
+        <button top-left color="accent" mat-mini-fab (click)="cerrar()">
+          <mat-icon>skip_previous</mat-icon>
+        </button>
+      </div>
+
+      <button color="primary" mat-stroked-button color="primary" (click)="setIng=!setIng">
+          <mat-icon  *ngIf="setIng">remove</mat-icon>
+          <mat-icon  *ngIf="!setIng">add</mat-icon>
+          <mat-icon>shopping_cart</mat-icon>
+      {{'recetas.seleccionIngredientes' | translate}}
+      </button>
+      <div class="marcoIngredientes round" *ngIf="setIng">
+         <p-accordion>
+            <p-accordionTab header="{{ingrediente.nombreMP}} - {{ingrediente.numIngrediente}}"   *ngFor="let ingrediente of ingredientes; let x = index">
+                necesitas: {{ingrediente.cantidad}} - {{ingrediente.tipo_medida}} 
+                    <mat-list>
+                        <mat-list-item  *ngFor="let lote of lotesIng[x]; let y = index" > 
+                          <span class="loteSelected" *ngIf="loteSelected[x][y]>0 && loteSelected[x][y] < lote.cantidad_remanente">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.coge' | translate}} {{loteSelected[x][y]}} {{lote.tipo_medida}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}} </span>
+                          <span class="loteSelected" *ngIf="loteSelected[x][y]>0 && loteSelected[x][y] >= lote.cantidad_remanente">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.cogeTodo' | translate}} {{loteSelected[x][y]}} {{lote.tipo_medida}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}}</span>
+                          <span class="loteNotSelected" *ngIf="loteSelected[x][y]==0">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.noCojas' | translate}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}}</span>
+                        </mat-list-item>
+                       </mat-list>
+            </p-accordionTab>
+        </p-accordion>
+        <button style="margin-top:30px" color="primary" mat-raised-button color="primary">
+            <mat-icon (click)="proceed()">add_shopping_cart</mat-icon>
+            {{'recetas.anadir' | translate}}
+          </button>
+      </div>
+
+
+
+
+  
+      <div *ngIf="pdfSrc || true">
+          <div class="pdfToolbar">
+            <div class="toolBar">
+            <button color="accent" mat-icon-button>
+              <mat-icon (click)="PageAnterior()">keyboard_arrow_left</mat-icon>
+            </button>
+            </div>
+            <div class="toolBar">
+            <button color="accent" mat-icon-button>
+              <mat-icon (click)="PageSiguiente()">keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+          <div class="toolBar">
+            <button color="accent" mat-icon-button>
+              <mat-icon (click)="zoomIn()">add</mat-icon>
+            </button>
+          </div>
+          <div class="toolBar">
+            <button color="accent" mat-icon-button>
+              <mat-icon (click)="zoomOut()">remove</mat-icon>
+            </button>
+          </div>
+          </div>
+          <div style="display: block;margin: auto;width:798px;height:94vh;border:black solid 1px;background-color: antiquewhite">
+            <pdf-viewer [src]="pdfSrc" [fit-to-page]="false" [show-all]="false" [page]="paginaPdf" [autoresize]="false"
+              [render-text]="true" [zoom]="zoomPdf" style="display: block" (error)="onPDFError($event)" (on-progress)="onProgress($event)"
+              (after-load-complete)="pdfLoaded($event)">
+            </pdf-viewer>
+          </div>
+          </div>
+          
+
+
+
+
+    </div>
+  </div>

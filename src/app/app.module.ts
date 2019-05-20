@@ -37,6 +37,7 @@ import {AccordionModule} from 'primeng/primeng';
 import {SpinnerModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
 import {MessageService} from 'primeng/components/common/messageservice';
+import {MessagesModule} from 'primeng/messages';
 import {ChartModule} from 'primeng/chart';
 import {MenuModule} from 'primeng/menu';
 import {ContextMenuModule} from 'primeng/contextmenu';
@@ -210,6 +211,8 @@ import { DownloadInformeComponent } from './components/informes/download-informe
 import { AlergenosTablaComponent } from './components/alergenos-tabla/alergenos-tabla.component';
 import { VerDocsComponent } from './components/ver-docs/ver-docs.component';
 import { TemplatesComponent } from './components/templates/templates.component';
+import { RecetasComponent } from './components/produccion/recetas/recetas.component';
+import { PreparaRecetaComponent } from './components/produccion/prepara-receta/prepara-receta.component';
 
 
 @NgModule({
@@ -287,6 +290,7 @@ export function createTranslateLoader(http: HttpClient) {
     AccordionModule,
     SpinnerModule,
     GrowlModule,
+    MessagesModule,
     ChartModule,
     MenuModule,
     ContextMenuModule,
@@ -386,9 +390,10 @@ export function createTranslateLoader(http: HttpClient) {
     ProductosPropiosComponent,
     DistribucionComponent,  
     AlmacenesComponent,
-
     TrazabilidadComponent,
     TrazabilidadAdComponent,
+    RecetasComponent,
+    PreparaRecetaComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,

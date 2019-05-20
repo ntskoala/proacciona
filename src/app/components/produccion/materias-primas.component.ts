@@ -239,8 +239,6 @@ getProveedores(){
     error =>console.log(error),
     () =>this.setItems()   
     );
-
-   
   }
 
 setRemanente(detalleProduccion: ProduccionDetalle){

@@ -167,8 +167,8 @@ export class RecetasComponent  implements OnInit, OnChanges {
       // Guardar el id del control a borrar
       this.idBorrar = idBorrar;
       // Crea el modal
-      this.modal.titulo = 'produccion.borrarProductoT';
-      this.modal.subtitulo = 'produccion.borrarProductoST';
+      this.modal.titulo = 'recetas.borrarProductoT';
+      this.modal.subtitulo = 'recetas.borrarProductoST';
       this.modal.eliminar = true;
       this.modal.visible = true;
   }

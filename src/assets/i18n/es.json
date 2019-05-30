@@ -616,7 +616,11 @@
       "de":"de los",
       "restantes":"restantes",
       "seleccionIngredientes":"Seleccionar ingredientes",
-      "anadir":"Añadir al lote"
+      "anadir":"Añadir al lote",
+      "preparado":"Lotes de ingredientes ok",
+      "cocinado":"Se han añadido los ingredientes al lote",
+      "borrarProductoT":"Eliminar ingrediente de la receta",
+      "borrarProductoST":"Se eliminará el ingrediente de la receta"
     },
   "alergenos":"alérgenos",
   "alergenosProductos":"Alérgenos productos",

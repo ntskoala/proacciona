@@ -37,9 +37,9 @@ export class PreparaRecetaComponent implements OnInit {
   // public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,null,null,null,null,0,0,'');
   // public passItem: ProduccionDetalle;
   public items: ProduccionDetalle[]=[];
-
+  public cocinado:boolean=false;
   //********************PDF */
-  public setIng:boolean=false;
+  public setIng:boolean=true;
   public pdfSrc: string=null;
   public paginaPdf:number=1;
   public maxPdf:number=1;
@@ -119,10 +119,10 @@ procesaIngredientes(){
   let x=0;
   let y=1;
   this.ingredientes.forEach((ingrediente)=>{
-    this.lotesIng[x]=[];
+    x= ingrediente.numIngrediente;
+    if (this.lotesIng[x]==undefined) this.lotesIng[x]=[];
     this.getLotes(ingrediente.idMateriaPrima, ingrediente.idProveedor,x).then(
       (valor)=>{
-        
         console.log('PROCESA INGREDIENTES',y,this.ingredientes.length)
         if (y>=this.ingredientes.length){
           setTimeout(()=>{
@@ -131,7 +131,7 @@ procesaIngredientes(){
         }
         y=y+1;
       });
-      x++
+      //x++
   });
   console.log(this.lotes);
 }
@@ -181,7 +181,7 @@ procesarLotes(){
   if (parseInt(this.ingredientes[x].cantidad.toString()) > parseInt(CantidadTotalLotes.toString())){
     this.semaforo='rojo';
     let alerta= 'No hay suficiente ' + this.ingredientes[x].nombreMP + ' para preparar la receta, total disponible: ' + CantidadTotalLotes + ' necesitas: ' +this.ingredientes[0].cantidad;
-    this.setAlerta(alerta);
+    //this.setAlerta(alerta);
     this.alertas.push(alerta);
   }else{
     //********PREPARA LOS LOTES A AÑADIR */
@@ -196,7 +196,6 @@ procesarLotes(){
         falta=falta-lote[y].cantidad_remanente;
       } 
     }
-   
   }
   x++;
   });
@@ -213,17 +212,23 @@ indicaIngredientes(){
     this.loteSelected[ing['ingrediente']][ing['lote']]=ing['cantidad'];
     console.log(this.loteSelected);
   });
+  if (this.semaforo=='verde' || this.semaforo=='ambar'){
+    this.alertas.push('preparado');
+  }
 }
 
 proceed(){
+  console.log('Procediendo con los ingredientes...');
   if (this.semaforo=='verde' || this.semaforo=='ambar'){
     this.ingredientesReceta.forEach((ing)=>{
       this.newItem(this.ingredientes[ing['ingrediente']],this.lotesIng[ing['ingrediente']][ing['lote']],ing['cantidad'])
     })
+    this.cocinado=true;
     console.log('ITEMS',this.items);
+    this.alertas.push('cocinado');
     this.onProcesed.emit(this.items);
   }else{
-    this.setAlerta('No se ha podido procesar');
+    this.alertas.push('No se ha podido procesar');
   }
 }
 

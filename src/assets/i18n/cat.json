@@ -616,7 +616,11 @@
       "de":"dels",
       "restantes":"restants",
       "seleccionIngredientes":"Seleccionar ingredients",
-      "anadir":"Afegir al lot"
+      "anadir":"Afegir al lot",
+      "preparado":"Lots d'ingredients ok",
+      "cocinado":"Els ingredients s'han afegit al lot",
+      "borrarProductoT":"Elimina l'ingredient de la recepta",
+      "borrarProductoST":"S'eliminará l'ingredient de la recepta"
     },
   "alergenos":"Al·lergògens",
   "alergenosProductos":"Al·lergògens productes",

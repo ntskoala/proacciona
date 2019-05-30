@@ -2,7 +2,6 @@
   <div class="logo">
     <a routerLink="/empresas"><img src="./assets/images/logo.jpg" alt="Logo"></a>
   </div>
-  ---
   <div class="logo-empresa">
   <div class="userlogged" *ngIf="empresasService.userId"> 
   <div class="tooltip" matTooltip="{{'menu.perfil' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">    

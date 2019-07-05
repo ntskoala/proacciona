@@ -10,38 +10,78 @@
         </button>
       </div>
 
-      <button color="primary" mat-stroked-button color="primary" (click)="setIng=!setIng">
-          <mat-icon  *ngIf="setIng">remove</mat-icon>
-          <mat-icon  *ngIf="!setIng">add</mat-icon>
-          <mat-icon>shopping_cart</mat-icon>
-      {{'recetas.seleccionIngredientes' | translate}}
-      </button>
-      <div class="marcoIngredientes round" *ngIf="setIng">
+      <mat-tab-group>
+        <mat-tab label="{{'recetas.Ingredientes' | translate}}">
+
+            <mat-progress-spinner *ngIf="estado < 100"  style="position: fixed; margin-top: 100px; margin-left:45%; z-index: 99999;" mode="indeterminate"></mat-progress-spinner>
+
+          <mat-toolbar style="padding-top: 30px;width: 780px;font-size: medium;">
+            {{receta.nombre}} ({{orden.numlote}})
+            <mat-form-field class="toolbarF">
+              <input matInput placeholder="{{'recetas.IntroducirCantidad' | translate}}" [(ngModel)]="cantidadProduccion">
+            </mat-form-field>
+            <div class="tooltip" matTooltip="{{'recetas.calcular' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+            <button  class="toolbarF" color="accent" [disabled]="!ready" mat-raised-button (click)="process()">
+              {{'recetas.calcular' | translate}}
+            </button>
+          </div>
+          </mat-toolbar>
+      <div class="marcoIngredientes round">
          <p-accordion>
-            <p-accordionTab header="{{ingrediente.nombreMP}} - {{ingrediente.numIngrediente}}"   *ngFor="let ingrediente of ingredientes; let x = index">
+            <p-accordionTab header="{{ingrediente.ingrediente}} "   *ngFor="let ingrediente of ingredientes; let x = index">
                 necesitas: {{ingrediente.cantidad}} - {{ingrediente.tipo_medida}} 
                     <mat-list>
                         <mat-list-item  *ngFor="let lote of lotesIng[x]; let y = index" > 
-                          <span class="loteSelected" *ngIf="loteSelected[x][y]>0 && loteSelected[x][y] < lote.cantidad_remanente">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.coge' | translate}} {{loteSelected[x][y]}} {{lote.tipo_medida}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}} </span>
-                          <span class="loteSelected" *ngIf="loteSelected[x][y]>0 && loteSelected[x][y] >= lote.cantidad_remanente">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.cogeTodo' | translate}} {{loteSelected[x][y]}} {{lote.tipo_medida}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}}</span>
-                          <span class="loteNotSelected" *ngIf="loteSelected[x][y]==0">{{lote.numlote_proveedor}} caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.noCojas' | translate}} {{'recetas.de' | translate}} {{lote.cantidad_remanente}} {{lote.tipo_medida}} {{'recetas.restantes' | translate}}</span>
+                    <!-- **** Coge una parte del lote ****-->
+                          <span class="loteSelected" *ngIf="loteSelected[x][y].cantidad>0 && loteSelected[x][y].cantidad < lote.cantidad_remanente">
+                            {{getProv(lote.idproveedor)}}:({{loteSelected[x][y].nombreMP}} - {{lote.numlote_proveedor}}) caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.coge' | translate}} {{loteSelected[x][y].cantidad}} {{lote.tipo_medida | translate}} 
+                            <span *ngIf="lote.tipo_medida=='unidades' || lote.tipo_medida=='unitats'">{{'recetas.de2' | translate}}</span> 
+                            <span *ngIf="lote.tipo_medida!='unidades' && lote.tipo_medida!='unitats'">{{'recetas.de1' | translate}}</span> 
+                            {{lote.cantidad_remanente}} {{lote.tipo_medida | translate}} {{'recetas.restantes' | translate}} 
+                          </span>
+                    <!-- **** Coge TODO el lote ****-->
+                          <span class="loteSelected" *ngIf="loteSelected[x][y].cantidad>0 && loteSelected[x][y].cantidad >= lote.cantidad_remanente">
+                            {{getProv(lote.idproveedor)}}:({{loteSelected[x][y].nombreMP}} - {{lote.numlote_proveedor}}) caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.cogeTodo' | translate}} {{loteSelected[x][y].cantidad}} {{lote.tipo_medida | translate}} 
+                            <span *ngIf="lote.tipo_medida=='unidades' || lote.tipo_medida=='unitats'">{{'recetas.de2' | translate}}</span> 
+                            <span *ngIf="lote.tipo_medida!='unidades' && lote.tipo_medida!='unitats'">{{'recetas.de1' | translate}}</span> 
+                            {{lote.cantidad_remanente}} {{lote.tipo_medida | translate}} {{'recetas.restantes' | translate}}
+                        </span>
+                    <!-- **** No COJAS NADA del lote ****-->
+                          <span class="loteNotSelected" *ngIf="loteSelected[x][y].cantidad==0">
+                            {{getProv(lote.idproveedor)}}:({{loteSelected[x][y].nombreMP}} - {{lote.numlote_proveedor}}) caduca:{{lote.fecha_caducidad | date:'dd-MM-yyyy'}} {{'recetas.noCojas' | translate}} 
+                            <span *ngIf="lote.tipo_medida=='unidades' || lote.tipo_medida=='unitats'">{{'recetas.de2' | translate}}</span> 
+                            <span *ngIf="lote.tipo_medida!='unidades' && lote.tipo_medida!='unitats'">{{'recetas.de1' | translate}}</span> 
+                            {{lote.cantidad_remanente}} {{lote.tipo_medida | translate}} {{'recetas.restantes' | translate}}
+                        </span>
                         </mat-list-item>
                        </mat-list>
             </p-accordionTab>
         </p-accordion>
-        <button style="margin-top:30px" color="primary" [disabled]="cocinado || semaforo=='rojo'" mat-raised-button color="primary" (click)="proceed()">
+        <button style="margin-top:30px" color="primary" [disabled]="cocinado || semaforo=='rojo'" mat-raised-button  (click)="proceed()">
             <mat-icon >add_shopping_cart</mat-icon>
-            {{'recetas.anadir' | translate}}
+            {{'recetas.anadir' | translate}} {{orden.numlote}}
           </button>
+
           <div class="mensajes" [style.height]="alertas.length*42+'px'" [ngClass]="{'semaforoRojo':semaforo=='rojo','semaforoVerde':semaforo!='rojo'}">
               <mat-list>
                   <mat-list-item  *ngFor="let alerta of alertas; let i = index" > 
                     {{alerta | translate}}
+                    <span *ngIf="alerta=='recetas.elaborado'">&nbsp;{{orden.numlote}}</span>
                   </mat-list-item>
                  </mat-list>
 </div>
+<button style="margin-top:3px; display:block" color="accent" *ngIf="cocinado || semaforo=='rojo'" mat-raised-button  (click)="cerrar()">
+    <mat-icon >cancel</mat-icon>
+    {{'cerrar' | translate}}
+  </button>
       </div>
-  
+
+
+
+    </mat-tab>
+    <mat-tab label="Pdf">
+
+
       <div *ngIf="pdfSrc || true">
           <div class="pdfToolbar">
             <div class="toolBar">
@@ -73,7 +113,10 @@
           </div>
           </div>
           
-
+        </mat-tab>
+      </mat-tab-group>
+    
+    
 
 
 

@@ -5,6 +5,8 @@ export class ProductoPropio {
     public alergenos?: string,
     public doc?: string,
     public id?: number,
-    public idempresa?: number
+    public idempresa?: number,
+    public cantidadReceta?:number,
+    public tipo_medida?:string
   ) {}
 }

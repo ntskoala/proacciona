@@ -30,9 +30,10 @@ export class alerg{
 export class ProductosProveedorComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Output() nuevoProducto: EventEmitter<boolean> = new EventEmitter<boolean>();
-public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null);
-public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null);;
+public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null);
+public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null);
 public items: ProveedorProducto[];
+public ingredientes: any[]=[];
 public cols:any[];
 public alertaGuardar:object={'guardar':false,'ordenar':false};
 public newRow:boolean=false;
@@ -63,10 +64,12 @@ public informeData:any;
 
   ngOnInit() {
      // this.setItems();
+     this.setIngredientes();
       this.getFamilias();
       this.es=cal;
         this.cols = [
           { field: 'nombre', header: 'proveedores.nombre', type: 'std', width:160,orden:true,'required':true },
+          { field: 'ingrediente', header: 'recetas.ingrediente', type: 'dropdown', width:120,orden:false,'required':false },
           { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:true,'required':true },
           { field: 'idfamilia', header: 'proveedores.familia', type: 'dropdown', width:120,orden:true,'required':true },
           { field: 'doc', header: 'proveedores.fichatecnica', type: 'foto', width:120,orden:true,'required':true }
@@ -82,8 +85,12 @@ public informeData:any;
     case 'idfamilia':
     return this.familias;
     break;
+    case 'ingrediente':
+    return this.ingredientes;
+    break;
     }
-    }
+}
+
   photoURL(i,tipo) {
     let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
     let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
@@ -92,10 +99,9 @@ public informeData:any;
     this.foto = url
     }else{
       window.open(url,'_blank');
-
     }
-
   }
+
 
 getFamilias(){
         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_familia"; 
@@ -120,7 +126,7 @@ getFamilias(){
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia));
+                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia,element.ingrediente));
              }
             }
         },
@@ -131,7 +137,24 @@ getFamilias(){
         );
   }
 
-
+  setIngredientes(){
+    console.log('setting items...')
+     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=Recetas&fields=ingrediente&WHERE=ingrediente is not null GROUP BY ingrediente"; 
+       this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+         response => {
+           this.ingredientes=[];
+           if (response.success && response.data) {
+             for (let element of response.data) { 
+                 this.ingredientes.push({'label':element.ingrediente,'value':element.ingrediente});
+            }
+           }
+       },
+       error=>console.log(error),
+       ()=>{
+         if(this.addnewItem.id != 0) this.addnewItem.id =0;
+         }
+       );
+ }
 
   newItem() {
     let param = this.entidad+this.field+this.proveedor.id;
@@ -152,7 +175,7 @@ getFamilias(){
     () =>  {}
     );
 
-   this.nuevoItem = new ProveedorProducto('','','','',0,0,null);
+   this.nuevoItem = new ProveedorProducto('','','','',0,0,null,null);
    
   }
 

@@ -18,8 +18,8 @@
         <button class="opcionBoton" color="accent" mat-mini-fab (click)="cambioMenu('productos')" ><mat-icon>fastfood</mat-icon></button>
    </div>
  
-      <div class="tooltip" matTooltip="{{'produccion.almacenes' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
-          <button class="opcionBoton" color="accent" mat-mini-fab (click)="cambioMenu('almacenes')" ><mat-icon>kitchen</mat-icon></button>
+      <div class="tooltip" *ngIf="permisosService.traspasos" matTooltip="{{'produccion.almacenes' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+          <button *ngIf="permisosService.traspasos" class="opcionBoton" color="accent" mat-mini-fab (click)="cambioMenu('almacenes')" ><mat-icon>kitchen</mat-icon></button>
    </div>
    <div class="tooltip" matTooltip="{{'alergenos' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
       <button class="opcionBoton" color="accent" mat-mini-fab (click)="cambioMenu('alergenos')"><mat-icon>bug_report</mat-icon></button>
@@ -64,8 +64,8 @@
       <movimiento-produccion *ngIf="traspaso"></movimiento-produccion>
    <h2 class="moduloTitle" *ngIf="orden && orden.id >0">{{'produccion.numlote' | translate}}: {{orden.numlote}}</h2>
 <mat-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
-  <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" *ngIf="orden"></ficha-produccion></mat-tab>
-<mat-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" *ngIf="orden"></materias-primas></mat-tab>
+  <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" (onUpdateOrden)="updateOrden($event)" *ngIf="orden"></ficha-produccion></mat-tab>
+<mat-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" [trigger]="trigger" *ngIf="orden"></materias-primas></mat-tab>
 <mat-tab label="{{'produccion.distribucion' | translate}}"><span class="space"></span><distribucion class="tabs" [orden]="orden" *ngIf="orden"></distribucion></mat-tab>
 </mat-tab-group>
 <!-- </mat-sidenav-content>

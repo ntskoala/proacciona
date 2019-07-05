@@ -333,6 +333,7 @@ setNewOrdenProduccion(ordenFuente?: ProduccionOrden){
             // }else{
                 let caducidad;
              if (this.ordenDestino){
+               console.log(this.ordenOrigen,this.ordenDestino);
                   caducidad = (moment(this.ordenOrigen.fecha_caducidad)<moment(this.ordenDestino.fecha_caducidad))?this.ordenOrigen.fecha_caducidad:this.ordenDestino.fecha_caducidad;
                 }else{
                       caducidad = moment().add(7,'days').toDate();
@@ -369,7 +370,7 @@ this.nuevaOrden.tipo_medida = "l.";
 
 //buscamos las ordenes de produccion de la empresa actual, que tengan como fecha_inicio "creacion", igual a hoy, incremento contador para cada registro
 //Cuando termina, actualizazo el valor de numlote de la nuevaOrden, y creo la orden.
-    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden&WHERE=fecha_inicio=curdate()%2B&valor=";
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden&WHERE=fecha_inicio=curdate()&valor=";
         this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
           response => {
             if (response.success == 'true' && response.data) {

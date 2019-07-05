@@ -79,5 +79,5 @@
 </div>
 
 <div class="modal" *ngIf="filter">
-<filter-dates (onDates)="setDates($event)"></filter-dates>
+<filter-dates (onDates)="setDates($event)" [inputDates]="fechas_inicio"></filter-dates>
 </div>

@@ -10,6 +10,9 @@ export class ProveedorLoteProducto {
     public idproducto: number,
     public idproveedor: number,
     public idempresa: number,
-    public id?: number
+    public id?: number,
+    public albaran?:string,
+    public idResultadoChecklist?:number,
+    public idResultadoChecklistLocal?: number
   ) {}
 }

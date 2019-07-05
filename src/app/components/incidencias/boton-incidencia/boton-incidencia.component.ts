@@ -23,9 +23,10 @@ import * as moment from 'moment';
   styleUrls: ['./boton-incidencia.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class BotonIncidenciaComponent implements OnInit, OnChanges,DoCheck {
+export class BotonIncidenciaComponent implements OnInit, OnChanges {
   @Output() nuevaIncidenciaCreada: EventEmitter<Incidencia> = new EventEmitter<Incidencia>();
   @Input() origen: any;
+  @Input() sOrigen: string;
   public responsables: any[];
 public nuevaIncidencia:boolean=false;
 public newIncidencia: Incidencia = new Incidencia(null,this.empresasService.seleccionada,null,this.empresasService.userId,new Date,null,null,null,null,'Incidencias',0,null,0,'','',null);
@@ -41,20 +42,32 @@ public colorBoton:string='accent';
     , public translate: TranslateService, private messageService: MessageService, public permisos: PermisosService) { }
 
   ngOnInit() {
+    if(this.sOrigen){
+      this.origen=JSON.parse(this.sOrigen);
+    }
     this.loadUsuarios();
     this.es=cal;
   //this.setOrigen();
   }
 
 ngOnChanges(){
-//this.setOrigen();
-}
-ngDoCheck(){
-  if (this.origen){
-  this.setOrigen();
+  if(this.sOrigen){
+    this.origen=JSON.parse(this.sOrigen);
   }
-  
+  console.log('CHANGES');
+  if (this.origen){
+    this.setOrigen();
+    }
 }
+
+// ngDoCheck(){
+
+//   // if (this.origen){
+//   //   console.log('DO CHËCK');
+//   // this.setOrigen();
+//   // }
+  
+// }
 getColor(){
   if (this.origen){
   switch (this.origen.estado){
@@ -65,8 +78,10 @@ getColor(){
   }
 }
 }
+
+
 setOrigen(){
- // console.log('###BOTON CHANGES',this.origen,this.origen.idIncidencia > 0)
+  console.log('###BOTON CHANGES',this.origen)
 
   if (this.origen.idIncidencia > 0){
     switch (this.origen.estado){
@@ -93,7 +108,17 @@ setOrigen(){
   if (this.origen.idOrigen){
     this.newIncidencia.idOrigen = this.origen.idOrigen;
   }
+  if (this.origen.incidencia){
+    this.newIncidencia.incidencia = this.origen.incidencia;
+  }
+  if (this.origen.descripcion){
+    this.newIncidencia.descripcion = this.origen.descripcion;
+  }
+  if (this.origen.open==true){
+    this.nuevaIncidencia=true;
+  }
 }
+
 loadUsuarios(){
   console.log('LoadUsersIncidencias',this.origen);
   let params = this.empresasService.seleccionada;
@@ -166,7 +191,7 @@ setIncidencia(){
     //   (error)=>{console.log('ERROR:',error)}
     // )
   }else{
-this.nuevaIncidencia = ! this.nuevaIncidencia;
+this.nuevaIncidencia = !this.nuevaIncidencia;
 console.log(this.nuevaIncidencia)
   }
 }
@@ -199,7 +224,7 @@ uploadImg(event, idItem,tipo) {
 sendMaiolAviso(nuevaIncidencia: Incidencia){
   console.log(this.responsables,nuevaIncidencia)
   let responsable;
-if (nuevaIncidencia.responsable == 109){
+if (this.empresasService.administrador){
 responsable = "admin";
 }else{
   this.responsables[this.responsables.findIndex((responsable)=>responsable["value"] == nuevaIncidencia.responsable)]["label"];

@@ -4,9 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment/moment';
 
-
 import { Servidor } from '../../services/servidor.service';
-import { URLS } from '../../models/urls';
+import { URLS,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProductoPropio } from '../../models/productopropio';
 
@@ -41,9 +40,11 @@ public modal: Modal = new Modal();
 public modal2: Modal;
 
 entidad:string="&entidad=productos";
-
+public medidas: object[]=dropDownMedidas;
 public cols:any[];
 public newRow:boolean=false;
+
+
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -60,8 +61,10 @@ public informeData:any;
       this.setItems();
       this.cols = [
         { field: 'nombre', header: 'proveedores.nombre', type: 'std', width:160,orden:true,'required':true },
-        { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:true,'required':true },
-        { field: 'doc', header: 'proveedores.fichatecnica', type: 'foto', width:120,orden:true,'required':true }
+        { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:false,'required':true },
+        { field: 'cantidadReceta', header: 'recetas.Cantidad', type: 'std', width:109,orden:false,'required':true },
+        { field: 'tipo_medida', header: 'recetas.tipo_medida', type: 'dropdown', width:109,orden:false,'required':true },
+        { field: 'doc', header: 'proveedores.fichatecnica', type: 'foto', width:120,orden:false,'required':true }
       ];
 
   }
@@ -70,16 +73,26 @@ public informeData:any;
       this.setItems();
   }
 
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'tipo_medida':
+    return this.medidas;
+    break;  
+    }
+    }
+
   photoURL(i,tipo) {
     let extension = this.items[i].doc.substr(this.items[i].doc.length-3);
     let url = this.baseurl+this.items[i].id +"_"+this.items[i].doc;
-    if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
+    // url = 'https://tfc2.proacciona.es/docs/33/productos/'+this.items[i].id +"_"+this.items[i].doc;
+    // if (extension == 'jpg' || extension == 'epg' || extension == 'gif' || extension == 'png'){
     this.verdoc=!this.verdoc;
     this.foto = url
-    }else{
-      window.open(url,'_blank');
+    // }else{
+    //   window.open(url,'_blank');
 
-    }
+    // }
 
   }
 
@@ -91,7 +104,7 @@ public informeData:any;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa));
+                  this.items.push(new ProductoPropio(element.nombre,element.descripcion,element.alergenos,element.doc,element.id,element.idempresa,element.cantidadReceta,element.tipo_medida));
              }
             }
         },
@@ -198,16 +211,24 @@ checkBorrar(idBorrar: number) {
     )
   }
 
-setAlergenos(alergens: string, idItem?: number, i?: number){
-  console.log(alergens,idItem,i);
-  if (!idItem){
-  this.nuevoItem.alergenos = alergens;
-  }else{
-    this.itemEdited(idItem);
-    this.items[i].alergenos = alergens;
-    console.log(this.items[i]);
-  }
-}
+
+
+// setAlergenos(alergens: string, idItem?: number){
+//   console.log(alergens,idItem);
+//   if (!idItem){
+//  // this.nuevoItem.alergenos = alergens;
+//   }else{
+//     let index=this.items.findIndex((item)=>item.id==idItem);
+//     let alergias = JSON.parse(this.items[index].alergenos);
+//     console.log(alergias);
+    
+//     this.itemEdited(idItem); 
+    
+
+//     this.items[index].alergenos = alergens;
+//     console.log(this.items[index]);
+//   }
+// }
 
 
 
@@ -301,6 +322,8 @@ openNewRow(){
           console.log(tabla,valor,Value);
           return Value;
         }
+
+
 
 
 }

@@ -1,11 +1,11 @@
 <!-- <mat-toolbar style="width: 900px !important;" color="accent">{{'produccion.alergenos' | translate}}
   </mat-toolbar> -->
-  <h2 class="popupTitle">{{titulo | translate}}</h2>
+  <h2 class="popupTitle" *ngIf="!idProducto">{{titulo | translate}}</h2>
 
 <div class="space"></div>
 
 <p-table #dt [value]="tabla"  [style]="{'width':'920px'}"  [loading]="procesando">
-    <ng-template pTemplate="caption">
+    <ng-template pTemplate="caption"  *ngIf="!idProducto && parentAlergenos  != 'alergenos'">
             <div class="ui-helper-clearfix">
                 <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{'Download' | translate}}" (click)="excel2()" style="float:right"></button>
             </div>
@@ -15,7 +15,7 @@
     <span style="display:table-row">
         <th style="width:200px;">{{'Producto' | translate}}</th>
         <span *ngFor="let col of cols;let i = index">
-        <th style="width:50px; height: 95px;"><span class="vertical">{{col.header | translate}}</span></th>
+        <th style="width:50px; height: 95px;"><span class="vertical" [ngClass]="{'margin-left':idProducto || parentAlergenos  == 'alergenos'}">{{col.header | translate}}</span></th>
       </span>
     </span>
 </ng-template>
@@ -26,7 +26,7 @@
               </td>
         <span *ngFor="let col of cols;let i = index">
             <td style="width:50px" >
-        <div class="myCheck" [ngClass]="{'checkIng':producto['cols'][i]['Ing']=='Ing','checkTrz':producto['cols'][i]['Ing']=='Trz'}" (click)="cambiaEstado(producto['idproducto'],producto['cols'][i]['Ing'],col.header,i)"></div>
+        <div class="myCheck" [ngClass]="{'checkIng':producto['cols'][i]['Ing']=='Ing','checkTrz':producto['cols'][i]['Ing']=='Trz'}" (click)="cambiaEstado(producto['idproducto'],producto['cols'][i]['Ing'],col.field,i)"></div>
             </td>
         </span>
     </tr>
@@ -40,5 +40,5 @@
 
 <div class="modal" *ngIf="exportando">
     <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
-    </div>
+</div>
 

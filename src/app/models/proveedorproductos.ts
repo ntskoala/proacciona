@@ -6,6 +6,7 @@ export class ProveedorProducto {
     public doc: string,
     public idproveedor: number,
     public id?: number,
-    public idfamilia?: number
+    public idfamilia?: number,
+    public ingrediente?: string
   ) {}
 }

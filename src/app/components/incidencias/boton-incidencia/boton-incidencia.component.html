@@ -1,7 +1,7 @@
-<span class="tooltip" matTooltip="{{'incidencia.'+newIncidencia.estado | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+<!-- <span class="tooltip" matTooltip="{{'incidencia.'+newIncidencia.estado | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
     [matTooltipPosition]="'right'">  
 <button [disabled]="!permisos.incidencias" class="botonIncidencia" [ngStyle]="{'background-color':getColor()}" mat-mini-fab [color]="colorBoton" (click)="setIncidencia()"> <span class="material-icons">info</span></button>
-</span>
+</span> -->
 <div *ngIf="nuevaIncidencia" class="newIncident">
     <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'"  #newItemForm="ngForm" (ngSubmit)="newItem()">
   
@@ -14,13 +14,12 @@
           <input class="itemElem" type="text" [placeholder]="'incidencia.incidencia' | translate" required [(ngModel)]="newIncidencia.incidencia" name="incidencia">
         </span>
 
-        <span class="elem">
+        <!-- <span class="elem">
             <label class="label">{{'incidencia.responsable' | translate}}</label>
             <p-dropdown [disabled]="true" styleClass="itemElem"  [style]="{'width':'200px'}" [options]="responsables" [(ngModel)]="newIncidencia.responsable" placeholder="{{'incidencia.responsable' | translate}}"  name="responsable" (onChange)="responsableSelected($event)"></p-dropdown>
       </span>
         <span class="elem">
             <label class="label">{{'incidencia.fecha' | translate}}</label>
-          <!-- <p-calendar class="itemElem" [inputStyle]="{'width':'200px'}" placeholder="fecha" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy" hourFormat="24" [showTime]="true" name="fecha"> -->
             <p-calendar  [disabled]="true" class="itemElem"  #cal appendTo="body" [inputStyle]="{'width':'200px'}" [(ngModel)]="newIncidencia.fecha" [locale]="es" dateFormat="dd/mm/yy"
             hourFormat="24" [showTime]="true" (onSelect)="itemDateEdited(newIncidencia.fecha,$event)" name="fecha">
             <p-footer>
@@ -30,17 +29,18 @@
                 <span [ngStyle]="{backgroundColor: (date.day == selectedDay) ? '#7cc67c' : 'inherit'}" style="border-radius:50%">{{date.day}}</span>
             </ng-template>
         </p-calendar>
-            <!-- <p-header>
-                <button pButton type="button" (click)="ok()" icon="fa-close"></button>
-            </p-header>
-          </p-calendar> -->
-        </span>
+
+        </span> -->
         
         <div class="elem">
             <label  class="label">{{'incidencia.r_cierre' | translate}}</label>
-      <p-dropdown styleClass="itemElem"  [style]="{'width':'200px'}" [options]="responsables" [(ngModel)]="newIncidencia.responsable_cierre" placeholder="{{'incidencia.r_cierre' | translate}}"  name="r_cierre"></p-dropdown>    
+      <p-dropdown styleClass="itemElem"   [options]="responsables" [(ngModel)]="newIncidencia.responsable_cierre" placeholder="{{'incidencia.r_cierre' | translate}}"  name="r_cierre"></p-dropdown>    
 </div>
-
+<span class="elem">
+    <label class="label">{{'incidencia.descripcion' | translate}}</label>
+   <textarea class="itemElem"  pInputTextarea [placeholder]="'incidencia.descripcion' | translate" [(ngModel)]="newIncidencia.descripcion" name="descripcion">
+   </textarea>
+</span>
         <span class="elem">
             <label class="label">{{'incidencia.solucion' | translate}}</label>
            <textarea class="itemElem"  pInputTextarea [placeholder]="'incidencia.solucion' | translate" [(ngModel)]="newIncidencia.solucion" name="solucion">

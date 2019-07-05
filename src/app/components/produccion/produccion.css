@@ -259,3 +259,15 @@ md-grid-list{
 tr.recetas:hover{
     background-color:#fff9c4 !important;
 }
+
+.verAlergenosFicha{
+    position: fixed;
+    top: 300px;
+    left: 450px;
+    z-index: 9999999 !important;
+    width: 200px;
+    min-height: 60px;
+    background: gainsboro;
+    border: #fbc02d solid 1px;
+    border-radius: 5%;
+}

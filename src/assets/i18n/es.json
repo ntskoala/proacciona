@@ -299,6 +299,7 @@
     "proveedores":"Proveedores",
     "proveedor":"Proveedor",
     "lote":"Lote proveedor",
+    "albaran":"Albarán",
     "ficha":"Ficha",
     "areaproveedores": "Área de proveedores",
     "nombre":"Nombre",
@@ -327,7 +328,11 @@
     "alert_contacto":"Nombre contacto alertas",
     "alert_telf":"Teléfono alertas",
     "alert_email":"Email alertas",
-    "alergenos":"Tabla de alérgenos de M.P."
+    "alergenos":"Tabla de alérgenos de M.P.",
+    "ChecklistsParaEmparejar":"o selecciona un checklists realizado disponible",
+    "seleccionarChecklistMP":"Seleccionar este checklist",
+    "crearNuevoChecklist":"Crear un nuevo checklist",
+    "realizadoPor":"Realizado por"
   },
   "produccion":{
     "crear":"Nuevo lote de producción",
@@ -377,7 +382,9 @@
     "alert_tanque_destino":"No ha seleccionado Tanque destino",
     "alert6":"",
     "borrarOrdenT":"Eliminar orden de producción",
-    "borrarOrdenST":"Se eliminará la orden de producción, * no se devuelve el stock de las materias primas añadidas, se recomienda hacer una revisión y reajuste manual tanto de las materias primas añadidas como de los productos entregados a clientes"
+    "borrarOrdenST":"Se eliminará la orden de producción, * no se devuelve el stock de las materias primas añadidas, se recomienda hacer una revisión y reajuste manual tanto de las materias primas añadidas como de los productos entregados a clientes",
+    "borrarMateriaPrimaT":"Eliminar materia prima del lote",
+    "borrarMateriaPrimaST":"Se eliminará esta entrada de matéria prima del lote, se devuelve el stock a la entrada de materias primas de proveedores, se recalculan los alérgenos del lote de producción"
   },
   "clientes":{
     "cliente":"Client",
@@ -508,7 +515,12 @@
       "nuevoOrden":"se ha modificado el orden, es necesario pulsar 'Guardar todos los registros' al finalizar la edición",
       "tokenExpired":"La sesión ha caducado, por favor vuelve a iniciar sesión",
       "entregaNotOk":"La cantidad o la fecha de caducidad son erroneos",
-      "alertCambioEmpresa":"Esta acción ha cambiado la empresa seleccionada"
+      "alertCambioEmpresa":"Esta acción ha cambiado la empresa seleccionada",
+      "alergenosResetProductos":"Alérgenos reiniciados al producto seleccionado",
+      "alergenosAñadidos":"Alérgenos añadidos",
+      "borrarIngrediente":"Se ha eliminado una materia prima, la lista de alérgenos del lote podría haber cambiado, es necesario comprobarla",
+      "remanenteRetornado":"Remanente retornado",
+      "errorRetornandoRemanente":"Error al devolver el remanente, se requiere comprobar manualmente el lote"
     },
     "incidencia":
     {
@@ -604,6 +616,10 @@
     },
     "recetas":{
       "recetas":"Ingredientes Recetas",
+      "generarReceta":"Generar receta",
+      "ingrediente":"Ingrediente",
+      "Ingredientes":"Ingredientes",
+      "IntroducirCantidad":"Introducir cantidad",
       "proveedores":"Proveedores",
       "MateriasPrimas":"Ingrediente",
       "Cantidad":"Cantidad",
@@ -613,14 +629,20 @@
       "coge":"coge",
       "cogeTodo":"coge todo",
       "noCojas":"no cojas nada",
-      "de":"de los",
-      "restantes":"restantes",
+      "de1":"de los",
+      "de2":"de las",
+      "restantes":"en stock",
       "seleccionIngredientes":"Seleccionar ingredientes",
+      "calcular":"Calcular producción",
       "anadir":"Añadir al lote",
-      "preparado":"Lotes de ingredientes ok",
-      "cocinado":"Se han añadido los ingredientes al lote",
+      "preparado":"Lotes de ingredientes calculados",
+      "elaborado":"Se han añadido los ingredientes al lote",
+      "errorElaborando":"No se ha podido procesar",
       "borrarProductoT":"Eliminar ingrediente de la receta",
-      "borrarProductoST":"Se eliminará el ingrediente de la receta"
+      "borrarProductoST":"Se eliminará el ingrediente de la receta",
+      "insuficiente1":"No hay suficiente/s ",
+      "insuficiente2":" para preparar la receta, total disponible: ",
+      "insuficiente3":" necesitas: "
     },
   "alergenos":"alérgenos",
   "alergenosProductos":"Alérgenos productos",
@@ -673,5 +695,6 @@
   "procesando":"Procesando...",
   "abierto":"abierto",
   "cerrado":"cerrado",
-  "entregado":"entregado"
+  "entregado":"entregado",
+  "unidades":"unidades"
 }

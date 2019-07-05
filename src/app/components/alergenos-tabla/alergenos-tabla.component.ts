@@ -24,11 +24,16 @@ export class ProductoAlergia {
 })
 export class AlergenosTablaComponent implements OnInit, OnChanges {
   @Input() parentAlergenos:string;
+  @Input() incomeAlergenos:any;
+  @Input() trigger:number;
+  @Input() lote:any;
+  @Input() idProducto:number;
   @Output() selectedAlergenosChange:EventEmitter<string>=new EventEmitter<string>();
   public productos: ProductoAlergia[];
   public viewAlergenos: boolean;
   //public alergenos:string[]=['Ing Cereales con gluten','Trz Cereales con gluten','Ing Huevos','Trz Huevos','Ing Leche','Trz Leche','Ing Cacahuetes','Trz Cacahuetes','Ing Soja','Trz Soja','Ing Fruits secs de closca','Trz Fruits secs de closca','Ing Apio','Trz Apio','Ing Mostaza','Trz Mostaza','Ing Sésamo','Trz Sésamo','Ing Pescado','Trz Pescado','Ing Crustaceos','Trz Crustaceos','Ing Moluscos','Trz Moluscos','Ing Altramuces','Trz Altramuces','Ing Dioxido de azufre y sulfitos','Trz Dioxido de azufre y sulfitos'];
-  public alergenos:string[]=['Gluten','Huevos','Leche','Cacahuetes','Soja','Fruits secs','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Sulfitos'];
+  public alergenos:string[]=['Gluten','Huevos','Leche','Cacahuetes','Soja','Frutos secos','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Sulfitos'];
+  public tituloAlergenos:string[]=['Gluten','Huevos','Leche','Cacahuetes','Soja','Frutos secos','Apio','Mostaza','Sésamo','Pescado','Crustaceos','Moluscos','Altramuces','Sulfitos'];
   //public alergenos:string[]=['frutos secos','lacteos','gluten','huevos','otros'];
   public titulo:string='';
   public selectedAlergenos:string[]=[];
@@ -52,30 +57,52 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
       private messageService: MessageService) {}
   
     ngOnInit() {
+      console.log("**TABLA ALERGENOS INIT",this.incomeAlergenos);
       if (this.translate.currentLang=='cat'){
-        this.alergenos=['Gluten','Ous','Llet','Cacauets','Soja','Fruits secs','Api','Mostassa','Sèsam','Peix','Crustacis','Mol·luscs','Tramussos','Sulfits'];
+        this.tituloAlergenos=['Gluten','Ous','Llet','Cacauets','Soja','Fruits secs','Api','Mostassa','Sèsam','Peix','Crustacis','Mol·luscs','Tramussos','Sulfits'];
       }
+      if(this.parentAlergenos  == 'alergenos'){
+         let data=[{'id':this.lote["id"],'nombre':this.lote["numlote"],'alergenos':JSON.stringify(this.incomeAlergenos)}];
+         this.entidad = "&entidad=produccion_orden";
+        this.proccessProductos(data);
+      }else{
         this.getProductos();
+      }
   
   }
   ngOnChanges() {
-    this.getProductos();
+    console.log("***TABLA ALERGENOS onChange",this.trigger,this.incomeAlergenos);
+    if(this.parentAlergenos  == 'alergenos'){
+      let data=[{'id':this.lote["id"],'nombre':this.lote["numlote"],'alergenos':JSON.stringify(this.incomeAlergenos)}];
+      this.entidad = "&entidad=produccion_orden";
+      this.proccessProductos(data);
+    }else{
+      if (this.parentAlergenos.length>0)
+      this.getProductos();
+    }
 }
 
   getProductos(){
       console.log('setting items...')
       let url='';
       let parametros='';
+      let where='';
       if(this.parentAlergenos  == 'productos'){
         this.entidad = "&entidad=productos";
         this.titulo="produccion.alergenos";
         url= URLS.STD_ITEM;
-        parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=productos"; 
+        if (this.idProducto>0){
+          where='&WHERE=id=&valor='+this.idProducto;
+        }
+        parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=productos"+where; 
       }else{
         this.entidad = "&entidad=proveedores_productos";
         this.titulo="proveedores.alergenos";
         url= URLS.STD_SUBITEM;
-        parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+this.parentAlergenos; 
+        if (this.idProducto>0){
+          where='&WHERE=id=&valor='+this.idProducto;
+        }
+        parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=idproveedor&idItem="+this.parentAlergenos+where; 
       }
          this.servidor.getObjects(url, parametros).subscribe(
            response => {
@@ -86,6 +113,7 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
 
    }
   proccessProductos(data){
+    console.log('DATA',data);
     this.productos = [];
     if (data) {
       for (let element of data) { 
@@ -98,9 +126,11 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
    mergeData() {
       this.tabla = [];
       this.cols = [];
+      let i=0;
       //this.cols.push({ field: 'Producto', header: 'Productos' });
       this.alergenos.forEach(alergeno => {
-        this.cols.push({ field: alergeno, header: alergeno, Ing:false, Trz:false })
+        this.cols.push({ field: alergeno, header: this.tituloAlergenos[i], Ing:false, Trz:false });
+        i++;
       });
   let x=0;
   

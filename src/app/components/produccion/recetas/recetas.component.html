@@ -53,13 +53,13 @@
                    <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':(col.width -7)+'px'}" class="medium" [(ngModel)]="nuevoItem[col.field]"
                      [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
                  </span>
-                   <span *ngIf="col.type == 'dropdown' && col.field != 'idProveedor'">
+                   <span *ngIf="col.type == 'dropdown' && col.field != 'ingrediente'">
                      <p-dropdown [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':(col.width -7)+'px'}"
                         [name]="col.field"></p-dropdown>
                    </span>
-                   <span *ngIf="col.field == 'idProveedor'">
+                   <span *ngIf="col.field == 'ingrediente'">
                        <p-dropdown  [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]"  appendTo="body" [style]="{'width':(col.width -7)+'px'}"
-                        [name]="col.field" (onChange)="setMateriasPrimas($event.value)"></p-dropdown>
+                        [name]="col.field" [editable]="true" [filter]="true" (onChange)="setMateriasPrimas($event.value)"></p-dropdown>
                      </span>
                </td>
        
@@ -107,12 +107,9 @@
                <p-dropdown  [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
                  (onChange)="itemEdited(item.id)"></p-dropdown>
              </span>
-             <span *ngIf="col.field == 'idProveedor'">
-                {{getProveedor(item[col.field])}}
-              </span>
-              <span *ngIf="col.field == 'idMateriaPrima'">
-                {{item['nombreMP']}}
-                </span>
+              <!-- <span *ngIf="col.field == 'ingrediente'">
+                {{item['ingrediente']}}
+                </span> -->
              <span *ngIf="col.type == 'foto'">
                  <!--*****  subir/ver FOTO  *********-->
                  <span class="cell"> 
@@ -134,6 +131,9 @@
              <span *ngIf="col.type =='std'">
                {{item[col.field]}}
              </span>
+             <span *ngIf="col.field == 'ingrediente'">
+              {{item['ingrediente']}}
+              </span>
                <span *ngIf="col.type == 'fecha'">
                    {{item[col.field] | date:"dd-MM-yyyy"}}
              </span>
@@ -147,11 +147,11 @@
                <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
                  [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
              </span>
-             <!-- <span *ngIf="col.type == 'dropdown' && col.field != 'idProveedor'">
+             <span *ngIf="col.field == 'ingrediente'">
                 <p-dropdown [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
-                   [name]="col.field"></p-dropdown>
+                [editable]="true" [filter]="true"  [name]="col.field"></p-dropdown>
               </span>
-              <span *ngIf="col.field == 'idProveedor'">
+             <!--  <span *ngIf="col.field == 'idProveedor'">
                   <p-dropdown  [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="item[col.field]"  appendTo="body" [style]="{'width':'110px'}"
                    [name]="col.field" (onChange)="setMateriasPrimas($event.value)"></p-dropdown>
                 </span> -->

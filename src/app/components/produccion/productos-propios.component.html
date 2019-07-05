@@ -247,6 +247,7 @@
             <span class="material-icons">check</span>
           </button>
         </span>
+
       </td>
     </tr>
   </ng-template>
@@ -259,6 +260,8 @@
   <ng-template pTemplate="rowexpansion" let-item let-columns="columns" let-rowIndex="rowIndex">
       <tr [ngClass]="{'recetas':true}">
           <td [attr.colspan]="columns.length + 3">
+              <app-alergenos-tabla [parentAlergenos]="'productos'" [idProducto]="item.id"></app-alergenos-tabla>
+            <hr>
               <app-recetas [producto]="item"></app-recetas>
   </td>
 </tr>
@@ -270,4 +273,6 @@
 <div class="modal" *ngIf="exportando">
     <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
 </div>
+
 <app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+

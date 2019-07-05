@@ -12,3 +12,13 @@ export class Receta {
       public nombreMP:string
   ){}
   }
+  export class Ingrediente {
+    constructor(
+      public id: number,  
+      public idempresa: number,
+      public cantidad: number,  
+      public tipo_medida: string,
+      public ingrediente:string,
+      public idproducto: number
+  ){}
+  }

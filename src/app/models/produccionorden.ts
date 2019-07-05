@@ -16,6 +16,7 @@ export class ProduccionOrden {
     public estado?: string,
     public idalmacen?: number,
     public idcliente?: number,
-    public doc?: string
+    public doc?: string,
+    public alergenos?:string
 ){}
 }

@@ -10,7 +10,8 @@ export class ProduccionDetalle {
     public cantidad: number,
     public tipo_medida: string,
     public cantidad_remanente_origen?: number,
-    public cantidad_real_origen?: number
+    public cantidad_real_origen?: number,
+    public idMPHomologada?:number
 
 ){}
 }

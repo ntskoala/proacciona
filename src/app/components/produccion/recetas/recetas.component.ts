@@ -10,7 +10,7 @@ import { EmpresasService } from '../../../services/empresas.service';
 import { ProductoPropio } from '../../../models/productopropio';
 import { ProveedorProducto } from '../../../models/proveedorproductos';
 import { Proveedor } from '../../../models/proveedor';
-import { Receta } from '../../../models/recetas';
+import { Ingrediente } from '../../../models/recetas';
 
 import { Modal } from '../../../models/modal';
 import { ProveedoresComponent } from 'app/components/proveedores/proveedores.component';
@@ -23,11 +23,11 @@ import { ProveedoresComponent } from 'app/components/proveedores/proveedores.com
 })
 export class RecetasComponent  implements OnInit, OnChanges {
   @Input() producto: ProductoPropio;
-  public nuevoItem: Receta = new Receta(null,this.empresasService.seleccionada,0,0,0,null,0,'',0,'');
-  public addnewItem: Receta = new Receta(null,this.empresasService.seleccionada,0,0,0,null,0,'',0,'');
-  public items: Receta[];
+  public nuevoItem: Ingrediente = new Ingrediente(null,this.empresasService.seleccionada,0,'',null,null);
+  public addnewItem: Ingrediente = new Ingrediente(null,this.empresasService.seleccionada,0,'',null,null);
+  public items: Ingrediente[];
   public proveedores: any[];
-  public MateriasPrimas: any[];
+  public ingredientes: any[];
   public medidas: object[]=dropDownMedidas;
   public guardar = [];
   public idBorrar;
@@ -57,15 +57,12 @@ export class RecetasComponent  implements OnInit, OnChanges {
   
     ngOnInit() {
       console.log('INIT',this.producto);
+      this.setIngredientes();
         this.setItems();
-        this.setProveedores();
         this.cols = [
-          { field: 'idProveedor', header: 'recetas.proveedores', type: 'dropdown', width:170,orden:false,'required':true },
-          { field: 'idMateriaPrima', header: 'recetas.MateriasPrimas', type: 'dropdown', width:170,orden:false,'required':true },
-          { field: 'numIngrediente', header: 'recetas.numIngrediente', type: 'std', width:109,orden:false,'required':true },
+          { field: 'ingrediente', header: 'recetas.ingrediente', type: 'dropdown', width:109,orden:false,'required':true },
           { field: 'cantidad', header: 'recetas.Cantidad', type: 'std', width:109,orden:false,'required':true },
-          { field: 'tipo_medida', header: 'recetas.tipo_medida', type: 'dropdown', width:109,orden:false,'required':true },
-          { field: 'preferencia', header: 'recetas.preferencia', type: 'std', width:109,orden:false,'required':true }
+          { field: 'tipo_medida', header: 'recetas.tipo_medida', type: 'dropdown', width:109,orden:false,'required':true }
         ];
   
     }
@@ -83,21 +80,21 @@ export class RecetasComponent  implements OnInit, OnChanges {
       case 'tipo_medida':
       return this.medidas;
       break;
-      case 'idMateriaPrima':
-      return this.MateriasPrimas;
+      case 'ingrediente':
+      return this.ingredientes;
       break;    
       }
       }
   
     setItems(){
        console.log('setting items...')
-        let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+"&WHERE=idProducto="+this.producto.id; 
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+"&WHERE=idProducto="+this.producto.id;  
           this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
             response => {
               this.items = [];
               if (response.success && response.data) {
                 for (let element of response.data) { 
-                    this.items.push(new Receta(element.id,element.idEmpresa,element.idProducto,element.idProveedor,element.idMateriaPrima,element.numIngrediente,element.cantidad,element.tipo_medida,element.preferencia,element.nombreMP));
+                    this.items.push(new Ingrediente(element.id,element.idEmpresa,element.cantidad,element.tipo_medida,element.ingrediente,element.idproducto));
                }
               }
           },
@@ -107,15 +104,32 @@ export class RecetasComponent  implements OnInit, OnChanges {
             }
           );
     }
-  
-  
+
+  setIngredientes(){
+    console.log('setting items...')
+     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=Recetas&fields=ingrediente&WHERE=ingrediente is not null GROUP BY ingrediente"; 
+       this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+         response => {
+           this.ingredientes=[];
+           if (response.success && response.data) {
+             for (let element of response.data) { 
+                 this.ingredientes.push({'label':element.ingrediente,'value':element.ingrediente});
+            }
+           }
+       },
+       error=>console.log(error),
+       ()=>{
+         if(this.addnewItem.id != 0) this.addnewItem.id =0;
+         }
+       );
+ }
   
     newItem() {
       let param = this.entidad;
       this.nuevoItem.idempresa = this.empresasService.seleccionada;
+      this.nuevoItem.idproducto = this.producto.id;
       this.addnewItem = this.nuevoItem;
-      this.addnewItem.idProducto=this.producto.id;
-      this.addnewItem.nombreMP=this.MateriasPrimas[this.MateriasPrimas.findIndex((MP)=>MP.value==this.nuevoItem.idMateriaPrima)].label
+
       this.servidor.postObject(URLS.STD_ITEM, this.addnewItem,param).subscribe(
         response => {
           if (response.success) {
@@ -126,7 +140,7 @@ export class RecetasComponent  implements OnInit, OnChanges {
       error =>console.log(error),
       () =>this.setItems()   
       );
-     this.nuevoItem = new Receta(null,this.empresasService.seleccionada,0,0,0,null,0,'',0,'');
+     this.nuevoItem = new Ingrediente(null,this.empresasService.seleccionada,0,'',null,null);
     }
   
   
@@ -150,7 +164,7 @@ export class RecetasComponent  implements OnInit, OnChanges {
       }
   }
   
-   saveItem(item: Receta,i: number) {
+   saveItem(item: Ingrediente,i: number) {
       this.guardar[item.id] = false;
       let parametros = '?id=' + item.id+this.entidad;    
       item.idempresa = this.empresasService.seleccionada;  
@@ -187,7 +201,9 @@ export class RecetasComponent  implements OnInit, OnChanges {
       }
     }
   
-
+    setMateriasPrimas(ingrediente){
+      console.log('ingrediente',ingrediente)
+    }
   
   setAlergenos(alergens: string, idItem?: number, i?: number){
     console.log(alergens,idItem,i);
@@ -292,50 +308,6 @@ export class RecetasComponent  implements OnInit, OnChanges {
             console.log(tabla,valor,Value);
             return Value;
           }
-  
 
 
-
-          setProveedores() {
-            let parametros = '&idempresa=' + this.empresasService.seleccionada +"&entidad=proveedores&order=nombre";
-                this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
-                  response => {
-                    this.proveedores = [];
-                    if (response.success == 'true' && response.data) {
-                      for (let element of response.data) {
-                        // this.proveedores.push(new Proveedor(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.alert_contacto,element.alert_telf,element.alert_email,element.id,element.direccion,element.poblacion,element.nrs));
-                        this.proveedores.push({'value':element.id,'label':element.nombre})
-                      }
-                    }
-                  },
-                      (error) => {console.log(error)},
-                      ()=>{}
-                );
-           }
-
-        setMateriasPrimas(idProveedor){
-          console.log('setting MATERIAS PRIMAS...',idProveedor)
-          let entidad:string="&entidad=proveedores_productos";
-          let field:string="&field=idproveedor&idItem=";
-           let parametros = '&idempresa=' + this.empresasService.seleccionada+entidad+field+idProveedor; 
-             this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
-               response => {
-                 this.MateriasPrimas = [];
-                 if (response.success && response.data) {
-                   for (let element of response.data) { 
-                      //  this.MateriasPrimas.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia));
-                       this.MateriasPrimas.push({'value':element.id,'label':element.nombre});
-                  }
-                 }
-             },
-             error=>console.log(error),
-             ()=>{
-               if(this.addnewItem.id != 0) this.addnewItem.id =0;
-               }
-             );
-       }
-
-      getProveedor(idProveedor){
-        return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idProveedor)].label
-      }
 }

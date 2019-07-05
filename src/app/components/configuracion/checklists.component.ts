@@ -248,6 +248,9 @@ this.mostrarCCL(evento.id)
       this.servidor.deleteObject(URLS.CHECKLISTS, parametros).subscribe(
         response => {
           if (response.success) {
+            if (this.checklistActiva == parseInt(localStorage.getItem("triggerEntradasMP"))){
+              this.quitarTriggerEntradasProducto();
+            }
             let clBorrar = this.checklists.find(cl => cl.id == this.checklistActiva);
             let indice = this.checklists.indexOf(clBorrar);
             this.checklists.splice(indice, 1);
@@ -263,6 +266,51 @@ this.mostrarCCL(evento.id)
         });
     }
   }
+  
+addTriggerEntradasProducto(idChecklist){
+  let param = "&entidad=triggers"
+  let trigger={
+    'id':null,
+    'idempresa':this.empresasService.seleccionada,
+    'entidadOrigen':'proveedores_entradas_producto',
+    'idOrigen':null,
+    'entidadDestino':'checklist',
+    'idDestino':idChecklist
+  }
+  this.servidor.postObject(URLS.STD_ITEM, trigger,param).subscribe(
+    response => {
+      if (response.success) {
+        localStorage.setItem('triggerEntradasMP',idChecklist);
+      }
+  },
+  error =>console.log(error));
+}
+
+quitarTriggerEntradasProducto(){
+  let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=triggers&WHERE=idDestino="+this.checklistActiva;
+  this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+    response => {
+      console.log(response);
+      if (response.success == 'true' && response.data) {
+        for (let element of response.data) {
+          if (element.entidadOrigen == 'proveedores_entradas_producto' && element.entidadDestino=='checklist'){
+            //localStorage.setItem('triggerEntradasMP',element.id);
+            let parametrosDelete = '?id=' + element.id+"&entidad=triggers";
+            this.servidor.deleteObject(URLS.STD_ITEM, parametrosDelete).subscribe(
+              response => {
+                if (response.success) {
+                  localStorage.removeItem("triggerEntradasMP");
+                  console.log('TRIGGER FUERA');
+                }
+            });
+          }
+          }
+      }
+  },
+error =>{
+  console.log('hay Trigger servicios entrada' + error);
+  });
+}
 
   mostrarCCL(idChecklist: number) {
    // this.unExpand();
@@ -513,7 +561,6 @@ this.mostrarCCL(evento.id)
         }
       this.alertaGuardar['ordenarcheckcontrol'] = true;
     }
-   
   }
 
 
@@ -645,6 +692,7 @@ newTemplateSelected(template){
         console.log(resultado);
         if (resultado["data"] > 0){
         this.checklistActiva = resultado["data"];
+        this.addTriggerEntradasProducto(resultado["data"]);
         console.log(this.checklists.length,this.checklists,this.checklistActiva);
         this.cerrarModalImportCL(template.id);
         }

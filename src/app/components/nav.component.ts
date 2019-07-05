@@ -20,7 +20,7 @@ export class NavComponent implements OnInit{
   public empresas:boolean=false;
   public idioma:string=localStorage.getItem("idioma");
   public profile:boolean=false;
-  public life=1000;
+  public life=5000;
   public msgs;
   constructor(
     public router: Router,

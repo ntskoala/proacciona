@@ -43,6 +43,7 @@ selectedNode: TreeNode;
 selectedNodes: TreeNode[];
 selectedFile2: TreeNode;
 @Input() orden: ProduccionOrden;
+@Input() materiaPrima: ProveedorLoteProducto;
 @Input() modo: string;
 public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
@@ -85,7 +86,11 @@ es;
       if (this.modo == 'atras'){
     this.initTree(this.orden.id);
       }else{
+          if(this.materiaPrima){
+            this.initTreeMateriaPrima();
+          }else{
         this.initTreeAdelante();
+          }
       }
   }
 
@@ -172,12 +177,9 @@ getAlmacenes() {
                 }
             }
             }
-
         },
         error=>console.log(error),
         ()=>{//this.getOrdenes()
-           
-
             }
         );
   }
@@ -314,21 +316,24 @@ getParent(nodo: any,id:number, tipo:string,level:number){
 ////Quitar nodo "INICIO" substituir por cliente o TANQUE
 ///SOLO VAQUERIA. VER this.empresasService.seleccionada == 26
 nodoZero(){
+    console.log('NODO ZERO INIT');
     if (!this.nodozero){
-        
+        console.log('NODO ZERO EXISTS');
         this.nodozero = true;
         if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
+            console.log('NODO ZERO  VAQUERIA');
             let tanque;
             this.translate.get('trazabilidad.tanque').subscribe((valor)=>tanque = valor);
         
             this.tree[0].label=this.tree[0].children[0].label,
             this.tree[0].data={"tipo":"orden","idOrden":this.tree[0].children[0].data.idorden,"level":0,"almacen":this.tree[0].children[0].data.idalmacen,"cantidad":0,"cantidad_real_origen":0}
         }else{
-           
+            console.log('NODO ZERO NOT VAQUERIA');
            }
 
 
     if (this.tree[0].children.length>1){
+        console.log('NODO ZERO LENGTH',this.tree[0].children.length);
         console.log('##: ',this.tree[0].children.length);
         //this.tree[0].label = tanque + ' ' + this.findAlmacen(this.tree[0].children[0].data.almacen);
         this.tree[0].children.forEach(element => {
@@ -346,8 +351,10 @@ nodoZero(){
         console.log('$$$$: ',this.tree[0].data.cliente);
         console.log('@1: ',this.tree[0].label);
     if(this.tree[0].data.cliente > 0){
+        console.log('NODO ZERO CLIENTE');
     this.tree[0].label += ' ' + this.findCliente(this.tree[0].data.cliente);
     }else{
+        console.log('NODO ZERO ALMACEN');
     this.tree[0].label += ' ' + this.findAlmacen(this.tree[0].data.almacen);
     }
     console.log('@2: ',this.tree[0].label);
@@ -604,6 +611,29 @@ verNodo(modo){
 //****     TRAZA ALANTE */
 //****     TRAZA ALANTE */
 //****     TRAZA ALANTE */
+initTreeMateriaPrima(){
+    this.orden=new ProduccionOrden(null,null,this.materiaPrima.numlote_proveedor,this.materiaPrima.fecha_entrada,this.materiaPrima.fecha_entrada);
+    console.log("onChange",this.materiaPrima);
+    this.nodozero = false;
+     this.tree = [];
+     this.tree.push({"label": this.materiaPrima.numlote_proveedor,
+     //"data": "inicio",
+     "data":{"tipo":"Entrada M.P.","fecha_inicio_orden":this.materiaPrima.fecha_entrada,"level":0,"fecha_caducidad":this.materiaPrima.fecha_caducidad},
+     "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})     
+     this.tree[0].children=[];
+     this.nodoProveedor(this.materiaPrima.id,'idmateriaprima').then(
+         (idOrden)=>{
+         //   this.getChildren(this.tree[0],idOrden["idOrden"],'idloteinterno',1,this.tree[0].children[0]);
+         }
+     )
+    //  this.tree[0].children.push({"label": this.orden.numlote,
+    //   "data":{"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"level":0,"almacen":this.orden.idalmacen,"cantidad":this.orden.cantidad,"cliente":this.orden.idcliente,"fecha_caducidad":this.orden.fecha_caducidad},
+    //  "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+    //   this.getChildren(this.tree[0].children[0],this.orden.id,'idloteinterno',1,this.tree[0].children[0]);
+//    this.getChildren(this.tree[0],this.orden.id,'idloteinterno',1,this.tree[0].children[0]);
+  }
+
+
 initTreeAdelante(){
     //if (typeof(nodo)== 'ProduccionOrden')
     console.log("onChange",this.orden);
@@ -719,18 +749,28 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
 
 
 nodoProveedor(id:number, tipo:string){
+    return new Promise((resolve)=>{
     let parametros = '&idempresa=' + this.empresasService.seleccionada+"&"+tipo+"="+id;
     this.servidor.getObjects(URLS.TRAZA_ATRAS, parametros).subscribe(
         response => {
           if (response.success && response.data && response.data[0].numlote_proveedor.length > 1) {
               console.log("ORIGEN",response.data)
-            this.tree[0].label = response.data[0].proveedor
-            this.tree[0].data = {"tipo":"materia prima","idOrden":response.data[0].idorden,"fecha_inicio_orden":response.data[0].fecha_inicio,"idDetalleOrden":response.data[0].id,"numlote_proveedor":response.data[0].numlote_proveedor,"level":0,"almacen":response.data[0].idalmacen,"cantidad":response.data[0].cantidad,"proveedor":response.data[0].proveedor}
+              for (let element of response.data) {
+                this.tree[0].children.push({
+            "label" : response.data[0].proveedor,
+            "expanded":true,
+            "data" : {"tipo":"materia prima","idOrden":response.data[0].idorden,"fecha_inicio_orden":response.data[0].fecha_inicio,"idDetalleOrden":response.data[0].id,"numlote_proveedor":response.data[0].numlote_proveedor,"level":0,"almacen":response.data[0].idalmacen,"cantidad":response.data[0].cantidad,"proveedor":response.data[0].proveedor}
+                });
+                let x= this.tree[0].children.length-1;
+                this.getChildren(this.tree[0].children[x],response.data[0].idorden,'idloteinterno',2)
+                }
+                resolve({"idOrden":response.data[0].idorden});
           }else{
               if(this.tree[0].children.length ==1)
               this.tree[0] = this.tree[0].children[0];
           }
         });
+    });
 }
 
 nodoClientes(nodo: TreeNode,id:number, tipo:string){

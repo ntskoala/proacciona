@@ -11,6 +11,7 @@ import { cal } from '../../models/urls';
 })
 
 export class FilterDatesComponent implements OnInit {
+@Input() inputDates:any;
 @Output() onDates:EventEmitter<Object>= new EventEmitter<Object>();
 public es: any;
 public fechas:Object={fecha_inicio:new Date(),fecha_fin:new Date()};
@@ -22,6 +23,9 @@ public fechas:Object={fecha_inicio:new Date(),fecha_fin:new Date()};
     }
 
 ngOnChanges(){
+  if (this.inputDates){
+    this.fechas={fecha_inicio:new Date(this.inputDates["fecha_inicio"]),fecha_fin:new Date(this.inputDates["fecha_fin"])};
+  }
 }
 
 

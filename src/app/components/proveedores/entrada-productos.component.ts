@@ -1,15 +1,22 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import * as moment from 'moment/moment';
 import { TranslateService } from '@ngx-translate/core';
 import {MessageService} from 'primeng/components/common/messageservice';
 
-//import {SelectItem} from 'primeng/primeng';
+import {DataTable} from 'primeng/primeng';
 import { Servidor } from '../../services/servidor.service';
 import { URLS,cal,dropDownMedidas } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
+import { ProduccionOrden } from '../../models/produccionorden';
+import { ProduccionDetalle } from '../../models/producciondetalle';
+import { Usuario } from '../../models/usuario';
+import { Incidencia } from '../../models/incidencia';
 import { Modal } from '../../models/modal';
+import { Checklist } from 'app/models/checklist';
+import { ResultadoChecklist } from 'app/models/resultadochecklist';
 
 
 export class alerg{
@@ -22,12 +29,13 @@ export class alerg{
 @Component({
   selector: 'entrada-productos',
   templateUrl: './entrada-productos.component.html',
-  styleUrls:['proveedores.component.css']
+  styleUrls:['proveedores.component.css','entrada-productos.component.css']
 })
 
 export class EntradaProductosComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Input() cambioProductos: boolean;
+@ViewChild('#DT') tabla: DataTable;
 public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',null,'',null,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProveedorLoteProducto[];
@@ -54,24 +62,43 @@ public modal2: Modal;
 public entidad:string="&entidad=proveedores_entradas_producto";
 public field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
 public es;
+
+
+public trazabilidad:boolean=false;
+public modo:string='adelante';
+public nodoOrdenProd: ProveedorLoteProducto=null;
+
+
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
 public informeData:any;
 //***   EXPORT DATA */
-  constructor(public servidor: Servidor,public empresasService: EmpresasService
-    , public translate: TranslateService,private messageService: MessageService) {}
+
+//***   CHECKLIST */
+public hayTrigger:boolean;
+public checklistcontroles:any[]=[];
+public origenIncidencia:any;
+public sOrigen:string='';
+public incidencias:Incidencia[];
+public resultadosChecklists:ResultadoChecklist[];
+public usuarios:Usuario[];
+public opciones:any[]=[{'value':'todosOk','label':'todosOk'},{'value':'true','label':'correcto'},{'value':'false','label':'incorrecto'},{'value':'na','label':'no aplica'},{'value':'valor','label':'Valor'}];
+public CustomOpciones:String[]=['Selecciona'];
+  constructor(public servidor: Servidor,public empresasService: EmpresasService,
+  public router: Router,  public translate: TranslateService,private messageService: MessageService) {}
 
   ngOnInit() {
      // this.setItems();
-      
+     this.hayTriggerServiciosEntrada();
      this.es=cal;
         this.cols = [
           { field: 'idproducto', header: 'proveedores.producto', type: 'custom', width:160,orden:true,'required':true },
-          { field: 'numlote_proveedor', header: 'proveedores.numlotep', type: 'std', width:120,orden:true,'required':true },
+          { field: 'albaran', header: 'proveedores.albaran', type: 'std', width:120,orden:false,'required':false },
+          { field: 'numlote_proveedor', header: 'proveedores.numlotep', type: 'std', width:120,orden:false,'required':true },
           { field: 'fecha_entrada', header: 'proveedores.fecha_entrada', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'fecha_caducidad', header: 'proveedores.fecha_caducidad', type: 'fecha', width:120,orden:true,'required':true },
-          { field: 'cantidad_inicial', header: 'proveedores.cantidad', type: 'std', width:90,orden:true,'required':true },
+          { field: 'cantidad_inicial', header: 'proveedores.cantidad', type: 'std', width:90,orden:false,'required':true },
           { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':false },
           { field: 'cantidad_remanente', header: 'proveedores.remanente', type: 'std', width:90,orden:false,'required':false, 'disabled':true },
         ];
@@ -124,7 +151,7 @@ public informeData:any;
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
+                  this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id,element.albaran,element.idResultadoChecklist,element.idResultadoChecklistLocal));
              }
             }
         },
@@ -217,7 +244,6 @@ cambioInput(){
           this.setAlerta('alertas.saveOk');
         }
     });
-
   }
 
 
@@ -435,6 +461,402 @@ openNewRow(){
     }
 
 
+//*****CHECKLIST ENTRADAS*/
+hayTriggerServiciosEntrada(){
+  //let where= encodeURI("entidadOrigen=\'proveedores_entradas_producto\' AND entidadDestino=\'checklist\'");
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=triggers";
+      this.servidor.getObjects(URLS.STD_ITEM, parametros).subscribe(
+        response => {
+          console.log(response);
+          if (response.success == 'true' && response.data) {
+            console.log(response.data,response.data.length)
 
+            for (let element of response.data) {
+              if (element.entidadOrigen == 'proveedores_entradas_producto' && element.entidadDestino=='checklist'){
+                this.hayTrigger=true;
+                this.getUsers();
+                localStorage.setItem('triggerEntradasMP',element.idDestino);
+                this.getControlesChecklist(element.idDestino);
+              }
+              }
+          }
+      },
+  error =>{
+      console.debug(error);
+      console.log('hay Trigger servicios entrada' + error);
+      },
+      ()=>{});
+}
+
+getControlesChecklist(idChecklist){
+  let param = "&entidad=controlchecklist"+"&field=idchecklist&idItem="+idChecklist+"&order=orden";
+  this.servidor.getObjects(URLS.STD_SUBITEM,param).subscribe(
+    (response)=>{
+      this.checklistcontroles=[];
+      // let x=0;
+      if (response.success && response.data) { 
+        for (let item of response.data) { 
+          this.checklistcontroles.push({
+            "id": item.id,
+            "idchecklist": item.idchecklist,
+            "nombrechecklist": "",
+            "idcontrol":item.id,
+            "nombrecontrol":item.nombre,
+            "checked":"",
+            "valor":"",
+            "descripcion":"",
+            "foto": ""
+      });   
+      // this.incidencia[x]={'origen':'Checklists','origenasociado':'Checklists','idOrigenasociado':item.idchecklist,'idOrigen':item.id,'hayIncidencia':false,'incidencia':'Incidencia en ' +item.nombre+ ' de ' + this.nombrechecklist}
+      // x++;            
+       }
+}
+    })
+}
+
+getResultadosChecklist(event){
+let incidencia='Albaran:'+event.data.albaran + ' Lote:'+event.data.numlote_proveedor;
+this.origenIncidencia = {'origen':'Checklists','idOrigen':null,'origenasociado':'Checklists','idOrigenasociado':localStorage.getItem('triggerEntradasMP'),'incidencia':incidencia,'descripcion':''};
+  console.log('ROW EXPANDED',event);
+  if(event.data.idResultadoChecklist){
+  let idResultadoChecklist = event.data.idResultadoChecklist;
+  let idResultadoChecklistLocal = event.data.idResultadoChecklistLocal;
+    let descripcion='';
+
+  let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklistcontrol&field=idresultadochecklist&idItem='+idResultadoChecklist; 
+
+  this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+    response => {
+      if (response.success && response.data) {
+        console.log(response.data);
+        this.getIncidencia(idResultadoChecklist);
+        for (let element of response.data) {
+        let index = this.checklistcontroles.findIndex((control)=>control.idcontrol==element.idcontrolchecklist);
+        this.checklistcontroles[index]['checked']=element.resultado;
+        this.checklistcontroles[index]['descripcion']=element.descripcion;
+        this.checklistcontroles[index]['resultadoChecklistControl']=element.id;
+       if (element.resultado != 'true' &&  element.resultado != 'false'  &&  element.resultado != 'na') this.checklistcontroles[index]['valor']=element.resultado;
+       if(element.resultado=='false') descripcion=descripcion+' ' + 'checkList incorrecto';
+}
+this.origenIncidencia = {'origen':'Checklists','idOrigen':idResultadoChecklist,'origenasociado':'Checklists','idOrigenasociado':localStorage.getItem('triggerEntradasMP'),'incidencia':incidencia,'descripcion':descripcion};
+this.sOrigen=JSON.stringify(this.origenIncidencia);
+  }
+},
+error=>{console.log('Error getting checklist1',error)});
+  }
+  else{
+    if(event.data.idResultadoChecklistLocal){
+
+      let idResultadoChecklistLocal = event.data.idResultadoChecklistLocal;
+  let filtrarFechas="&filterdates=true&fecha_inicio="+ moment().subtract(30,"days").format("YYYY-MM-DD")+"&fecha_fin="+ moment().format("YYYY-MM-DD")+"&fecha_field=fecha"
+    let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklist&field=idlocal&idItem='+idResultadoChecklistLocal+"&WHERE=idchecklist="+localStorage.getItem('triggerEntradasMP')+filtrarFechas; 
+  
+    this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+      response => {
+        this.resultadosChecklists=[];
+        if (response.success && response.data) {
+          console.log(response.data);
+          for (let element of response.data) {
+            console.log('RESULTADOS CHECKLIST:',element);
+            this.resultadosChecklists.push(new ResultadoChecklist(
+              element.id,element.idcontrolchecklist,element.idchecklist,element.idusuario,element.resultado,element.descripcion,element.fecha,element.foto,element.fotocontrol,element.idrc
+            ))
+          }
+        }
+      });
+    }else{
+      this.nuevoCL(event.data);
+    // this.endResultadosChecklist('');
+    }
+  }
+}
+
+
+endResultadosChecklist(event){
+console.log('ROW COLLAPSED',event);
+this.checklistcontroles.forEach((control)=>{
+  control.checked='';
+  control.descripcion=''
+})
+}
+
+// vinculaResultadoChecklist(idEntrada,idResultadoChecklist){
+//   let updateEntrada={
+//     'idResultadoChecklist':idResultadoChecklist
+//     }
+//       let parametros = '?id=' + idEntrada+this.entidad;    
+//       this.servidor.putObject(URLS.STD_ITEM, parametros, updateEntrada).subscribe(
+//         response => {
+//           if (response.success) {
+//             console.log('ENTRADA UPDATED .saveOk');
+//             this.items[this.items.findIndex((entrada)=>entrada.id==idEntrada)].idResultadoChecklist=resultadoChecklist;
+//             this.items=this.items.slice(0);
+//           }
+//       });
+// }
+
+
+getIncidencia(idResultadoChecklist){
+  let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=incidencias&field=idOrigen&idItem='+idResultadoChecklist; 
+  this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+    response => {
+      if (response.success && response.data) {
+        this.incidencias=[];
+        console.log(response.data);
+        for (let element of response.data) {
+          this.incidencias.push(new Incidencia(element.id,element.idempresa,element.incidencia,element.responsable,new Date(element.fecha),element.responsable_cierre,new Date(element.fecha_cierre),element.solucion,element.nc,element.origen,element.idOrigen,element.origenasociado,element.idOrigenasociado,element.foto,element.descripcion,element.estado))
+}
+// this.incidenciaCL = {'origen':'Checklists','idOrigen':idResultadoChecklist,'origenasociado':'Checklists','idOrigenasociado':localStorage.getItem('triggerEntradasMP'),'incidencia':incidencia,'descripcion':descripcion};
+
+  }else{
+    this.incidencias=null;
+  }
+},
+error=>{console.log('Error getting incidencias del Checklist',error)});
+}
+
+gotoIncidencia(item:Incidencia){
+
+  console.log('goto Origen',item);
+  let origenAsociado = 'incidencias'
+  let id=item.id;
+  let url = 'empresas/'+ this.empresasService.seleccionada + '/'+ origenAsociado +'/'+item.idOrigenasociado+'/'+id
+  //let cleanUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+  this.router.navigate([url]);
+}
+  nuevoCL(item) {
+    console.log(item);
+    let param = "&entidad=resultadoschecklist"
+    let newChecklist={
+      'id':null,
+      'fecha':moment().format('YYYY-MM-DD HH:mm:ss'),
+      'foto':'false',
+      'idchecklist':localStorage.getItem('triggerEntradasMP'),
+      'idusuario':this.empresasService.userId
+    }
+    console.log(newChecklist);
+    this.servidor.postObject(URLS.STD_ITEM, newChecklist,param).subscribe(
+      response => {
+        if (response.success) {
+          this.setAlerta('alertas.saveOk');
+          this.newcontrolesChecklist(response.id,localStorage.getItem('triggerEntradasMP'));
+          this.updateLote(item.id,response.id);
+          if(this.origenIncidencia['descripcion']){
+            this.origenIncidencia['idOrigen']=response.id;
+            this.setIncidencia();
+          }
+        }
+    },
+    error =>console.log(error),
+    () =>this.setDates()   
+    );
+
+  //  this.nuevoItem =  new ProveedorLoteProducto('',new Date(),new Date(),null,'',null,'',null,0,0,0);
+  }
+newcontrolesChecklist(idResultadoChecklist,idChecklist){
+  let param="&entidad=resultadoschecklistcontrol";
+  this.checklistcontroles.forEach((control)=>{
+    if(control.checked=='valor') control.checked = control.valor;
+  let resultadoControl={
+    'id':null,
+    'idcontrolchecklist':control.id,
+    'idresultadochecklist':idResultadoChecklist,
+    'resultado':control.checked,
+    'descripcion':control.descripcion,
+    'fotocontrol':'false'
+  }
+  this.servidor.postObject(URLS.STD_ITEM, resultadoControl,param).subscribe(
+    response => {
+      if (response.success) {
+        control["resultadoChecklistControl"]=response.id;
+        console.log('OK')
+      }
+  },
+  error =>console.log(error)
+  );
+  });
+
+}
+
+emparejaLote(idItem: number,resultadoChecklist:number){
+  this.updateLote(idItem,resultadoChecklist);
+  let indice= this.items.findIndex((entrada)=>entrada.id==idItem);
+  let event= {'data':{'idResultadoChecklist':resultadoChecklist}};
+  if (indice>=0){
+    event['data']["albaran"] = this.items[indice].albaran;
+    event['data']["numlote_proveedor"] = this.items[indice].numlote_proveedor;
+  }
+  this.getResultadosChecklist(event);
+}
+updateLote(idItem: number,resultadoChecklist:number) {
+let uLote={
+'idResultadoChecklist':resultadoChecklist
+}
+  let parametros = '?id=' + idItem+this.entidad;    
+  this.servidor.putObject(URLS.STD_ITEM, parametros, uLote).subscribe(
+    response => {
+      if (response.success) {
+        console.log('Lote UPDATED .saveOk');
+        this.items[this.items.findIndex((lote)=>lote.id==idItem)].idResultadoChecklist=resultadoChecklist;
+        this.items=this.items.slice(0);
+      }
+  });
+}
+
+guardarCL(){
+  console.log(this.checklistcontroles);
+  let entidad="&entidad=resultadoschecklistcontrol";
+  this.checklistcontroles.forEach((control)=>{
+    console.log(control.resultadoChecklistControl);
+    if(control.checked=='valor') control.checked = control.valor;
+    let resultadoControl={
+      'resultado':control.checked,
+      'descripcion':control.descripcion
+    }
+    let parametros = '?id=' + control.resultadoChecklistControl+entidad;    
+    this.servidor.putObject(URLS.STD_ITEM, parametros, resultadoControl).subscribe(
+      response => {
+        if (response.success) {
+          this.setAlerta('alertas.saveOk');
+          if(this.origenIncidencia['descripcion']){
+            this.setIncidencia();
+          }
+        }
+    });
+  })
+}
+
+setOpciones(nombrecontrol){
+  console.log(nombrecontrol);
+  if (nombrecontrol.indexOf('//')>0){
+    this.CustomOpciones=nombrecontrol.split('//');
+    console.log(this.CustomOpciones);
+  }else{
+    this.opciones= [{'value':'todosOk','label':'todosOk'},{'value':'true','label':'correcto'},{'value':'false','label':'incorrecto'},{'value':'na','label':'no aplica'},{'value':'valor','label':'Valor'}]
+          }
+}
+changeSelected(event,item:ProveedorLoteProducto,control1){
+console.log(event)
+if(event.value=='todosOk'){
+  this.checklistcontroles.forEach((control)=>{
+    if(control.checked!='valor')
+    control.checked='true';
+  })
+}else{
+  if(control1.valor)control1.valor=event.value;
+}
+
+this.incidenciaChecklist(item);
+}
+
+changeValor(control){
+  if (control.valor === null || control.valor === null || control.valor === undefined){
+    console.log('VALOR VACÏO');
+
+  }
+}
+
+incidenciaChecklist(item:ProveedorLoteProducto,esBoton?:string ){
+  console.log('item',item);
+  let descripcion='';
+  this.checklistcontroles.forEach((control)=>{
+    if(control.checked=='false')
+    descripcion=descripcion+' ' + control.nombrecontrol+':incorrecto';
+  })
+    this.sOrigen='';
+    this.origenIncidencia['descripcion']=descripcion;
+    if (esBoton=='botonI') {
+      this.origenIncidencia['open']=true
+    }else{
+        this.origenIncidencia['open']=null
+      }
+    this.sOrigen=JSON.stringify(this.origenIncidencia);
+}
+
+
+setIncidencia(){
+  this.origenIncidencia['open']=true;
+  this.sOrigen=JSON.stringify(this.origenIncidencia);
+  // let param="&entidad=incidencias";
+  // let fecha = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes()))
+  // let fecha_cierre = null;//new Date(Date.UTC(this.newIncidencia.fecha_cierre.getFullYear(), this.newIncidencia.fecha_cierre.getMonth(), this.newIncidencia.fecha_cierre.getDate(), this.newIncidencia.fecha_cierre.getHours(), this.newIncidencia.fecha_cierre.getMinutes()))
+
+  // let incidencia:Incidencia=new Incidencia(null,this.empresasService.seleccionada,this.origenIncidencia['incidencia'],this.empresasService.userId,fecha,null,fecha_cierre,'',null,this.origenIncidencia['origen'],this.origenIncidencia['idOrigen'],this.origenIncidencia['origenasociado'],this.origenIncidencia['idOrigenasociado'],null,this.origenIncidencia['descripcion'],0);
+  // this.servidor.postObject(URLS.STD_ITEM, incidencia,param).subscribe(
+  //   response => {
+  //     if (response.success) {
+  //       console.log('OK INCIDENCIA');
+  //     }
+  // },
+  // error =>console.log(error)
+  // );
+}
+
+
+
+trazabilidadAdelante(item: ProveedorLoteProducto,i){
+  console.log(item,i)
+//  this.loadItems(item.id).then(
+//    (resultados)=>{
+//      console.log('RESULTADOS',resultados);
+//      if(resultados){
+        this.nodoOrdenProd=item;
+        this.modo = 'adelante';
+        this.trazabilidad= !this.trazabilidad;
+//      }
+//    }
+//  )
+
+// this.trazabilidadAd= !this.trazabilidadAd;
+}
+
+// loadItems(idMateriaPria) {
+//   return new Promise((resolve)=>{
+//    let parametros ="";
+
+//     //  parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_orden&order=id DESC&WHERE=estado=&valor="+estat+"";
+//     parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=produccion_detalle&field=idmateriaprima&idItem="+idMateriaPria+"&order=id DESC";
+
+  
+//     let ordenes:ProduccionOrden[]=[]
+//       this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+//         response => {
+//           // Vaciar la lista actual
+//           if (response.success == 'true' && response.data) {
+//             for (let element of response.data) {
+//               ordenes.push(new ProduccionOrden(element.idorden,this.empresasService.seleccionada,'',new Date(),new Date(),new Date()));
+//             }
+//             resolve(ordenes);
+//            console.log(ordenes);
+//           }
+//       },
+//       (error) =>{
+//         console.log(error);
+//         resolve(false);
+//       },
+//       ()=>{
+//       }
+//       );
+//     });
+//  }
+
+
+getUsers(){
+let parametros = '&idempresa=' + this.empresasService.seleccionada;
+// llamada al servidor para conseguir los usuarios
+this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
+  response => {
+    this.usuarios = [];
+    if (response.success && response.data) {
+      for (let element of response.data) {
+        this.usuarios.push(new Usuario(element.id, element.usuario, '*',element.tipouser, '*', element.idempresa));
+      }
+    }
+});
+}
+getUser(idUser){
+  return this.usuarios[this.usuarios.findIndex((user)=>user.id==idUser)].usuario;
+}
 
 }

@@ -7,8 +7,9 @@
     border: lightgrey solid 1px;
   }
   .mensajes{
-    min-width: 550px;
-    margin-top: 30px;
+    min-width: 400px;
+    max-width: 430px;
+    margin-top: 25px;
     height: 60px;
     background: rgba(103, 57, 182, 0.02) !important;
     float: right;
@@ -23,13 +24,13 @@
 
 .loteSelected{
     color: #000;
-    font-size: larger;
+    font-size: small;
     border-bottom: green solid 2px;
 }
 
 .loteNotSelected{
     color: #000;
-    font-size: larger;
+    font-size: small;
     border-bottom: red solid 2px;
 }
 
@@ -38,3 +39,7 @@
     display:inline-block;
     border-right: 1px #fff solid;
     }
+
+.toolbarF{
+    margin-left:30px;
+}

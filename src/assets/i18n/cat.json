@@ -299,6 +299,7 @@
     "proveedores":"Proveïdors",
     "proveedor":"Proveïdor",
     "lote":"Lot proveïdor",
+    "albaran":"Albarà.",
     "ficha":"Fitxa",
     "areaproveedores": "Àrea de proveïdors",
     "nombre":"Nom",
@@ -327,7 +328,11 @@
     "alert_contacto":"Nom contacte alertes",
     "alert_telf":"Telèfon alertes",
     "alert_email":"Email alertes",
-    "alergenos":"Taula d'al·lergògens de M.P."
+    "alergenos":"Taula d'al·lergògens de M.P.",
+    "ChecklistsParaEmparejar":"o tria un checklists realitzat disponible",
+    "seleccionarChecklistMP":"Tria aquest checklist",
+    "crearNuevoChecklist":"Crea un checklist nou",
+    "realizadoPor":"Realitzat per"
   },
   "produccion":{
     "crear":"Nou lot de producció",
@@ -377,7 +382,9 @@
     "alert_tanque_destino":"No ha seleccionat un Tanc de destí",
     "alert6":"",
     "borrarOrdenT":"Eliminar l'ordre de producció",
-    "borrarOrdenST":"S'eliminarà l'ordre de producció, * no es retorna l'estoc de les matèries primeres afegides, es recomana fer una revisió i reajustament manual tant de les matèries primeres afegides com dels productes lliurats a clients"
+    "borrarOrdenST":"S'eliminarà l'ordre de producció, * no es retorna l'estoc de les matèries primeres afegides, es recomana fer una revisió i reajustament manual tant de les matèries primeres afegides com dels productes lliurats a clients",
+    "borrarMateriaPrimaT":"Eliminar matèria prima del lot",
+    "borrarMateriaPrimaST":"S'eliminarà aquesta entrada de matèria primera del lot, es retorna l'estock a la entrada de matèries primeres de proveïdors, es recalculen els Al·lergògens del lot de producció"
   },
   "clientes":{
     "cliente":"Client",
@@ -508,7 +515,12 @@
       "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició",
       "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió",
       "entregaNotOk":"La quantitat o la data de caducitat son erroneas",
-      "alertCambioEmpresa":"Aquesta acció ha cambiat l'empresa seleccionada"  
+      "alertCambioEmpresa":"Aquesta acció ha cambiat l'empresa seleccionada",
+      "alergenosResetProductos":"Al·lergògens reiniciats al producte seleccionat",
+      "alergenosAñadidos":"Al·lergògens afegits",
+      "borrarIngrediente":"S'ha esborrat una matèria prima, el llistat d'al·lergògens del lot podría haber cambiat, es necessari comprobarla",
+      "remanenteRetornado":"Remanent retornat",
+      "errorRetornandoRemanente":"Error al retornar el remanent, es necessari comprobar manualment el lot"
     },
     "incidencia":
     {
@@ -604,6 +616,10 @@
     },
     "recetas":{
       "recetas":"Ingredients Receptes",
+      "generarReceta":"Generar recepta",
+      "ingrediente":"Ingredient",
+      "Ingredientes":"Ingredients",
+      "IntroducirCantidad":"Introduïu quantitat",
       "proveedores":"Proveïdors",
       "MateriasPrimas":"Ingredient",
       "Cantidad":"Quantitat",
@@ -613,14 +629,20 @@
       "coge":"agafa",
       "cogeTodo":"agafa tot",
       "noCojas":"no agafis res",
-      "de":"dels",
-      "restantes":"restants",
+      "de1":"dels",
+      "de2":"de les",
+      "restantes":"en stock",
       "seleccionIngredientes":"Seleccionar ingredients",
-      "anadir":"Afegir al lot",
-      "preparado":"Lots d'ingredients ok",
-      "cocinado":"Els ingredients s'han afegit al lot",
+      "calcular":"Calcula producció",
+      "anadir":"Afegiu al lot",
+      "preparado":"Lots d'ingredients calculats",
+      "elaborado":"Els ingredients s'han afegit al lot",
+      "errorElaborando":"No s'ha pogut processar",
       "borrarProductoT":"Elimina l'ingredient de la recepta",
-      "borrarProductoST":"S'eliminará l'ingredient de la recepta"
+      "borrarProductoST":"S'eliminará l'ingredient de la recepta",
+      "insuficiente1":"No hi ha suficient/s ",
+      "insuficiente2":" per preparar la recepta, total disponible: ",
+      "insuficiente3":" en necessites: "
     },
   "alergenos":"Al·lergògens",
   "alergenosProductos":"Al·lergògens productes",
@@ -673,5 +695,6 @@
   "procesando":"Processant...",
   "abierto":"obert",
   "cerrado":"tancat",
-  "entregado":"entregat"
+  "entregado":"entregat",
+  "unidades":"unitats"
 }	

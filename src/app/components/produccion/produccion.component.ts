@@ -14,6 +14,7 @@ export class ProduccionComponent implements OnInit {
   @ViewChild('sidenavCalendar') snCalendar: any;
 
 public orden: ProduccionOrden;
+public trigger:number;
 public calendario: boolean = false;
 public ordenes: ProduccionOrden[];
 public traspaso: boolean;
@@ -115,6 +116,10 @@ cerrarSideNav(){
     this.subMenu = null;
 }
 
-
+updateOrden(event){
+  console.log('updateOrden',event)
+  this.orden=event;
+  this.trigger= Math.random() *10;
+}
 
 }

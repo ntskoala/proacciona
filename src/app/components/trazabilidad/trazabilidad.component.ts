@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef,HostListener } from '@angular/core';
 
 import {Tree,TreeNode } from 'primeng/primeng';
 import { TranslateService } from '@ngx-translate/core';
 import { Servidor } from '../../services/servidor.service';
 import { URLS } from '../../models/urls';
 import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
 import { ProveedorLoteProducto } from '../../models/proveedorlote';
 import { Proveedor } from '../../models/proveedor';
 import { ProduccionOrden } from '../../models/produccionorden';
@@ -29,12 +30,13 @@ export class alerg{
 })
 
 export class TrazabilidadComponent implements OnInit, OnChanges{
-@ViewChild('expandingTree')
+// @ViewChild('expandingTree')
 @ViewChild('toPDF') el: ElementRef;
 @ViewChild('toPDF2') el2: ElementRef;
 @ViewChild('toPDFTitle') elTitle: ElementRef;
+// @HostListener("window:scroll", ['$event'])
 
-expandingTree: Tree;
+// expandingTree: Tree;
 tree: TreeNode[];
 tree2:TreeNode[];
 msgs: any[]=[];
@@ -72,9 +74,15 @@ field:string="&field=idorden&idItem=";//campo de relación con tabla padre
 es;
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService, 
-    public translate: TranslateService) {}
+    public translate: TranslateService, public permisos:PermisosService) {}
+    
+    // doSomethingOnWindowsScroll($event:Event){
+    //     let scrollOffset = $event.srcElement.children[0].scrollTop;
+    //     console.log("window scroll1: ", scrollOffset);
+    //   }
 
   ngOnInit() {
+      console.log(this.permisos.traspasos)
       this.getAlmacenes();
       this.getClientes();
      // this.getProveedores();
@@ -386,7 +394,8 @@ return nivel;
         this.msgs.splice(index,1);
     }
     nodeSelect(event) {
-        console.log(event.node)
+       // console.log('NODO',event.node);
+
     if (this.modo == 'atras'){
         this.nodeSelectAtras(event);
     }else{
@@ -612,20 +621,31 @@ verNodo(modo){
 //****     TRAZA ALANTE */
 //****     TRAZA ALANTE */
 initTreeMateriaPrima(){
+
     this.orden=new ProduccionOrden(null,null,this.materiaPrima.numlote_proveedor,this.materiaPrima.fecha_entrada,this.materiaPrima.fecha_entrada);
     console.log("onChange",this.materiaPrima);
     this.nodozero = false;
      this.tree = [];
      this.tree.push({"label": this.materiaPrima.numlote_proveedor,
      //"data": "inicio",
-     "data":{"tipo":"Entrada M.P.","fecha_inicio_orden":this.materiaPrima.fecha_entrada,"level":0,"fecha_caducidad":this.materiaPrima.fecha_caducidad},
+     "data":{"tipo":"Entrada M.P.","fecha_inicio_orden":this.materiaPrima.fecha_entrada,"level":0,"fecha_caducidad":this.materiaPrima.fecha_caducidad,"cantidad_inicial":this.materiaPrima.cantidad_inicial,"cantidad_remanente":this.materiaPrima.cantidad_remanente,"tipo_medida":this.materiaPrima.tipo_medida},
      "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})     
      this.tree[0].children=[];
-     this.nodoProveedor(this.materiaPrima.id,'idmateriaprima').then(
-         (idOrden)=>{
-         //   this.getChildren(this.tree[0],idOrden["idOrden"],'idloteinterno',1,this.tree[0].children[0]);
-         }
-     )
+
+    this.getMPHomologada(this.materiaPrima.idproducto,this.materiaPrima.idproveedor).then(
+        (nombreMP)=>{
+            this.tree[0]["data"]["nombreMP"]=nombreMP["nombre"]; 
+        }
+    )
+    //  this.nodoProveedor(this.materiaPrima.id,'idmateriaprima').then(
+    //      (idOrden)=>{
+    //          console.log(idOrden)
+    //      //   this.getChildren(this.tree[0],idOrden["idOrden"],'idmateriaprima',1,this.tree[0].children[0]);
+    //      }
+    //      )
+
+         this.getChildren(this.tree[0],this.materiaPrima.id,'idmateriaprima',1,this.tree[0].children[0]);
+
     //  this.tree[0].children.push({"label": this.orden.numlote,
     //   "data":{"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"level":0,"almacen":this.orden.idalmacen,"cantidad":this.orden.cantidad,"cliente":this.orden.idcliente,"fecha_caducidad":this.orden.fecha_caducidad},
     //  "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
@@ -651,7 +671,8 @@ initTreeAdelante(){
   }
 
 nodeSelectAlante(event) {
-    console.log(event,event.node)
+    console.log('NODO',event.node);
+
 
     let almacen = this.findAlmacen(event.node.data.almacen);
     let nivel = this.findNivelAlmacen(event.node.data.almacen);
@@ -660,7 +681,7 @@ nodeSelectAlante(event) {
     if (n_cliente) nivel='2';
     this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,cantidad_remanente_origen:event.node.data.cantidad_remanente_origen});
     this.message="";
-
+    console.log('cards',this.msgs);
 }
 
 getOrden(idOrden){
@@ -704,7 +725,7 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
                       nodo.children.push({
                       "label":element.numlote,
                       "expanded":true,
-                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad_detalle,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_real_origen":element.cantidad_real_origen}
+                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad_detalle,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"nombreProduccion":element.nombreProduccion}
                         });
                        nodo.parent = parent;
                         this.getChildren(nodo.children[i],element.idorden,'idloteinterno',level,nodo);
@@ -771,6 +792,24 @@ nodoProveedor(id:number, tipo:string){
           }
         });
     });
+}
+
+getMPHomologada(idproducto,idproveedor){
+    return new Promise((resolve)=>{
+        let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos&field=id&idItem="+idproducto+"&where=idproveedor="+idproveedor;
+        this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
+        response => {
+          if (response.success && response.data) {
+            let nombre='';
+            for (let element of response.data) {
+                nombre=element.nombre;
+       }
+            resolve({'nombre':nombre})            
+          }else{
+            resolve(false)
+          }
+        });
+});
 }
 
 nodoClientes(nodo: TreeNode,id:number, tipo:string){

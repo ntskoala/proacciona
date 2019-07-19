@@ -186,7 +186,7 @@
                             <!-- ********* EDIT DATA   ***-->
                             <ng-template pTemplate="input">
                               <span *ngIf="col.type == 'std'">
-                                <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
+                                <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'" (keydown)="itemEdited(item.id)">
                               </span>
                               <span *ngIf="col.type == 'fecha'">
                                 <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"

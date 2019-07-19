@@ -33,6 +33,7 @@ export class ControlesComponent implements OnInit {
   public cols:any[];
   public newRow:boolean=false;
   public viewPeriodicidad: any=null;
+  public numNuevosItems:number=1;
   //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -96,41 +97,67 @@ public informeData:any;
                 ));
                 this.guardar[element.id] = false;
               }
+              this.procesando=false;
             }
         });
    }
+   nuevosItemsChange(event){
+    console.log(this.numNuevosItems,this.controles);
+
+   }
+
+
 
   crearControl(nuevoControl: Control) {
+    this.procesando=true;
     nuevoControl.idempresa = this.empresasService.seleccionada;
     (nuevoControl.fecha_)? nuevoControl.fecha_ = new Date(Date.UTC(this.nuevoControl.fecha_.getFullYear(), this.nuevoControl.fecha_.getMonth(), this.nuevoControl.fecha_.getDate())):nuevoControl.fecha_=null;
     nuevoControl.periodicidad2 = this.nuevoControl.periodicidad2;
-    nuevoControl.orden = this.newOrden();
-    this.servidor.postObject(URLS.CONTROLES, nuevoControl).subscribe(
+    //nuevoControl.orden = this.newOrden();
+    let orden = this.controles.length | 0;
+    for (let x=1;x<=this.numNuevosItems;x++){
+      let crearControl=nuevoControl;
+      crearControl.orden= orden + x;
+    this.servidor.postObject(URLS.CONTROLES, crearControl).subscribe(
       response => {
         if (response.success) {
-          nuevoControl.id = response.id;
-          this.controles.push(nuevoControl);
-          this.controles=this.controles.slice();
-    this.nuevoControl = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null)
-    this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
+          crearControl.id = response.id;
+          console.log('NEWCONTROL',x,crearControl);
+          this.controles.push(crearControl);
+          
+          this.nuevoControl = new Control(0,null,null,null,null,null,null,null,null,null,this.empresasService.seleccionada,null,null)
+          this.setAlerta('alertas.saveOk','success','alertas.tituloAlertaInfo');
     
-  }else{
-    this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+      }else{
+          this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+      }
+      },
+      (error)=>{
+            this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
+      });
+    }
+    setTimeout(()=>{
+      if (this.numNuevosItems>1){
+        this.numNuevosItems=1;
+        this.setEmpresa(this.empresasService.empresaActiva.toString());
+      }else{
+      this.controles=this.controles.slice();
+      this.procesando=false;
+      }
+    },800);
   }
-},
-(error)=>{
-this.setAlerta('alertas.saveNotOk','error','alertas.tituloAlertaInfo');
-});
-  }
-  newOrden():number{
-    let orden;
-    if ( this.controles.length && this.controles[this.controles.length-1].orden >0){
-      orden = this.controles[this.controles.length-1].orden+1;
-     }else{
-      orden = 0;
-     }
-     return orden;
-  }
+
+
+
+  // newOrden():number{
+  //   let orden;
+  //   if ( this.controles.length && this.controles[this.controles.length-1].orden >0){
+  //     orden = this.controles[this.controles.length-1].orden+1;
+  //    }else{
+  //     orden = 0;
+  //    }
+  //    return orden;
+  // }
   checkBorrar(idBorrar: number) {
     // Guardar el id del control a borrar
     this.idBorrar = idBorrar;

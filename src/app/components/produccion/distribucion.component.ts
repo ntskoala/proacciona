@@ -77,12 +77,15 @@ public informeData:any;
           { field: 'tipo_medida', header: 'produccion.tipo medida', type: 'dropdown', width:120,orden:false,'required':true, 'disabled':false }
         ];
   }
+  
   ngOnChanges(){
     console.log("onChange");
       this.setItems();
       this.nuevoItem.numlote = this.orden.numlote;
       this.nuevoItem.tipo_medida = this.orden.tipo_medida;
+      if (this.orden.fecha_caducidad){
       if (this.orden.fecha_caducidad.toString() != 'Invalid Date') this.nuevoItem.fecha_caducidad = this.orden.fecha_caducidad;
+      }
   }
 
 

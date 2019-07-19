@@ -301,9 +301,6 @@ rowExpandMode="single"
             <span class="material-icons">rotate_right</span>
           </button>
         </span>
-      
-      
-
       </td>
     </tr>
   </ng-template>
@@ -311,20 +308,19 @@ rowExpandMode="single"
   <ng-template pTemplate="summary" let-item>
   </ng-template>
 </div>
-
   <!-- ********* EXPANSION-->
   <ng-template pTemplate="rowexpansion" let-item let-columns="columns" let-rowIndex="rowIndex">
     <tr [ngClass]="{'expandSelected':expanded}">
       <td [attr.colspan]="columns.length + 2">
         <mat-card *ngIf="item.idResultadoChecklist">
-      <mat-list>
+      <mat-list class="listCheckItems">
         <mat-list-item *ngFor="let control of checklistcontroles; let i = index">
           <!-- <span matTooltip="crea una incidencia!">
             <app-boton-incidencia   [origen]="incidencia[i]" [tipoOrigen]="'Checklist'" (nuevaIncidenciaCreada)="nuevaIncidencia($event,i)"></app-boton-incidencia>
           </span> -->
             <span matTooltip="click to delete!"><mat-icon *ngIf="control.foto" name="camera-alt" item-left (click)="control.foto=''">camera_alt</mat-icon></span>
             <span matTooltip="click to delete!"><mat-icon *ngIf="control.descripcion"  name="clipboard" item-left (click)="control.descripcion=''">assignment</mat-icon></span>
-            <label class="label-item" (click)="setOpciones(control.nombrecontrol)">{{control.nombrecontrol}}</label>
+            <label class="label-item" (click)="setOpciones(control.nombrecontrol)">{{control.nombrecontrol.replace(checkDobleSl,"/")}}</label>
             <!-- <div class="listitem">  -->
             <!-- <div class="div-image">
             <my-images class="my-images-list" [index]="i" [currentControl]="control" (image)="takeFoto($event,control)"  ></my-images>
@@ -335,10 +331,10 @@ rowExpandMode="single"
             </mat-form-field> -->
             <!-- </mat-form-field> -->
            <mat-select class="selectCheck" placeholder=""  name="checked{{i}}"  [(ngModel)]="control.checked" (openedChange)="setOpciones(control.nombrecontrol)" (selectionChange)="changeSelected($event,item,control)">
-              <span *ngIf="control.nombrecontrol.indexOf('/')<0">
+              <span *ngIf="control.nombrecontrol.indexOf('//')<0">
                 <mat-option   [value]="opcion.value" *ngFor="let opcion of opciones">{{opcion.label | translate}}</mat-option>
               </span>
-              <span *ngIf="control.nombrecontrol.indexOf('/')>0">
+              <span *ngIf="control.nombrecontrol.indexOf('//')>0">
                 <mat-option [value]="control.checked" >{{control.checked}}</mat-option>
                 <mat-option [value]="opt" *ngFor="let opt of CustomOpciones">{{opt | translate}}</mat-option>
               </span>
@@ -351,6 +347,7 @@ rowExpandMode="single"
             </mat-select>
 
             <mat-form-field *ngIf="control.checked !== 'true' && control.checked !== 'false'  && control.checked !== 'na'">   
+            <!-- <mat-form-field *ngIf="control.checked == 'valor'">    -->
               <input matInput required class="valor"  name="valor{{i}}"  color="accent" [(ngModel)]="control.valor" (change)="changeValor(control)">
             </mat-form-field>
             <!-- </div> -->
@@ -371,15 +368,24 @@ rowExpandMode="single"
             <!-- <mat-select style="width:30%" class="selectCheck"  (selectionChange)="changeIncidencia($event)" *ngIf="incidencias">
                 <mat-option  value="{{incidencia.id}}" *ngFor="let incidencia of incidencias">{{incidencia.incidencia}} - {{incidencia.estado}} </mat-option>
               </mat-select> -->
-            <app-boton-incidencia [sOrigen]="sOrigen"></app-boton-incidencia>
+            <app-boton-incidencia [sOrigen]="sOrigen" (nuevaIncidenciaCreada)="incidenciaCreada($event)"></app-boton-incidencia>
+
+            <!-- <FOTO>    -->
+              <div class="marcoFotoChecklist">
+                <img class="fotoChecklist" [src]="fotoCheck" (error)="fotoCheck='./assets/images/noimage.png'" />
+              </div>
+            <!-- <FOTO>    -->
             </mat-card>
-            <mat-card *ngIf="item.idResultadoChecklistLocal && !item.idResultadoChecklist">
+            <!-- <mat-card *ngIf="item.idResultadoChecklistLocal && !item.idResultadoChecklist"> -->
+            <mat-card *ngIf="!item.idResultadoChecklist">
+
             <button mat-stroked-button  color="primary" (click)="nuevoCL(item)">{{"proveedores.crearNuevoChecklist" | translate}}</button>
             {{"proveedores.ChecklistsParaEmparejar" | translate}} 
                 <mat-list>
-                    <mat-list-item *ngFor="let ResChecklist of resultadosChecklists; let i = index">
-                    {{'proveedores.realizadoPor' | translate}} {{getUser(ResChecklist.usuario)}} {{ResChecklist.fecha | date:"dd-MM-yyyy hh:mm"}} 
-            <button mat-button  color="primary" (click)="emparejaLote(item.id,ResChecklist.idr)">{{"proveedores.seleccionarChecklistMP" | translate}}</button>
+                    <mat-list-item *ngFor="let ResChecklist of resultadosChecklists; let i = index" style="width:600px">
+                    {{'proveedores.realizadoPor' | translate}} {{getUser(ResChecklist.usuario)}} 
+                    {{ResChecklist.fecha | date:"dd-MM-yyyy hh:mm"}} 
+            <button mat-button class="botonEmpareja"  color="primary" (click)="emparejaLote(item.id,ResChecklist.idr)">{{"proveedores.seleccionarChecklistMP" | translate}}</button>
                       </mat-list-item>
                 </mat-list>
               </mat-card>
@@ -399,7 +405,7 @@ rowExpandMode="single"
 
 
 
-<div class="traza" *ngIf="trazabilidad">
+<div class="traza" [style.top]="alturaTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
   <trazabilidad [materiaPrima]="nodoOrdenProd" [modo]="modo" *ngIf="trazabilidad"></trazabilidad>
       <div class="close-button">
           <button  mat-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">

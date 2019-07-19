@@ -153,8 +153,8 @@ loadUsuarios(){
             // this.newIncidencia = new Incidencia(null,this.empresasService.seleccionada,null,new Date,null,null,0);
             // this.incidencias = this.incidencias.slice();
             this.nuevaIncidencia = false;
-            let urlNovaIncidencia = '/empresas/2/incidencias/0/'+id;
-            this.router.navigateByUrl(urlNovaIncidencia)
+            // let urlNovaIncidencia = '/empresas/2/incidencias/0/'+id;
+            // this.router.navigateByUrl(urlNovaIncidencia)
 
           }
       );
@@ -182,17 +182,15 @@ loadUsuarios(){
 
 
 setIncidencia(){
+  this.nuevaIncidencia = !this.nuevaIncidencia;
+  console.log(this.nuevaIncidencia)
   if (this.newIncidencia.id >0){
-    let url = 'empresas/' + this.empresasService.seleccionada + '/incidencias/'+0+'/'+this.newIncidencia.id;
-    this.router.navigate([url]);
-    // this.router.navigateByUrl(url).then(
-    //   (ok)=>{console.log('ok',ok)}
-    // ).catch(
-    //   (error)=>{console.log('ERROR:',error)}
-    // )
+    // let url = 'empresas/' + this.empresasService.seleccionada + '/incidencias/'+0+'/'+this.newIncidencia.id;
+    // this.router.navigate([url]);
+    
   }else{
-this.nuevaIncidencia = !this.nuevaIncidencia;
-console.log(this.nuevaIncidencia)
+
+
   }
 }
 

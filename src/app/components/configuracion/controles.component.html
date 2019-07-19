@@ -157,7 +157,13 @@
       <form *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente' || empresasService.userTipo == 'Mantenimiento'"
         class="formNewRegister" #creaForm="ngForm" (ngSubmit)="crearControl(creaForm.value)">
         <td style="width: 3em"></td>
-        <td  style="width:50px"></td>
+<!--************ ORDEN/NUM REGS A CREAR ***************************-->
+        <td  style="width:50px">
+            <span class="tooltip" style="display:table-row-group " matTooltip="{{'configuracion.numControles' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'above'">                         
+            <p-spinner size="5" [(ngModel)]="numNuevosItems" [min]="1" [max]="9"  (onChange)="nuevosItemsChange($event)" [ngModelOptions]="{standalone: true}"></p-spinner> 
+            </span>
+        </td>
+<!--************ FIN ORDEN ***************************-->
         <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [style.width]="col.width+'px'">
           <span *ngIf="col.type == 'std'">
             <input pInputText type="text" [required]="col.required" [(ngModel)]="nuevoControl[col.field]" style="margin-left:4px"

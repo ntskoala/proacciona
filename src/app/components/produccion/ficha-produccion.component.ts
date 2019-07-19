@@ -48,6 +48,7 @@ public receta:ProductoPropio=null;
 public alergenos:string[]=[];
 public parentAlergenos:string='alergenos';
 public trigger:number=0;
+public alturaTraza:string='0px';
   constructor(
     public empresasService: EmpresasService, 
     public servidor: Servidor,
@@ -351,5 +352,16 @@ console.log(evento);
 this.orden.cantidad=evento;
 this.orden.remanente=evento;
 this.updateItem(this.orden);
+}
+
+// expandingTree(event?){
+// console.log('expandTree',event)
+// }
+
+doSomethingOnWindowScroll(evento:any){
+console.log("window scroll2 ",evento);
+ let scrollOffset = evento.srcElement.children[0].scrollTop;
+         console.log("window scroll1: ", scrollOffset);
+         this.alturaTraza = '-'+scrollOffset+'px';
 }
 }

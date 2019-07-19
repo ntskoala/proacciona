@@ -8,6 +8,7 @@ export class Checklist {
     public migrado?: number,
     public periodicidad2?:string,
     public fecha_?:Date,
-    public orden?: number
+    public orden?: number,
+    public enlace?:string
   ) {}
 }

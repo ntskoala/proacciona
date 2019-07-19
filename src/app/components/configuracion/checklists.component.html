@@ -5,6 +5,8 @@
   <mat-spinner></mat-spinner>
   </div>
 
+<app-templates *ngIf="template" [template]="'checklist'" (onCerrar)="template=false" (onTemplateSelected)="newTemplateSelected($event)"></app-templates>
+
 
 
 <!-- ********** CHECKLISTS    -->
@@ -128,15 +130,15 @@
 
 
 
-<app-templates *ngIf="template" [template]="'checklist'" (onCerrar)="template=false" (onTemplateSelected)="newTemplateSelected($event)"></app-templates>
 
 <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, cl.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="cl.fecha_" [origen]="tipo" name="periodicidad"></periodicidadNew>
 <!-- ********* INICIO TABLA REGISTROS-->
 <p-table #DT [columns]="cols" [value]="checklists" dataKey="id" (onEditInit)="onEditCL($event)"
   [responsive]="true" sortField="orden" [sortOrder]="1"  [rows]="25"
   [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[10,25,50,100]"
-  [style]="{'width':'620px','padding':'0px 25px 0px 25px','text-align':'left'}"
+  [style]="{'width':'730px','padding':'0px 25px 0px 25px','text-align':'left'}"
   [(selection)]="selectedChecklist"  selectionMode="single" dataKey="nombrechecklist">
+  <!-- (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"--> 
   <ng-template pTemplate="caption">
     <div style="text-align:left;margin-left:10px">
       <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="openNewRow()" label="{{'add' | translate}}"></button>
@@ -180,7 +182,7 @@
             <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="cl[col.field]"
               [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
           </span>
-            <span *ngIf="col.type == 'dropdown'">
+            <span *ngIf="col.type == 'dropdown' && col.field == 'enlace' && empresasService.userTipo == 'administrador'">
               <p-dropdown [options]="getOptions([col.field])" [(ngModel)]="cl[col.field]" appendTo="body" [style]="{'width':'110px'}"
                 (onChange)="itemEdited(item.id)" [name]="col.field"></p-dropdown>
             </span>
@@ -240,7 +242,7 @@
     </td>   
   <!--************ FIN ORDEN ***************************-->
       <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}" [pEditableColumn]="item" [pEditableColumnField]="col">
-          <span *ngIf="col.type == 'dropdown'">
+        <span *ngIf="col.type == 'dropdown' && col.field == 'enlace' && empresasService.userTipo == 'administrador'">
               <p-dropdown  [options]="getOptions([col.field])" [(ngModel)]="item[col.field]" appendTo="body" [style]="{'width':'110px'}"
                 (onChange)="modificarCL(item.id)"></p-dropdown>
             </span>
@@ -261,6 +263,9 @@
             </span>
               <span *ngIf="col.type == 'fecha'">
                   {{item[col.field] | date:"dd-MM-yyyy"}}
+            </span>
+            <span *ngIf="col.type == 'dropdown' && col.field == 'enlace' && !empresasService.userTipo == 'administrador'">
+              {{item[col.field]}}
             </span>
           </ng-template>
           <!-- ********* EDIT DATA   ***-->
@@ -515,7 +520,7 @@
        <!-- <div class="up" (click)="goUp(i,$event,dt)"><mat-icon>arrow_drop_up</mat-icon></div>
       <div class="down" (click)="goDown(i,$event,dt)"><mat-icon>arrow_drop_down</mat-icon></div>  -->
       <div class="orden" >
-          <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="checklists.length"  (onChange)="modificarCCL(item.id)"></p-spinner> 
+          <p-spinner size="5" [(ngModel)]="item.orden" [min]="1" [max]="controlchecklists.length"  (onChange)="modificarCCL(item.id)"></p-spinner> 
       </div>  
     </td>   
   <!--************ FIN ORDEN ***************************-->

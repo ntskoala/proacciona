@@ -50,6 +50,7 @@ export class ChecklistsComponent implements OnInit{
   public newRow2:boolean=false;
   public viewPeriodicidad: any=null;
   public template:boolean=false;
+  public enlaces:any[]=[{'value':null,'label':'ninguno'},{'value':'proveedor_entradas_producto','label':'Entradas M.P.'}];
   //***   EXPORT DATA */
 public exportar_informes: boolean =false;
 public exportando:boolean=false;
@@ -66,7 +67,9 @@ public informeData:any;
   this.cols = [
     { field: 'nombrechecklist', header: 'Nombre', type: 'std', width:150,orden:false,'required':true },
     { field: 'fecha_', header: 'fecha', type: 'fecha', width:120,orden:false,'required':true },
-    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':true }
+    { field: 'periodicidad2', header: 'periodicidad', type: 'periodicidad', width:90,orden:false,'required':true },
+    { field: 'enlace', header: 'Enlace', type: 'dropdown', width:50,orden:false,'required':false }
+
   ];
   this.cols2 = [
     { field: 'id', header: 'id', type: 'std2', width:10,orden:false,'required':true ,visible:false},
@@ -82,6 +85,14 @@ public informeData:any;
     }
   }
 
+  getOptions(option){
+    //console.log('*****',option);
+    switch (option[0]){
+    case 'enlace':
+    return this.enlaces;
+    break;
+    }
+    }
      setEmpresa(emp: Empresa | string) {
         this.empresa = emp;
     let params = typeof(emp) == "string" ? emp : emp.id
@@ -113,7 +124,7 @@ public informeData:any;
                   fecha = null;
                 }
                 this.checklists.push(new Checklist(element.id, element.idempresa, element.nombrechecklist,
-                  element.periodicidad, element.tipoperiodo,element.migrado,periodicidad2,fecha,orden));
+                  element.periodicidad, element.tipoperiodo,element.migrado,periodicidad2,fecha,orden,element.enlace));
                   this.guardarCL[element.id] = false;
               }
             }
@@ -130,7 +141,7 @@ public informeData:any;
     let fecha;
     (cl.fecha_)? fecha= new Date(Date.UTC(cl.fecha_.getFullYear(), cl.fecha_.getMonth(), cl.fecha_.getDate())): fecha=null;
     let nuevaChecklist = new Checklist(0, this.empresasService.seleccionada,
-      cl.nombrechecklist, cl.periodicidad, cl.tipoperiodo,0,this.cl.periodicidad2,fecha,this.newOrdenCL());
+      cl.nombrechecklist, cl.periodicidad, cl.tipoperiodo,0,this.cl.periodicidad2,fecha,this.newOrdenCL(),cl.enlace);
     this.servidor.postObject(URLS.CHECKLISTS, nuevaChecklist).subscribe(
       response => {
         // si tiene éxito
@@ -165,8 +176,8 @@ public informeData:any;
   }
 
   onChecklistSelect(evento){
-console.log(evento)
-console.log(this.selectedChecklist);
+// console.log(evento)
+// console.log(this.selectedChecklist);
 this.alertaGuardar['ordenarcheckcontrol'] = false;
 this.alertaGuardar['guardarcheckcontrol'] = false;
 this.checklistActiva = evento.id;
@@ -266,7 +277,26 @@ this.mostrarCCL(evento.id)
         });
     }
   }
-  
+
+  // onRowSelect(event){
+  //   console.log(event);
+  // }
+  // onRowUnselect(event){
+  //   console.log(event);
+  // }
+
+
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+//*****************************   FIN CL ********************/
+
+
 addTriggerEntradasProducto(idChecklist){
   let param = "&entidad=triggers"
   let trigger={
@@ -314,7 +344,8 @@ error =>{
 
   mostrarCCL(idChecklist: number) {
    // this.unExpand();
-    console.log(idChecklist);
+    // console.log(idChecklist);
+
     let parametros = '&idchecklist=' + idChecklist;
     // llamada al servidor para conseguir los controlchecklist
     this.servidor.getObjects(URLS.CONTROLCHECKLISTS, parametros).subscribe(
@@ -324,12 +355,14 @@ error =>{
         if (response.success && response.data) {
           let orden=0;
           for (let element of response.data) {
-            if (element.orden == 0){
-              this.modificarCCL(element.id);
-              orden++;
-              }else{orden=parseInt(element.orden);}
+            // console.log(element.orden,element);
+            // if (element.orden == 0){
+            //   this.modificarCCL(element.id);
+            //   orden++;
+            //   }else{orden=parseInt(element.orden);}
+            
             this.controlchecklists.push(new ControlChecklist(element.id, element.idchecklist,
-              element.nombre,element.migrado,orden));
+              element.nombre,element.migrado,element.orden));
             this.guardar[element.id] = false;
           }
         }
@@ -342,7 +375,12 @@ error =>{
     // Limpiar el form
     this.ccl = {};
     let orden;
-    (ccl.orden>0)?orden=ccl.orden:orden=this.newOrdenCCL();
+if (isNaN(ccl.orden)){
+   orden=1;
+    if (this.controlchecklists.length) orden = this.controlchecklists.length+1;
+}else{
+  orden=ccl.orden;
+}
     let nuevoCCL = new ControlChecklist(0, this.checklistActiva, ccl.nombre,0,orden);
     this.servidor.postObject(URLS.CONTROLCHECKLISTS, nuevoCCL).subscribe(
       response => {
@@ -360,15 +398,15 @@ error =>{
       });
   }
 
-  newOrdenCCL():number{
-    let orden;
-    if ( this.controlchecklists.length && this.controlchecklists[this.controlchecklists.length-1].orden >0){
-      orden = this.controlchecklists[this.controlchecklists.length-1].orden+1;
-     }else{
-      orden = 0;
-     }
-     return orden;
-  }
+  // newOrdenCCL():number{
+  //   let orden;
+  //   if ( this.controlchecklists.length && this.controlchecklists[this.controlchecklists.length-1].orden >0){
+  //     orden = this.controlchecklists[this.controlchecklists.length-1].orden+1;
+  //    }else{
+  //     orden = 1;
+  //    }
+  //    return orden;
+  // }
 
   checkBorrarCCL(idCCL: number) {
     this.idBorrar = idCCL;
@@ -472,6 +510,7 @@ error =>{
       response => {
         if (response.success && response.data) {
           for (let element of response.data) {
+            console.log(element.orden,element);
             this.crearCCL(new ControlChecklist(0, this.checklistActiva,
               element.nombre,0,element.orden));
           }

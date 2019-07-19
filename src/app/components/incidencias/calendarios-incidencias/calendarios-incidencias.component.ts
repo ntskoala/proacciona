@@ -258,9 +258,12 @@ export class CalendariosIncidenciasComponent implements OnInit {
     cal.events[index]["fecha_cierre"]=item.fecha_cierre;
     cal.events[index]["color"]=color;
     cal.events = cal.events.slice();
-    console.log(color, cal.events[index])
-    this.currentEvent.jsEvent.currentTarget.style.backgroundColor = color;
-    this.currentEvent.jsEvent.currentTarget.textContent = item.incidencia;
+    console.log(color, cal.events[index]);
+    console.log(this.currentEvent);
+    // this.currentEvent.jsEvent.currentTarget.style.backgroundColor = color;
+    // this.currentEvent.jsEvent.currentTarget.textContent = item.incidencia;
+    this.currentEvent.jsEvent.target.style.backgroundColor = color;
+    this.currentEvent.jsEvent.target.textContent = item.incidencia;
     cal.eventRender;
   }
 

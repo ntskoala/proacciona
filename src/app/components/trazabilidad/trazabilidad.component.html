@@ -31,6 +31,7 @@
 </div>
 <p-contextMenu #cm [model]="itemsMenu"></p-contextMenu> 
 <div #toPDF2 class="info" *ngIf="selectedNode || informe">
+  <span *ngIf="permisos.traspasos">
     <mat-card *ngFor="let card of msgs; let i = index">
         <mat-card-title>
     <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
@@ -47,6 +48,41 @@
         <span *ngIf="modo=='atras' && card.procedencia">{{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br></span>
          <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
         </mat-card>
+  </span>
+  <span *ngIf="!permisos.traspasos">
+      <mat-card *ngFor="let card of msgs; let i = index">
+          <mat-card-title>
+      <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
+            <span class="material-icons">remove_circle_outline</span>
+      </button>
+             {{ card.label }}(NO VAQUERIA)
+          </mat-card-title>
+          <span *ngIf="card.data.tipo=='orden'"> 
+          El <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+          Se añadieron <span *ngIf="card.data.cantidad && card.data.cantidad > 0"> {{card.cantidad}} {{card.data.tipo_medida}}<br></span>
+          <span *ngIf="card.data.nombreProduccion"> de {{card.data.nombreProduccion}}<br></span>
+          al lote {{card.label}}
+          y quedaron <span *ngIf="card.data.cantidad_remanente_origen">{{card.cantidad_remanente_origen}} {{card.data.tipo_medida}}<br></span>
+          de los <span *ngIf="card.data.cantidad_real_origen">{{card.data.cantidad_real_origen}} {{card.data.tipo_medida}}<br></span> 
+          que quedaban en el lote de origen.
+          </span>
+          <span *ngIf="card.data.tipo=='Entrada M.P.'">
+              El <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+              entraron <span *ngIf="card.data.cantidad_inicial && card.data.cantidad_inicial > 0"> {{card.data.cantidad_inicial}} {{card.data.tipo_medida}}<br></span>
+              <span *ngIf="card.data.nombreMP"> de {{card.data.nombreMP}}<br></span>
+              del lote {{card.label}}
+              y quedan <span *ngIf="card.data.cantidad_remanente">{{card.data.cantidad_remanente}} {{card.data.tipo_medida}}<br></span>
+              </span>          
+          <!-- <span *ngIf="card.data.proveedor">{{'trazabilidad.proveedor'| translate}} : {{card.data.proveedor}}<br></span>
+          <span *ngIf="card.data.cliente && card.data.cliente>0">{{'produccion.cliente'| translate}} : {{card.cliente}}<br></span>
+          <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'trazabilidad.tanque' | translate}} : {{card.almacen}}<br></span>
+          <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
+          <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+          <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date' && card.nivel == '2' ">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
+          <span *ngIf="modo=='atras' && card.procedencia">{{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br></span>
+           <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span> -->
+          </mat-card>
+  </span>
 </div>
 
 

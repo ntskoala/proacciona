@@ -145,9 +145,13 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
           this.alergenos.forEach(alergeno => {this.tabla[x]['cols'].push({Ing:null})});
 
         let alergenosProducto = [];
-  
-        if (producto.alergenos)
+        console.log(producto.alergenos,producto.alergenos.length);
+        if (producto.alergenos.length>1 && producto.alergenos != 'null'){
+          console.log('2',producto.alergenos);
           alergenosProducto = JSON.parse(producto.alergenos);
+        }
+
+
             alergenosProducto.forEach(alergeno => {   
               let ingrediente = alergeno.substr(4,alergeno.length-4);
               let tipo = alergeno.substr(0,3);

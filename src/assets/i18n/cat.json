@@ -22,9 +22,9 @@
   "le":"Logo",
   "Cerrar":"Tancar",
   "cerrar":"Tancar",
-  "guardar":"Desar",
+  "guardar":"Desa",
   "guardarOrden":"Desar nou ordre",
-  "guardarTodo":"Desar tots els canvis",
+  "guardarTodo":"Desa tots els canvis",
   "eliminar":"Eliminar",
   "add":"Afegir",
   "aceptar":"Acceptar",
@@ -136,6 +136,7 @@
   "configuracion":{
     "nuevoUsuario":"Nou usuari",
     "nuevoControl":"Nou control",
+    "numControles":"Quantitat de controls que es crearan",
     "nuevoChecklist":"Nou checklist",
     "elemento":"Element",
     "nuevoCCL":"Nou control del checklist",
@@ -208,7 +209,7 @@
     "liquido_refrigerante":"Líquid refrigerant",
     "modo_trabajo":"Règim de treball",
     "lubricacion":"Lubricació",
-    "guardar":"Desar",
+    "guardar":"Desa",
     "subir documento":"Pujar document",
     "ver documento":"Veure document",
     "subir foto":"Pujar foto",
@@ -264,7 +265,7 @@
     "fecha_prevista":"Data prevista",
     "fecha_real":"Data real",
     "nombre":"Nom",
-    "guardar":"Desar",
+    "guardar":"Desa",
     "tipo":"Tipus",
     "marca":"Marca",
     "desinfectante":"Desinfectant",
@@ -504,7 +505,7 @@
       "nota":"Sempre t'arribarà un avís el dia de l'event, addicionalment pots programar un dia extra.",
       "nohaymail":"No té email",
       "guardar":"S'ha modificat un registre, es necessari polsar el botó <span class='material-icons'>check</span> per desar els canvis",
-      "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desar' per confirmar els canvis",
+      "guardar_Ficha":"S'ha modificat la fitxa, es necessari polsar el botó 'desa' per confirmar els canvis",
       "borrar":"S'ha esborrat el registre",
       "showTooltips":"Mostrar tooltips",
       "verTooltips":"Tooltips visibles",
@@ -512,7 +513,7 @@
       "tituloAlertaInfo":"Informació",
       "saveOk":"S'ha desat correctament",
       "saveNotOk":"S'ha produit un error al desar",
-      "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desar tots els registres' al finalitzar la edició",
+      "nuevoOrden":"S'ha modificat el ordre, es necessari polsar el botó 'desa tots els registres' al finalitzar la edició",
       "tokenExpired":"La sessió ha caducat, si us plau torna a iniciar sessió",
       "entregaNotOk":"La quantitat o la data de caducitat son erroneas",
       "alertCambioEmpresa":"Aquesta acció ha cambiat l'empresa seleccionada",
@@ -520,7 +521,8 @@
       "alergenosAñadidos":"Al·lergògens afegits",
       "borrarIngrediente":"S'ha esborrat una matèria prima, el llistat d'al·lergògens del lot podría haber cambiat, es necessari comprobarla",
       "remanenteRetornado":"Remanent retornat",
-      "errorRetornandoRemanente":"Error al retornar el remanent, es necessari comprobar manualment el lot"
+      "errorRetornandoRemanente":"Error al retornar el remanent, es necessari comprobar manualment el lot",
+      "UsuarioDesconocido":"Probablement l'usuari va ser esborrat, només es conserva el códi que va fer servir"
     },
     "incidencia":
     {
@@ -696,5 +698,6 @@
   "abierto":"obert",
   "cerrado":"tancat",
   "entregado":"entregat",
-  "unidades":"unitats"
+  "unidades":"unitats",
+  "Desconocido":"Desconegut"
 }	

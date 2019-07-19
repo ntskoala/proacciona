@@ -17,6 +17,7 @@ import { Incidencia } from '../../models/incidencia';
 import { Modal } from '../../models/modal';
 import { Checklist } from 'app/models/checklist';
 import { ResultadoChecklist } from 'app/models/resultadochecklist';
+import { AlertasComponent } from '../alertas/alertas.component';
 
 
 export class alerg{
@@ -67,6 +68,7 @@ public es;
 public trazabilidad:boolean=false;
 public modo:string='adelante';
 public nodoOrdenProd: ProveedorLoteProducto=null;
+public alturaTraza:string='0px';
 
 
 //***   EXPORT DATA */
@@ -85,6 +87,9 @@ public resultadosChecklists:ResultadoChecklist[];
 public usuarios:Usuario[];
 public opciones:any[]=[{'value':'todosOk','label':'todosOk'},{'value':'true','label':'correcto'},{'value':'false','label':'incorrecto'},{'value':'na','label':'no aplica'},{'value':'valor','label':'Valor'}];
 public CustomOpciones:String[]=['Selecciona'];
+public checkDobleSl:RegExp= new RegExp("//","g");
+public fotoCheck:string;
+
   constructor(public servidor: Servidor,public empresasService: EmpresasService,
   public router: Router,  public translate: TranslateService,private messageService: MessageService) {}
 
@@ -130,9 +135,7 @@ public CustomOpciones:String[]=['Selecciona'];
     this.foto = url
     }else{
       window.open(url,'_blank');
-
     }
-
   }
 
 
@@ -522,7 +525,7 @@ this.origenIncidencia = {'origen':'Checklists','idOrigen':null,'origenasociado':
   let idResultadoChecklist = event.data.idResultadoChecklist;
   let idResultadoChecklistLocal = event.data.idResultadoChecklistLocal;
     let descripcion='';
-
+    this.fotoCheck = URLS.FOTOS + this.empresasService.seleccionada + '/checklist' + idResultadoChecklist + '.jpg'
   let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklistcontrol&field=idresultadochecklist&idItem='+idResultadoChecklist; 
 
   this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
@@ -545,12 +548,15 @@ this.sOrigen=JSON.stringify(this.origenIncidencia);
 error=>{console.log('Error getting checklist1',error)});
   }
   else{
+    let filtrarFechas="&filterdates=true&fecha_inicio="+ moment().subtract(30,"days").format("YYYY-MM-DD")+"&fecha_fin="+ moment().add(1,"day").format("YYYY-MM-DD")+"&fecha_field=fecha"
+    let parametros='';
     if(event.data.idResultadoChecklistLocal){
-
-      let idResultadoChecklistLocal = event.data.idResultadoChecklistLocal;
-  let filtrarFechas="&filterdates=true&fecha_inicio="+ moment().subtract(30,"days").format("YYYY-MM-DD")+"&fecha_fin="+ moment().format("YYYY-MM-DD")+"&fecha_field=fecha"
-    let parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklist&field=idlocal&idItem='+idResultadoChecklistLocal+"&WHERE=idchecklist="+localStorage.getItem('triggerEntradasMP')+filtrarFechas; 
-  
+    let idResultadoChecklistLocal = event.data.idResultadoChecklistLocal;
+    parametros = '&idempresa=' + this.empresasService.seleccionada+'&entidad=resultadoschecklist&field=idlocal&idItem='+idResultadoChecklistLocal+"&WHERE=idchecklist="+localStorage.getItem('triggerEntradasMP')+filtrarFechas; 
+    }else{
+      let strFilter = "NOT EXISTS (select `idResultadoChecklist` from proveedores_entradas_producto PEP where idempresa = " + this.empresasService.seleccionada + " AND RSCL.id = PEP.`idResultadoChecklist`)"
+      parametros = '&idempresa=' + this.empresasService.seleccionada + '&entidad=resultadoschecklist&nickentidad=RSCL&field=idchecklist&idItem='+localStorage.getItem('triggerEntradasMP')+'&WHERE='+strFilter+filtrarFechas; 
+    }
     this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
       response => {
         this.resultadosChecklists=[];
@@ -564,12 +570,11 @@ error=>{console.log('Error getting checklist1',error)});
           }
         }
       });
-    }else{
-      this.nuevoCL(event.data);
-    // this.endResultadosChecklist('');
-    }
   }
+
+
 }
+
 
 
 endResultadosChecklist(event){
@@ -614,7 +619,11 @@ getIncidencia(idResultadoChecklist){
 },
 error=>{console.log('Error getting incidencias del Checklist',error)});
 }
-
+incidenciaCreada(incidencia){
+  console.log(incidencia)
+  this.incidencias=[incidencia];
+  // this.incidencias.push(incidencia);
+}
 gotoIncidencia(item:Incidencia){
 
   console.log('goto Origen',item);
@@ -845,6 +854,7 @@ trazabilidadAdelante(item: ProveedorLoteProducto,i){
 getUsers(){
 let parametros = '&idempresa=' + this.empresasService.seleccionada;
 // llamada al servidor para conseguir los usuarios
+console.log('GETTING USERS')
 this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
   response => {
     this.usuarios = [];
@@ -856,7 +866,25 @@ this.servidor.getObjects(URLS.USUARIOS, parametros).subscribe(
 });
 }
 getUser(idUser){
-  return this.usuarios[this.usuarios.findIndex((user)=>user.id==idUser)].usuario;
+  console.log('GETTING USER',idUser,this.usuarios)
+  let user ='Desconocido';
+  this.translate.get('Desconocido').subscribe((valor)=>{
+    user = valor;
+  })
+  let resultado = '('+idUser + '-'+user+')';
+  let indiceUser = this.usuarios.findIndex((user)=>user.id==idUser)
+  if (indiceUser>=0){
+    resultado = this.usuarios[indiceUser].usuario;
+  }
+  return resultado;
+
 }
+
+doSomethingOnWindowScroll(evento:any){
+  console.log("window scroll2 ",evento);
+   let scrollOffset = evento.srcElement.children[0].scrollTop;
+           console.log("window scroll1: ", scrollOffset);
+           this.alturaTraza = '-'+scrollOffset+'px';
+  }
 
 }

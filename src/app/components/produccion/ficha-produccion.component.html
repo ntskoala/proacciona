@@ -219,8 +219,8 @@
 
 
 
-<div class="traza" *ngIf="trazabilidad">
-<trazabilidad [orden]="orden" [modo]="modo" *ngIf="trazabilidad"></trazabilidad>
+<div class="traza" [style.top]="alturaTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
+<trazabilidad  [orden]="orden" [modo]="modo" *ngIf="trazabilidad" ></trazabilidad>
     <div class="close-button">
         <button  mat-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">
           <span class="material-icons">close</span>

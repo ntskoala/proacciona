@@ -136,6 +136,7 @@
   "configuracion":{
     "nuevoUsuario":"Nuevo usuario",
     "nuevoControl":"Nuevo control",
+    "numControles":"Cantidad de controles que se crearán",
     "nuevoChecklist":"Nuevo checklist",
     "elemento":"Elemento",
     "nuevoCCL":"Nuevo control del checklist",
@@ -520,7 +521,8 @@
       "alergenosAñadidos":"Alérgenos añadidos",
       "borrarIngrediente":"Se ha eliminado una materia prima, la lista de alérgenos del lote podría haber cambiado, es necesario comprobarla",
       "remanenteRetornado":"Remanente retornado",
-      "errorRetornandoRemanente":"Error al devolver el remanente, se requiere comprobar manualmente el lote"
+      "errorRetornandoRemanente":"Error al devolver el remanente, se requiere comprobar manualmente el lote",
+      "UsuarioDesconocido":"Seguramente el usuario fue borrado, solo se conserva el código que usó"
     },
     "incidencia":
     {
@@ -696,5 +698,6 @@
   "abierto":"abierto",
   "cerrado":"cerrado",
   "entregado":"entregado",
-  "unidades":"unidades"
+  "unidades":"unidades",
+  "Desconocido":"Desconocido"
 }

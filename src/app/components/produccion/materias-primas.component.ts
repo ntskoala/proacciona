@@ -154,9 +154,9 @@ getProductos(idProveedor:number){
 }
 
 getEntradasProducto(idProducto: number){ ///LOTES DE PROVEEDOR
-  console.log('getEntradasProducto',idProducto)
+  console.log('getEntradasProducto:'+idProducto,'idProveedor:'+this.nuevoItem.proveedor);
   if (idProducto > 0){
-         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto+"&WHERE=cantidad_remanente>0&order=fecha_entrada"; 
+         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_entradas_producto&field=idproducto&idItem="+idProducto+"&WHERE=cantidad_remanente>0 AND idproveedor="+this.nuevoItem.proveedor+" AND fecha_caducidad>curdate()&order=fecha_entrada"; 
         this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
           response => {
             this.entrada_productos = [];

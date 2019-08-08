@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import {MessageService} from 'primeng/components/common/messageservice';
 import { TranslateService } from '@ngx-translate/core';
 import { Dropdown } from 'primeng/components/dropdown/dropdown'
@@ -32,6 +32,7 @@ export class alerg{
 export class EntregaProductosComponent implements OnInit, OnChanges{
 //@Input() orden: ProduccionOrden;
 @Input() cliente: Cliente;
+@Output() onHeightChanged: EventEmitter<string>=new EventEmitter<string>();
 @ViewChild('choiceOrden') ChoiceOrden: ElementRef;
 public nuevoItem: Distribucion =  new Distribucion(null,0,0,null,null,'',new Date(),new Date(),'',null,null,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
@@ -69,8 +70,12 @@ public exportar_informes: boolean =false;
 public exportando:boolean=false;
 public informeData:any;
 //***   EXPORT DATA */
-
-
+public orden:ProduccionOrden;
+public modo:string='atras';
+public trazabilidad:boolean=false;
+public entrega:Distribucion;
+public alturaTraza:string='0px';
+public heightTraza:string='1200px';
   constructor(
     public servidor: Servidor,
     public empresasService: EmpresasService,
@@ -91,6 +96,7 @@ public informeData:any;
           { field: 'tipo_medida', header: 'proveedores.tipo medida', type: 'dropdown', width:120,orden:false,'required':true }
         ];
   }
+  
   ngOnChanges(){
     console.log("onChange");
       //this.setItems();
@@ -337,6 +343,7 @@ getAllLotesProducto(){
               for (let element of response.data) { 
                   this.ordenes.push(new ProduccionOrden(element.id,element.idempresa,element.numlote,element.fecha_inicio,element.fecha_fin,new Date(element.fecha_caducidad),element.responsable,element.cantidad,element.remanente,element.tipo_medida,element.idproductopropio,element.nombre,element.familia,element.estado,element.idalmacen));
              }
+             console.log(this.ordenes)
             }
         },
         error=>console.log(error),
@@ -550,7 +557,32 @@ openNewRow(){
       return Value;
     }
 
+    trazabilidadAtras(item,i){
+      console.log(item,i)
+      let indexOrden = this.ordenes.findIndex((orden)=>orden.id==item.idordenproduccion);
+      if(indexOrden >=0){
+      this.entrega=item;
+      this.orden = this.ordenes[indexOrden];
+      console.log('ORDEN',this.orden);
+      this.trazabilidad=true;
+      }else{
+        console.log('ORDEN DE PRODUCCION NO ENCONTRADA');
+      }
+    }
 
+    doSomethingOnWindowScroll(evento:any){
+      console.log("window scroll2 ",evento);
+       let scrollOffset = evento.srcElement.children[0].scrollTop;
+               console.log("window scroll1: ", scrollOffset);
+               this.alturaTraza = '-'+scrollOffset+'px';
+      }
 
+      changeTrazaHeight(event){
+        console.log("height ",event);
+        let calculoheight = 300 +parseInt(event);
 
+        this.heightTraza=calculoheight+'px';
+        console.log("height ",this.heightTraza);
+        this.onHeightChanged.emit(this.heightTraza);
+      }
 }

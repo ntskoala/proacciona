@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
 
 import { EmpresasService } from '../../../services/empresas.service';
 import { Servidor } from '../../../services/servidor.service';
@@ -13,6 +13,7 @@ import { ProveedorLoteProducto } from '../../../models/proveedorlote';
 import { ProduccionDetalle } from '../../../models/producciondetalle';
 
 import * as moment from 'moment/moment';
+declare let jsPDF;
 
 @Component({
   selector: 'app-prepara-receta',
@@ -24,6 +25,8 @@ export class PreparaRecetaComponent implements OnInit {
   @Input() orden:ProduccionOrden;
   @Output() onBotonCerrar:EventEmitter<boolean>= new EventEmitter;
   @Output() onProcesed:EventEmitter<any>= new EventEmitter;
+  @ViewChild('printIngredientes') el: ElementRef;
+
 
   public ingredientes:Ingrediente[];
   public lotes:ProveedorLoteProducto[];
@@ -43,8 +46,11 @@ export class PreparaRecetaComponent implements OnInit {
   public calc:number=0;
   public alergenos:string[]=[];
   public estado:number=0;
+  public printReady:boolean=false;
+
   //********************PDF */
   public pdfSrc: string=null;
+  public pdfIngredientesSrc: string=null;
   public paginaPdf:number=1;
   public maxPdf:number=1;
   public zoomPdf:number=1;
@@ -110,7 +116,11 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
            this.ingredientes = [];
            if (response.success && response.data) {
              for (let element of response.data) { 
-                 this.ingredientes.push(new Ingrediente(element.id,element.idEmpresa,element.cantidad,element.tipo_medida,element.ingrediente,element.idproducto));
+               
+               let cantidad=0;
+               if (this.cantidadProduccion>0) cantidad = element.cantidad;
+               console.log(this.cantidadProduccion,cantidad,element.cantidad)
+                 this.ingredientes.push(new Ingrediente(element.id,element.idEmpresa,cantidad,element.tipo_medida,element.ingrediente,element.idproducto));
                  
             }
             resolve(true)
@@ -119,6 +129,7 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
              this.semaforo='rojo';
              // this.translate.get(['recetas.insuficiente1','recetas.insuficiente2','recetas.insuficiente3']).subscribe((insuficiente)=>{
             console.log('No hay ingredientes en la receta');
+
              let alerta= 'No hay ingredientes en la receta';
              this.alertas.push(alerta);
            }
@@ -146,15 +157,29 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
         if (response.success && response.data) {
           for (let element of response.data) { 
               this.materiasPrimas.push({'id':element.id,'idproveedor':element.idproveedor,'nombre':element.nombre,'ingrediente':element.ingrediente,'alergenos':element.alergenos});
+
               let x = this.ingredientes.findIndex((ingrediente)=>ingrediente.ingrediente==element.ingrediente);
               if (this.lotesIng[x]==undefined) this.lotesIng[x]=[];
+              //if (this.loteSelected[x]==undefined) this.loteSelected[x]=[];
               this.getLotes(element.id,element.idProveedor,x,element.nombre).then(
-                (ok)=>{
+                (respuesta)=>{
                   this.estado=80;
-                console.log('getLoteOK',ok)
+                console.log('getLoteOK',ingrediente.ingrediente,respuesta["x"],respuesta["resultado"])
+                if (!respuesta["resultado"]){
+                  console.log('NO HAY ',ingrediente.ingrediente)
+                  this.ready=false;
+                  this.semaforo='rojo';
+                  this.translate.get('recetas.sinLotes').subscribe((insuficiente)=>{
+                    console.log(insuficiente);
+                  let alerta= insuficiente + ingrediente.ingrediente;
+                  this.alertas.push(alerta);
+                  });
+                  // this.alertas.push('No hay lotes disponibles para '+ingrediente.ingrediente)
+                }
                 if (y>=this.ingredientes.length){
                   setTimeout(()=>{
-                    this.ready=true;
+                    if (this.semaforo!='rojo')
+                    //this.ready=true;
                     this.estado=100;
                     },1000);
                 }
@@ -162,12 +187,12 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
               });
          }
         }else{
-          this.ready=true;
+          this.ready=false;
           this.estado=100; 
           this.semaforo='rojo';
           // this.translate.get(['recetas.insuficiente1','recetas.insuficiente2','recetas.insuficiente3']).subscribe((insuficiente)=>{
          console.log('No hay Materias Primas disponibles');
-          let alerta= 'No hay Materias Primas disponibles';
+          let alerta= 'recetas.sinMP';
           this.alertas.push(alerta);
         }
     },
@@ -197,23 +222,30 @@ getLotes(idMateriaPrima,idProveedor,x,nombreMP){
   console.log('GETTING LOTES OF:',idMateriaPrima,idProveedor,nombreMP);
   let entidad:string="&entidad=proveedores_entradas_producto";
   let field:string="&field=idproducto&idItem=";//campo de relación con tabla padre
-  let where="&WHERE=canitad_remanente>0";
+  let where="&WHERE=cantidad_remanente>0";
   let filterDates="&filterdates=true&fecha_field=fecha_caducidad&fecha_inicio="+ moment().format("YYYY-MM-DD") +  "&fecha_fin="+moment().add(5,"years").format("YYYY-MM-DD");
-  let  parametros = '&idempresa=' + this.empresasService.seleccionada+entidad+field+idMateriaPrima+filterDates+"&order=fecha_caducidad ASC"; 
+  let  parametros = '&idempresa=' + this.empresasService.seleccionada+entidad+field+idMateriaPrima+filterDates+where+"&order=fecha_caducidad ASC"; 
   
   // let parametros = '&idempresa=' + this.empresasService.seleccionada+this.entidad+this.field+this.proveedor.id; 
      this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
        response => {
+        let respuesta;
          if (response.success && response.data) {
            for (let element of response.data) { 
               //  this.lotes.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
                this.lotesIng[x].push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id));
                this.loteSelected[x].push({'cantidad':0,'nombreMP':nombreMP});
+               console.log('Hay lotes disponibles', nombreMP, this.loteSelected);
+               console.log(this.lotesIng)
           }
-          resolve(x);
+          respuesta = {'x':x,'resultado':true}
+          resolve(respuesta);
          }else{
+          this.loteSelected[x].push({'cantidad':-1,'nombreMP':nombreMP});
+          respuesta = {'x':x,'resultado':false}
+          console.log('SIN Lotes disponibles');
           if (this.lotesIng[x].length==0) this.lotesIng[x].push(new ProveedorLoteProducto(null,null,null,null,null,0,null,null,null,null,null));
-          resolve(x);          
+          resolve(respuesta);          
          }
      },
      error=>{
@@ -225,13 +257,16 @@ getLotes(idMateriaPrima,idProveedor,x,nombreMP){
     });
 }
 process(){
+  this.ready=false;
+  console.log('Proces');
   this.semaforo='ambar';
   this.cocinado=false;
   this.alertas=[];
-  
+  this.calc=1;
   if (this.calc>0){
     this.getIngredientes().then(
       (valor)=>{
+        console.log('get Infredientes is ok, valor',valor);
         this.ingredientes.forEach((ingrediente)=>{
           (this.cantidadProduccion!=this.receta.cantidadReceta)? this.calc=1:this.calc=0;
           ingrediente.cantidad = (ingrediente.cantidad*this.cantidadProduccion)/this.receta.cantidadReceta;
@@ -281,7 +316,9 @@ procesarLotes(){
   x++;
   });
   console.log('@@@@@@@@@@@@@@@@@@@@@@',this.ingredientesReceta);
+
   this.indicaIngredientes();
+  
 }
 
 indicaIngredientes(){
@@ -292,6 +329,7 @@ indicaIngredientes(){
     console.log(this.loteSelected);
   });
   if (this.semaforo=='verde' || this.semaforo=='ambar'){
+    this.ready=true;
     this.alertas.push('recetas.preparado');
   }
 }
@@ -412,6 +450,116 @@ setAlerta(concept:string){
   );
 }
 
+onIngredienteOpen(event){
+console.log('Ingrediente',event,event.index);
+console.log(this.ingredientes[event.index]);
+console.log(this.lotesIng[event.index]);
+console.log(this.loteSelected[event.index]);
+if (this.cantidadProduccion==0 || isNaN(this.cantidadProduccion)  || this.cantidadProduccion==null){
+  if(this.alertas[this.alertas.length-1] != 'recetas.faltaCantidadProduccion')
+  this.alertas.push('recetas.faltaCantidadProduccion')
+}
+}
+
+tabSelected(event){
+console.log(event);
+if (event.index==1 || event ==1){
+this.printReady=true;
+// setTimeout(() => {
+//   this.printIngredientes();
+// }, 800);
+}else{
+this.printReady=false;
+}
+}
+tabReady(){
+  console.log('TAB READY');
+  //if (this.printReady) this.printIngredientes();
+  if (this.printReady) this.printIngredientesV2(false);
+
+}
+
+printIngredientes(){
+  console.log('PRINTPDF');
+  let orientacion ="landscape"
+  let pdf = new jsPDF(orientacion,'mm','a4');
+  let options = {
+      pagesplit: false,
+      orientation:orientacion
+  };
+
+  pdf.addHTML(this.el.nativeElement, 25, 30, options, () => {
+         // pdf.save(this.orden.numlote +".pdf");
+         pdf.autoPrint();
+         //pdf.save('autoprint.pdf')
+         window.open(pdf.output('bloburl'), '_blank');
+  });
+
+//window.open(pdf.output('bloburl'), '_blank');
+// pdf.output('dataurlnewwindow');
+}
+printIngredientesV2(print){
+  let cabecera=['Proveedor','NombreMP','Lote','Fecha Caducidad','Cantidad'];
+  let linea=20;
+  let columna=10;
+  let x=0;
+  var doc = new jsPDF("portrait", "mm", "a4");
+  doc.setFontSize(10);
+  doc.setFontStyle('bold');
+  doc.text(50, 20, 'Listado Ingredientes ' + this.receta.nombre + ' para ' + this.cantidadProduccion + ' ' + this.receta.tipo_medida);
+  doc.setFontSize(9);
+  this.ingredientes.forEach((ingrediente)=>{
+    linea+=6;
+    doc.setFontStyle('bold');
+    columna=10;
+    cabecera.forEach((item)=>{
+      doc.text(columna,linea,item);
+      columna+=40;
+    });
+  
+    doc.setFontStyle('normal');
+
+    this.lotesIng[x].forEach((lote)=>{
+      let y=0;
+      linea+=4;
+      columna=10;
+      if (this.loteSelected[x][y].cantidad>0){
+        doc.text(columna,linea,this.getProv(lote.idproveedor));
+        columna+=40;
+        doc.text(columna,linea,this.loteSelected[x][y].nombreMP);
+        columna+=40;
+        doc.text(columna,linea,lote.numlote_proveedor);
+        columna+=40;
+        doc.text(columna,linea,moment(lote.fecha_caducidad).format("DD-MM-YYYY"));
+        columna+=40;
+        doc.text(columna,linea,this.loteSelected[x][y].cantidad + ' ' + lote.tipo_medida);
+        columna+=40;
+      }
+    })
+ 
+
+
+    x++;
+  })
+  
+  doc.autoPrint();
+  if(print){
+    window.open(doc.output('bloburl'), '_blank');
+  }else{
+    this.pdfIngredientesSrc = doc.output('bloburl');
+  }
+  
+  //window.open(doc.output('bloburl'), '_blank');
+  //window.open(this.pdfSrc).print();
+  
+}
+print(){
+  
+}
+
+//********************PDF */
+//********************PDF */
+//********************PDF */
 //********************PDF */
 //********************PDF */
 //********************PDF */

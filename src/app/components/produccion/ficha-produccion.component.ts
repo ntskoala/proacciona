@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 import { EmpresasService } from '../../services/empresas.service';
+import { PermisosService } from '../../services/permisos.service';
 import { Servidor } from '../../services/servidor.service';
 import { Empresa } from '../../models/empresa';
 import { ProduccionOrden } from '../../models/produccionorden';
@@ -28,7 +29,7 @@ export class FichaProduccionComponent implements OnInit, OnChanges {
 // @Output() itemSeleccionado: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 @Output() onUpdateOrden: EventEmitter<ProduccionOrden> = new EventEmitter<ProduccionOrden>();
 // @Output() onMateriasPrimas:EventEmitter<ProduccionDetalle[]>= new EventEmitter;
-
+@Output() onHeightChanged: EventEmitter<string>=new EventEmitter<string>();
 
 
 //*** ESPECIFIC VAR */
@@ -49,11 +50,13 @@ public alergenos:string[]=[];
 public parentAlergenos:string='alergenos';
 public trigger:number=0;
 public alturaTraza:string='0px';
+public heightTraza:string='1200px';
   constructor(
     public empresasService: EmpresasService, 
     public servidor: Servidor,
     public messageService: MessageService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public permisos: PermisosService
     ) {}
 
   ngOnInit() {
@@ -71,6 +74,7 @@ public alturaTraza:string='0px';
     }catch(e){
       console.log('ERROR',e);
     }
+
   }
   
   ngOnChanges(){
@@ -364,4 +368,13 @@ console.log("window scroll2 ",evento);
          console.log("window scroll1: ", scrollOffset);
          this.alturaTraza = '-'+scrollOffset+'px';
 }
+changeTrazaHeight(event){
+  console.log("height ",event);
+  let calculoheight = 300 +parseInt(event);
+
+  this.heightTraza=calculoheight+'px';
+  console.log("height ",this.heightTraza);
+  this.onHeightChanged.emit(this.heightTraza);
+}
+
 }

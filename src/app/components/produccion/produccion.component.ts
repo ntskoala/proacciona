@@ -22,6 +22,7 @@ public productos: boolean;
 public almacenes: boolean;
 public alergenos: boolean;
 public subMenu:string=null;
+public heightTraza:string='1000px';
 
   constructor(public empresasService: EmpresasService, public permisosService:PermisosService) {}
 
@@ -122,4 +123,8 @@ updateOrden(event){
   this.trigger= Math.random() *10;
 }
 
+heightChanged(event){
+  this.heightTraza=event;
+  }
+  
 }

@@ -45,7 +45,7 @@
   </div>
 </div>
 
- <div class="contenido">
+ <div class="contenido"  [style.height]="heightTraza">
     <!-- <mat-sidenav-container class="contenedorSidenav"> -->
         <mat-sidenav   #sidenavCalendar  (closed)="closeSideNav()" class="panel-sidenav" [mode]="'over'">
                 <!-- <div  class="tooltip botonCerrar" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">
@@ -64,7 +64,7 @@
       <movimiento-produccion *ngIf="traspaso"></movimiento-produccion>
    <h2 class="moduloTitle" *ngIf="orden && orden.id >0">{{'produccion.numlote' | translate}}: {{orden.numlote}}</h2>
 <mat-tab-group *ngIf="orden && orden.id > 0" [dynamicHeight]="false">
-  <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" (onUpdateOrden)="updateOrden($event)" *ngIf="orden"></ficha-produccion></mat-tab>
+  <mat-tab label="{{'produccion.ficha_produccion' | translate}}"><span class="space"></span><ficha-produccion id="testid" class="tabs"  [orden]="orden" (onUpdateOrden)="updateOrden($event)"  (onHeightChanged)="heightChanged($event)" *ngIf="orden"></ficha-produccion></mat-tab>
 <mat-tab label="{{'produccion.materias_primas' | translate}}"><span class="space"></span><materias-primas class="tabs" [orden]="orden" [trigger]="trigger" *ngIf="orden"></materias-primas></mat-tab>
 <mat-tab label="{{'produccion.distribucion' | translate}}"><span class="space"></span><distribucion class="tabs" [orden]="orden" *ngIf="orden"></distribucion></mat-tab>
 </mat-tab-group>

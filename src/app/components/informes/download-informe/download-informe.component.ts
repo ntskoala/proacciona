@@ -37,7 +37,8 @@ public speed=500;
 
 async downloads(){
     this.progress(10);
-     let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
+     //let url ='https://script.google.com/a/proacciona.es/macros/s/AKfycbzIpotMyRcSxISIMvMLWN0-boPG8drRZ9wD8IQO5eQ/dev?idEmpresa='+this.empresasService.seleccionada;
+     let url ='https://script.google.com/macros/s/AKfycbwFHH9ZRXqGXwW3wvkVeDS96MuAlT7GgwxgSUwLoTkkaGQxbn8/exec?idEmpresa='+this.empresasService.seleccionada;
     this.innerHtml += 'Solicitado<br>...';
     this.servidor.postSimple(url,this.informeData).subscribe(
       async (respuesta)=>{

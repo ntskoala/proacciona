@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef,HostListener } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild,ElementRef,EventEmitter, Output } from '@angular/core';
 
 import {Tree,TreeNode } from 'primeng/primeng';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,8 @@ import { ProduccionOrden } from '../../models/produccionorden';
 import { ProduccionDetalle } from '../../models/producciondetalle';
 import { Almacen } from '../../models/almacenes';
 import { Cliente } from '../../models/clientes';
+import { Distribucion } from '../../models/distribucion';
+
 import { Modal } from '../../models/modal';
 
 declare let jsPDF;
@@ -23,19 +25,21 @@ export class alerg{
   ){}
 }
 
+
+
 @Component({
-  selector: 'trazabilidad',
-  templateUrl: './trazabilidad.component.html',
-  styleUrls:['trazabilidad.css']
+  selector: 'app-trazabilidad-atras',
+  templateUrl: './trazabilidad-atras.component.html',
+  styleUrls: ['./trazabilidad-atras.component.css']
 })
 
-export class TrazabilidadComponent implements OnInit, OnChanges{
+export class TrazabilidadAtrasComponent implements OnInit, OnChanges{
 // @ViewChild('expandingTree')
 @ViewChild('toPDF') el: ElementRef;
 @ViewChild('toPDF2') el2: ElementRef;
 @ViewChild('toPDFTitle') elTitle: ElementRef;
 // @HostListener("window:scroll", ['$event'])
-
+@Output() onHeightChanged: EventEmitter<string>=new EventEmitter<string>();
 // expandingTree: Tree;
 tree: TreeNode[];
 tree2:TreeNode[];
@@ -47,6 +51,8 @@ selectedFile2: TreeNode;
 @Input() orden: ProduccionOrden;
 @Input() materiaPrima: ProveedorLoteProducto;
 @Input() modo: string;
+@Input() cliente: Cliente;
+@Input() entrega: Distribucion;
 public nuevoItem: ProduccionDetalle = new ProduccionDetalle(0,0,'','','',0,0,0,'');
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
 public items: ProduccionDetalle[];
@@ -66,7 +72,7 @@ public informe:string;
 public nodozero:boolean=false;
 public orientacion:boolean=false;
 public orientado:string='landscape';
-
+public numberId:number=0;
 public itemsMenu:any[]=[{label: 'traza atras', icon: 'fa-mail-reply',command:()=>{this.verNodo('atras')}},{label: 'traza adelante', icon: 'fa-mail-forward',command:()=>{this.verNodo('adelante')}}];
 modal: Modal = new Modal();
 entidad:string="&entidad=produccion_detalle";
@@ -108,19 +114,29 @@ initTree(idOrden){
     let label;
     label= this.orden.numlote;
      this.tree = [];
-     this.tree.push({"label": label,"data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
-     if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
-       //
-    }else{
-      this.tree[0]["data"]={"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"remanente":this.orden.remanente}
-       }
-    //  this.tree.push({"label": this.orden.numlote,
-    //   "data":{"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"level":0,"almacen":this.orden.idalmacen,"cliente":this.orden.idcliente,"fecha_caducidad":this.orden.fecha_caducidad},
-    //  "expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+     //CLIENTE Y CANTIDAD ENTREGA PRODUCTO
+     if (this.cliente){
+     let parentId= (this.numberId++).toString();
+     this.tree.push({"label": this.cliente.nombre,"data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+      this.tree[0]["data"]={"tipo":"entrega","idEntrega":this.entrega.id,"fecha_inicio_orden":this.entrega.fecha,"fecha_caducidad":this.entrega.fecha_caducidad,"cantidad":this.entrega.cantidad,"tipo_medida":this.entrega.tipo_medida,"numlote":this.entrega.numlote}
      this.tree[0].children=[];
-      //this.setItems(this.tree[0],this.orden.id,0);
-      this.getParent(this.tree[0],idOrden,'idorden',0);
-     // this.getProductos();
+    let nodo= this.tree[0];
+    console.log('****',nodo);
+     //PRODUCCION LOTE ENTREGADO
+     this.tree[0].children.push({"label": label,"data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+     this.tree[0].children[0]["data"]={"parent":this.tree[0],"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"cantidad_remanente":this.orden.remanente,"tipo_medida":this.orden.tipo_medida,"nombreProduccion":this.orden.nombre}
+     this.tree[0].children[0].parent = nodo;
+     this.tree[0].children[0].children=[];
+console.log('PARENT NODO',this.tree[0].children[0].parent);
+      this.getParent(this.tree[0].children[0],idOrden,'idorden',1);
+    }else{
+      //PRODUCCION LOTE ENTREGADO
+      this.tree.push({"label": label,"data": "inicio","expanded":true,"expandedIcon": "fa-folder-open","collapsedIcon": "fa-folder"})
+      this.tree[0]["data"]={"parent":{data:{tipo:'entrega'}},"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"cantidad_remanente":this.orden.remanente,"tipo_medida":this.orden.tipo_medida,"nombreProduccion":this.orden.nombre}
+      this.tree[0].children=[];
+ //console.log('PARENT NODO',this.tree[0].children[0].parent);
+       this.getParent(this.tree[0],idOrden,'idorden',1);        
+    }
 }
 
 getAlmacenes() {
@@ -264,10 +280,8 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                       //  this.setItems(nodo.children[i],element.idmateriaprima)
                       nodo.children.push({
                       "label":element.proveedor + ": " + element.producto + ': ' + element.numlote_proveedor,
-                      
-                      "parent":nodo,
                       //"expanded":true,
-                      "data":{"tipo":"materia prima","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cliente":element.idcliente,"proveedor":element.proveedor,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen}
+                      "data":{"parent":nodo,"tipo":"entrada","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad_inicial":element.cantidad,"cliente":element.idcliente,"proveedor":element.proveedor,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"nombreMP":element.producto,"nombreProduccion":element.nombreProduccion}
                         });
                         
                         i++
@@ -285,7 +299,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                       "label":label,
                       "parent":nodo,
                       "expanded":true,
-                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen}
+                      "data":{"parent":nodo,"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad,"cantidad_remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"nombreProduccion":element.nombreProduccion}
                         });
                         this.getParent(nodo.children[i],element.idloteinterno,'idorden',level);
                     //this.getOrdenes(nodo.children[i],element.idorden,"idorden",level);
@@ -314,7 +328,10 @@ getParent(nodo: any,id:number, tipo:string,level:number){
             let width = 150 * (+level+2);  
             width= 1200+width;
             this.widthArbol =  width + 'px';
-            console.log(this.widthArbol)
+            console.log(this.el.nativeElement.clientWidth,this.el.nativeElement.clientHeight)
+            let ancho = this.el.nativeElement.clientWidth;
+            let alto = this.el.nativeElement.clientHeight
+            this.onHeightChanged.emit(alto);
             }
         
         );
@@ -393,9 +410,25 @@ return nivel;
     closeFicha(index:number){
         this.msgs.splice(index,1);
     }
-    nodeSelect(event) {
-       // console.log('NODO',event.node);
 
+    nodeSelect(event,toPDF,toPDF2) {
+      console.log('NODO',event.node);
+       console.log(this.el.nativeElement.clientHeight);
+    //    console.log(this.el2.nativeElement.clientHeight);
+       console.log(window);
+       console.log(window.screen.availHeight);
+       console.log('Fichas:'+this.msgs.length);
+       let alto = parseInt(this.el.nativeElement.clientHeight)+ ((1+this.msgs.length)*155)
+       this.onHeightChanged.emit(alto.toString());
+        // let nivel=event.node["data"]["level"]-1;
+
+        // let nivel = event.node["data"]["level"]-1;
+        // let parentNodo=this.tree[0].children;
+        // for (let x=1;x<=nivel;x++){
+        //   parentNodo=parentNodo[].children
+        // }
+        // let indexPArent = .findIndex((nodo)=>nodo["data"]["id"]==event.node["data"]["parent"]);
+        // console.log(indexPArent,this.tree[indexPArent]["label"])
     if (this.modo == 'atras'){
         this.nodeSelectAtras(event);
     }else{
@@ -445,7 +478,7 @@ return nivel;
         
         cantidadRemanenteProcedencia +=  event.node.data.cantidad_remanente_origen 
 
-        this.msgs.push({label: event.node.label, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia,cantidad_remanente_origen:event.node.data.cantidad_remanente_origen});
+        this.msgs.push({label: event.node.label,children:event.node.children, data: event.node.data, summary:'Node Selected', detail: event.node.label,almacen:almacen,nivel:nivel,cantidad:event.node.data.cantidad,cliente:n_cliente,procedencia: procedencia,cantidad_remanente_origen:event.node.data.cantidad_remanente_origen});
         this.message="";
 
         // console.log(this.msgs);
@@ -610,6 +643,54 @@ verNodo(modo){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //****     TRAZA ALANTE */
 //****     TRAZA ALANTE */
 //****     TRAZA ALANTE */
@@ -725,7 +806,7 @@ getChildren(nodo: TreeNode,id:number, tipo:string,level:number,parent?:TreeNode)
                       nodo.children.push({
                       "label":element.numlote,
                       "expanded":true,
-                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad_detalle,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"nombreProduccion":element.nombreProduccion}
+                      "data":{"tipo":"orden","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad":element.cantidad_detalle,"remanente":element.remanente,"cliente":element.idcliente,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"fecha_detalle":element.fecha_detalle,"nombreProduccion":element.nombreProduccion}
                         });
                        nodo.parent = parent;
                         this.getChildren(nodo.children[i],element.idorden,'idloteinterno',level,nodo);

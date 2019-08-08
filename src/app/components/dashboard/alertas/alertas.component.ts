@@ -57,18 +57,23 @@ public altura:string='';
                       "tipo":element.tipo});
                       switch(element.tipo){
                         case "control":
+                          if (this.getPeriodicidad(element.periodicidad2) != "por uso")
                         this.controles.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad2)});
                         break;
                         case "checklist":
+                            if (this.getPeriodicidad(element.periodicidad2) != "por uso")
                         this.checklists.push({"nombre":element.nombre,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad2)});
                         break;
                         case "limpieza":
+                            if (this.getPeriodicidad(element.periodicidad) != "por uso")
                         this.limpiezas.push({"nombre":element.nombre + ' ' + element.zona,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break;                        
                         case "mantenimiento":
+                            if (this.getPeriodicidad(element.periodicidad) != "por uso")
                         this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break; 
                         case "calibracion":
+                            if (this.getPeriodicidad(element.periodicidad) != "por uso")
                         this.mantenimientos.push({"nombre":element.nombre + ' ' + element.maquina,"fecha": moment(element.fecha).format('DD-MM-YYYY'),"isbeforedate":isbeforedate,"tipo":element.tipo,"periodicidad":this.getPeriodicidad(element.periodicidad)});
                         break;                                                
                       }

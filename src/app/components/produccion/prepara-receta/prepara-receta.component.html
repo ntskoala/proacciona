@@ -10,7 +10,7 @@
         </button>
       </div>
 
-      <mat-tab-group>
+      <mat-tab-group (selectedTabChange)="tabSelected($event)" (animationDone)="tabReady()">
         <mat-tab label="{{'recetas.Ingredientes' | translate}}">
 
             <mat-progress-spinner *ngIf="estado < 100"  style="position: fixed; margin-top: 100px; margin-left:45%; z-index: 99999;" mode="indeterminate"></mat-progress-spinner>
@@ -18,18 +18,19 @@
           <mat-toolbar style="padding-top: 30px;width: 780px;font-size: medium;">
             {{receta.nombre}} ({{orden.numlote}})
             <mat-form-field class="toolbarF">
-              <input matInput placeholder="{{'recetas.IntroducirCantidad' | translate}}" [(ngModel)]="cantidadProduccion">
+              <input matInput type="number" [ngClass]="{'disabled':false}" [disabled]="false" placeholder="{{'recetas.IntroducirCantidad' | translate}}" [(ngModel)]="cantidadProduccion">
             </mat-form-field>
             <div class="tooltip" matTooltip="{{'recetas.calcular' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
-            <button  class="toolbarF" color="accent" [disabled]="!ready" mat-raised-button (click)="process()">
+            <button  class="toolbarF" color="accent" [disabled]="false" mat-raised-button (click)="process()">
               {{'recetas.calcular' | translate}}
             </button>
           </div>
           </mat-toolbar>
       <div class="marcoIngredientes round">
-         <p-accordion>
+         <p-accordion (onOpen)="onIngredienteOpen($event)" [multiple]="true">
             <p-accordionTab header="{{ingrediente.ingrediente}} "   *ngFor="let ingrediente of ingredientes; let x = index">
                 necesitas: {{ingrediente.cantidad}} - {{ingrediente.tipo_medida}} 
+                
                     <mat-list>
                         <mat-list-item  *ngFor="let lote of lotesIng[x]; let y = index" > 
                     <!-- **** Coge una parte del lote ****-->
@@ -53,15 +54,22 @@
                             <span *ngIf="lote.tipo_medida!='unidades' && lote.tipo_medida!='unitats'">{{'recetas.de1' | translate}}</span> 
                             {{lote.cantidad_remanente}} {{lote.tipo_medida | translate}} {{'recetas.restantes' | translate}}
                         </span>
+                    <!-- **** No HAY lotes ****-->
+                    <span class="loteNotSelected" *ngIf="loteSelected[x][y].cantidad==-1">
+                    </span>
                         </mat-list-item>
                        </mat-list>
             </p-accordionTab>
         </p-accordion>
-        <button style="margin-top:30px" color="primary" [disabled]="cocinado || semaforo=='rojo'" mat-raised-button  (click)="proceed()">
+
+        <button style="margin-top:30px" color="primary" [disabled]="cocinado || semaforo=='rojo' || !ready" mat-raised-button  (click)="proceed()">
             <mat-icon >add_shopping_cart</mat-icon>
             {{'recetas.anadir' | translate}} {{orden.numlote}}
           </button>
-
+          <button color="accent" [disabled]="!ready" mat-raised-button  (click)="printIngredientesV2(true)">
+              <mat-icon >printer</mat-icon>
+              <!-- {{'print' | translate}} -->
+            </button>
           <div class="mensajes" [style.height]="alertas.length*42+'px'" [ngClass]="{'semaforoRojo':semaforo=='rojo','semaforoVerde':semaforo!='rojo'}">
               <mat-list>
                   <mat-list-item  *ngFor="let alerta of alertas; let i = index" > 
@@ -79,7 +87,51 @@
 
 
     </mat-tab>
-    <mat-tab label="Pdf">
+
+    <mat-tab label="Print Ingredients"  [disabled]="!ready">
+
+
+      <div *ngIf="pdfIngredientesSrc || true">
+        <div class="pdfToolbar">
+          <div class="toolBar">
+          <button color="accent" mat-icon-button>
+            <mat-icon (click)="PageAnterior()">keyboard_arrow_left</mat-icon>
+          </button>
+          </div>
+          <div class="toolBar">
+          <button color="accent" mat-icon-button>
+            <mat-icon (click)="PageSiguiente()">keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+        <div class="toolBar">
+          <button color="accent" mat-icon-button>
+            <mat-icon (click)="zoomIn()">add</mat-icon>
+          </button>
+        </div>
+        <div class="toolBar">
+          <button color="accent" mat-icon-button>
+            <mat-icon (click)="zoomOut()">remove</mat-icon>
+          </button>
+        </div>
+        <div class="toolBar">
+          <button color="accent" mat-icon-button>
+            <mat-icon (click)="printIngredientesV2(true)">print</mat-icon>
+          </button>
+        </div>
+        </div>
+        <div style="display: block;margin: auto;width:798px;height:94vh;border:black solid 1px;background-color: antiquewhite">
+          <pdf-viewer [src]="pdfIngredientesSrc" [fit-to-page]="false" [show-all]="false" [page]="paginaPdf" [autoresize]="false"
+            [render-text]="true" [zoom]="zoomPdf" style="display: block" (error)="onPDFError($event)" (on-progress)="onProgress($event)"
+            (after-load-complete)="pdfLoaded($event)">
+          </pdf-viewer>
+        </div>
+        </div>
+
+
+    </mat-tab>
+
+
+    <mat-tab label="Elaboración" [disabled]="!pdfSrc">
 
 
       <div *ngIf="pdfSrc || true">

@@ -174,7 +174,7 @@
         {{col.header | translate}}
         <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
       </th>
-      <th [style.width]="'95px'">
+      <th [style.width]="'120px'">
         {{'acciones' | translate}}
       </th>
     </span>
@@ -308,6 +308,16 @@
             <span class="material-icons">check</span>
           </button>
         </span>
+
+        <span class="tooltip" matTooltip="{{'trazabilidad.trazaAtras' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+          [matTooltipPosition]="'right'">
+          <button *ngIf="empresasService.administrador || empresasService.userTipo == 'Gerente'" mat-mini-fab color="primary"
+             (click)="trazabilidadAtras(item,i)" type="button">
+            <span class="material-icons">rotate_left</span>
+          </button>
+        </span>
+
+
       </td>
     </tr>
   </ng-template>
@@ -383,3 +393,15 @@
 <filter-dates (onDates)="setDates($event)"></filter-dates>
 </div>
 
+
+
+
+
+<div class="traza" [style.top]="alturaTraza" [style.height]="heightTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
+  <app-trazabilidad-atras [orden]="orden" [cliente]="cliente" [entrega]="entrega"  [modo]="modo" *ngIf="trazabilidad" (onHeightChanged)="changeTrazaHeight($event)"></app-trazabilidad-atras>
+      <div class="close-button">
+          <button  mat-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">
+            <span class="material-icons">close</span>
+      </button>
+      </div>
+  </div>

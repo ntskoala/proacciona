@@ -1,0 +1,34 @@
+.arbol{
+    /*width: 100%;*/
+    /* float: left; */
+    background-color: #fff;
+    /* position: relative; */
+    margin-left: 25px;
+    margin-top: 60px;
+}
+
+.info{
+    /* width: 90%;
+    float: left; */
+    background-color: #fff;
+    /* position: relative; */
+    margin-left: 25px;
+    margin-top: 60px;
+}
+.botones{
+    position: absolute;
+    top:65px;
+    left:45px;
+}
+
+.orientacionWindow{
+    position: absolute;
+    top: 150px;
+    left: 300px;
+    width: 500px;
+    height: 250px;
+    background-color: #ccc;
+    border-color: #000;
+    border-style: solid;
+    text-align: center;
+}

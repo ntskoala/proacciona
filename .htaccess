@@ -1,0 +1,18 @@
+    <FilesMatch ".(php4|php5|php3|php2|php|phtml)$">
+        SetHandler application/x-lsphp55
+    </FilesMatch>
+RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://tfc.proacciona.es%{REQUEST_URI} [L,NE,R=301]
+#RewriteCond %{HTTP:X-Forwarded-Proto} https
+#RewriteRule ^ http://tfc.proacciona.es%{REQUEST_URI} [L,NE,R=301]
+RewriteEngine On
+
+#Options FollowSymLinks
+#RewriteBase /
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /#/$1 [R=301,L,END]
+

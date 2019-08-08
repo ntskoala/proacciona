@@ -12,7 +12,7 @@ import { Cliente } from '../../models/clientes';
 export class ClientesComponent implements OnInit {
 public cliente: Cliente;
 public clientes: Cliente[];
-
+public heightTraza:string='1000px';
   constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -25,7 +25,9 @@ seleccionCliente($event){
   this.cliente = $event;
 }
 
-
+heightChanged(event){
+this.heightTraza=event;
+}
 
 
 }

@@ -118,16 +118,26 @@
     padding:15px;
     position: absolute;
     top: 40px;
-    left: 700px;
+    left: 620px;
     border: #ffd740 2px solid;
     border-radius: 5%;
 }
-
+.marcoFotoChecklistControl{
+    width: 200px;
+    height: 200px;
+    background: #fff;
+    padding:15px;
+    position: absolute;
+    top: 40px;
+    left: 850px;
+    border: #ffd740 2px solid;
+    border-radius: 5%;
+}
 .fotoChecklist{
     width: 170px;
     height: 170px; 
 }
 
 .listCheckItems{
-    width: 650px;
+    width: 550px;
 }

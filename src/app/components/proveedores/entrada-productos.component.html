@@ -236,7 +236,14 @@ rowExpandMode="single"
           <a disabled href="#" [pRowToggler]="item">
             <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
           </a></span>
-          <div  *ngIf="hayTrigger" [ngClass]="{'boliche':true,'isOk':item.idResultadoChecklist,'isOnlyLocal':item.idResultadoChecklistLocal,'isNotOk':!item.idResultadoChecklist && !item.idResultadoChecklistLocal}"></div> 
+
+          <div  *ngIf="hayTrigger" [ngClass]="{'boliche':true,'isOnlyLocal':item.idResultadoChecklistLocal,'isNotOk':!item.idResultadoChecklist && !item.idResultadoChecklistLocal}">
+            <span *ngIf="item.idResultadoChecklist">
+            <span  class="material-icons green" *ngIf="getRR(item,'green')=='true'">check</span>
+            <span  class="material-icons red" *ngIf="getRR(item,'red')=='false'">close</span>
+          </span>
+        </div> 
+
       </td>
       <!--************ ORDEN ***************************-->
       <!-- <td>    
@@ -318,8 +325,8 @@ rowExpandMode="single"
           <!-- <span matTooltip="crea una incidencia!">
             <app-boton-incidencia   [origen]="incidencia[i]" [tipoOrigen]="'Checklist'" (nuevaIncidenciaCreada)="nuevaIncidencia($event,i)"></app-boton-incidencia>
           </span> -->
-            <span matTooltip="click to delete!"><mat-icon *ngIf="control.foto" name="camera-alt" item-left (click)="control.foto=''">camera_alt</mat-icon></span>
-            <span matTooltip="click to delete!"><mat-icon *ngIf="control.descripcion"  name="clipboard" item-left (click)="control.descripcion=''">assignment</mat-icon></span>
+            <mat-icon *ngIf="control.foto!='false'" name="camera-alt" item-left (click)="setFotoControl(control.foto)">camera_alt</mat-icon>
+            <mat-icon *ngIf="control.descripcion"  name="clipboard" item-left (click)="control.descripcion=''">assignment</mat-icon>
             <label class="label-item" (click)="setOpciones(control.nombrecontrol)">{{control.nombrecontrol.replace(checkDobleSl,"/")}}</label>
             <!-- <div class="listitem">  -->
             <!-- <div class="div-image">
@@ -355,8 +362,8 @@ rowExpandMode="single"
             </mat-list>
             <!-- <hr>    -->
             <!-- <my-images [index]="i" [currentControl]="control" (image)="takeFoto($event)"  style="width:30%; display:flex; float:left;margin-right: 15px"></my-images>  -->
-            <button *ngIf="item.idResultadoChecklist" mat-raised-button  color="accent" [disabled]="desactivado"  (click)="guardarCL()" style="width: 30%;">{{"guardar" | translate}}</button>
-            <button  *ngIf="!item.idResultadoChecklist" mat-raised-button  color="accent" [disabled]="desactivado"  (click)="nuevoCL(item)" style="width: 30%;">{{"nuevo" | translate}}</button>
+            <button *ngIf="item.idResultadoChecklist" mat-raised-button  color="accent" [disabled]="desactivado"  (click)="guardarCL(DT,item)" style="width: 25%;">{{"guardar" | translate}}</button>
+            <button  *ngIf="!item.idResultadoChecklist" mat-raised-button  color="accent" [disabled]="desactivado"  (click)="nuevoCL(item)" style="width: 25%;">{{"nuevo" | translate}}</button>
 
             <button *ngIf="!incidencias" mat-raised-button  color="warn" (click)="incidenciaChecklist(item,'botonI')" style="width: 30%;">{{"incidencia.incidencia" | translate}}</button>
             <span  *ngIf="incidencias  && incidencias[0]" style="margin-left:30px">
@@ -371,9 +378,12 @@ rowExpandMode="single"
             <app-boton-incidencia [sOrigen]="sOrigen" (nuevaIncidenciaCreada)="incidenciaCreada($event)"></app-boton-incidencia>
 
             <!-- <FOTO>    -->
-              <div class="marcoFotoChecklist">
+              <div class="marcoFotoChecklist" (click)="foto1=1">
                 <img class="fotoChecklist" [src]="fotoCheck" (error)="fotoCheck='./assets/images/noimage.png'" />
               </div>
+              <div class="marcoFotoChecklistControl"  (click)="foto2=1">
+                  <img class="fotoChecklist" [src]="fotoCheckControl" (error)="fotoCheckControl='./assets/images/noimage.png'" />
+                </div>
             <!-- <FOTO>    -->
             </mat-card>
             <!-- <mat-card *ngIf="item.idResultadoChecklistLocal && !item.idResultadoChecklist"> -->
@@ -401,12 +411,13 @@ rowExpandMode="single"
     <app-download-informe [informeData]="informeData" (informeRecibido)="informeRecibido($event)"></app-download-informe>
 </div>
 <app-ver-docs *ngIf="foto" [doc]="foto" (onBotonCerrar)="foto=null"></app-ver-docs>
+<app-ver-docs *ngIf="foto1" [doc]="fotoCheck" (onBotonCerrar)="foto1=null"></app-ver-docs>
+<app-ver-docs *ngIf="foto2" [doc]="fotoCheckControl" (onBotonCerrar)="foto2=null"></app-ver-docs>
 
 
 
-
-<div class="traza" [style.top]="alturaTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
-  <trazabilidad [materiaPrima]="nodoOrdenProd" [modo]="modo" *ngIf="trazabilidad"></trazabilidad>
+<div class="traza" [style.top]="alturaTraza" [style.height]="heightTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
+  <app-trazabilidad-ad [materiaPrima]="nodoOrdenProd" [modo]="modo" *ngIf="trazabilidad"  (onHeightChanged)="changeTrazaHeight($event)"></app-trazabilidad-ad>
       <div class="close-button">
           <button  mat-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">
             <span class="material-icons">close</span>

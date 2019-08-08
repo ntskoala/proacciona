@@ -213,6 +213,7 @@ import { VerDocsComponent } from './components/ver-docs/ver-docs.component';
 import { TemplatesComponent } from './components/templates/templates.component';
 import { RecetasComponent } from './components/produccion/recetas/recetas.component';
 import { PreparaRecetaComponent } from './components/produccion/prepara-receta/prepara-receta.component';
+import { TrazabilidadAtrasComponent } from './components/trazabilidad-atras/trazabilidad-atras.component';
 
 
 @NgModule({
@@ -392,6 +393,7 @@ export function createTranslateLoader(http: HttpClient) {
     AlmacenesComponent,
     TrazabilidadComponent,
     TrazabilidadAdComponent,
+    TrazabilidadAtrasComponent,
     RecetasComponent,
     PreparaRecetaComponent,
 //*******COMUNES     */

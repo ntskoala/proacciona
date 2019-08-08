@@ -1,0 +1,119 @@
+  
+  <mat-card>
+    <mat-card-title>
+        <div #toPDFTitle>
+      <mat-toolbar color="accent">{{'trazabilidad.Trazabilidad' | translate}} {{'trazabilidad.lote' | translate}} {{orden.numlote}}
+      </mat-toolbar>
+        </div>
+    </mat-card-title>
+ <mat-card-subtitle>
+ <div class="botones">
+        <button  mat-mini-fab color="accent" (click)="askOrientacion()" type="button">
+          <span class="material-icons">picture_as_pdf</span>
+    </button>
+            <!--<button  mat-mini-fab color="accent" (click)="doInforme()" type="button">
+          <span class="material-icons">picture_as_pdf</span>
+    </button>-->
+ </div>
+ </mat-card-subtitle>
+
+<!-- <div #toPDF class="arbol" [ngStyle]="{'width': widthArbol, 'overflow-y':'scroll'}"> -->
+<div #toPDF class="arbol">
+
+    <mat-card>
+                <mat-card-title>
+            {{'trazabilidad.Arbol' | translate}} {{'trazabilidad.'+modo | translate}}
+    <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
+        </mat-card-title>
+<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event,toPDF,toPDF2)" (onNodeUnselect)="nodeUnselect($event)"  [contextMenu]="cm"></p-tree>
+
+<!--<p-tree [value]="tree" styleClass="miarbol" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
+    </mat-card>
+   
+</div>
+<!-- <p-contextMenu #cm [model]="itemsMenu"></p-contextMenu>  -->
+<div #toPDF2 class="info" *ngIf="selectedNode || informe">
+  <span *ngIf="permisos.traspasos">
+    <mat-card *ngFor="let card of msgs; let i = index">
+        <mat-card-title>
+    <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
+          <span class="material-icons">remove_circle_outline</span>
+    </button>
+           {{ card.label }}
+        </mat-card-title>  
+        <span *ngIf="card.data.proveedor">{{'trazabilidad.proveedor'| translate}} : {{card.data.proveedor}}<br></span>
+        <span *ngIf="card.data.cliente && card.data.cliente>0">{{'produccion.cliente'| translate}} : {{card.cliente}}<br></span>
+        <span *ngIf="card.data.almacen && card.data.almacen > 0">{{'trazabilidad.tanque' | translate}} : {{card.almacen}}<br></span>
+        <span *ngIf="card.data.cantidad && card.data.cantidad > 0">{{'produccion.cantidad' | translate}} : {{card.cantidad}}<br></span>
+        <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fecha orden' | translate}} : {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+        <span *ngIf="card.data.fecha_caducidad && card.data.fecha_caducidad!='Invalid Date' && card.nivel == '2' ">{{'produccion.fecha_caducidad' | translate}} : {{card.data.fecha_caducidad  | date:"dd-MM-yyyy"}}<br></span>
+        <span *ngIf="modo=='atras' && card.procedencia">{{'trazabilidad.origen' | translate}}: {{card.procedencia}}<br></span>
+         <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
+        </mat-card>
+  </span>
+  <span *ngIf="!permisos.traspasos">
+      <mat-card *ngFor="let card of msgs; let i = index">
+          <mat-card-title>
+      <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
+            <span class="material-icons">remove_circle_outline</span>
+      </button>
+             {{ card.label }}(NO VAQUERIA)
+          </mat-card-title>
+          <span *ngIf="card.data.tipo=='entrega'">
+              <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+              {{"trazabilidad.Entrega" | translate}}  <span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.data.cantidad}} {{card.data.tipo_medida}}</span>
+               <span *ngIf="card.children[0].data.nombreMP"> {{"trazabilidad.de" | translate}} {{card.children[0].data.nombreMP}}<br></span>
+              <span *ngIf="card.children[0].data.nombreProduccion"> {{"trazabilidad.de" | translate}} {{card.children[0].data.nombreProduccion}}<br></span>
+              {{"trazabilidad.del" | translate}} {{"trazabilidad.loteProduccion" | translate}} {{card.data.numlote}}  a  {{card.label}}<br>
+              </span>  
+
+              <span *ngIf="card.data.tipo=='orden'"> 
+                  <span *ngIf="card.data.parent.data.tipo=='orden'"> 
+                      <span *ngIf="card.data.fecha_inicio_orden">{{'Lotecreado' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+                      <span *ngIf="card.data.fecha_detalle"> {{card.data.fecha_detalle | date:"dd-MM-yyyy"}}</span>
+                        {{"trazabilidad.SeAñaden" | translate}} <span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.cantidad}} {{card.data.tipo_medida}}</span>
+                        {{"trazabilidad.del" | translate}} {{"trazabilidad.loteProduccion" | translate}} {{card.label}}
+                        <span *ngIf="card.children[0].data.nombreProduccion"> ({{card.children[0].data.nombreProduccion}})</span><br>
+                        al {{"trazabilidad.loteProduccion" | translate}} {{card.data.parent.label}}
+                        <span *ngIf="card.data.nombreProduccion"> ({{card.data.nombreProduccion}})</span>
+                        <BR>
+                        , {{"trazabilidad.habia" | translate}} <span *ngIf="card.data.cantidad_real_origen">{{card.data.cantidad_real_origen}} {{card.data.tipo_medida}}</span>
+                        {{"trazabilidad.quedaron" | translate}} <span *ngIf="card.data.cantidad_remanente_origen">{{card.data.cantidad_remanente_origen}} {{card.data.tipo_medida}}</span>           
+                  </span>
+                  <span *ngIf="card.data.parent.data.tipo=='entrega'"> 
+                      <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+                        {{"trazabilidad.SeCrea" | translate}} {{"trazabilidad.loteProduccion" | translate}} {{card.label}}
+                        <span *ngIf="card.data.nombreProduccion">({{card.data.nombreProduccion}})</span>
+                        {{"trazabilidad.con" | translate}}<span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.cantidad}} {{card.data.tipo_medida}} <br></span>
+                        , {{"trazabilidad.quedan" | translate}} <span *ngIf="card.data.cantidad_remanente">{{card.data.cantidad_remanente}} {{card.data.tipo_medida}}</span>    
+                  </span>
+                  </span>
+
+
+                  <span *ngIf="card.data.tipo=='entrada'">
+                      <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+                      {{"trazabilidad.SeAñaden" | translate}} <span *ngIf="card.data.cantidad_detalle && card.data.cantidad_detalle >= 0"> {{card.data.cantidad_detalle}} {{card.data.tipo_medida}}</span>
+                      <span *ngIf="card.data.nombreMP"> {{"trazabilidad.de" | translate}} {{card.data.nombreMP}}</span>
+                      {{"trazabilidad.loteProveedor" | translate}} {{card.data.numlote_proveedor}}<br>
+                      al {{"trazabilidad.loteProduccion" | translate}} {{card.data.parent.label}} 
+                      <span *ngIf="card.data.nombreProduccion">({{card.data.nombreProduccion}})</span><BR>
+                      , {{"trazabilidad.habia" | translate}} <span *ngIf="card.data.cantidad_real_origen">{{card.data.cantidad_real_origen}} {{card.data.tipo_medida}}</span>
+                      {{"trazabilidad.quedaron" | translate}} <span *ngIf="card.data.cantidad_remanente_origen">{{card.data.cantidad_remanente_origen}} {{card.data.tipo_medida}}</span>   
+                      </span>   
+        
+          </mat-card>
+  </span>
+</div>
+
+
+<div *ngIf="orientacion" class="orientacionWindow">
+    <span style="position:relative;top:60px">
+    <mat-radio-group [(ngModel)]="orientado">
+        <mat-radio-button value="portrait">Vertical</mat-radio-button>
+        <mat-radio-button value="landscape">Horizontal</mat-radio-button>
+      </mat-radio-group>
+      <BR>
+      <button style="position:relative;top:40px" mat-raised-button color="accent" (click)="downloadPdf()">Ok</button>
+      </span>
+</div>
+

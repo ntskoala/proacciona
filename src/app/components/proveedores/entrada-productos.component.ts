@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild,Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment/moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,6 +36,7 @@ export class alerg{
 export class EntradaProductosComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Input() cambioProductos: boolean;
+@Output() onHeightChanged: EventEmitter<string>=new EventEmitter<string>();
 @ViewChild('#DT') tabla: DataTable;
 public nuevoItem: ProveedorLoteProducto = new ProveedorLoteProducto('',new Date(),new Date(),null,'',null,'',null,0,0,0);
 //public addnewItem: ProveedorLoteProducto = new ProveedorLoteProducto('','','','',0,0);;
@@ -69,7 +70,7 @@ public trazabilidad:boolean=false;
 public modo:string='adelante';
 public nodoOrdenProd: ProveedorLoteProducto=null;
 public alturaTraza:string='0px';
-
+public heightTraza:string='1200px';
 
 //***   EXPORT DATA */
 public exportar_informes: boolean =false;
@@ -89,6 +90,16 @@ public opciones:any[]=[{'value':'todosOk','label':'todosOk'},{'value':'true','la
 public CustomOpciones:String[]=['Selecciona'];
 public checkDobleSl:RegExp= new RegExp("//","g");
 public fotoCheck:string;
+public fotoCheckControl:string;
+public foto1:number=null;
+public foto2:number=null;
+
+resultadoschecklist: ResultadoChecklist[];
+public tabla1: object[];
+public idrs: string[];
+public selectedItem: any;
+public selectedId: any;
+resultado: Object = {};
 
   constructor(public servidor: Servidor,public empresasService: EmpresasService,
   public router: Router,  public translate: TranslateService,private messageService: MessageService) {}
@@ -113,6 +124,7 @@ public fotoCheck:string;
     console.log("onChange");
       //this.setItems();
       this.getProductos();
+      // if(this.hayTrigger) this.getAllResultadosChecklist();
   }
 
   getOptions(option){
@@ -480,6 +492,8 @@ hayTriggerServiciosEntrada(){
                 this.getUsers();
                 localStorage.setItem('triggerEntradasMP',element.idDestino);
                 this.getControlesChecklist(element.idDestino);
+                if(!this.idrs)
+                this.getAllResultadosChecklist();
               }
               }
           }
@@ -517,7 +531,14 @@ getControlesChecklist(idChecklist){
     })
 }
 
+
+
+
+setFotoControl(fotocontrol){
+  this.fotoCheckControl = URLS.FOTOS +'/controles/' + this.empresasService.seleccionada + '/checklistcontrol' + fotocontrol + '.jpg'
+}
 getResultadosChecklist(event){
+
 let incidencia='Albaran:'+event.data.albaran + ' Lote:'+event.data.numlote_proveedor;
 this.origenIncidencia = {'origen':'Checklists','idOrigen':null,'origenasociado':'Checklists','idOrigenasociado':localStorage.getItem('triggerEntradasMP'),'incidencia':incidencia,'descripcion':''};
   console.log('ROW EXPANDED',event);
@@ -538,6 +559,7 @@ this.origenIncidencia = {'origen':'Checklists','idOrigen':null,'origenasociado':
         this.checklistcontroles[index]['checked']=element.resultado;
         this.checklistcontroles[index]['descripcion']=element.descripcion;
         this.checklistcontroles[index]['resultadoChecklistControl']=element.id;
+        this.checklistcontroles[index]['foto']=element.fotocontrol;
        if (element.resultado != 'true' &&  element.resultado != 'false'  &&  element.resultado != 'na') this.checklistcontroles[index]['valor']=element.resultado;
        if(element.resultado=='false') descripcion=descripcion+' ' + 'checkList incorrecto';
 }
@@ -713,8 +735,9 @@ let uLote={
   });
 }
 
-guardarCL(){
-  console.log(this.checklistcontroles);
+guardarCL(DT?:DataTable,item?){
+
+  setTimeout(()=>{DT.toggleRow(item);},900);
   let entidad="&entidad=resultadoschecklistcontrol";
   this.checklistcontroles.forEach((control)=>{
     console.log(control.resultadoChecklistControl);
@@ -885,6 +908,92 @@ doSomethingOnWindowScroll(evento:any){
    let scrollOffset = evento.srcElement.children[0].scrollTop;
            console.log("window scroll1: ", scrollOffset);
            this.alturaTraza = '-'+scrollOffset+'px';
+  }
+
+
+
+
+
+  //**************** */
+  getAllResultadosChecklist(){
+    console.log('getAllResultadosChecklist')
+    this.idrs = [];
+    // Conseguir resultadoschecklist
+    let parametros = '&idchecklist=' + localStorage.getItem('triggerEntradasMP') + 
+    //'&fechainicio=' + fecha.inicio.formatted + '&fechafin=' + fecha.fin.formatted;
+          '&fechainicio=' + moment(this.fechas_inicio['fecha_inicio']).format('YYYY-MM-DD') + '&fechafin=' + moment(this.fechas_inicio['fecha_fin']).format('YYYY-MM-DD');
+
+    this.servidor.getObjects(URLS.RESULTADOS_CHECKLIST, parametros).subscribe(
+      response => {
+        this.resultadoschecklist = [];
+        this.tabla1 = [];
+        if (response.success && response.data) {
+          for (let element of response.data) {
+            let fecha = new Date(element.fecha);
+              this.resultadoschecklist.push(new ResultadoChecklist(element.idr, element.idcontrolchecklist,
+                element.idchecklist,element.usuario, element.resultado, element.descripcion, moment(element.fecha).toDate(), element.foto, element.fotocontrol,element.idrc));
+            if (this.idrs.indexOf(element.idr) == -1) this.idrs.push(element.idr);
+          }
+        }
+        for (let idr of this.idrs) {
+          let contador = 0;
+          for (let resultado of this.resultadoschecklist) {
+            if (idr == resultado.idr) {
+              if (this.selectedItem && this.selectedItem== resultado.idrc) this.selectedId = resultado.idr;
+              this.resultado['id'] = resultado.idr;
+              this.resultado['idrc' + resultado.idcontrolchecklist] = resultado.idrc;
+              this.resultado['usuario'] = resultado.usuario;
+              //this.resultado['fecha'] =  this.formatFecha(resultado.fecha);
+              this.resultado['fecha'] = moment(resultado.fecha).format('DD/MM/YYYY HH:mm');
+              
+              if (resultado.foto == 'true') this.resultado['foto'] = true;
+//              if (resultado.resultado == 'true') {
+//                this.resultado['id' + resultado.idcontrolchecklist] = true;
+                  this.resultado['id' + resultado.idcontrolchecklist] = resultado.resultado;
+//              }
+              if (resultado.descripcion) {
+                this.resultado['id2' + resultado.idcontrolchecklist] = resultado.descripcion;
+              }
+               if (resultado.fotocontrol != "false") {
+                this.resultado['fotocontrol' + resultado.idcontrolchecklist] =  resultado.idcontrolchecklist + "_" + resultado.idr;
+              }                
+              contador++;
+            }
+          }
+          this.tabla1.push(this.resultado);
+          this.resultado = {};
+          console.log("tabla",this.tabla1,this.selectedId,this.selectedItem);
+        }
+    },
+    error=>{console.log('getAllResultadosChecklist ERROR',error)});
+  }
+
+  getRR(item,origen?){
+   // console.log('getRR',origen);
+    let resultado='true';
+    if (item.idResultadoChecklist>0){
+      let indiceIdr = this.idrs.findIndex((idr)=>idr==item.idResultadoChecklist)
+      if (indiceIdr>=0){
+        for (let key of Object.keys(this.tabla1[indiceIdr])){
+          if (this.tabla1[indiceIdr][key]=="false" || 
+              this.tabla1[indiceIdr][key]=="Retenido" || 
+              this.tabla1[indiceIdr][key]=="Devuelto"){
+            resultado='false';
+          }
+        } 
+      }
+    }
+    return resultado;
+  }
+
+
+  changeTrazaHeight(event){
+    console.log("height ",event);
+    let calculoheight = 300 +parseInt(event);
+
+    this.heightTraza=calculoheight+'px';
+    console.log("height ",this.heightTraza);
+    this.onHeightChanged.emit(this.heightTraza);
   }
 
 }

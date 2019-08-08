@@ -16,12 +16,12 @@
  </div>
  </mat-card-subtitle>
 
- <div class="contenido">
+ <div class="contenido" [style.height]="heightTraza">
    <!--<calendarios-limpieza *ngIf="calendario" [maquinas]="maquinas" (newLimpiezaRealizada)="nuevaLimpiezaRealizada($event)"></calendarios-limpieza>-->
    <!--<familias-producto *ngIf="familias"></familias-producto>-->
  <h2 class="moduloTitle" *ngIf="cliente && cliente.id >0">{{'clientes.cliente' | translate}}: {{cliente.nombre}}</h2>
 <mat-tab-group *ngIf="cliente && cliente.id > 0" [dynamicHeight]="false">
-<mat-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente"></entrega-productos></mat-tab>  
+<mat-tab label="{{'clientes.entregaproductos' | translate}}"><span class="space"></span><entrega-productos class="tabs" [cliente]="cliente" *ngIf="cliente" (onHeightChanged)="heightChanged($event)"></entrega-productos></mat-tab>  
 
   <mat-tab label="{{'clientes.ficha' | translate}}"><span class="space"></span><ficha-cliente class="tabs"  [cliente]="cliente" *ngIf="cliente"></ficha-cliente></mat-tab>  
 

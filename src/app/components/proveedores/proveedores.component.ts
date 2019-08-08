@@ -19,6 +19,8 @@ public familias:boolean = false;
 public alergenos:boolean = false;
 public subMenu:string=null;
 public cambioProds:boolean;
+public heightTraza:string='1000px';
+
   constructor(public empresasService: EmpresasService) {}
 
   ngOnInit() {
@@ -100,5 +102,9 @@ cerrarSideNav(){
   this.closeSideNav();
     this.subMenu = null;
 }
+
+heightChanged(event){
+  this.heightTraza=event;
+  }
 
 }

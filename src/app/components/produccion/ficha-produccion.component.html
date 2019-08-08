@@ -219,8 +219,11 @@
 
 
 
-<div class="traza" [style.top]="alturaTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
-<trazabilidad  [orden]="orden" [modo]="modo" *ngIf="trazabilidad" ></trazabilidad>
+<div class="traza" [style.top]="alturaTraza" [style.height]="heightTraza" *ngIf="trazabilidad" (window:scroll)="doSomethingOnWindowScroll($event)">
+<trazabilidad  [orden]="orden" [modo]="modo" *ngIf="trazabilidad && permisos.traspasos" ></trazabilidad>
+<app-trazabilidad-ad  [orden]="orden" [modo]="modo" *ngIf="trazabilidad && !permisos.traspasos && modo=='adelante'"  (onHeightChanged)="changeTrazaHeight($event)"></app-trazabilidad-ad>
+<app-trazabilidad-atras  [orden]="orden" [modo]="modo" *ngIf="trazabilidad && !permisos.traspasos && modo=='atras'"  (onHeightChanged)="changeTrazaHeight($event)"></app-trazabilidad-atras>
+
     <div class="close-button">
         <button  mat-mini-fab color="accent" (click)="trazabilidad = !trazabilidad" type="button">
           <span class="material-icons">close</span>

@@ -241,6 +241,7 @@ ingredientesAnadidos(procesed){
   let ALmateriasPrimas = procesed['alergenos'];
   this.orden.cantidad=procesed['cantidad'];
   this.orden.remanente=procesed['cantidad'];
+  this.orden.tipo_medida=procesed['tipo_medida'];
 console.log('####',ALmateriasPrimas);
 this.addAlergias(ALmateriasPrimas);
 
@@ -351,12 +352,13 @@ removeAlergias(alergias){
 }
 }
 
-updateCantidades(evento){
-console.log(evento);
-this.orden.cantidad=evento;
-this.orden.remanente=evento;
-this.updateItem(this.orden);
-}
+// updateCantidades(evento){
+// console.log('********',evento);
+// this.orden.cantidad=evento;
+// this.orden.remanente=evento;
+// this.orden.tipo_medida=this.receta.tipo_medida;
+// this.updateItem(this.orden);
+// }
 
 // expandingTree(event?){
 // console.log('expandTree',event)

@@ -66,6 +66,12 @@ export class PreparaRecetaComponent implements OnInit {
   ngOnInit() {
     console.log('Receta',this.receta);
     console.log('Orden',this.orden);
+
+    if(this.orden.cantidad){
+      this.cantidadProduccion=this.orden.cantidad;
+    }
+
+
     this.checkPdf();
     this.getProveedores();
     this.getIngredientes().then((resultado)=>{
@@ -256,6 +262,8 @@ getLotes(idMateriaPrima,idProveedor,x,nombreMP){
      );
     });
 }
+
+
 process(){
   this.ready=false;
   console.log('Proces');
@@ -276,7 +284,7 @@ process(){
   }else{
     if (this.cantidadProduccion!=this.receta.cantidadReceta) this.calc=1;
     this.ingredientes.forEach((ingrediente)=>{
-      ingrediente.cantidad = (ingrediente.cantidad*this.cantidadProduccion)/this.receta.cantidadReceta;
+      ingrediente.cantidad =  ((ingrediente.cantidad*this.cantidadProduccion)/this.receta.cantidadReceta);
     });
     this.procesarLotes();
   }
@@ -301,7 +309,7 @@ procesarLotes(){
     });
   }else{
     //********PREPARA LOS LOTES A AÑADIR */
-    let falta:number=parseFloat(this.ingredientes[x].cantidad.toString());
+    let falta:number=parseFloat(this.ingredientes[x].cantidad.toFixed(2));
     for(let y=0;falta>0;y++){
       let cantidadLote= 0;
       if(lote[y].cantidad_remanente >falta){
@@ -325,7 +333,7 @@ indicaIngredientes(){
   console.log('LOTE SELECTED',this.loteSelected);
   this.ingredientesReceta.forEach((ing)=>{
     // this.newItem(this.ingredientes[ing['ingrediente']],this.lotesIng[ing['ingrediente']][ing['lote']],ing['cantidad'])
-    this.loteSelected[ing['ingrediente']][ing['lote']].cantidad=ing['cantidad'];
+    this.loteSelected[ing['ingrediente']][ing['lote']].cantidad=parseFloat(ing['cantidad']).toFixed(2);
     console.log(this.loteSelected);
   });
   if (this.semaforo=='verde' || this.semaforo=='ambar'){
@@ -338,7 +346,7 @@ proceed(){
   console.log('Procediendo con los ingredientes...');
   if (this.semaforo=='verde' || this.semaforo=='ambar'){
     this.ingredientesReceta.forEach((ing)=>{
-      this.newItem(this.ingredientes[ing['ingrediente']],this.lotesIng[ing['ingrediente']][ing['lote']],ing['cantidad'],this.loteSelected[ing['ingrediente']][ing['lote']].nombreMP)
+      this.newItem(this.ingredientes[ing['ingrediente']],this.lotesIng[ing['ingrediente']][ing['lote']],parseFloat(ing['cantidad']).toFixed(2),this.loteSelected[ing['ingrediente']][ing['lote']].nombreMP)
       let indexMP = this.materiasPrimas.findIndex((mp)=>mp.id==this.lotesIng[ing['ingrediente']][ing['lote']].idproducto);
       console.log(indexMP,this.materiasPrimas[indexMP],JSON.parse(this.materiasPrimas[indexMP].alergenos));
       
@@ -353,7 +361,7 @@ proceed(){
     console.log('ALERGENOS',this.alergenos);
     this.alertas.push('recetas.elaborado');
 
-    let procesed = {'cantidad':this.cantidadProduccion,'alergenos':this.alergenos};
+    let procesed = {'cantidad':this.cantidadProduccion,'alergenos':this.alergenos,'tipo_medida':this.receta.tipo_medida};
     this.onProcesed.emit(procesed);
 
   }else{
@@ -519,8 +527,8 @@ printIngredientesV2(print){
   
     doc.setFontStyle('normal');
 
+    let y=0;
     this.lotesIng[x].forEach((lote)=>{
-      let y=0;
       linea+=4;
       columna=10;
       if (this.loteSelected[x][y].cantidad>0){
@@ -535,6 +543,7 @@ printIngredientesV2(print){
         doc.text(columna,linea,this.loteSelected[x][y].cantidad + ' ' + lote.tipo_medida);
         columna+=40;
       }
+      y++;
     })
  
 

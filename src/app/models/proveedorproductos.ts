@@ -7,6 +7,7 @@ export class ProveedorProducto {
     public idproveedor: number,
     public id?: number,
     public idfamilia?: number,
-    public ingrediente?: string
+    public ingrediente?: string,
+    public stockMinim?:number
   ) {}
 }

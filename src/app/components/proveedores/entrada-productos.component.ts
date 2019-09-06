@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild,Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment/moment';
 import { TranslateService } from '@ngx-translate/core';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -56,7 +56,7 @@ public idBorrar;
 public url=[];
 public verdoc: boolean = false;
 public foto:string;
-
+public tablaPosition=0;
 public baseurl = URLS.DOCS + this.empresasService.seleccionada + '/proveedores_entradas_producto/';
 public modal: Modal = new Modal();
 public modal2: Modal;
@@ -97,12 +97,16 @@ public foto2:number=null;
 resultadoschecklist: ResultadoChecklist[];
 public tabla1: object[];
 public idrs: string[];
-public selectedItem: any;
+public selectedItems: any[];
 public selectedId: any;
 resultado: Object = {};
 
-  constructor(public servidor: Servidor,public empresasService: EmpresasService,
-  public router: Router,  public translate: TranslateService,private messageService: MessageService) {}
+  constructor(public servidor: Servidor,
+    public empresasService: EmpresasService,
+  public router: Router,  
+  public translate: TranslateService,
+  private route: ActivatedRoute,
+  private messageService: MessageService) {}
 
   ngOnInit() {
      // this.setItems();
@@ -126,6 +130,36 @@ resultado: Object = {};
       this.getProductos();
       // if(this.hayTrigger) this.getAllResultadosChecklist();
   }
+
+
+  incidenciaSelection(){
+    let x=0;
+    this.route.paramMap.forEach((param)=>{
+      x++;
+        console.log(param["params"]["id"],param["params"]["modulo"]);
+        if (param["params"]["modulo"] == "proveedores"){
+          console.log(param["params"]["id"],param["params"]["modulo"]);
+          if (param["params"]["id"]){
+            console.log(param["params"]["id"],param["params"]["modulo"]);
+            let idOrigen = param["params"]["id"];
+            let index = this.items.findIndex((item)=>item.id==idOrigen);
+            
+            console.log('***===',index,this.items)
+             if (index > -1){
+              let prod=this.items[index].idproducto;
+              this.selectedItems = this.items.filter((item)=>{item.idproducto==prod})
+            //   this.selectedItem = this.items[index]
+            //   this.tablaPosition = index;
+            //   console.log('***_',index,this.selectedItem)
+               }else{
+                 this.setAlerta('entradaProducto.noencontrada')
+               }
+          }
+        }
+      });
+  }
+
+
 
   getOptions(option){
     //console.log('*****',option);
@@ -168,6 +202,7 @@ resultado: Object = {};
               for (let element of response.data) { 
                   this.items.push(new ProveedorLoteProducto(element.numlote_proveedor,new Date(element.fecha_entrada),new Date(element.fecha_caducidad),element.cantidad_inicial,element.tipo_medida,element.cantidad_remanente,element.doc,element.idproducto,element.idproveedor,element.idempresa,element.id,element.albaran,element.idResultadoChecklist,element.idResultadoChecklistLocal));
              }
+             this.incidenciaSelection();
             }
         },
         error=>console.log(error),
@@ -939,7 +974,7 @@ doSomethingOnWindowScroll(evento:any){
           let contador = 0;
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
-              if (this.selectedItem && this.selectedItem== resultado.idrc) this.selectedId = resultado.idr;
+              if (this.selectedItems[0] && this.selectedItems[0]== resultado.idrc) this.selectedId = resultado.idr;
               this.resultado['id'] = resultado.idr;
               this.resultado['idrc' + resultado.idcontrolchecklist] = resultado.idrc;
               this.resultado['usuario'] = resultado.usuario;
@@ -962,7 +997,7 @@ doSomethingOnWindowScroll(evento:any){
           }
           this.tabla1.push(this.resultado);
           this.resultado = {};
-          console.log("tabla",this.tabla1,this.selectedId,this.selectedItem);
+          console.log("tabla",this.tabla1,this.selectedId,this.selectedItems);
         }
     },
     error=>{console.log('getAllResultadosChecklist ERROR',error)});
@@ -973,7 +1008,7 @@ doSomethingOnWindowScroll(evento:any){
     let resultado='true';
     if (item.idResultadoChecklist>0){
       let indiceIdr = this.idrs.findIndex((idr)=>idr==item.idResultadoChecklist)
-      if (indiceIdr>=0){
+      if (indiceIdr>=0 && this.tabla1[indiceIdr]){
         for (let key of Object.keys(this.tabla1[indiceIdr])){
           if (this.tabla1[indiceIdr][key]=="false" || 
               this.tabla1[indiceIdr][key]=="Retenido" || 

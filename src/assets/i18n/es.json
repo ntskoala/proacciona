@@ -317,6 +317,7 @@
     "entradaproductos":"Entrada M.P.",
     "numlotep":"Lote proveedor",
     "cantidad":"Cantidad",
+    "stockMinim":"Cobertura",
     "fecha_entrada":"Fecha",
     "fecha_caducidad":"Fecha caducidad",
     "tipo medida":"Tipo medida",

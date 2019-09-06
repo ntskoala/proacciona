@@ -378,7 +378,7 @@ var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
                                       let fotoUrl = ''
                                       let comentario='';
                                       if (array[i].foto){
-                                        fotoUrl = URLS.FOTOS + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
+                                        fotoUrl = 'https://tfc.proacciona.es/controles/' + this.empresasService.seleccionada + '/checklist'+ array[i].id + '.jpg';
                                      }                            
                                      var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
                                         

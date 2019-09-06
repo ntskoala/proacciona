@@ -30,8 +30,8 @@ export class alerg{
 export class ProductosProveedorComponent implements OnInit, OnChanges{
 @Input() proveedor: Proveedor;
 @Output() nuevoProducto: EventEmitter<boolean> = new EventEmitter<boolean>();
-public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null);
-public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null);
+public nuevoItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null,null);
+public addnewItem: ProveedorProducto = new ProveedorProducto('','','','',0,0,null,null,null);
 public items: ProveedorProducto[];
 public ingredientes: any[]=[];
 public cols:any[];
@@ -70,9 +70,10 @@ public informeData:any;
         this.cols = [
           { field: 'nombre', header: 'proveedores.nombre', type: 'std', width:160,orden:true,'required':true },
           { field: 'ingrediente', header: 'recetas.ingrediente', type: 'dropdown', width:120,orden:false,'required':false },
-          { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:true,'required':true },
-          { field: 'idfamilia', header: 'proveedores.familia', type: 'dropdown', width:120,orden:true,'required':true },
-          { field: 'doc', header: 'proveedores.fichatecnica', type: 'foto', width:120,orden:true,'required':true }
+          { field: 'descripcion', header: 'proveedores.descripcion', type: 'std', width:120,orden:false,'required':false },
+          { field: 'stockMinim', header: 'proveedores.stockMinim', type: 'std', width:85,orden:false,'required':false },
+          { field: 'idfamilia', header: 'proveedores.familia', type: 'dropdown', width:120,orden:false,'required':false },
+          { field: 'doc', header: 'proveedores.fichatecnica', type: 'foto', width:120,orden:false,'required':false }
         ];
   }
   ngOnChanges(){
@@ -126,7 +127,7 @@ getFamilias(){
             this.items = [];
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia,element.ingrediente));
+                  this.items.push(new ProveedorProducto(element.nombre,element.descripcion,element.alergenos,element.doc,element.idproveedor,element.id,element.idfamilia,element.ingrediente,element.stockMinim));
              }
             }
         },
@@ -175,7 +176,7 @@ getFamilias(){
     () =>  {}
     );
 
-   this.nuevoItem = new ProveedorProducto('','','','',0,0,null,null);
+   this.nuevoItem = new ProveedorProducto('','','','',0,0,null,null,null);
    
   }
 

@@ -1,5 +1,5 @@
 <div class="modal" *ngIf="receta">
-    <div class="pdfWindow">
+    <div class="pdfWindowRecetas" >
         <div  class="tooltip botonCerrarDocWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
             <button color="accent" mat-mini-fab (click)="cerrar()"><mat-icon>cancel</mat-icon></button>
             </div>
@@ -67,10 +67,9 @@
             <mat-icon >add_shopping_cart</mat-icon>
             {{'recetas.anadir' | translate}} {{orden.numlote}}
           </button>
-          <button color="accent" [disabled]="!ready" mat-raised-button  (click)="printIngredientesV2(true)">
+          <!-- <button color="accent" [disabled]="!ready" mat-raised-button  (click)="printIngredientesV2(true)">
               <mat-icon >printer</mat-icon>
-              <!-- {{'print' | translate}} -->
-            </button>
+            </button> -->
           <div class="mensajes" [style.height]="alertas.length*42+'px'" [ngClass]="{'semaforoRojo':semaforo=='rojo','semaforoVerde':semaforo!='rojo'}">
               <mat-list>
                   <mat-list-item  *ngFor="let alerta of alertas; let i = index" > 
@@ -120,7 +119,7 @@
           </button>
         </div>
         </div>
-        <div style="display: block;margin: auto;width:798px;height:94vh;border:black solid 1px;background-color: antiquewhite">
+        <div style="display: block;margin: auto;width:798px;height:100%;border:black solid 1px;background-color: antiquewhite">
           <pdf-viewer [src]="pdfIngredientesSrc" [fit-to-page]="false" [show-all]="false" [page]="paginaPdf" [autoresize]="false"
             [render-text]="true" [zoom]="zoomPdf" style="display: block" (error)="onPDFError($event)" (on-progress)="onProgress($event)"
             (after-load-complete)="pdfLoaded($event)">

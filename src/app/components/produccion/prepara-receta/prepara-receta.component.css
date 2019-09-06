@@ -65,3 +65,14 @@
     background: lightgray;
     height:30px;
 }
+
+.pdfWindowRecetas{
+    background: #fff;
+    border: 2px solid #fbc02d;
+    border-radius: 5px;
+    width: 800px;
+    height: 100vh;
+    margin: auto;
+    margin-top: 0px;
+    /* overflow-y: auto; */
+  }

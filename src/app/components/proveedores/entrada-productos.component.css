@@ -141,3 +141,7 @@
 .listCheckItems{
     width: 550px;
 }
+
+.selectedProd{
+    background-color: #cc4a33 !important;
+}

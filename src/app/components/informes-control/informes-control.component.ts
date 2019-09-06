@@ -275,6 +275,7 @@ async downloads(){
     this.exportando=true;
     this.informeData = await this.ConvertToCSV(this.columnas, this.tabla);
   }
+
   informeRecibido(resultado){
     console.log('informe recibido:',resultado);
     if (resultado){
@@ -308,8 +309,9 @@ let comentarios = [];
               let comentario='';
               if (array[i].foto){
                 //+ '/control' + idResultado + '.jpg';
-                //fotoUrl = '=hyperlink("'+URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg";"foto")';
-                fotoUrl =URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+                //fotoUrl =URLS.FOTOS + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+                fotoUrl ='https://tfc.proacciona.es/controles/' + this.empresasService.seleccionada + '/control'+ array[i].id + '.jpg'
+
              }                            
                 var line =array[i].usuario+";"+ fotoUrl+";"+array[i].fecha +";";
                 //var line =array[i].usuario+";"+array[i].fecha +";";

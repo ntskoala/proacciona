@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Servidor } from '../../services/servidor.service';
@@ -27,12 +28,39 @@ public  nuevoNombre:string;
 
 //*** ESPECIFIC VAR */
 
-  constructor(public empresasService: EmpresasService, public servidor: Servidor) {}
+  constructor(
+    public empresasService: EmpresasService, 
+    public servidor: Servidor,
+    private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loadItems(this.empresasService.seleccionada.toString());
   }
 cambiarTab(){}
+
+
+incidenciaSelection(){
+  let x=0;
+  this.route.paramMap.forEach((param)=>{
+    x++;
+      console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
+      if (param["params"]["modulo"] == "proveedores"){
+        console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
+        if (param["params"]["idOrigenasociado"]){
+          console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
+          let idOrigen = param["params"]["idOrigenasociado"];
+          let index = this.items.findIndex((item)=>item.id==idOrigen);
+          if (index > -1){
+            console.log('***_',index);
+            let event = {'value':index}
+            this.seleccionarItem(event);
+            }else{
+              console.log('Proveedor no encontrado')
+            }
+        }
+      }
+    });
+}
 
 loadItems(emp: Empresa | string) {
     let params = typeof(emp) == "string" ? emp : emp.id
@@ -48,6 +76,7 @@ loadItems(emp: Empresa | string) {
               for (let element of response.data) {
                 this.items.push(new Proveedor(element.nombre,element.idempresa,element.contacto,element.telf,element.email,element.alert_contacto,element.alert_telf,element.alert_email,element.id,element.direccion,element.poblacion,element.nrs));
               }
+              this.incidenciaSelection();
              // this.listaZonas.emit(this.limpiezas);
             }
           },
@@ -59,8 +88,9 @@ loadItems(emp: Empresa | string) {
               }
         );
    }
-seleccionarItem(event: any){
 
+seleccionarItem(event: any){
+  console.log(event);
   this.itemSeleccionado.emit(this.items[event.value]);
   this.itemActivo = this.items[event.value].id;
   this.unExpand();
@@ -141,7 +171,11 @@ expand(){
 setTimeout(()=>{this.Choicer.open();},200)
 }
 unExpand(){
-  this.Choicer.close();
+  console.log('UNEXPAND')
+  setTimeout(()=>{
+    this.Choicer.toggle();
+  },3000)
+  
 }
 
 }

@@ -231,7 +231,7 @@ rowExpandMode="single"
   <div class="tableContent">
   <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="expanded">
     <!--let-expanded="expanded" -->
-    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded}">
+    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded, 'selectedProd':true}">
       <td><span *ngIf="expanded!=null && hayTrigger">
           <a disabled href="#" [pRowToggler]="item">
             <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>

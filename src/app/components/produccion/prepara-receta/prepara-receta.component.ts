@@ -162,7 +162,7 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
         this.estado=60;
         if (response.success && response.data) {
           for (let element of response.data) { 
-              this.materiasPrimas.push({'id':element.id,'idproveedor':element.idproveedor,'nombre':element.nombre,'ingrediente':element.ingrediente,'alergenos':element.alergenos});
+              this.materiasPrimas.push({'id':element.id,'idproveedor':element.idproveedor,'nombre':element.nombre,'ingrediente':element.ingrediente,'alergenos':element.alergenos,'stockMinim':element.stockMinim});
 
               let x = this.ingredientes.findIndex((ingrediente)=>ingrediente.ingrediente==element.ingrediente);
               if (this.lotesIng[x]==undefined) this.lotesIng[x]=[];
@@ -344,19 +344,25 @@ indicaIngredientes(){
 
 proceed(){
   console.log('Procediendo con los ingredientes...');
+  console.log(this.ingredientesReceta);
   if (this.semaforo=='verde' || this.semaforo=='ambar'){
     this.ingredientesReceta.forEach((ing)=>{
+      console.log(ing);
       this.newItem(this.ingredientes[ing['ingrediente']],this.lotesIng[ing['ingrediente']][ing['lote']],parseFloat(ing['cantidad']).toFixed(2),this.loteSelected[ing['ingrediente']][ing['lote']].nombreMP)
       let indexMP = this.materiasPrimas.findIndex((mp)=>mp.id==this.lotesIng[ing['ingrediente']][ing['lote']].idproducto);
+
+      if(this.materiasPrimas[indexMP].alergenos){
       console.log(indexMP,this.materiasPrimas[indexMP],JSON.parse(this.materiasPrimas[indexMP].alergenos));
-      
       JSON.parse(this.materiasPrimas[indexMP].alergenos).forEach((alergeno)=>{
         if (this.alergenos.findIndex((alergia)=>alergia==alergeno) ==-1){
           this.alergenos.push(alergeno);
         }
       })
+    }
+
     })
     this.cocinado=true;
+    this.checkCobertura();
     console.log('ITEMS',this.items);
     console.log('ALERGENOS',this.alergenos);
     this.alertas.push('recetas.elaborado');
@@ -607,5 +613,110 @@ checkPdf(){
   pdfLoaded(event){
     console.log('Loaded',event)
     this.maxPdf = event._pdfInfo.numPages;
+  }
+
+
+
+  checkCobertura(){
+    //Consulta entradasMP con id de MPHomologada
+    console.log('CHECKING COBERTURA');
+    //let cabecera=['Proveedor','NombreMP','Lote','Fecha Caducidad','Cantidad'];
+    let x=0;
+    this.ingredientes.forEach((ingrediente)=>{
+      let y=0;
+      let loteAcumulado =[];
+      this.lotesIng[x].forEach((lote)=>{
+        let indexLA = loteAcumulado.findIndex((LA)=>LA["idproducto"]==lote.idproducto && LA["idproveedor"]==lote.idproveedor);
+        if (indexLA==-1){
+          loteAcumulado.push({'idproducto':lote.idproducto,"idproveedor":lote.idproveedor,'cantidad':0+lote.cantidad_remanente,'tipo_medida':lote.tipo_medida});
+          indexLA = loteAcumulado.length-1;
+        }else{
+          let a:number=parseInt(loteAcumulado[indexLA]["cantidad"]);
+          let b:number=0+parseInt(lote.cantidad_remanente.toString());
+          console.log(typeof(a),a);
+          console.log(typeof(b),b);
+          let cantidadRemanente:number= 0+a+b;
+          console.log(typeof(a),typeof(b),typeof(cantidadRemanente),a,b,cantidadRemanente)
+          loteAcumulado[indexLA]["cantidad"]=cantidadRemanente;
+        }
+
+        if (this.loteSelected[x][y].cantidad>0){
+          // lote.idproveedor
+          // lote.idproducto
+          //let indexLA = loteAcumulado.findIndex((LA)=>LA["idproducto"]==lote.idproducto && LA["idproveedor"]==lote.idproveedor);
+          //if (indexLA==-1){
+          //  loteAcumulado.push({'idproducto':lote.idproducto,"idproveedor":lote.idproveedor,'cantidad':this.loteSelected[x][y].cantidad,'tipo_medida':lote.tipo_medida});
+          //}else{
+            let cantidad= loteAcumulado[indexLA]["cantidad"]-this.loteSelected[x][y].cantidad;
+            loteAcumulado[indexLA]["cantidad"]=cantidad;
+          //}
+          // this.loteSelected[x][y].nombreMP
+          // lote.numlote_proveedor
+          // lote.fecha_caducidad
+          // this.loteSelected[x][y].cantidad 
+          // lote.tipo_medida
+          //Acumula cantidades por idMateriaprima == idProductoProveedor && lote.idproveedor
+
+        }
+        y++;
+      })
+      //Comprueba todos los lotes afectados para el ingrediente x;
+      loteAcumulado.forEach((loteA)=>{
+        // console.log('***',this.materiasPrimas.findIndex((MP)=>{MP.id==loteA.idproducto && MP.idproveedor==loteA.idproveedor}));
+        // console.log('***',this.materiasPrimas.findIndex((MP)=>MP.id==loteA.idproducto && MP.idproveedor==loteA.idproveedor));
+        // console.log('***',this.materiasPrimas.findIndex((MP)=>MP.id==loteA.idproducto));
+        // console.log('***',this.materiasPrimas[0].id,loteA.idproducto);
+
+
+        let indexMP = this.materiasPrimas.findIndex((MP)=>MP.id==loteA.idproducto && MP.idproveedor==loteA.idproveedor);
+        if (indexMP<0){
+          //ALGO RARO ESTÁ OCURRIENDO
+          console.log('ALGO RARO ESTÁ OCURRIENDO',this.materiasPrimas,loteA);
+        }else{
+      //this.materiasPrimas[indexMP].stockMin > Diferencia (lotestotal - sumacantidades), realizar pedido MP.
+          console.log(this.materiasPrimas[indexMP]["stockMinim"],loteA["cantidad"])
+        if (this.materiasPrimas[indexMP]["stockMinim"]>loteA["cantidad"]){
+          console.log('Se ha sobrepasado el limite de cobertura y hay que realizar un pedido  de [1] al proveedor [2]',loteA["idproducto"],loteA["idproveedor"])
+          this.sendMailCoberturaRota(loteA["idproducto"],loteA["idproveedor"])
+        }else{
+          console.log('no hay que hacer nada');
+        }
+        }
+      })
+      x++;
+    })
+  }
+
+
+  sendMailCoberturaRota(idProducto,idProveedor){
+    console.log("sendmail start: ",idProducto,idProveedor);
+    let nomProveedor= this.getProv(idProveedor);
+    let indexProd = this.materiasPrimas.findIndex((MP)=>MP["id"]==idProducto);
+    let nomProductos = this.materiasPrimas[indexProd]["nombre"] + " stock Mínimo " + this.materiasPrimas[indexProd]["stockMinim"]
+    console.log();
+    let cabecera = "Alerta cobertura stock con fecha y hora: <b>" + moment().format('DD-MM-YYYY hh:mm')+"</b><BR>";
+    // let User = "Solicitado por: <b>" +  user["label"]  + "</b> con prioridad: <b>" + this.ticket.priority +  "</b><BR>";
+     let cobertura =   "Producto: <b>" + nomProductos +  "</b><BR>Proveedor: " + nomProveedor+"<BR>";
+
+     let url =   encodeURI(URLS.SERVER)+"%23"+ encodeURI('/empresas/'+this.empresasService.seleccionada+'/proveedores/'+idProveedor+'/'+idProducto) ;
+     let link = "ir a la página del proveedor:" + encodeURI(url);
+
+    let body = cabecera + cobertura + link+"<BR>";
+    // console.log (body);
+   
+    let parametros2 = "&remite=cobertura&body="+body+"&idempresa="+this.empresasService.seleccionada.toString();
+    //let idEmpresa = this.empresasService.seleccionada.toString();
+        // this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
+          this.servidor.getObjects(URLS.ALERTES,parametros2).subscribe(
+          response => {
+            if (response.success && response.data) {
+              console.log('email COBERTURA enviado');
+            }
+        },
+        error =>{
+            console.log('ERROR email',error)
+        }
+        );
+        //this.support = false;
   }
 }

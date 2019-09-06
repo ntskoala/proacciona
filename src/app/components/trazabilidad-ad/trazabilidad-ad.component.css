@@ -1,8 +1,8 @@
 .arbol{
     /*width: 100%;*/
-    float: left;
+    /* float: left; */
     background-color: #fff;
-    position: relative;
+    /* position: relative; */
     margin-left: 25px;
     margin-top: 60px;
 }

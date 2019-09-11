@@ -13,7 +13,7 @@
       <mat-tab-group (selectedTabChange)="tabSelected($event)" (animationDone)="tabReady()">
         <mat-tab label="{{'recetas.Ingredientes' | translate}}">
 
-            <mat-progress-spinner *ngIf="estado < 100"  style="position: fixed; margin-top: 100px; margin-left:45%; z-index: 99999;" mode="indeterminate"></mat-progress-spinner>
+            <mat-progress-spinner *ngIf="estado < 100 && semaforo =='ambar'"  style="position: fixed; margin-top: 100px; margin-left:45%; z-index: 99999;" mode="indeterminate"></mat-progress-spinner>
 
           <mat-toolbar style="padding-top: 30px;width: 780px;font-size: medium;">
             {{receta.nombre}} ({{orden.numlote}})

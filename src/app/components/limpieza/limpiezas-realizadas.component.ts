@@ -84,7 +84,7 @@ public informeData:any;
           { field: 'fecha_prevista', header: 'limpieza.fecha_prevista', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
           { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
-          { field: 'responsable', header: 'responsable', type: 'std', width:130,orden:true,'required':false },
+          { field: 'idusuario', header: 'responsable', type: 'dropdown', width:130,orden:true,'required':false },
           { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:110,orden:false,'required':false },
           { field: 'idsupervisor', header: 'limpieza.supervisor', type: 'dropdown', width:110,orden:false,'required':false },
           { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:true,'required':true },
@@ -140,6 +140,9 @@ seleccion(evento){
     case 'idsupervisor':
     return this.usuarios;
     break;
+    case 'idusuario':
+      return this.usuarios;
+      break;
     }
     }
 
@@ -160,7 +163,7 @@ seleccion(evento){
                 let supervisor = ''; 
                 (element.idsupervisor>0)? supervisor = this.findSupervisor(element.idsupervisor):supervisor =  '';
                   this.items.push(new LimpiezaRealizada(element.idelemento,element.idlimpiezazona,element.nombre,element.descripcion,
-                  new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.usuario,element.responsable,element.id,
+                  new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.idusuario,element.responsable,element.id,
                   element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
                   supervisor,element.doc,element.imagen));
                   this.motivo.push(false);

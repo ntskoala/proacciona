@@ -25,7 +25,7 @@
             {{'trazabilidad.Arbol' | translate}} {{'trazabilidad.'+modo | translate}}
     <!--Selected Node: {{selectedFile3 ? selectedFile3.label : 'none'}}-->
         </mat-card-title>
-<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event,toPDF,toPDF2)" (onNodeUnselect)="nodeUnselect($event)"  [contextMenu]="cm"></p-tree>
+<p-tree [value]="tree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event,toPDF,toPDF2)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
 
 <!--<p-tree [value]="tree" styleClass="miarbol" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>-->
     </mat-card>

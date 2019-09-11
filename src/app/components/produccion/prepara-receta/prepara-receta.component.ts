@@ -677,7 +677,7 @@ checkPdf(){
           console.log(this.materiasPrimas[indexMP]["stockMinim"],loteA["cantidad"])
         if (this.materiasPrimas[indexMP]["stockMinim"]>loteA["cantidad"]){
           console.log('Se ha sobrepasado el limite de cobertura y hay que realizar un pedido  de [1] al proveedor [2]',loteA["idproducto"],loteA["idproveedor"])
-          this.sendMailCoberturaRota(loteA["idproducto"],loteA["idproveedor"])
+          this.sendMailCoberturaRota(loteA["idproducto"],loteA["idproveedor"],loteA["cantidad"])
         }else{
           console.log('no hay que hacer nada');
         }
@@ -688,11 +688,14 @@ checkPdf(){
   }
 
 
-  sendMailCoberturaRota(idProducto,idProveedor){
+  sendMailCoberturaRota(idProducto,idProveedor,cantidadRemanente){
     console.log("sendmail start: ",idProducto,idProveedor);
     let nomProveedor= this.getProv(idProveedor);
     let indexProd = this.materiasPrimas.findIndex((MP)=>MP["id"]==idProducto);
-    let nomProductos = this.materiasPrimas[indexProd]["nombre"] + " stock Mínimo " + this.materiasPrimas[indexProd]["stockMinim"]
+    let remanent ="Remanente: <b>"+ cantidadRemanente+"</b><BR>";
+  let nomProductos = "<b>"+this.materiasPrimas[indexProd]["nombre"] + " stock Mínimo " + this.materiasPrimas[indexProd]["stockMinim"]+"</b><br>"+remanent;
+
+  //  let nomProductos = this.materiasPrimas[indexProd]["nombre"] + " stock Mínimo " + this.materiasPrimas[indexProd]["stockMinim"]
     console.log();
     let cabecera = "Alerta cobertura stock con fecha y hora: <b>" + moment().format('DD-MM-YYYY hh:mm')+"</b><BR>";
     // let User = "Solicitado por: <b>" +  user["label"]  + "</b> con prioridad: <b>" + this.ticket.priority +  "</b><BR>";

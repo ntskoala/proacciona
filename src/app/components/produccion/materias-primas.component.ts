@@ -137,7 +137,7 @@ getProductos(idProveedor:number){
             this.nuevoItem.idmateriaprima=null;
             if (response.success && response.data) {
               for (let element of response.data) { 
-                  this.productos.push({"value":element.id,"label":element.nombre,"alergenos":element.alergenos});
+                  this.productos.push({"value":element.id,"label":element.nombre,"alergenos":element.alergenos,"stockMinim":element.stockMinim});
              }
             }
         },
@@ -247,8 +247,8 @@ getProveedores(){
           this.passItem.id = response.id;
           this.setRemanente(this.passItem);
           this.nuevoItem = new ProduccionDetalle(0,0,null,null,null,null,0,0,'');
-          this.productos=[];
-          this.entrada_productos=[];
+          //this.productos=[];
+         // this.entrada_productos=[];
         }
     },
     error =>console.log(error),
@@ -258,11 +258,13 @@ getProveedores(){
 
 setRemanente(detalleProduccion: ProduccionDetalle){
   console.log("setRemanente",detalleProduccion)
+  
   if (detalleProduccion.idmateriaprima >0){
         let parametros = '&idempresa=' + this.empresasService.seleccionada+"&idmateriaprima="+detalleProduccion.idmateriaprima+"&cantidad="+detalleProduccion.cantidad; 
         this.servidor.getObjects(URLS.UPDATE_REMANENTE, parametros).subscribe(
           response => {
-            this.entrada_productos = [];
+            this.checkCobertura(detalleProduccion.idMPHomologada,detalleProduccion.proveedor,detalleProduccion.cantidad);
+            //this.entrada_productos = [];
             if (response.success && response.data) {
               console.log('updated');
              }
@@ -683,5 +685,86 @@ compareAlergenos(AlergenosParaComprobar,AlergenosRemaining){
     console.log('ERROR COMPARANDO',e);
   }
 
+}
+
+
+
+
+checkCobertura(idproducto,proveedor, cantidad){
+  //Consulta entradasMP con id de MPHomologada
+  console.log('CHECKING COBERTURA');
+  console.log(this.entrada_productos);
+let idproveedor=this.proveedores[this.proveedores.findIndex((prov)=>prov.label==proveedor)].value;
+let cantidadAcumulada=0;
+  let x=0;
+  this.entrada_productos.forEach((ingrediente)=>{
+    let y=0;
+    
+
+      if (ingrediente["idproducto"] == idproducto){
+        cantidadAcumulada += ingrediente["cantidad"]
+      }
+
+    })
+    let cantidadRemanente = cantidadAcumulada - cantidad
+      let indexMP = this.productos.findIndex((MP)=>MP["value"]==idproducto);
+      if (indexMP<0){
+        //ALGO RARO ESTÁ OCURRIENDO
+        console.log('ALGO RARO ESTÁ OCURRIENDO',this.productos,idproducto);
+      }else{
+    //this.materiasPrimas[indexMP].stockMin > Diferencia (lotestotal - sumacantidades), realizar pedido MP.
+      console.log(this.productos[indexMP]["stockMinim"],cantidadAcumulada,cantidad);
+
+      if (this.productos[indexMP]["stockMinim"]>cantidadRemanente){
+        console.log('Se ha sobrepasado el limite de cobertura y hay que realizar un pedido  de [1] al proveedor [2]',idproducto,idproveedor)
+        this.sendMailCoberturaRota(idproducto,idproveedor,cantidadRemanente)
+      }else{
+        console.log('no hay que hacer nada');
+        this.productos=[];
+        this.entrada_productos=[];
+        
+      }
+      }
+}
+
+
+getProv(idproveedor){
+  return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveedor)].label
+  }
+
+sendMailCoberturaRota(idProducto,idProveedor,cantidadRemanente){
+  console.log("sendmail start: ",idProducto,idProveedor);
+  let nomProveedor= this.getProv(idProveedor);
+  let indexProd = this.productos.findIndex((MP)=>MP["value"]==idProducto);
+  let remanent ="Remanente: <b>"+ cantidadRemanente+"</b><BR>";
+  let nomProductos = "<b>"+this.productos[indexProd]["label"] + " stock Mínimo " + this.productos[indexProd]["stockMinim"]+"</b><br>"+remanent;
+
+  console.log();
+  let cabecera = "Alerta cobertura stock con fecha y hora: <b>" + moment().format('DD-MM-YYYY hh:mm')+"</b><BR>";
+  // let User = "Solicitado por: <b>" +  user["label"]  + "</b> con prioridad: <b>" + this.ticket.priority +  "</b><BR>";
+  let cobertura =   "Producto:" + nomProductos +  "<BR>Proveedor: <b>" + nomProveedor + "</b><BR>";
+  
+   let url =   encodeURI(URLS.SERVER)+"%23"+ encodeURI('/empresas/'+this.empresasService.seleccionada+'/proveedores/'+idProveedor+'/'+idProducto) ;
+   let link = "ir a la página del proveedor:" + encodeURI(url);
+
+  let body = cabecera + cobertura + link+"<BR>";
+  // console.log (body);
+ 
+  let parametros2 = "&remite=cobertura&body="+body+"&idempresa="+this.empresasService.seleccionada.toString();
+  //let idEmpresa = this.empresasService.seleccionada.toString();
+      // this.servidor.getObjects(URLS.ALERTES, parametros2).subscribe(
+        this.servidor.getObjects(URLS.ALERTES,parametros2).subscribe(
+        response => {
+          if (response.success && response.data) {
+            console.log('email COBERTURA enviado');
+          }
+      },
+      error =>{
+          console.log('ERROR email',error)
+      }
+      );
+      this.productos=[];
+      this.entrada_productos=[];
+      //this.support = false;
 }
 }

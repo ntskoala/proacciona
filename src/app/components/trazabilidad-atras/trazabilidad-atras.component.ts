@@ -37,6 +37,7 @@ export class TrazabilidadAtrasComponent implements OnInit, OnChanges{
 // @ViewChild('expandingTree')
 @ViewChild('toPDF') el: ElementRef;
 @ViewChild('toPDF2') el2: ElementRef;
+@ViewChild('toPDF2') toPDF2: ElementRef;
 @ViewChild('toPDFTitle') elTitle: ElementRef;
 // @HostListener("window:scroll", ['$event'])
 @Output() onHeightChanged: EventEmitter<string>=new EventEmitter<string>();

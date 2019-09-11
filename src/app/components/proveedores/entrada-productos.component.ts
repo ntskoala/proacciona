@@ -64,7 +64,8 @@ public modal2: Modal;
 public entidad:string="&entidad=proveedores_entradas_producto";
 public field:string="&field=idproveedor&idItem=";//campo de relación con tabla padre
 public es;
-
+public productoBuscado:number=null;
+public hoy = new Date().setHours(0,0,0,0);
 
 public trazabilidad:boolean=false;
 public modo:string='adelante';
@@ -142,8 +143,8 @@ resultado: Object = {};
           if (param["params"]["id"]){
             console.log(param["params"]["id"],param["params"]["modulo"]);
             let idOrigen = param["params"]["id"];
-            let index = this.items.findIndex((item)=>item.id==idOrigen);
-            
+            let index = this.items.findIndex((item)=>item.idproducto==idOrigen);
+            this.productoBuscado = idOrigen;
             console.log('***===',index,this.items)
              if (index > -1){
               let prod=this.items[index].idproducto;
@@ -974,7 +975,9 @@ doSomethingOnWindowScroll(evento:any){
           let contador = 0;
           for (let resultado of this.resultadoschecklist) {
             if (idr == resultado.idr) {
-              if (this.selectedItems[0] && this.selectedItems[0]== resultado.idrc) this.selectedId = resultado.idr;
+              if(this.selectedItems){
+              if (this.selectedItems[0] && this.selectedItems[0]== resultado.idrc) this.selectedId = resultado.idr
+              }
               this.resultado['id'] = resultado.idr;
               this.resultado['idrc' + resultado.idcontrolchecklist] = resultado.idrc;
               this.resultado['usuario'] = resultado.usuario;

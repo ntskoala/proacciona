@@ -231,7 +231,7 @@ rowExpandMode="single"
   <div class="tableContent">
   <ng-template pTemplate="body" let-item let-columns="columns" let-i="rowIndex" let-expanded="expanded">
     <!--let-expanded="expanded" -->
-    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded, 'selectedProd':true}">
+    <tr [pSelectableRow]="item" [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0, 'expandSelected':expanded, 'selectedProd':item.idproducto==productoBuscado}">
       <td><span *ngIf="expanded!=null && hayTrigger">
           <a disabled href="#" [pRowToggler]="item">
             <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
@@ -264,10 +264,10 @@ rowExpandMode="single"
         <p-cellEditor>
           <!-- ********* VER DATA   ***-->
           <ng-template pTemplate="output">
-            <span *ngIf="col.type =='std'">
+            <span *ngIf="col.type =='std'" [ngClass]="{'prodCaducado':item['cantidad_remanente'] <= 0 && col.field=='cantidad_remanente' }">
               {{item[col.field]}}
             </span>
-              <span *ngIf="col.type == 'fecha'">
+              <span *ngIf="col.type == 'fecha'" [ngClass]="{'prodCaducado':item[col.field] < hoy && col.field=='fecha_caducidad' && item['cantidad_remanente'] >0 }">
                   {{item[col.field] | date:"dd-MM-yyyy"}}
             </span>
           </ng-template>

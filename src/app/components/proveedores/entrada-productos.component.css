@@ -143,5 +143,8 @@
 }
 
 .selectedProd{
-    background-color: #cc4a33 !important;
+    background-color: #ffd740 !important;
+}
+.prodCaducado{
+    background-color:red;
 }

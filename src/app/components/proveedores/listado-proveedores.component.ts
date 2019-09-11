@@ -34,6 +34,7 @@ public  nuevoNombre:string;
     private route: ActivatedRoute) {}
 
   ngOnInit() {
+    console.log('ON INIT');
     this.loadItems(this.empresasService.seleccionada.toString());
   }
 cambiarTab(){}
@@ -46,14 +47,14 @@ incidenciaSelection(){
       console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
       if (param["params"]["modulo"] == "proveedores"){
         console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
-        if (param["params"]["idOrigenasociado"]){
+        if (param["params"]["idOrigenasociado"]>0){
           console.log(param["params"]["idOrigenasociado"],param["params"]["modulo"]);
           let idOrigen = param["params"]["idOrigenasociado"];
           let index = this.items.findIndex((item)=>item.id==idOrigen);
           if (index > -1){
             console.log('***_',index);
             let event = {'value':index}
-            this.seleccionarItem(event);
+            this.seleccionarItem(event,'INCIDENCIA SELECCION');
             }else{
               console.log('Proveedor no encontrado')
             }
@@ -84,16 +85,16 @@ loadItems(emp: Empresa | string) {
               ()=>{
               //this.listaZonas.emit(this.limpiezas);
                //this.expand(this.Choicer.nativeElement);
-               this.expand();
+               this.expand('load items line 87');
               }
         );
    }
 
-seleccionarItem(event: any){
+seleccionarItem(event: any,fuente?:string){
   console.log(event);
   this.itemSeleccionado.emit(this.items[event.value]);
   this.itemActivo = this.items[event.value].id;
-  this.unExpand();
+  this.unExpand('SEL ITEM line 92');
 }
 
 crearItem(proveedor: Proveedor){
@@ -143,7 +144,7 @@ let parametros = '?id=' + this.itemActivo+param;
             this.items.splice(indice, 1);
             this.itemActivo = 0;
             this.itemSeleccionado.emit(this.items[0]);
-            this.expand();
+            this.expand('CERRAR MODALline 134');
           }
       });
     }
@@ -167,12 +168,14 @@ addItem(){
   this.nuevoItem = new Proveedor('',0);
 }
 
-expand(){
+expand(fuente?:string){
+  console.log('EXPAND',fuente)
 setTimeout(()=>{this.Choicer.open();},200)
 }
-unExpand(){
-  console.log('UNEXPAND')
+unExpand(fuente?:string){
+  console.log('UNEXPAND',this.Choicer.value)
   setTimeout(()=>{
+    if (this.Choicer.panelOpen)
     this.Choicer.toggle();
   },3000)
   

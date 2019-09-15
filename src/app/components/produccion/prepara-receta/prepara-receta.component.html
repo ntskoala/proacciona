@@ -22,7 +22,7 @@
             </mat-form-field>
             {{receta.tipo_medida}}
             <div class="tooltip" matTooltip="{{'recetas.calcular' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
-            <button  class="toolbarF" color="accent" [disabled]="false" mat-raised-button (click)="process()">
+            <button  class="toolbarF" color="accent" [disabled]="semaforo=='rojo'" mat-raised-button (click)="process()">
               {{'recetas.calcular' | translate}}
             </button>
           </div>

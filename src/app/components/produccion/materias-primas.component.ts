@@ -747,7 +747,7 @@ sendMailCoberturaRota(idProducto,idProveedor,cantidadRemanente){
    let url =   encodeURI(URLS.SERVER)+"%23"+ encodeURI('/empresas/'+this.empresasService.seleccionada+'/proveedores/'+idProveedor+'/'+idProducto) ;
    let link = "ir a la página del proveedor:" + encodeURI(url);
 
-  let body = cabecera + cobertura + link+"<BR>";
+  let body = cabecera + cobertura +"<BR>";
   // console.log (body);
  
   let parametros2 = "&remite=cobertura&body="+body+"&idempresa="+this.empresasService.seleccionada.toString();

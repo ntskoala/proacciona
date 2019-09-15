@@ -660,8 +660,8 @@
       "insuficiente1":"No hay suficiente/s ",
       "insuficiente2":" para preparar la receta, total disponible: ",
       "insuficiente3":" necesitas: ",
-      "sinLotes":"No hay lotes disponibles para",
-      "sinMP":"No hay Materias Primas disponibles",
+      "sinLotes":"Comprobar stock en proveedores, no se encuentran lotes disponibles para ",
+      "sinMP":" no tiene Materias Primas disponibles, asigna el ingrediente en Proveedores -> M.P. Homologadas",
       "faltaReceta":"No hay receta para esta elaboración o no se han añadido ingredientes a la receta",
       "faltaCantidadProduccion":"Debes introducir una cantidad mayor de 0 para producir"
     },

@@ -198,8 +198,11 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
           this.semaforo='rojo';
           // this.translate.get(['recetas.insuficiente1','recetas.insuficiente2','recetas.insuficiente3']).subscribe((insuficiente)=>{
          console.log('No hay Materias Primas disponibles');
-          let alerta= 'recetas.sinMP';
-          this.alertas.push(alerta);
+         this.translate.get('recetas.sinMP').subscribe((sinMP)=>{
+          console.log(sinMP);
+        let alerta= ingrediente.ingrediente +sinMP 
+        this.alertas.push(alerta);
+        });
         }
     },
     error=>{
@@ -704,7 +707,7 @@ checkPdf(){
      let url =   encodeURI(URLS.SERVER)+"%23"+ encodeURI('/empresas/'+this.empresasService.seleccionada+'/proveedores/'+idProveedor+'/'+idProducto) ;
      let link = "ir a la página del proveedor:" + encodeURI(url);
 
-    let body = cabecera + cobertura + link+"<BR>";
+    let body = cabecera + cobertura +"<BR>";
     // console.log (body);
    
     let parametros2 = "&remite=cobertura&body="+body+"&idempresa="+this.empresasService.seleccionada.toString();

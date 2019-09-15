@@ -16,10 +16,13 @@
   }
 
 .semaforoRojo{
-    border: red solid 1px;
+    border: red solid 2px;
+    border-radius: 5px;
+    background-color: #fff !important;
 }
 .semaforoVerde{
     border: green solid 1px;
+    border-radius: 5px;
 }
 
 .loteSelected{

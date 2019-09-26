@@ -147,9 +147,14 @@
     -->
 
     <modal [modal]="modal" (onCerrar)="cerrarModal($event)"></modal>
-    <!-- <div class="modal" *ngIf="procesando">
-      <mat-spinner></mat-spinner>
-    </div> -->
+    <div class="modal" *ngIf="supervisarBatch>0">
+      <div class="modalWindowDashboard">
+          <div  class="tooltip botonCerrarmodalWindow" matTooltip="{{'cerrar' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'before'">        
+              <button color="accent" mat-mini-fab (click)="cerrarSideNav()"><mat-icon>cancel</mat-icon></button>
+              </div>
+      <mat-progress-spinner mode="determinate" [value]="supervisarBatch"></mat-progress-spinner>
+      </div>
+    </div>
     
     
     <!-- <periodicidadNew *ngIf="viewPeriodicidad" appendTo="body" (periodo)="setPeriodicidad($event, nuevoItem.id, i)" (activo)="closePeriodicidad($event)" [miperiodo]="viewPeriodicidad" [fechaPrevista]="nuevoItem.fecha" [origen]="tipo" name="periodicidad"></periodicidadNew> -->
@@ -178,9 +183,27 @@
                     <mat-icon>import_export</mat-icon>
           </th> -->
          <!--************ FIN ORDEN ***************************-->
-          <th  *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width+'px'">
+          <th  *ngFor="let col of columns" [pSortableColumn]="col.orden" [style.width]="col.width+'px'">
             {{col.header | translate}}
             <p-sortIcon *ngIf="col.orden" [field]="col.field"></p-sortIcon>
+            <span *ngIf="col.field=='supervision'">
+              <button style="margin-left: -10px;" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" (click)="menuSupervision()">
+                  <span class="tooltip" matTooltip="{{'limpieza.supervisarTodastt' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                  [matTooltipPosition]="'right'">
+                <button mat-menu-item (click)="supervisarTodas(DT)">
+                  <mat-icon>done_all</mat-icon>
+                  <span>{{'limpieza.supervisarTodas' | translate}} ({{countSinSupervisar}})</span>
+                </button>
+                  </span>
+                <button mat-menu-item>
+                  <mat-icon>clear</mat-icon>
+                  <span>{{'cancelar' | translate}}</span>
+                </button>
+              </mat-menu>
+            </span>
           </th>
           <th [style.width]="'95px'">
             {{'acciones' | translate}}

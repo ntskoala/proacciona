@@ -140,7 +140,7 @@ resultado: Object = {};
         console.log(param["params"]["id"],param["params"]["modulo"]);
         if (param["params"]["modulo"] == "proveedores"){
           console.log(param["params"]["id"],param["params"]["modulo"]);
-          if (param["params"]["id"]){
+          if (param["params"]["id"]>0){
             console.log(param["params"]["id"],param["params"]["modulo"]);
             let idOrigen = param["params"]["id"];
             let index = this.items.findIndex((item)=>item.idproducto==idOrigen);
@@ -1034,4 +1034,9 @@ doSomethingOnWindowScroll(evento:any){
     this.onHeightChanged.emit(this.heightTraza);
   }
 
+
+  tooltipFecha(){
+    //this.setAlerta('TOOLTIP');
+    console.log('TOOLTIP ENTRADA MANUAL');
+  }
 }

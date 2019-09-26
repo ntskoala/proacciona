@@ -50,13 +50,15 @@
          <span *ngIf="card.data.cantidad_remanente_origen && card.data.fecha_inicio_orden > '2017-08-20'">{{'trazabilidad.remanente_origen' | translate}}: {{card.cantidad_remanente_origen}}<br></span>
         </mat-card>
   </span>
+
+  
   <span *ngIf="!permisos.traspasos">
       <mat-card *ngFor="let card of msgs; let i = index">
           <mat-card-title>
       <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
             <span class="material-icons">remove_circle_outline</span>
       </button>
-             {{ card.label }} <span *ngIf="card.data.nombreProduccion"> {{card.data.nombreProduccion}}<br></span>(NO VAQUERIA)
+             {{ card.label }} <span *ngIf="card.data.nombreProduccion"> {{card.data.nombreProduccion}}<br></span>
           </mat-card-title>
           <span *ngIf="card.data.tipo=='orden'"> 
           <span *ngIf="card.data.parent">

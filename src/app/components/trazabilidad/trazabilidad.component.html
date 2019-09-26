@@ -55,7 +55,7 @@
       <button  mat-mini-fab color="accent" (click)="closeFicha(i)" type="button">
             <span class="material-icons">remove_circle_outline</span>
       </button>
-             {{ card.label }}(NO VAQUERIA)
+             {{ card.label }}
           </mat-card-title>
           <span *ngIf="card.data.tipo=='orden'"> 
           El <span *ngIf="card.data.fecha_inicio_orden">{{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>

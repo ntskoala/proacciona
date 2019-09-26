@@ -280,7 +280,7 @@ getParent(nodo: any,id:number, tipo:string,level:number){
                       if (element.idmateriaprima>0){
                       //  this.setItems(nodo.children[i],element.idmateriaprima)
                       nodo.children.push({
-                      "label":element.proveedor + ": " + element.producto + ': ' + element.numlote_proveedor,
+                      "label": element.producto + " (" + element.numlote_proveedor + ") -" + element.proveedor+ "-",
                       //"expanded":true,
                       "data":{"parent":nodo,"tipo":"entrada","idOrden":element.idorden,"fecha_inicio_orden":element.fecha_inicio,"idDetalleOrden":element.id,"numlote_proveedor":element.numlote_proveedor,"level":level,"almacen":element.idalmacen,"cantidad_inicial":element.cantidad,"cliente":element.idcliente,"proveedor":element.proveedor,"fecha_caducidad":element.fecha_caducidad,"cantidad_remanente_origen":element.cantidad_remanente_origen,"cantidad_detalle":element.cantidad_detalle,"cantidad_real_origen":element.cantidad_real_origen,"tipo_medida":element.tipo_medida,"nombreMP":element.producto,"nombreProduccion":element.nombreProduccion}
                         });

@@ -192,8 +192,11 @@ rowExpandMode="single"
                     [style.width]="(col.width -7)+'px'" [name]="col.field" (change)="cambioInput()">
                 </span>
                 <span *ngIf="col.type == 'fecha'">
+                    <span class="tooltip" matTooltip="{{'formatoFecha' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                    [matTooltipPosition]="'left'">
                   <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="nuevoItem[col.field]"
                     [locale]="es" dateFormat="dd/mm/yy" [name]="col.field"></p-calendar>
+                    </span>
                 </span>
                   <span *ngIf="col.type == 'dropdown'">
                     <p-dropdown [placeholder]="col.header | translate" [options]="getOptions([col.field])" [(ngModel)]="nuevoItem[col.field]" appendTo="body" [style]="{'width':'110px'}"
@@ -268,7 +271,9 @@ rowExpandMode="single"
               {{item[col.field]}}
             </span>
               <span *ngIf="col.type == 'fecha'" [ngClass]="{'prodCaducado':item[col.field] < hoy && col.field=='fecha_caducidad' && item['cantidad_remanente'] >0 }">
-                  {{item[col.field] | date:"dd-MM-yyyy"}}
+                  <span class="tooltip" matTooltip="{{'formatoFecha' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'left'">
+                {{item[col.field] | date:"dd-MM-yyyy"}}
+                  </span>
             </span>
           </ng-template>
           <!-- ********* EDIT DATA   ***-->
@@ -277,8 +282,12 @@ rowExpandMode="single"
               <input pInputText type="text" [(ngModel)]="item[col.field]" [style.width]="(col.width -7)+'px'">
             </span>
             <span *ngIf="col.type == 'fecha'">
-              <p-calendar [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
-                [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha"></p-calendar>
+                <span class="tooltip" matTooltip="{{'formatoFecha' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips"
+                [matTooltipPosition]="'left'">
+              <p-calendar #ff [touchUI]="false" [defaultDate]="" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="item[col.field]"
+                [locale]="es" dateFormat="dd/mm/yy" (onSelect)="itemEdited(item.id,item.fecha)" name="fecha">
+              </p-calendar>
+                </span>
             </span>
             <!--****** FIN ********************-->
           </ng-template>

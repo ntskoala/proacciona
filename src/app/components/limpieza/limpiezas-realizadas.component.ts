@@ -43,6 +43,8 @@ public idBorrar;
 public motivo:boolean[]=[];
 public tipos:object[]=[{label:'Interno', value:'interno'},{label:'Externo', value:'externo'}];
 public supervisar:object[]=[{"value":0,"label":"Por supervisar"},{"value":1,"label":"Correcto"},{"value":2,"label":"Incorrecto"}];
+public countSinSupervisar:number=0;
+public supervisarBatch:number=0;
   modal: Modal = new Modal();
 entidad:string="&entidad=limpieza_realizada";
 field:string="&field=idlimpiezazona&idItem=";
@@ -81,13 +83,13 @@ public informeData:any;
       this.es=cal;
         this.cols = [
           { field: 'nombre', header: 'Nombre', type: 'std', width:160,orden:true,'required':true },
-          { field: 'fecha_prevista', header: 'limpieza.fecha_prevista', type: 'fecha', width:120,orden:true,'required':true },
-          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:true,'required':true },
-          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:true,'required':true },
-          { field: 'idusuario', header: 'responsable', type: 'dropdown', width:130,orden:true,'required':false },
-          { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:110,orden:false,'required':false },
+          { field: 'fecha_prevista', header: 'limpieza.fecha_prevista', type: 'fecha', width:120,orden:'fecha_prevista','required':true },
+          { field: 'fecha', header: 'fecha', type: 'fecha', width:120,orden:'fecha','required':true },
+          { field: 'tipo', header: 'tipo', type: 'dropdown', width:115,orden:false,'required':true },
+          { field: 'idusuario', header: 'responsable', type: 'dropdown', width:130,orden:false,'required':false },
+          { field: 'supervision', header: 'limpieza.supervision', type: 'dropdown', width:130,orden:false,'required':false },
           { field: 'idsupervisor', header: 'limpieza.supervisor', type: 'dropdown', width:110,orden:false,'required':false },
-          { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:true,'required':true },
+          { field: 'fecha_supervision', header: 'limpieza.fecha_supervision', type: 'fecha', width:120,orden:'fecha_supervision','required':true },
         ];
         if (localStorage.getItem("idioma")=="cat") {
           this.tipos=[{label:'Intern', value:'interno'},{label:'Extern', value:'externo'}];
@@ -166,6 +168,7 @@ seleccion(evento){
                   new Date(element.fecha_prevista),new Date(element.fecha),element.tipo,element.idusuario,element.responsable,element.id,
                   element.idempresa,element.idsupervisor,fecha,element.supervision,element.detalles_supervision,
                   supervisor,element.doc,element.imagen));
+                  if (element.supervision == 0) this.countSinSupervisar++;
                   this.motivo.push(false);
                   this.incidencia[element.id]={'origen':'limpiezas','origenasociado':'limpieza_realizada','idOrigenasociado':element.idlimpiezazona,'idOrigen':element.id}
                   // this.url.push({"imgficha":this.baseurl + element.id +'_'+element.imgficha,"imgcertificado":this.baseurl + element.id +'_'+element.imgcertificado});
@@ -278,7 +281,7 @@ onEdit(event){
     }
 
  saveItem(mantenimiento: LimpiezaRealizada) {
-   
+   return new Promise((resolve)=>{
    //console.log ("evento",event);
     this.guardar[mantenimiento.id] = false;
     this.alertaGuardar = false;
@@ -292,9 +295,11 @@ onEdit(event){
     this.servidor.putObject(URLS.STD_SUBITEM, parametros, mantenimiento).subscribe(
       response => {
         if (response.success) {
+          resolve(true);
           console.log('Limpieza updated');
         }
     });
+  })
   }
 
 detalleSupervision(idMantenimiento: number,index:number){
@@ -618,5 +623,55 @@ rowCollapsed(evento){
           console.log(tabla,valor,Value);
           return Value;
         }
-    
+
+
+      
+    menuSupervision(){
+      console.log('opened menu');
+    }
+
+  supervisarTodas(lr){
+    //console.log(lr.rows,lr.sortField,lr.sortOrder);
+
+    // this.items.filter((item)=>{
+    //   console.log(item.supervision)
+    //   if (item.supervision==0) return item;
+    // })
+    let x=1;
+    let z=1;
+    let sinSupervisar = this.items.filter((item)=>{
+      //console.log(item.supervision)
+      if (item.supervision==0) return item;
+    })
+    //console.log(sinSupervisar)
+    sinSupervisar.forEach(async (item) => {
+      item.supervision = 1;
+      //this.saveItem(item)
+      this.saveItem(item).then(
+        (valorx)=>{
+          z+=1;
+          this.supervisarBatch = (100 / this.countSinSupervisar)*z;
+          if(this.supervisarBatch > 99 || z >= this.countSinSupervisar){
+            setTimeout(()=>{this.supervisarBatch=0},1000);
+            this.setAlerta('alertas.saveOk')
+          }
+        }
+      )
+
+      
+      x += 1;
+    })
+    //setTimeout(()=>{this.supervisarBatch=0},1000);
+  }
+
+  // save(item,i){
+  //   return new Promise((resolve)=>{
+  //     this.saveItem(item).then(
+  //       (valor)=>{
+  //         resolve (i);
+  //       }
+  //     )
+  //   })
+  // }
+
 }

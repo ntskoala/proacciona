@@ -89,6 +89,7 @@
   "Inicio":"Inici",
   "Fin":"Final",
   "Fecha":"Data",
+  "formatoFecha":"La introducció manual de la data es dd/mm/aaaa",
   "Imagen":"Imatge",
   "<min":"Menor que mínim",
   ">max":"Major que màxim",
@@ -285,6 +286,8 @@
      "correcta":"Correcte",
      "incorrecta":"Incorrecte",
      "porSupervisar":"Per supervisar",
+     "supervisarTodas":"Supervisar totes",
+     "supervisarTodastt":"Es desaràn totes les neteges realitzades per supervisar com correctes",
      "cuadroProductos":"Assignar productes",
      "app":"Mostra al mòbil"
   },
@@ -317,7 +320,7 @@
     "entradaproductos":"Entrada M.P.",
     "numlotep":"Lot",
     "cantidad":"Quantitat",
-    "stockMinim":"Cobertura",
+    "stockMinim":"Stock mínim",
     "fecha_entrada":"Data",
     "fecha_caducidad":"Data caducitat",
     "tipo medida":"Tipus mesura",
@@ -410,6 +413,9 @@
     "tanque":"Tanc",
     "origen":"Origen",
     "fecha orden":"Data ordre",
+    "fechaProduccion":"Data producció",
+    "fechaAdicion":"Data d'addició",
+    "fechaEntrega":"Data d'entrega",
     "proveedor":"Proveïdor",
     "remanente_origen": "Quantitat romanent al origen",
     "trazaAtras":"Traçabilitat endarrere",
@@ -422,14 +428,15 @@
     "loteProveedor":" del lot de proveïdor",
     "quedan":"en queden",
     "SeAñaden":"S'afegeixen ",
-    "quedaron":"van quedar",
+    "quedaron":"van quedar-ne",
     "enElLoteOrigen":"al lot d'origen",
     "loteProduccion":" lot de producció",
     "Entrega":" Es fa entrega de ",
     "del":"del ",
     "SeCrea":"Es crea el ",
     "con":"amb ",
-    "habia":"hi havía"
+    "habia":"hi havía",
+    "Habia":"Hi havía"
   },
   "almacenes":{
     "nombre":"Nom",
@@ -661,7 +668,7 @@
       "insuficiente2":" per preparar la recepta, total disponible: ",
       "insuficiente3":" en necessites: ",
       "sinLotes":"Comproba stock a proveïdors, no s'han trobat lots disponibles per ",
-      "sinMP":" no hi han Matèries Primeres disponibles, asigna l'ingredient a Proveïdors -> M.P. Homologadas",
+      "sinMP":": no hi han Matèries Primeres disponibles, asigna l'ingredient a Proveïdors -> M.P. Homologadas",
       "faltaReceta":"No n'hi han recepte per aquesta elaboració o no s'han afegit ingredients a la recepta",
       "faltaCantidadProduccion":"S'ha d'introduïr una quantitat mes gran de 0 per produïr"
     },
@@ -718,5 +725,12 @@
   "cerrado":"tancat",
   "entregado":"entregat",
   "unidades":"unitats",
-  "Desconocido":"Desconegut"
+  "Desconocido":"Desconegut",
+  "medidas":{
+    "l.":"litres",
+    "Kg.":"Kg.",
+    "g.":"grams",
+    "ml.":"Ml.",
+    "unitats":"unitats"
+  }
 }	

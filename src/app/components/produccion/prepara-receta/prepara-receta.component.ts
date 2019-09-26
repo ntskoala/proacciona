@@ -102,6 +102,7 @@ export class PreparaRecetaComponent implements OnInit {
          for (let element of response.data) { 
              this.proveedores.push({"value":element.id,"label":element.nombre});
         }
+        console.log('PROVEEDORES',this.proveedores)
        }
    },
    error=>console.log(error),
@@ -156,7 +157,7 @@ return this.proveedores[this.proveedores.findIndex((prov)=>prov.value==idproveed
   this.ingredientes.forEach((ingrediente)=>{
     this.loteSelected.push([]);
     let field:string="&field=ingrediente&idItem='"+ingrediente.ingrediente+"'";//campo de relación con tabla padre
-    let  parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+field//"&WHERE=ingrediente=&valor="+ingrediente.ingrediente;
+    let  parametros = '&idempresa=' + this.empresasService.seleccionada+"&entidad=proveedores_productos"+field+"&WHERE=idempresa=&valor="+this.empresasService.seleccionada;//"&WHERE=ingrediente=&valor="+ingrediente.ingrediente;
     this.servidor.getObjects(URLS.STD_SUBITEM, parametros).subscribe(
       response => {
         this.estado=60;

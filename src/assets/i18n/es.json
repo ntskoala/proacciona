@@ -89,6 +89,7 @@
   "Inicio": "Inicio",
   "Fin": "Fin",
   "Fecha": "Fecha",
+  "formatoFecha":"La introducción manual de la fecha es dd/mm/aaaa",
   "Imagen": "Imagen",
   "<min": "Menor que mínimo",
   ">max": "Mayor que màximo",
@@ -285,6 +286,8 @@
      "correcta":"Correcta",
      "incorrecta":"Incorrecta",
      "porSupervisar":"Por supervisar",
+     "supervisarTodas":"Supervisar todas",
+     "supervisarTodastt":"Se guardarán todas las limpiezas realizadas por supervisar como correctas",
      "cuadroProductos":"Asignar productos",
      "app":"Mostrar en el móvil"
   },
@@ -317,7 +320,7 @@
     "entradaproductos":"Entrada M.P.",
     "numlotep":"Lote proveedor",
     "cantidad":"Cantidad",
-    "stockMinim":"Cobertura",
+    "stockMinim":"Stock mínimo",
     "fecha_entrada":"Fecha",
     "fecha_caducidad":"Fecha caducidad",
     "tipo medida":"Tipo medida",
@@ -410,6 +413,9 @@
     "tanque":"Tanc",
     "origen":"Origen",
     "fecha orden":"Fecha orden",
+    "fechaProduccion":"Fecha producción",
+    "fechaAdicion":"Fecha adición",
+    "fechaEntrega":"Fecha entrega",
     "proveedor":"Proveedor",
     "remanente_origen": "Cantidad remanente en origen",
     "trazaAtras":"Trazabilidad hacia atrás",
@@ -429,7 +435,8 @@
     "del":"del ",
     "SeCrea":"Se crea el ",
     "con":"con ",
-    "habia":"había"
+    "habia":"había",
+    "Habia":"Había"
   },
   "almacenes":{
     "nombre":"Nombre",
@@ -718,5 +725,12 @@
   "cerrado":"cerrado",
   "entregado":"entregado",
   "unidades":"unidades",
-  "Desconocido":"Desconocido"
+  "Desconocido":"Desconocido",
+  "medidas":{
+    "l.":"litros",
+    "Kg.":"Kg.",
+    "g.":"gramos",
+    "ml.":"Ml.",
+    "unidades":"unidades"
+  }
 }

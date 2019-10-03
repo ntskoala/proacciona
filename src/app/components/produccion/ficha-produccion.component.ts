@@ -60,9 +60,11 @@ public heightTraza:string='1200px';
     ) {}
 
   ngOnInit() {
-    this.empresasService.alergenos.subscribe((alergenos)=>{this.repasarAlergenos(alergenos)})
+    this.empresasService.alergenos.subscribe((alergenos)=>{this.repasarAlergenos(alergenos)});
+    this.empresasService.productosPropiosChanges.subscribe((valor)=>{this.getProductos();})
     console.log('ORDEN',this.orden);
     console.log('ORDEN',(this.orden.idproductopropio));
+
     this.getProductos();
     this.getAlmacenes();
     this.es=cal;
@@ -154,6 +156,7 @@ getProductos(){
         ()=>{}
         ); 
 }
+
 setIdProductoPropio(id: number){
   console.log(id);
   let i = this.productos.findIndex((prod) => prod.id==id)
@@ -268,6 +271,7 @@ console.log(event);
 
 
 repasarAlergenos(alergenos){
+
   console.log('repasar alergenos',alergenos);
   if(alergenos['accion']=='remove'){
     this.removeAlergias(alergenos['alergenos']);
@@ -378,5 +382,6 @@ changeTrazaHeight(event){
   console.log("height ",this.heightTraza);
   this.onHeightChanged.emit(this.heightTraza);
 }
+
 
 }

@@ -84,6 +84,7 @@ public informeData:any;
     this.servidor.postObject(URLS.STD_ITEM, this.nuevoItem,param).subscribe(
       response => {
         if (response.success) {
+          this.empresasService.familiasProductosProveedoresChanges.next(true);
           this.nuevoItem.id = response.id;
           this.items.push(this.nuevoItem);
           this.nuevoItem = new FamiliasProducto('',0,null,0);

@@ -246,11 +246,13 @@ export class AlergenosTablaComponent implements OnInit, OnChanges {
   
   
   saveItem(item: ProductoAlergia) {
+
       let parametros = '?id=' + item.id+this.entidad;    
       //item.idempresa = this.empresasService.seleccionada;  
       this.servidor.putObject(URLS.STD_ITEM, parametros, item).subscribe(
         response => {
           if (response.success) {
+            this.empresasService.productosPropiosChanges.next(true);
               this.setAlerta('alertas.saveOk');
           }else{
               this.setAlerta('alertas.saveNotOk');

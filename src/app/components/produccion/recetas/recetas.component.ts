@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import * as moment from 'moment/moment';
 
-
+import {MessageService} from 'primeng/components/common/messageservice';
 import { Servidor } from '../../../services/servidor.service';
 import { URLS,dropDownMedidas } from '../../../models/urls';
 import { EmpresasService } from '../../../services/empresas.service';
@@ -52,7 +52,8 @@ export class RecetasComponent  implements OnInit, OnChanges {
     constructor(
       public servidor: Servidor,
       public empresasService: EmpresasService,
-      public translate: TranslateService
+      public translate: TranslateService,
+      private messageService: MessageService
       ) {}
   
     ngOnInit() {
@@ -123,8 +124,13 @@ export class RecetasComponent  implements OnInit, OnChanges {
          }
        );
  }
-  
+
+
     newItem() {
+      this.checkExistenciaMP().then(
+        (resultado)=>{
+          let valor= resultado["valor"]
+          if (valor <0){
       let param = this.entidad;
       this.nuevoItem.idempresa = this.empresasService.seleccionada;
       this.nuevoItem.idproducto = this.producto.id;
@@ -141,8 +147,42 @@ export class RecetasComponent  implements OnInit, OnChanges {
       () =>this.setItems()   
       );
      this.nuevoItem = new Ingrediente(null,this.empresasService.seleccionada,0,'',null,null);
+    }else{
+      this.setAlerta('Este ingrediente ya existe como: ' + this.ingredientes[valor]["label"]);
+      console.log(('Este ingrediente ya existe como: ' + this.ingredientes[valor]["label"]));
     }
-  
+  }
+)
+    }
+
+
+    checkExistenciaMP(){
+      return new Promise((resolve)=>{
+        if (this.ingredientes.findIndex((item)=>item["label"]==this.nuevoItem.ingrediente)>-1){ 
+          resolve({'valor':-2});
+        }else{
+      let indiceProducto =   this.ingredientes.findIndex((item)=>this.normalice(item["label"]).toLowerCase()==this.normalice(this.nuevoItem.ingrediente).toLowerCase());
+      resolve({'valor':indiceProducto});
+      }
+    }); 
+    }
+    normalice(texto:string){
+      let from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç".split('');
+      let to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc".split('');
+      let arrayTexto = texto.split('');
+      let i=0;
+      let converted='';
+      arrayTexto.forEach((letra)=>{
+        let pos= from.findIndex((char)=>char==letra);
+         if (pos<0){
+          converted+=letra;
+         }else{
+          converted+=to[pos];
+         }
+      })
+      return converted;
+    }
+    
   
     onEdit(event){
       console.log(event);
@@ -309,5 +349,15 @@ export class RecetasComponent  implements OnInit, OnChanges {
             return Value;
           }
 
+          setAlerta(concept:string){
+            let concepto;
+            this.translate.get(concept).subscribe((valor)=>concepto=valor)  
+            this.messageService.clear();this.messageService.add(
+              {severity:'warn', 
+              summary:'Info', 
+              detail: concepto
+              }
+            );
+          }
 
 }

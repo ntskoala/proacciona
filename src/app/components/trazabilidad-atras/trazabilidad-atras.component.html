@@ -60,7 +60,7 @@
              {{ card.label }}
           </mat-card-title>
           <span *ngIf="card.data.tipo=='entrega'">
-              <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaAdicion' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+              <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaEntrega' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
               {{"trazabilidad.Entrega" | translate}}  <span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.data.cantidad}} {{'medidas.'+card.data.tipo_medida | translate}}</span>
                <span *ngIf="card.children[0].data.nombreMP"> {{"trazabilidad.de" | translate}} {{card.children[0].data.nombreMP}}<br></span>
               <span *ngIf="card.children[0].data.nombreProduccion"> {{"trazabilidad.de" | translate}} {{card.children[0].data.nombreProduccion}}<br></span>
@@ -69,7 +69,7 @@
 
               <span *ngIf="card.data.tipo=='orden'"> 
                   <span *ngIf="card.data.parent.data.tipo=='orden'"> 
-                      <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaAdicion' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+                      <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaAdicion' | translate }} {{card.data.fecha_detalle | date:"dd-MM-yyyy"}}<br></span>
                       <span *ngIf="card.data.fecha_detalle"> {{card.data.fecha_detalle | date:"dd-MM-yyyy"}}</span>
                         {{"trazabilidad.SeAñaden" | translate}} <span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.cantidad}} {{'medidas.'+card.data.tipo_medida | translate}}</span>
                         {{"trazabilidad.del" | translate}} {{"trazabilidad.loteProduccion" | translate}} {{card.label}}
@@ -82,18 +82,20 @@
                         {{"trazabilidad.Habia" | translate}} <span *ngIf="card.data.cantidad_real_origen">{{card.data.cantidad_real_origen}} {{'medidas.'+card.data.tipo_medida | translate}}</span>
                         {{"trazabilidad.quedaron" | translate}} <span *ngIf="card.data.cantidad_remanente_origen">{{card.data.cantidad_remanente_origen}} {{'medidas.'+card.data.tipo_medida | translate}}</span>           
                   </span>
+
+
                   <span *ngIf="card.data.parent.data.tipo=='entrega'"> 
                       <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaProduccion' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
                         {{"trazabilidad.SeCrea" | translate}} {{"trazabilidad.loteProduccion" | translate}} {{card.label}}
                         <span *ngIf="card.data.nombreProduccion">({{card.data.nombreProduccion}})</span>
-                        {{"trazabilidad.con" | translate}}<span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.cantidad}} {{'medidas.'+card.data.tipo_medida | translate}} <br></span>
-                        , {{"trazabilidad.quedan" | translate}} <span *ngIf="card.data.cantidad_remanente">{{card.data.cantidad_remanente}} {{'medidas.'+card.data.tipo_medida | translate}}</span>    
+                        {{"trazabilidad.con" | translate}}<span *ngIf="card.data.cantidad && card.data.cantidad >= 0"> {{card.cantidad}} {{'medidas.'+card.data.tipo_medida | translate}}. <br></span>
+                        {{"trazabilidad.quedan" | translate}} <span *ngIf="card.data.cantidad_remanente">{{card.data.cantidad_remanente}} {{'medidas.'+card.data.tipo_medida | translate}}</span>    
                   </span>
                   </span>
 
 
                   <span *ngIf="card.data.tipo=='entrada'">
-                      <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaAdicion' | translate }} {{card.data.fecha_inicio_orden | date:"dd-MM-yyyy"}}<br></span>
+                      <span *ngIf="card.data.fecha_inicio_orden">{{'trazabilidad.fechaAdicion' | translate }} {{card.data.fecha_detalle | date:"dd-MM-yyyy"}}<br></span>
                       {{"trazabilidad.SeAñaden" | translate}} <span *ngIf="card.data.cantidad_detalle && card.data.cantidad_detalle >= 0"> {{card.data.cantidad_detalle}} {{'medidas.'+card.data.tipo_medida | translate}}</span>
                       <span *ngIf="card.data.nombreMP"> {{"trazabilidad.de" | translate}} {{card.data.nombreMP}}</span>
                       {{"trazabilidad.loteProveedor" | translate}} {{card.data.numlote_proveedor}} 

@@ -8,10 +8,10 @@
 }
 
 .info{
-    width: 40%;
-    float: left;
+    /* width: 90%;
+    float: left; */
     background-color: #fff;
-    position: relative;
+    /* position: relative; */
     margin-left: 25px;
     margin-top: 60px;
 }

@@ -28,7 +28,7 @@ export class EmpresasService {
 //  empresa: Empresa;
 
   // fuente del observable
-  public alergenos= new Subject<any>();
+
 
   public empresaSeleccionadaFuente = new Subject<Empresa>();
   private nuevaEmpresaFuente = new Subject<Empresa>();
@@ -39,6 +39,12 @@ export class EmpresasService {
   empresaSeleccionada = this.empresaSeleccionadaFuente.asObservable();
   nuevaEmpresa = this.nuevaEmpresaFuente.asObservable();
   //exportar_informes = this.exportar_informesFuente.asObservable();
+
+//*** GLOBAL SUBSCRIBERS
+  public alergenos= new Subject<any>();
+  public productosPropiosChanges= new Subject<any>();
+  public familiasProductosProveedoresChanges= new Subject<any>();
+
 
   seleccionarEmpresa(empresa: Empresa) {
       console.log("####EMPRESA SELECCIONADA:",empresa);
@@ -67,6 +73,9 @@ setOpciones(valor: boolean){
 check_Opcion() {
      //   return this.exportar_informes.asObservable();     
 }
+
+
+
 
 setAlergenos(alergenos){
   console.log('SETTING ALERGENOS',alergenos);

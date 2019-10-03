@@ -104,7 +104,7 @@ initTree(idOrden){
      if (this.empresasService.seleccionada == 26 || this.empresasService.seleccionada == 77) {
        //
     }else{
-      this.tree[0]["data"]={"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"remanente":this.orden.remanente}
+      this.tree[0]["data"]={"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"almacen":this.orden.idalmacen,"fecha_caducidad":this.orden.fecha_caducidad,"cantidad":this.orden.cantidad,"remanente":this.orden.remanente,"tipo_medida":this.orden.tipo_medida}
        }
     //  this.tree.push({"label": this.orden.numlote,
     //   "data":{"tipo":"orden","idOrden":this.orden.id,"fecha_inicio_orden":this.orden.fecha_inicio,"level":0,"almacen":this.orden.idalmacen,"cliente":this.orden.idcliente,"fecha_caducidad":this.orden.fecha_caducidad},
@@ -820,7 +820,7 @@ nodoClientes(nodo: TreeNode,id:number, tipo:string){
                 nodo.children.push({
                 "label":this.getCliente(element.idcliente),
                 "expanded":false,
-                "data":{"tipo":"entrega","idOrden":element.id,"fecha_inicio_orden":element.fecha,"cantidad":element.cantidad,"fecha_caducidad":element.fecha_caducidad,"parent":nodo}
+                "data":{"tipo":"entrega","idOrden":element.id,"fecha_inicio_orden":element.fecha,"cantidad":element.cantidad,"fecha_caducidad":element.fecha_caducidad,"parent":nodo,"tipo_medida":element.tipo_medida}
                   });
         }            
              // console.log("DESTINO",response.data)

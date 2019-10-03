@@ -64,6 +64,7 @@ public informeData:any;
 
   ngOnInit() {
      // this.setItems();
+     this.empresasService.familiasProductosProveedoresChanges.subscribe((valor)=>{this.getFamilias();})
      this.setIngredientes();
       this.getFamilias();
       this.es=cal;
@@ -158,29 +159,60 @@ getFamilias(){
  }
 
   newItem() {
-    let param = this.entidad+this.field+this.proveedor.id;
-    this.nuevoItem.idproveedor = this.proveedor.id;
-    this.nuevoItem.idempresa = this.empresasService.seleccionada;
-    if (!this.nuevoItem.idfamilia) this.nuevoItem.idfamilia = 0;
-    this.addnewItem = this.nuevoItem;
-    this.servidor.postObject(URLS.STD_ITEM, this.addnewItem,param).subscribe(
-      response => {
-        if (response.success) {
-          this.items.push(this.addnewItem);
-          this.items[this.items.length-1].id= response.id;
-          setTimeout(()=>{this.setItems();
-                          this.nuevoProducto.emit(true);  
-                        },150);
+    this.checkExistenciaMP().then(
+      (resultado)=>{
+        let valor= resultado["valor"]
+        console.log(valor,typeof(valor));
+        if (valor <0){
+          let param = this.entidad+this.field+this.proveedor.id;
+          this.nuevoItem.idproveedor = this.proveedor.id;
+          this.nuevoItem.idempresa = this.empresasService.seleccionada;
+          if (!this.nuevoItem.idfamilia) this.nuevoItem.idfamilia = 0;
+          this.addnewItem = this.nuevoItem;
+          this.servidor.postObject(URLS.STD_ITEM, this.addnewItem,param).subscribe(
+            response => {
+              if (response.success) {
+                this.items.push(this.addnewItem);
+                this.items[this.items.length-1].id= response.id;
+                setTimeout(()=>{this.setItems();
+                                this.nuevoProducto.emit(true);  
+                              },150);
+              }
+          },
+          error =>console.log(error),
+          () =>  {}
+          );
+      
+         this.nuevoItem = new ProveedorProducto('','','','',0,0,null,null,null);
+        }else{
+          this.setAlerta('Este producto ya existe como: ' + this.items[valor].nombre);
         }
-    },
-    error =>console.log(error),
-    () =>  {}
-    );
-
-   this.nuevoItem = new ProveedorProducto('','','','',0,0,null,null,null);
-   
+      }
+    )
   }
 
+checkExistenciaMP(){
+  return new Promise((resolve)=>{
+  let indiceProducto =   this.items.findIndex((item)=>this.normalice(item.nombre).toLowerCase()==this.normalice(this.nuevoItem.nombre).toLowerCase());
+        resolve({'valor':indiceProducto});
+  })
+}
+normalice(texto:string){
+  let from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç".split('');
+  let to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc".split('');
+  let arrayTexto = texto.split('');
+  let i=0;
+  let converted='';
+  arrayTexto.forEach((letra)=>{
+    let pos= from.findIndex((char)=>char==letra);
+     if (pos<0){
+      converted+=letra;
+     }else{
+      converted+=to[pos];
+     }
+  })
+  return converted;
+}
 
   onEdit(event){
     console.log(event);

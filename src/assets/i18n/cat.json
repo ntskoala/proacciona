@@ -517,8 +517,24 @@
      "incorrecta":"Incorrecte",
      "porSupervisar":"Per supervisar",
      "actions":"Accions",
-     "doc":"Doc pdf"
-  },    
+     "doc":"Doc pdf",
+     "formaciones":"Formacions",
+     "formacionesRealizadas":"Formacions realitzades",
+     "trabajadores":"Treballadors"
+  },
+  "formacion":{
+    "nomgrupo":"Nom del grup",
+    "Formaciones":"Formacions",
+    "FormacionesRealizadas":"Formacions realitzades",
+    "percentExito":"% éxit",
+    "valoracion":"Valoració de la eficàcia",    
+    "Convocatorias":"Convocatòries"
+  },
+  "trabajadores":{
+    "Trabajadores":"Treballadors",
+    "gruposDeTrabajo":"Grups de treball",
+    "nomgrupo":"Nom del grup"
+  },
     "alertas":
     {
       "avisos":"Avisos",

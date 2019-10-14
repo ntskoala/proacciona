@@ -517,7 +517,23 @@
      "incorrecta":"Incorrecta",
      "porSupervisar":"Por supervisar",
      "actions":"Acciones",
-     "doc":"Doc pdf"
+     "doc":"Doc pdf",
+     "formaciones":"Formaciones",
+     "formacionesRealizadas":"Formaciones realizadas",
+     "trabajadores":"Trabajadores"
+  },
+  "formacion":{
+    "nomgrupo":"Nombre del grupo",
+    "Formaciones":"Formaciones",
+    "FormacionesRealizadas":"Formaciones realizadas",
+    "percentExito":"% éxito",
+    "valoracion":"Valoración de la eficacia",
+    "Convocatorias":"Convocatorias"
+  },
+  "trabajadores":{
+    "Trabajadores":"Trabajadores",
+    "gruposDeTrabajo":"Grupos de trabajo",
+    "nomgrupo":"Nombre del grupo"
   },
     "alertas":
     {

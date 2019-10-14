@@ -4,6 +4,7 @@ import { Router,ActivatedRoute, ParamMap  } from '@angular/router';
 
 import { EmpresasService } from '../../services/empresas.service';
 import { Planificacion } from '../../models/planificacion';
+import { Formacion } from '../../models/formaciones';
 import { PlanRealizado } from '../../models/planrealizado';
 @Component({
   selector: 'app-planificaciones',
@@ -15,18 +16,23 @@ export class PlanificacionesComponent implements OnInit {
 @ViewChild('sidenavCalendar') snCalendar: any;
 // @ViewChild('sidenavFamilias') snFamilias: any;
 // @ViewChild('sidenavPermisos') snPermisos: any;
+
 public incidencia:any;
 public calendario:boolean=false;
 public familia:boolean=false;
 public permiso:boolean=false;
 public alerta:boolean=false;
+public grupos:boolean=false;
 public estadoSideNav:string="cerrado";
 public subMenu:string=null;
 public planes: Planificacion[] = [];
 public plan: Planificacion;
+public formaciones: Formacion[]=[];
 public planRealizado: PlanRealizado;
 public newPlanRealizado:number;
 public selectedTab: number=null;
+public trabajadores;
+public convocatorias:boolean=false;
   constructor(public empresasService: EmpresasService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -41,7 +47,6 @@ public selectedTab: number=null;
 
 
 cambioMenu(opcion: string){
-
 
   this.snCalendar.toggle().then(
   (valor)=>{
@@ -63,6 +68,12 @@ cambioMenu(opcion: string){
               break;
             case "alerta":
               this.alerta=true;
+              break;
+            case "grupos":
+              this.grupos=true;
+              break;
+            case "convocatorias":
+              this.convocatorias=true;
               break;
           }
            this.subMenu = opcion;   
@@ -89,6 +100,12 @@ cambioMenu(opcion: string){
             case "alerta":
               this.alerta=true;
               break;
+            case "grupos":
+              this.grupos=true;
+              break;
+            case "convocatorias":
+              this.convocatorias=true;
+              break;
           }
             this.subMenu = opcion;
             this.snCalendar.toggle();
@@ -108,6 +125,8 @@ closeSideNav(){
   this.familia=false;
   this.permiso=false;
   this.alerta=false;
+  this.grupos=false;
+  this.convocatorias=false;
    resolve('ok')
     });
 }
@@ -151,6 +170,10 @@ cerrarSideNav(){
 loadPlanes(planes){
 this.planes = planes;
 }
+loadCursos(cursos){
+  console.log('cursos2',cursos)
+  this.formaciones = cursos;
+  }
 seleccionPlan(plan){
 this.plan = plan;
 }
@@ -171,5 +194,10 @@ console.log('permisos actualizados',event)
 }
 actualizaAlertas(id){
 console.log('Alertasualizadas Act',event)
+}
+
+loadedTrabajadores(event){
+  console.log('trabajadores en planificaciones',event);
+this.trabajadores=event;
 }
 }

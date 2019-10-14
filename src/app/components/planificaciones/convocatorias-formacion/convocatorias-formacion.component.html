@@ -1,0 +1,68 @@
+convocatorias
+<!-- ********* INICIO TABLA REGISTROS-->
+<div [style.width]="ancho"  class="permisos">
+  <p-table #DT [value]="tabla" [columns]="cols" 
+    [responsive]="true" 
+    [style]="{'width':'100%','padding':'0px 25px 0px 25px','text-align':'left'}"> 
+    <ng-template pTemplate="header" let-columns>
+         <tr>
+        <th *ngFor="let col of columns"  [ngClass]="{'widthUsuario':col.header=='Curso','widthNoUsuario':col.header!='Curso','cabTitleTH':col.header.length > 20, 'border-right':true}">
+          <div class="vertical cabecera cabTitle" [ngClass]="{'vertical':col.header!='Curso','usuario':col.header=='Curso'}">{{col.header | translate}}</div>
+        </th>
+        </tr>
+    </ng-template>
+   
+    <ng-template pTemplate="body" let-curso let-i="rowIndex" let-columns="columns">
+      <tr [ngClass]="{'rowImpar':i%2==0,'rowPar':i%2!=0}">
+        <td *ngFor="let col of columns" [ngClass]="{'rowRegistro':true}"  class="border-right padleft">
+          <div style="text-align: center">
+              <span *ngIf="col.field == 'curso'">{{curso[col.field]}} </span>
+              <span *ngIf="col.field == 'fecha'">
+              <p-calendar [defaultDate]="" [required]="col.required" appendTo="body" [inputStyle]="{'width':'100px'}" class="medium" [(ngModel)]="curso['fecha']"
+              [locale]="es" dateFormat="dd/mm/yy" name="fecha"></p-calendar>
+            </span>
+        <!-- <mat-slide-toggle class="option" (change)="setPermisoCorrectivos(user['iduser'],$event.checked)" *ngIf="col.field == 'Correctivos'"
+        [checked]="user[col.field]=='1'">
+    </mat-slide-toggle> -->
+              <mat-slide-toggle class="option" (change)="setConvocado(curso['idcurso'],$event.checked,col['field'],curso)" *ngIf="col.field != 'curso' && col.field != 'fecha'"
+            [checked]="curso[col.header]"  [(ngModel)]="curso[col.header]">
+        </mat-slide-toggle>
+               </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      x cursos convocados
+  </ng-template>
+    <ng-template pTemplate="summary">
+      <button *ngIf="!newRow" type="button" pButton icon="fa fa-plus" (click)="convocar()" label="{{'formacion.Convocar' | translate}}"></button>
+
+  </ng-template>
+  </p-table>
+  </div>
+
+
+
+<!-- <div class="table prot grupos">
+  <div class="row NuevoRegistro">
+      <span class="cell">
+  <input type="text" [(ngModel)]="nuevoGrupo" placeholder="{{'trabajadores.nomgrupo' | translate}}">
+  </span>
+      <span class="cell small">
+    <button mat-mini-fab color="accent" type="button" [disabled]="!nuevoGrupo" (click)="newGrupo()">
+      <span class="material-icons">add</span>
+      </button>
+      </span>
+  </div>
+
+  <div class="row" *ngFor="let grupo of grupos;let n = index">
+      <span class="cell">
+  {{grupo.nombre}}
+  </span>
+      <span class="cell small">
+          <button mat-mini-fab color="primary" type="button" (click)="deleteGrupo(grupo)">
+              <span class="material-icons">remove</span>
+          </button>
+      </span>
+  </div>
+</div> -->

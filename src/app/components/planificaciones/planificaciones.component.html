@@ -31,6 +31,15 @@
   <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('alerta')"><mat-icon>notifications_active</mat-icon></button>
   </div>
 
+  <div class="tooltip" matTooltip="{{'trabajadores.gruposDeTrabajo' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+      <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('grupos')"><mat-icon>group</mat-icon></button>
+      </div>
+
+      <div class="tooltip" matTooltip="{{'formacion.Convocatorias' | translate}}" [matTooltipDisabled]="!empresasService.showTooltips" [matTooltipPosition]="'after'">
+        <button class="opcionBoton" [ngClass]="{'selected': subMenu == 'alerta'}" color="accent" mat-mini-fab (click)="cambioMenu('convocatorias')"><mat-icon>library_books</mat-icon></button>
+        </div>
+
+
    </div>
  </mat-card-subtitle>
 
@@ -50,6 +59,8 @@
         <app-supervisores *ngIf="permiso" [tipoControl]="'Planificaciones'" [items]="planes"  (onPermisos)="actulizaPermisos($event)"></app-supervisores>
         
         <app-alertas *ngIf="alerta"   (onAlertas)="actulizaAlertas($event)"></app-alertas>
+        <app-grupos-trabajo [trabajadores]="trabajadores" *ngIf="grupos" ></app-grupos-trabajo>
+        <app-convocatorias-formacion  [trabajadores]="trabajadores" [cursos]="formaciones" *ngIf="convocatorias"></app-convocatorias-formacion>
       </div>
     </div>
 
@@ -79,10 +90,13 @@
  
         <!-- <mat-sidenav-content class="sidenav-content"> -->
 <mat-tab-group  [selectedIndex]="selectedTab" [dynamicHeight]="false">
+    <mat-tab label="{{'planificaciones.trabajadores' | translate}}"><span class="space"></span><app-trabajador id="testid" class="tabs" (trabajadores)="loadedTrabajadores($event)"></app-trabajador></mat-tab>
+
+  <mat-tab label="{{'planificaciones.formaciones' | translate}}"><span class="space"></span><app-formaciones id="testid" class="tabs" (listaFormaciones)="loadCursos($event)"></app-formaciones></mat-tab>
+  <mat-tab label="{{'planificaciones.formacionesRealizadas' | translate}}"><span class="space"></span><app-formaciones-realizadas class="tabs"  (planRealizado)="seleccionPlanRealizado($event)"></app-formaciones-realizadas></mat-tab>
 
   <mat-tab label="{{'planificaciones.planificaciones_programadas' | translate}}"><span class="space"></span><app-planes id="testid" class="tabs" (listaPlanes)="loadPlanes($event)"></app-planes></mat-tab>
   <mat-tab label="{{'planificaciones.planificaciones_realizadas' | translate}}"><span class="space"></span><app-planes-realizados class="tabs" [nuevo]="newPlanRealizado"  (planRealizado)="seleccionPlanRealizado($event)"></app-planes-realizados></mat-tab>
-
 </mat-tab-group>
    <!-- </mat-sidenav-content> -->
    <!--   Fin example-sidenav-content  -->

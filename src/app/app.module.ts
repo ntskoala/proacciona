@@ -214,6 +214,12 @@ import { TemplatesComponent } from './components/templates/templates.component';
 import { RecetasComponent } from './components/produccion/recetas/recetas.component';
 import { PreparaRecetaComponent } from './components/produccion/prepara-receta/prepara-receta.component';
 import { TrazabilidadAtrasComponent } from './components/trazabilidad-atras/trazabilidad-atras.component';
+import { FormacionesComponent } from './components/planificaciones/formaciones/formaciones.component';
+import { FormacionesRealizadasComponent } from './components/planificaciones/formaciones-realizadas/formaciones-realizadas.component';
+import { TrabajadorComponent } from './components/trabajador/trabajador.component';
+import { GruposTrabajoComponent } from './components/planificaciones/grupos-trabajo/grupos-trabajo.component';
+import { IngredientesComponent } from './components/produccion/ingredientes/ingredientes.component';
+import { ConvocatoriasFormacionComponent } from './components/planificaciones/convocatorias-formacion/convocatorias-formacion.component';
 
 
 @NgModule({
@@ -396,6 +402,7 @@ export function createTranslateLoader(http: HttpClient) {
     TrazabilidadAtrasComponent,
     RecetasComponent,
     PreparaRecetaComponent,
+    IngredientesComponent,
 //*******COMUNES     */
     ModalComponent,
     PeriodicidadComponent,
@@ -404,14 +411,20 @@ export function createTranslateLoader(http: HttpClient) {
     InformesControlComponent,
     MigraCheckListComponent,
     PermisosLimpiezaComponent,
+//*******PLANIFICACIONES     */
     PlanificacionesComponent,
     CalendariosPlanificacionesComponent,
     PlanesComponent,
     PlanesRealizadosComponent,
+    FormacionesComponent, 
+    FormacionesRealizadasComponent,
+    ConvocatoriasFormacionComponent,
     FamiliasPlanesComponent,
     PlanesPermisosComponent,
     PermisosGeneralComponent,
     PlanRealizadoComponent,
+    TrabajadorComponent,
+    GruposTrabajoComponent, 
     SupervisoresComponent,
     ProductosCuadroComponent,
     ProtocolosComponent,

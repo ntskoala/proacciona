@@ -33,7 +33,7 @@
     "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
     "fullcalendar": "^4.0.0-alpha",
-    "moment": "^2.18.1",
+    "moment": "^2.29.4",
     "ng2-datepicker": "^3.1.1",
     "ng2-pdf-viewer": "^5.2.3",
     "primeicons": "^1.0.0-beta.10",
